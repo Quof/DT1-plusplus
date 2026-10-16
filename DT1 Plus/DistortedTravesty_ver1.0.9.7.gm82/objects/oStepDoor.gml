@@ -5,6 +5,9 @@ action_id=603
 applies_to=self
 */
 //set in the instance creation code
+//GM8.2 change (added): the room gives the switches' old GM8.1 ids (doorCache1/doorCache2); look them up (see GID)
+if variable_local_exists("doorCache1") {doorId1=GID(doorCache1)}
+if variable_local_exists("doorCache2") {doorId2=GID(doorCache2)}
 if !variable_local_exists("doorId2")
   image_yscale=doorId1.stepScale*scaleFactor
 else

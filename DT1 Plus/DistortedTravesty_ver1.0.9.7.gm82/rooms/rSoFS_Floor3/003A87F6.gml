@@ -1,2 +1,2 @@
-switchID=264146
+switchCache=264146 //GM8.2 change: was switchID=; the old GM8.1 id, looked up with GID
 image_yscale=2

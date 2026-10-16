@@ -1,3 +1,3 @@
-idFollow=185768
+idFollow=noone; idFollowCache=185768 //GM8.2 change: the old GM8.1 id, looked up with GID (followInstance)
 xFollow=16
 yFollow=16

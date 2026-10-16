@@ -7,8 +7,18 @@ effect.image_xscale=0.6
 effect.image_yscale=0.6
 dashInvulnerabilityTime+=dashInvulnerability
 dashPoints-=1
-yAcc+=initialJumpAcc/2
+//yAcc+=initialJumpAcc/2
+if gDeltaTime==1
+  yAcc+=initialJumpAcc/2
+else
+{
+  //60fps change (added): see pMoveDashForward
+  pJumpCorrection(1)
+  yVel+=max(initialJumpAcc/2,-yAccLimit)*jcBodge+grav*jcGravComp
+  ditherCounter=jcSeed
+}
 xAcc+=xVel
+xVelSetTick=1 //60fps change (added): see pMoveDashForward
 dashMomentumTime=22
 backDashRec=8
 //the "state" gets changed to JUMPING later on in the code
@@ -32,3 +42,6 @@ else
 //"variable jumping" states
 jumpButtonReleased=0
 jumpTime=0
+
+//60fps change (added): see pMoveDashForward
+dashTickTime=1; dashTickXAcc=xAcc

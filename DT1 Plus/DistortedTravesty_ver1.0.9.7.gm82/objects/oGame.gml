@@ -12,13 +12,50 @@ lib_id=1
 action_id=603
 applies_to=self
 */
+//gDeltaTime/gDeltaDoTicks are worked out in the Begin Step, so every Step event this frame agrees on whether it's a 30fps tick
 if global.gamePaused=false
   gameStepEvent()
 
-//play time
-if global.playTimeFrameCount>=30
+//60fps change (added): GM adds image_speed (and the built-in speed, hspeed/vspeed) in full every frame; take back the
+//excess above 30fps so animations run at the 30fps rate (from DT3 60FPS)
+if gDeltaTime != 1.0
 {
-  global.playTimeFrameCount=0
+  var tDtM1;
+  tDtM1 = gDeltaTime - 1.0
+  with (all)
+  {
+    image_index += image_speed * tDtM1
+    //objects with friction are visual effects; gameplay objects shouldn't use friction
+    if friction != 0
+    {
+      x += hspeed * tDtM1
+      y += vspeed * tDtM1
+      if speed != 0 {speed -= friction * tDtM1}
+    }
+  }
+  //effects spawned with the built-in speed/direction (purely visual)
+  with (oEffect) if friction == 0 and speed != 0 {x += hspeed * tDtM1; y += vspeed * tDtM1}
+}
+//60fps change (added): GM scrolls every background layer by its full background_hspeed/vspeed every frame; take back the
+//excess above 30fps, so background speeds (set in the room editor or in code, in 30fps units) scroll at the 30fps rate
+if gDeltaTime != 1.0
+{
+  var bgi;
+  for(bgi=0;bgi<8;bgi+=1)
+  {
+    background_x[bgi] -= background_hspeed[bgi] * (1.0 - gDeltaTime)
+    background_y[bgi] -= background_vspeed[bgi] * (1.0 - gDeltaTime)
+  }
+}
+
+//play time
+//if global.playTimeFrameCount>=30
+//60fps change: counts frames, 30/gDeltaTime of them, and the frame that resets the count starts the next second
+//1/gDeltaTime-1 frames back (0 at 30fps), so a second is 31 ticks at every frame rate as at 30fps
+if global.playTimeFrameCount>=30/gDeltaTime
+{
+  //global.playTimeFrameCount=0
+  global.playTimeFrameCount=1-1/gDeltaTime //60fps change: see above
   global.playTimeSecond+=1
   global.sessionPlayTime+=1
   if global.playTimeSecond>=60
@@ -167,6 +204,31 @@ if global.debugMenu=true //debug commands
     room_goto(rIntro)
   }
 }
+#define Step_1
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+//60fps change (added): Begin Step (from DT3 60FPS): decide whether this frame is a 30fps tick before any instance's
+//Step event runs. F2 cycles the frame rate between 30, 60 and 120 (scrSetFrameRate)
+if keyboard_check_pressed(vk_f2)
+{
+  if global.gameFrameRate==30 {scrSetFrameRate(60)}
+  else if global.gameFrameRate==60 {scrSetFrameRate(120)}
+  else {scrSetFrameRate(30)}
+}
+room_speed=global.gameFrameRate*global.debugSpeedMul
+gDeltaTime=30/global.gameFrameRate
+
+gDeltaDoTicks = 0
+gDeltaTick += gDeltaTime
+while (gDeltaTick >= 1.0)
+{
+    gDeltaDoTicks += 1
+    gDeltaTick -= 1.0
+}
+if gDeltaTime == 1.0 { gDeltaDoTicks = 1; gDeltaTick = 0.999999 }
 #define Other_3
 /*"/*'/**//* YYD ACTION
 lib_id=1
@@ -188,7 +250,8 @@ if bStatRender=true and instance_exists(oPlayer1)
   draw_set_alpha(1)
   draw_set_halign(fa_left)
   draw_set_font(fnt_StatRender)
-  draw_text(xSet,ySet,"> fps: " +string(fps))
+  //draw_text(xSet,ySet,"> fps: " +string(fps))
+  draw_text(xSet,ySet,"> fps: " +string(fps)+" / "+string(global.gameFrameRate)) //60fps change: and the frame rate it's set to (F2)
   draw_text(xSet,ySet+9,"> Object Num: " +string(instance_count))
   draw_text(xSet,ySet+18,"> Player X Vel: " +string(oPlayer1.xVel))
   draw_text(xSet,ySet+27,"> Player Y Vel: " +string(oPlayer1.yVel))

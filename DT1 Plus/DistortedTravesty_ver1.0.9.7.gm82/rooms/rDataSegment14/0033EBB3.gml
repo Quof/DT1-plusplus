@@ -1,3 +1,3 @@
-switchID=320014
+switchCache=320014 //GM8.2 change: was switchID=; the old GM8.1 id, looked up with GID
 if global.gameProgress>=312
   instance_destroy()

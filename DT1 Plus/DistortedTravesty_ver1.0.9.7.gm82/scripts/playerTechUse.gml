@@ -18,6 +18,7 @@ if argument0=1 and attackState=0
     {
       yVel=-2
       yAcc=-2
+      yVelSetTick=1 //60fps change (added): set speed + one-off push: a full 30fps tick's worth (see pMoveToWrapNew)
     }
     playSound(global.snd_JumpStrike,0,1)
     playSound(global.snd_BarrierDestroy,0,1)

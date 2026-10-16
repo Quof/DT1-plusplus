@@ -7,8 +7,18 @@ effect.image_xscale=0.6
 effect.image_yscale=0.6
 dashInvulnerabilityTime+=dashInvulnerability
 dashPoints-=1
-yAcc+=initialJumpAcc/2
+//yAcc+=initialJumpAcc/2
+if gDeltaTime==1
+  yAcc+=initialJumpAcc/2
+else
+{
+  //60fps change (added): above 30fps the hop starts as a speed, like the jump (see pMoveJump and pJumpCorrection)
+  pJumpCorrection(1)
+  yVel+=max(initialJumpAcc/2,-yAccLimit)*jcBodge+grav*jcGravComp
+  ditherCounter=jcSeed
+}
 xAcc+=xVel
+xVelSetTick=1 //60fps change (added): the dash speed is set below: a full 30fps tick's worth (see pMoveToWrapNew)
 dashMomentumTime=22
 //the "state" gets changed to JUMPING later on in the code
 state=FALLING
@@ -31,3 +41,7 @@ else
 //"variable jumping" states
 jumpButtonReleased=0
 jumpTime=0
+
+//60fps change (added): above 30fps the rest of this 30fps tick skips the run code (characterStepEvent), like the 30fps
+//dash that took the whole tick
+dashTickTime=1; dashTickXAcc=xAcc

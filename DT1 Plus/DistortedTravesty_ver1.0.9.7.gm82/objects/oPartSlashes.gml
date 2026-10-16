@@ -40,22 +40,26 @@ else if global.p1CurrentElement=4 and oPlayer1.earthPercent>0.3
 if oPlayer1.image_xscale=-1
   image_xscale=-1
 image_alpha=0.7
+//60fps change: alarms count frames, so the attacks' lengths are /gDeltaTime (in 30fps ticks, as before)
 if oPlayer1.attackState=oPlayer1.PART_H_SLASH
 {
   attackType=PART_H_SLASH
-  alarm[0]=4/image_speed
+  //alarm[0]=4/image_speed
+  alarm[0]=4/image_speed/gDeltaTime //60fps change: see above
 }
 else if oPlayer1.attackState=oPlayer1.PART_V_SLASH
 {
   attackType=PART_V_SLASH
   sprite_index=sPartisanVSlash
-  alarm[0]=4/image_speed
+  //alarm[0]=4/image_speed
+  alarm[0]=4/image_speed/gDeltaTime //60fps change: see above
 }
 else if oPlayer1.attackState=oPlayer1.PART_STAB
 {
   attackType=PART_STAB
   sprite_index=sPartisanStab
-  alarm[0]=4/image_speed
+  //alarm[0]=4/image_speed
+  alarm[0]=4/image_speed/gDeltaTime //60fps change: see above
 }
 else if oPlayer1.attackState=oPlayer1.PART_JUMP_SLASH_2
 {
@@ -69,13 +73,15 @@ else if oPlayer1.attackState=oPlayer1.PART_JUMP_SLASH_2
     image_xscale*=1.5
     image_yscale*=1.5
   }
-  alarm[0]=4/image_speed
+  //alarm[0]=4/image_speed
+  alarm[0]=4/image_speed/gDeltaTime //60fps change: see above
 }
 else if oPlayer1.attackState=oPlayer1.PART_UP_SLASH
 {
   attackType=PART_UP_SLASH
   sprite_index=sPartisanUpSlash
-  alarm[0]=3/image_speed
+  //alarm[0]=3/image_speed
+  alarm[0]=3/image_speed/gDeltaTime //60fps change: see above
 }
 #define Alarm_0
 /*"/*'/**//* YYD ACTION

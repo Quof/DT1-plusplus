@@ -2055,7 +2055,8 @@ if room=rDataSegment5 //make platforms appear
 {
   if bStarted=0
   {
-    if (310253).moving=true
+    //if (310253).moving=true
+    if (GID(310253)).moving=true //GM8.2 change: looked up by its old GM8.1 id (see GID)
     {
       with oColorIndControl
       {
@@ -2088,10 +2089,12 @@ else if room=rDS_3_2
 {
   if platCheck=0
   {
-    if (315657).x>=3152
+    //if (315657).x>=3152
+    if (GID(315657)).x>=3152 //GM8.2 change: looked up by its old GM8.1 id (see GID)
     {
       bossFinishFadeAlpha=0.7
-      with (315657)
+      //with (315657)
+      with (GID(315657)) //GM8.2 change: see above
         instance_destroy()
       platCheck+=1
     }

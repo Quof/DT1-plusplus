@@ -47,7 +47,8 @@ if global.gamePaused=false
   {
     if atkId[i]!=0
     {
-      atkIdTime[i]-=1
+      //atkIdTime[i]-=1
+      atkIdTime[i]-=gDeltaTime //60fps change: the time before the same attack can hit that enemy again counts 30fps ticks (multi-hit attacks hit 2x/4x as often at 60/120fps)
       if atkIdTime[i]<=0
         atkId[i]=0
     }

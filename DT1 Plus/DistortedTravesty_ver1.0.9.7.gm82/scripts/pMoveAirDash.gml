@@ -23,8 +23,12 @@ dashMomentumTime=17
 playSound(global.snd_PlayerJump[0],0,1)
 dashInvulnerabilityTime+=dashInvulnerability
 dashPoints-=1
-yAcc+=initialJumpAcc/2
+//yAcc+=initialJumpAcc/2
+if gDeltaTime==1
+  yAcc+=initialJumpAcc/2
+else {airDashKick=initialJumpAcc/2; airDashKickTime=1} //60fps change: above 30fps added over the dash's whole first 30fps tick (characterStepEvent's airDashRecovery code), like the 30fps yAcc kick
 //xAcc+=xVel
 //xVel=dashVel
 if airDashRecovery<7
   airDashRecovery=6
+dashTickTime=1; dashTickXAcc=xAcc //60fps change (added): see pMoveDashForward

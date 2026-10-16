@@ -171,6 +171,7 @@ if global.gamePaused=false
     {
       oPlayer1.canRun=0
       oPlayer1.xVel=-13
+      oPlayer1.xVelSetExt=1 //60fps change (added): the player's speed is set every frame: the 30fps formula for it (see pMoveToWrapNew)
     }
     else if windBurstTime>=windBurstWait+96
       windBurstTime=0

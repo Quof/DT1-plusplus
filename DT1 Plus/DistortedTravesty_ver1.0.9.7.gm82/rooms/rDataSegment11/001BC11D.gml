@@ -1,1 +1,1 @@
-switchID=317188
+switchCache=317188 //GM8.2 change: was switchID=; the old GM8.1 id, looked up with GID

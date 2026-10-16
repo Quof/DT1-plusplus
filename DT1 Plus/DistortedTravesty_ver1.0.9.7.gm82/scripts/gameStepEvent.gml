@@ -17,6 +17,13 @@ oGame.time+=1
 //we don't want the time to grow too large
 if oGame.time>100000000
   oGame.time=0
+//60fps change (added): oGame.time counts frames; oGame.time30 counts 30fps ticks (moveTo30, the 30fps moveTo)
+if gDeltaDoTicks != 0
+{
+  oGame.time30+=1
+  if oGame.time30>100000000
+    oGame.time30=0
+}
 
 //moves all of the solids so that none of them collide with the character
 with oMovingSolid

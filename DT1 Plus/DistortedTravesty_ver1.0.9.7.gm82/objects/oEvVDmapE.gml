@@ -73,7 +73,8 @@ else if room=rVeiledDetritus9
 }
 else if room=rVeiledDetritus14
 {
-  if (274016).y>=208 and bSpawn[0]=0
+  //if (274016).y>=208 and bSpawn[0]=0
+  if (GID(274016)).y>=208 and bSpawn[0]=0 //GM8.2 change: looked up by its old GM8.1 id (see GID)
   {
     newEnemy=instance_create(1752,308,oSandGhoul)
     newEnemy.bActive=true

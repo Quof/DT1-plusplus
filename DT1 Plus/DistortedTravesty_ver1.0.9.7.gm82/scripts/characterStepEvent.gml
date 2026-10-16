@@ -2,7 +2,16 @@
 This script should be placed in the step event for the platform character.
 It updates the keys used by the character, moves all of the solids, moves the
 character, sets the sprite index, and sets the animation speed for the sprite.
+
+60fps change: ported from DT3 60FPS. At 30fps (gDeltaTime=1) everything runs as before (pMoveToWrapOrig is the
+original movement code). Above 30fps velocities and accelerations stay in 30fps units, counters count 30fps ticks
+(-=gDeltaTime), and pMoveToWrapNew moves gDeltaTime of a tick each frame.
 */
+//60fps change (added): above 30fps, set to 1 by code that sets xVel/yVel directly this frame (or gives a one-off push);
+//pMoveToWrapNew then uses the original 30fps formula (velocity+acceleration)*friction for the frame
+xVelSetTick=0
+yVelSetTick=0
+
 if player=1 //========================================
 {
   if attackState!=SUMMON and global.gamePaused=false
@@ -13,7 +22,8 @@ if player=1 //========================================
     if kLeft
     {
       kLeft=keyboard_check(ord(global.ctrlLeft)) or keyboard_check(vk_left)
-      kLeftPushedSteps+=1
+      //kLeftPushedSteps+=1
+      kLeftPushedSteps+=gDeltaTime //60fps change: counts 30fps ticks
       kLeftPressed=0;
       if (kLeft=0)
         kLeftReleased=1;
@@ -30,7 +40,8 @@ if player=1 //========================================
     if kRight
     {
       kRight=keyboard_check(ord(global.ctrlRight)) or keyboard_check(vk_right)
-      kRightPushedSteps+=1
+      //kRightPushedSteps+=1
+      kRightPushedSteps+=gDeltaTime //60fps change: counts 30fps ticks
       kRightPressed=0
       if kRight=0
         kRightReleased=1
@@ -190,14 +201,23 @@ if state=CLIMBING
 else
 {
   if ladderTimer>0
-    ladderTimer-=1
+    ladderTimer=max(0,ladderTimer-gDeltaTime) //60fps change: counts 30fps ticks (and stops at 0: it's checked for =0)
 }
 //allows the character to run left and right
-if state!=DUCKING and state!=CLIMBING and attackState!=PART_JUMP_SLASH_1 and attackState!=ACT_CASTING and attackState!=ACT_CASTED and bTakingDamage=false
+//60fps change: not for the rest of a dash's first 30fps tick (dashTickTime, set by pMoveDashForward/pMoveDashBack/
+//pMoveAirDash). At 30fps this code had already run for that tick before the dash took over; running it again on the
+//next frames added run acceleration, and in the air the dash momentum formula below replaced the dash's speed
+//if state!=DUCKING and state!=CLIMBING and attackState!=PART_JUMP_SLASH_1 and attackState!=ACT_CASTING and attackState!=ACT_CASTED and bTakingDamage=false
+if state!=DUCKING and state!=CLIMBING and attackState!=PART_JUMP_SLASH_1 and attackState!=ACT_CASTING and attackState!=ACT_CASTED and bTakingDamage=false and dashTickTime<=0
 {
-  if kLeftReleased and approximatelyZero(xVel) {xAcc-=0.5}
-  if kRightReleased and approximatelyZero(xVel) {xAcc+=0.5}
+  //if kLeftReleased and approximatelyZero(xVel) {xAcc-=0.5}
+  //if kRightReleased and approximatelyZero(xVel) {xAcc+=0.5}
+  if kLeftReleased and approximatelyZero(xVel) {xAcc-=0.5; xVelSetTick=1} //60fps change: one-off push: a full 30fps tick's worth (see pMoveToWrapNew)
+  if kRightReleased and approximatelyZero(xVel) {xAcc+=0.5; xVelSetTick=1} //60fps change: see above
 
+  //60fps change: dashMomentumTime counts down in fractions between 30fps ticks, and this code reads it before it's counted
+  //down for the frame, so it uses the 30fps tick's value of it (ceil): <20 became ceil()<20, >=1 became >0, and the
+  //momentum speed uses ceil() too
   if kLeft //----- Run left -----
   {
     if kLeftPushedSteps<3
@@ -209,19 +229,27 @@ if state!=DUCKING and state!=CLIMBING and attackState!=PART_JUMP_SLASH_1 and att
     }
     if facing=RIGHT
     {
-      if dashMomentumTime<20 {dashMomentumTime=0}
+      //if dashMomentumTime<20 {dashMomentumTime=0}
+      if ceil(dashMomentumTime)<20 {dashMomentumTime=0} //60fps change: see above
     }
-    if (kLeftPushedSteps>1 or isCollisionMoveableSolidRight(1)) and (facing=LEFT or approximatelyZero(xVel))
+    //if (kLeftPushedSteps>1 or isCollisionMoveableSolidRight(1)) and (facing=LEFT or approximatelyZero(xVel))
+    //60fps change: kLeftPushedSteps counts 30fps ticks in fractions; >1 is the same as >=2 at 30fps (the 3rd tick of
+    //holding). See runStartSteps (characterCreateEvent)
+    if (kLeftPushedSteps>=runStartSteps or isCollisionMoveableSolidRight(1)) and (facing=LEFT or approximatelyZero(xVel))
     {
       xAcc-=runAcc
-      if dashMomentumTime>=1
+      //if dashMomentumTime>=1
+      if dashMomentumTime>0 //60fps change: see above
       {
-        if platformCharacterIs(IN_AIR)
+        //if platformCharacterIs(IN_AIR)
+        if platformCharacterIs(IN_AIR) or landTickHold>0 //60fps change: see the landing code
         {
           //xAcc-=(xVel/2.7+(dashMomentumTime/1.95))
-          xVel=-((dashVel-8)+(dashMomentumTime/5))
+          //xVel=-((dashVel-8)+(dashMomentumTime/5))
+          xVel=-((dashVel-8)+(ceil(dashMomentumTime)/5)); xVelSetTick=1 //60fps change: see above; set every frame (see pMoveToWrapNew)
         }
-        if kLeftPushedSteps<=1 {dashMomentumTime=0} //3
+        //if kLeftPushedSteps<=1 {dashMomentumTime=0} //3
+        if kLeftPushedSteps<runStartSteps {dashMomentumTime=0} //3 //60fps change: the counterpart of the run start above
       }
     }
     facing=LEFT
@@ -237,19 +265,25 @@ if state!=DUCKING and state!=CLIMBING and attackState!=PART_JUMP_SLASH_1 and att
     }
     if facing=LEFT
     {
-      if dashMomentumTime<20 {dashMomentumTime=0}
+      //if dashMomentumTime<20 {dashMomentumTime=0}
+      if ceil(dashMomentumTime)<20 {dashMomentumTime=0} //60fps change: see run left
     }
-    if (kRightPushedSteps>1 or isCollisionMoveableSolidLeft(1)) and (facing=RIGHT or approximatelyZero(xVel))
+    //if (kRightPushedSteps>1 or isCollisionMoveableSolidLeft(1)) and (facing=RIGHT or approximatelyZero(xVel))
+    if (kRightPushedSteps>=runStartSteps or isCollisionMoveableSolidLeft(1)) and (facing=RIGHT or approximatelyZero(xVel)) //60fps change: see run left
     {
       xAcc+=runAcc
-      if dashMomentumTime>=1
+      //if dashMomentumTime>=1
+      if dashMomentumTime>0 //60fps change: see run left
       {
-        if platformCharacterIs(IN_AIR)
+        //if platformCharacterIs(IN_AIR)
+        if platformCharacterIs(IN_AIR) or landTickHold>0 //60fps change: see the landing code
         {
           //xAcc+=xVel/2.7+(dashMomentumTime/1.95)
-          xVel=(dashVel-8)+(dashMomentumTime/5)
+          //xVel=(dashVel-8)+(dashMomentumTime/5)
+          xVel=(dashVel-8)+(ceil(dashMomentumTime)/5); xVelSetTick=1 //60fps change: see run left
         }
-        if kRightPushedSteps<=1 {dashMomentumTime=0} //3
+        //if kRightPushedSteps<=1 {dashMomentumTime=0} //3
+        if kRightPushedSteps<runStartSteps {dashMomentumTime=0} //3 //60fps change: see run left
       }
     }
     facing=RIGHT
@@ -276,6 +310,7 @@ if state=CLIMBING and bTakingDamage=false
   if kDown
     yAcc+=climbAcc
 }
+xAccInputWalk=xAcc //60fps change (added): the walking/climbing input's acceleration (pMoveToWrapNew's stopping bodge)
 /*if floatTime>0
   floatTime-=1*/
 if platformCharacterIs(IN_AIR)
@@ -297,12 +332,18 @@ if (isCollisionBottom(1) or isCollisionPlatformBottom(1) and isCollisionPlatform
   busterAnimStay=0
   airDashDamage=0
   blastOffRecoveryTime=0
+  //60fps change (added): landing with dash momentum keeps the air friction and the in-air momentum speed for the rest of
+  //this 30fps tick of the dash (dashMomentumTime is a whole number at the dash's tick boundaries). At 30fps a landing
+  //only shows up at the start of the next tick, so the tick it touched down in still moved as in the air; above 30fps
+  //it shows up within it, and the dash hop started slowing down early
+  if gDeltaTime!=1 and dashMomentumTime>0 {landTickHold=frac(dashMomentumTime)}
 }
 //if the character has just walked off of the edge of a solid
 if isCollisionBottom(1)=0 and (isCollisionPlatformBottom(1)=0 or isCollisionPlatform()) and platformCharacterIs(ON_GROUND)
 {
   state=FALLING
-  yAcc+=grav
+  //yAcc+=grav
+  yAcc+=grav; yVelSetTick=1 //60fps change: one-off push: a full 30fps tick's worth (see pMoveToWrapNew)
 }
 if isCollisionTop(1) and state=JUMPING
 {
@@ -338,7 +379,8 @@ if bTakingDamage=false and attackState!=ACT_CASTING and attackState!=ACT_CASTED
             jumps=1
             flyAccTimer=5
             flyDir=facing //either LEFT or RIGHT
-            yAcc+=initialJumpAcc*0.7
+            //yAcc+=initialJumpAcc*0.7
+            yAcc+=initialJumpAcc*0.7; yVelSetTick=1 //60fps change: one-off push: a full 30fps tick's worth (see pMoveToWrapNew)
             if canFly
             {
               flyInitialHeight=y
@@ -377,7 +419,8 @@ if bTakingDamage=false and attackState!=ACT_CASTING and attackState!=ACT_CASTED
             jumps=1
             flyAccTimer=5
             flyDir=facing //either LEFT or RIGHT
-            yAcc+=initialJumpAcc*0.7
+            //yAcc+=initialJumpAcc*0.7
+            yAcc+=initialJumpAcc*0.7; yVelSetTick=1 //60fps change: see above
             if canFly
             {
               flyInitialHeight=y
@@ -405,49 +448,81 @@ if bTakingDamage=false and attackState!=ACT_CASTING and attackState!=ACT_CASTED
   }
 }
 
+//60fps change: the speeds below are set every frame, so they're flagged (xVelSetTick/yVelSetTick) and pMoveToWrapNew
+//uses the 30fps formula for them, (speed+acceleration)*friction, moving this frame's share of it
 if airDashRecovery>0
 {
-  airDashRecovery-=1
-  yVel=-3
+  //airDashRecovery-=1
+  airDashRecovery=max(0,airDashRecovery-gDeltaTime) //60fps change: counts 30fps ticks (and stops at 0: it's checked for =0)
+  //yVel=-3
+  yVel=-3; yVelSetTick=1 //60fps change: see above
+  //60fps change (added): above 30fps, pMoveAirDash's upward kick is added for the air dash's whole first 30fps tick, like
+  //the 30fps yAcc kick that tick
+  if airDashKickTime>0 {yVel+=airDashKick; airDashKickTime-=gDeltaTime}
+  //60fps change (added): rest of the dash's first 30fps tick: the run code is skipped (see there), so keep the dash
+  //frame's acceleration, which at 30fps went into that whole tick's speed
+  if dashTickTime>0 {xAcc=dashTickXAcc}
   if facing=RIGHT
-    xVel=(dashVel)
+    {xVel=(dashVel); xVelSetTick=1} //60fps change: see above
   else if facing=LEFT
-    xVel=-(dashVel)
+    {xVel=-(dashVel); xVelSetTick=1} //60fps change: see above
 }
 //hurricane dash
 if hurricaneDash!=0
 {
   if hurricaneDash>0
   {
-    hurricaneDash-=1
-    xVel=16
+    //hurricaneDash-=1
+    hurricaneDash=max(0,hurricaneDash-gDeltaTime) //60fps change: counts 30fps ticks (and stops at 0)
+    //xVel=16
+    xVel=16; xVelSetTick=1 //60fps change: see above
   }
   else if hurricaneDash<0
   {
-    hurricaneDash+=1
-    xVel=-16
+    //hurricaneDash+=1
+    hurricaneDash=min(0,hurricaneDash+gDeltaTime) //60fps change: see above
+    //xVel=-16
+    xVel=-16; xVelSetTick=1 //60fps change: see above
   }
-  image_blend=make_color_rgb(irandom(255),irandom(255),irandom(255))
-  if hurricaneDash=0
+  //image_blend=make_color_rgb(irandom(255),irandom(255),irandom(255))
+  if gDeltaDoTicks {image_blend=make_color_rgb(irandom(255),irandom(255),irandom(255))} //60fps change: a new color once per 30fps tick
+  //if hurricaneDash=0
+  if abs(hurricaneDash)<0.0001 //60fps change: (it counts in fractions)
+  {
+    hurricaneDash=0 //60fps change (added)
     image_blend=c_white
+  }
 }
 
 if platformCharacterIs(ON_GROUND) //Check how long the player is in the air
 {
   airTime=0
 }
-else {airTime+=1}
+//else {airTime+=1}
+else {airTime+=gDeltaTime} //60fps change: counts 30fps ticks
 
-if backDashRec>0 {backDashRec-=1}
-if dashMomentumTime>0 {dashMomentumTime-=1} //Dash momentum
+//60fps change: these count 30fps ticks (in fractions between them)
+//if backDashRec>0 {backDashRec-=1}
+//if dashMomentumTime>0 {dashMomentumTime-=1} //Dash momentum
+if backDashRec>0 {backDashRec-=gDeltaTime}
+if dashMomentumTime>0 {dashMomentumTime-=gDeltaTime} //Dash momentum
+if dashTickTime>0 {dashTickTime-=gDeltaTime} //60fps change (added): the dash's first 30fps tick (see the run code)
 
 if jumpTime<jumpTimeTotal
-  jumpTime+=1
+  //jumpTime+=1
+  jumpTime+=gDeltaTime //60fps change: counts 30fps ticks
 //let the character continue to jump
 if kJump=0 and kDashLeft=0 and kDashRight=0
+{
+  //60fps change (added): letting go starts full gravity half a 30fps tick later above 30fps (a frame later at 120fps;
+  //no wait at 60fps or 30fps), which is when 30fps's next tick's gravity would take effect; simulated, short hops at
+  //120fps came out ~2px low without it
+  if jumpButtonReleased=0 {jumpReleaseHold=0.5-gDeltaTime}
   jumpButtonReleased=1
+}
 if jumpButtonReleased
-  jumpTime=jumpTimeTotal
+  //jumpTime=jumpTimeTotal
+  {if jumpReleaseHold>0.0001 {jumpReleaseHold-=gDeltaTime} else {jumpTime=jumpTimeTotal}} //60fps change: see above
 gravityIntensity=(jumpTime/jumpTimeTotal)*grav
 
 if bTakingDamage=false and attackState!=PART_JUMP_SLASH_1 and attackState!=ACT_CASTING and attackState!=ACT_CASTED
@@ -480,7 +555,8 @@ if bTakingDamage=false and attackState!=PART_JUMP_SLASH_1 and attackState!=ACT_C
       {
         y+=1
         state=FALLING
-        yAcc+=grav
+        //yAcc+=grav
+        yAcc+=grav; yVelSetTick=1 //60fps change: one-off push: a full 30fps tick's worth (see pMoveToWrapNew)
       }
       else
       {
@@ -490,6 +566,10 @@ if bTakingDamage=false and attackState!=PART_JUMP_SLASH_1 and attackState!=ACT_C
     }
     else
     {
+      //60fps change (added): crouch slide: on the step you crouch, the run code above has already added a full tick of
+      //run acceleration, and friction is now the lighter crouch friction, so at 30fps (speed + runAcc) * crouch friction
+      //gives a burst. Above 30fps that tick's acceleration would only partly apply, so this step uses the 30fps formula
+      if state!=DUCKING {xVelSetTick=1}
       state=DUCKING
     }
   }
@@ -557,13 +637,17 @@ if isCollisionLadder() and state=CLIMBING and kJumpPressed and bTakingDamage=fal
   else
     xVel=departLadderXVel
   yAcc+=departLadderYVel
+  xVelSetTick=1; yVelSetTick=1 //60fps change (added): set speed + one-off push: a full 30fps tick's worth (see pMoveToWrapNew)
   state=JUMPING
   jumpButtonReleased=0
   jumpTime=0
 }
+//60fps change: flySpeed builds up and drains every frame while the input is held, so those amounts are per 30fps tick
+//(*gDeltaTime), and its timers count 30fps ticks
 if kRun and (kLeft or kRight) and bTakingDamage=false and attackState!=PART_JUMP_SLASH_1 and attackState!=ACT_CASTING and attackState!=ACT_CASTED
 {
-  flySpeed+=2
+  //flySpeed+=2
+  flySpeed+=2*gDeltaTime //60fps change: see above
   if state!=DUCKING and state!=LOOKING_UP and state!=CLIMBING and state!=FALLING
   {
     if kLeft
@@ -586,27 +670,32 @@ if kRun and (kLeft or kRight) and bTakingDamage=false and attackState!=PART_JUMP
 }
 else
 {
-  flySpeed-=3
+  //flySpeed-=3
+  flySpeed-=3*gDeltaTime //60fps change: see above
 }
 if bTakingDamage=false and attackState!=PART_JUMP_SLASH_1 and attackState!=ACT_CASTING and attackState!=ACT_CASTED
 {
-  if kJump {flySpeed-=1}
+  //if kJump {flySpeed-=1}
+  if kJump {flySpeed-=1*gDeltaTime} //60fps change: see above
   if (kLeft and xVel>0) or (kRight and xVel<0)
   {
-    flySpeed-=10
+    //flySpeed-=10
+    flySpeed-=10*gDeltaTime //60fps change: see above
     flySpeedTimer=0
   }
   //if the character hits a wall
   if (kLeft and isCollisionLeft(1)) or (kRight and isCollisionRight(1))
   {
-    flySpeed-=20
+    //flySpeed-=20
+    flySpeed-=20*gDeltaTime //60fps change: see above
     flySpeedTimer=0
   }
 }
 //set flySpeed to 100 if the flySpeedTimer is still ticking
 if flySpeedTimer>0
 {
-  flySpeedTimer-=1
+  //flySpeedTimer-=1
+  flySpeedTimer-=gDeltaTime //60fps change: see above
   flySpeed=100
 }
 if flyJumpsTimer>0
@@ -616,7 +705,8 @@ if flyJumpsTimer>0
   else if kJumpPressed
     flyJumpWasPressed=1
   flySpeed=100
-  flyJumpsTimer-=1
+  //flyJumpsTimer-=1
+  flyJumpsTimer-=gDeltaTime //60fps change: see above
   if jumps>1
   {
     gravityIntensity=0.5
@@ -647,12 +737,14 @@ if state=CLIMBING or state=DUCKING
 //causes the actual HUGE jump
 if flyAccTimer>0
 {
-  flyAccTimer-=1
+  //flyAccTimer-=1
+  flyAccTimer-=gDeltaTime //60fps change: see above
   yAcc-=1
 }
 if flyAcc2Timer>0
 {
-  flyAcc2Timer-=1
+  //flyAcc2Timer-=1
+  flyAcc2Timer-=gDeltaTime //60fps change: see above
   if yVel>0
     yVel=0
   if y<flyInitialHeight and y<flyInitialHeight+200 
@@ -699,11 +791,15 @@ else
       xFric=frictionFlyingX
     else if flySpeed>50
       xFric=frictionRunningFastX
-    else if platformCharacterIs(IN_AIR) and kLeft=0 and kRight=0
+    //else if platformCharacterIs(IN_AIR) and kLeft=0 and kRight=0
+    else if (platformCharacterIs(IN_AIR) or landTickHold>0) and kLeft=0 and kRight=0 //60fps change: see the landing code
       xFric=frictionAirX
     else //On ground
     {
-      if dashMomentumTime>8 {xFric=0.96}
+      //if dashMomentumTime>8 {xFric=0.96}
+      //60fps change: dashMomentumTime was just counted down for this frame, so between 30fps ticks it holds fractions:
+      //compare against the next whole number (>=9 instead of >8) so the dash friction lasts as many 30fps ticks as at 30fps
+      if dashMomentumTime>=9 {xFric=0.96}
       else {xFric=frictionRunningX}
     }
   }
@@ -718,104 +814,36 @@ else
   else
     yFric=1
 }
-//limits the acceleration if it is too extreme
-if xAcc>xAccLimit
-  xAcc=xAccLimit
-else if xAcc<-1*xAccLimit
-  xAcc=-1*xAccLimit
-if yAcc>yAccLimit
-  yAcc=yAccLimit
-else if yAcc<-1*yAccLimit
-  yAcc=-1*yAccLimit
-//applies the acceleration
-xVel+=xAcc
-yVel+=yAcc
-//nullifies the acceleration
-xAcc=0
-yAcc=0
-//applies the friction to the velocity, now that the velocity has been calculated
-xVel*=xFric
-yVel*=yFric
-//apply the limits since the velocity may be too extreme
-if xVel>xVelLimit
-  xVel=xVelLimit
-else if xVel<-1*xVelLimit
-  xVel=-1*xVelLimit
-if yVel>yVelLimit
-  yVel=yVelLimit
-else if yVel<-1*yVelLimit
-  yVel=-1*yVelLimit
-//approximates the "active" variables
-if approximatelyZero(xVel)
-  xVel=0
-if approximatelyZero(yVel)
-  yVel=0
-if approximatelyZero(xAcc)
-  xAcc=0
-if approximatelyZero(yAcc)
-  yAcc=0
-//prepares the character to move up a hill
-//we need to use the "slopeYPrev" variable later to know the "true" y previous value
-//keep this condition the same
-if maxSlope>0 and platformCharacterIs(ON_GROUND) and xVel!=0
-{
-  slopeYPrev=y
-  for(y=y;y>=slopeYPrev-maxSlope;y-=1)
-    if isCollisionTop(1)
-      break
-  slopeChangeInY=slopeYPrev-y
-}
+//60fps change: the acceleration, friction and movement code moved into pMoveToWrapOrig (unchanged, used at 30fps) and
+//pMoveToWrapNew (above 30fps)
+if gDeltaTime==1
+  pMoveToWrapOrig()
 else
-  slopeChangeInY=0
-
-//moves the character, and balances out the effects caused by other processes
-//keep this condition the same
-if maxSlope*abs(xVel)>0 and platformCharacterIs(ON_GROUND)
 {
-  //we need to check if we should dampen out the speed as the character runs on upward slopes
-  xPrev=x
-  yPrev=slopeYPrev      //we don't want to use y, because y is too high
-  yPrevHigh=y          //we'll use the higher previous variable later
-  moveTo(xVel,yVel+slopeChangeInY)
-  dist=point_distance(xPrev,yPrev,x,y) //overall distance that has been traveled
-  //we should have only ran at xVel
-  if dist>abs(xVelInteger)
+  pMoveToWrapNew()
+  //move the character downhill if possible
+  //we need to multiply maxDownSlope by the absolute value of xVel since the character normally runs at an xVel larger than 1
+  //(above 30fps: not while moving up. A launch from the ground without a state change moves less than maxDownSlope per
+  //frame and would be pulled straight back down; at 30fps it moves a whole tick and gets away)
+  if isCollisionBottom(1)=0 and maxDownSlope>0 and xVelInteger!=0 and platformCharacterIs(ON_GROUND) and yVel>=0
   {
-    //show_message(string(dist)+ " "+string(abs(xVelInteger)))
-    excess=dist-abs(xVelInteger)
-    if(xVelInteger<0)
-      excess*=-1
-    //move back since the character moved too far
-    x=xPrev
-    y=yPrevHigh  //we need the character to be high so the character can move down
-    //this time we'll move the correct distance, but we need to shorten out the xVel a little
-    //these lines can be changed for different types of slowing down when running up hills
-    //ratio=abs(xVelInteger)/dist*0.9        //can be changed, init: 0.9
-    ratio=1.075
-    moveTo(round(xVelInteger*ratio),round(yVelInteger*ratio+slopeChangeInY) )
+    //the character is floating just above the slope, so move the character down
+    upYPrev=y
+    for(y=y;y<=upYPrev+maxDownSlope;y+=1)
+      if isCollisionBottom(1) //we hit a solid below
+      {
+        upYPrev=y //I know that this doesn't seem to make sense, because of the name of the variable, but it all works out correctly after we break out of this loop
+        break
+      }
+    y=upYPrev
   }
 }
-else
-{
-  //we simply move xVel and yVel while in the air or on a ladder
-  moveTo(xVel,yVel)
-}
-//move the character downhill if possible
-//we need to multiply maxDownSlope by the absolute value of xVel since the character normally runs at an xVel larger than 1
-if isCollisionBottom(1)=0 and maxDownSlope>0 and xVelInteger!=0 and platformCharacterIs(ON_GROUND)
-{
-  //the character is floating just above the slope, so move the character down
-  upYPrev=y
-  for(y=y;y<=upYPrev+maxDownSlope;y+=1)
-    if isCollisionBottom(1) //we hit a solid below
-    {
-      upYPrev=y //I know that this doesn't seem to make sense, because of the name of the variable, but it all works out correctly after we break out of this loop
-      break
-    }
-  y=upYPrev
-}
+if landTickHold>0 {landTickHold-=gDeltaTime} //60fps change (added): see the landing code
 //the character is no longer taking damage when they hit the ground
-if bTakingDamage=true and (state=STANDING or state=RUNNING or state=DUCKING or state=LOOKING_UP) and damageTime<26
+//if bTakingDamage=true and (state=STANDING or state=RUNNING or state=DUCKING or state=LOOKING_UP) and damageTime<26
+//60fps change: damageTime counts down in fractions between 30fps ticks and is read here before this frame's count, so
+//<26 let the player recover half a tick early (at 25.5); <=25 is the same tick as at 30fps
+if bTakingDamage=true and (state=STANDING or state=RUNNING or state=DUCKING or state=LOOKING_UP) and damageTime<=25
   bTakingDamage=false
 if damageTime<=recoverTime
   bTakingDamage=false
@@ -847,10 +875,11 @@ if kAttack and bTakingDamage=false and kAttackPressed=1 and attackState!=PART_JU
         attackState=PART_JUMP_SLASH_1
         yAcc=-2.5
         yVel=-2.5
+        yVelSetTick=1 //60fps change (added): set speed + one-off push: a full 30fps tick's worth (see pMoveToWrapNew)
       }
       else if kUp
         attackState=PART_UP_SLASH
-      
+
       if attackState!=PART_JUMP_SLASH_1
       {
         playerAttack=instance_create(x,y,oPartSlashes)
@@ -858,6 +887,7 @@ if kAttack and bTakingDamage=false and kAttackPressed=1 and attackState!=PART_JU
         {
           yVel-=2
           yAcc-=1
+          yVelSetTick=1 //60fps change (added): see above
         }
       }
       playerBattleCry()
@@ -936,11 +966,15 @@ if attackState=PART_JUMP_SLASH_1
   
   if global.SkSmash>0 {smashMod=1.5}
   else {smashMod=0}
-  
+
+  //60fps change: builds up once per 30fps tick (each step rounds it, so it can't take a frame's share instead)
+  if gDeltaDoTicks
+  {
   if jumpSlashPower<50 {jumpSlashPower=round((jumpSlashPower+(abs(yVel/2))+(abs(xVel/2)))+smashMod)}
   else if jumpSlashPower>50 and jumpSlashPower<100 {jumpSlashPower=round((jumpSlashPower+(abs(yVel/1.5))+(abs(xVel/1.5)))+smashMod)}
   else if jumpSlashPower>200 and jumpSlashPower<500 {jumpSlashPower=round((jumpSlashPower+(abs(yVel/1.25))+(abs(xVel/1.25)))+smashMod)}
   else {jumpSlashPower=round((jumpSlashPower+(abs(yVel))+(abs(xVel)))+smashMod)}
+  } //60fps change (added)
 }
 //check for jump slash to end
 if (attackState=PART_JUMP_SLASH_1 and (state=STANDING or state=RUNNING or state=DUCKING or state=LOOKING_UP)) // or (attackState=PART_JUMP_SLASH_1 and jumpSlashPower>150 and yVel>-0.5 and yVel<0.5)
@@ -963,7 +997,9 @@ if attackState=TECH_GRAND_SLAM
 {
   xVel=0
   yVel=14
-  jumpSlashPower+=15
+  xVelSetTick=1; yVelSetTick=1 //60fps change (added): set every frame (see pMoveToWrapNew)
+  //jumpSlashPower+=15
+  jumpSlashPower+=15*gDeltaTime //60fps change: per 30fps tick
 }
 //check for Grand Slam Tech
 if attackState=TECH_GRAND_SLAM and (state=STANDING or state=RUNNING or state=DUCKING or state=LOOKING_UP)
@@ -982,7 +1018,8 @@ if attackState=TECH_GRAND_SLAM and (state=STANDING or state=RUNNING or state=DUC
 //attack combo time
 if currentAttackCombo>0
 {
-  attackComboTimer+=1
+  //attackComboTimer+=1
+  attackComboTimer+=gDeltaTime //60fps change: counts 30fps ticks
   if attackComboTimer>=nextAttackTime
   {
     attackComboTimer=0
@@ -992,7 +1029,8 @@ if currentAttackCombo>0
 
 //time for attack speed
 if reAttackTime>0
-  reAttackTime-=1
+  //reAttackTime-=1
+  reAttackTime=max(0,reAttackTime-gDeltaTime) //60fps change: counts 30fps ticks (and stops at 0: it's checked for =0)
 
 //element swap
 if kElementSwapForward and kElementSwapForwardPressed=1
@@ -1306,15 +1344,18 @@ if bTakingDamage=false and attackState!=PART_JUMP_SLASH_1 and attackState!=ACT_C
 //flash time after taking damage
 if bCanTakeHit=false
 {
-  damageTime-=1
-  if sprite_index!=sPlayerDamaged
+  //damageTime-=1
+  damageTime-=gDeltaTime //60fps change: counts 30fps ticks
+  //if sprite_index!=sPlayerDamaged
+  if sprite_index!=sPlayerDamaged and gDeltaDoTicks //60fps change: flickers once per 30fps tick
   {
     if image_alpha=0.75
       image_alpha=0.25
     else
       image_alpha=0.75
   }
-  if damageTime=0
+  //if damageTime=0
+  if damageTime<=0 //60fps change: (it counts in fractions; the same at 30fps)
   {
     image_alpha=1
     bCanTakeHit=true
@@ -1523,14 +1564,16 @@ if attackState=ACT_CASTING
     }
   }
   else
-    castingTime-=1
+    //castingTime-=1
+    castingTime-=gDeltaTime //60fps change: counts 30fps ticks
 }
 else if attackState=ACT_CASTED
 {
   if castRecovering<=0
     attackState=0
   else
-    castRecovering-=1
+    //castRecovering-=1
+    castRecovering-=gDeltaTime //60fps change: counts 30fps ticks
 }
 
 //figures out what sprite index the character should be
@@ -1585,7 +1628,8 @@ if attackState=0 and bTakingDamage=false
 //figures out what attack sprite index the character should be
 //attack state animations override action states
 if busterAnimStay>0
-  busterAnimStay-=1
+  //busterAnimStay-=1
+  busterAnimStay-=gDeltaTime //60fps change: counts 30fps ticks
 if bTakingDamage=false
 {
   if attackState=PART_H_SLASH
@@ -1644,10 +1688,14 @@ else if facing=RIGHT
   image_xscale=1
 
 //sets the previous state and the previously previous state
+//60fps change: once per 30fps tick, so the falling sprite above still waits for 3 ticks of falling
+if gDeltaDoTicks
+{
 statePrevPrev=statePrev
 statePrev=state
 attackStatePrevPrev=attackStatePrev
 attackStatePrev=attackState
+} //60fps change (added)
 //calculates the image_speed based on the character's velocity
 if state=RUNNING
   image_speed=abs(xVel)*runAnimSpeed+0.1

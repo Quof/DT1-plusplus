@@ -210,6 +210,7 @@ if global.gamePaused=false
           roarAttack.windDir="LEFT"
         }
         oPlayer1.xVel=-roarStrength
+        oPlayer1.xVelSetExt=1 //60fps change (added): the player's speed is set every frame: the 30fps formula for it (see pMoveToWrapNew)
       }
       if windRoarTime>=1027+roarDuration
       {

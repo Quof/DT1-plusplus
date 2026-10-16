@@ -106,6 +106,7 @@ lib_id=1
 action_id=603
 applies_to=self
 */
+ditherCounter+=1 //60fps change (added): see pMoveTo
 if global.cutscene=true
   characterStepEvent()
 //health and spirit percent
@@ -234,14 +235,18 @@ if life<=0
 if global.gamePaused=false
 {
   characterStepEvent()
+  //60fps change: the records, recharges and timers below are per 30fps tick (*gDeltaTime, or once per tick)
   //find distance moved
   if platformCharacterIs(ON_GROUND)
-    global.recDistanceRun+=abs(xVel)
+    //global.recDistanceRun+=abs(xVel)
+    global.recDistanceRun+=abs(xVel)*gDeltaTime //60fps change: see above
   else if platformCharacterIs(IN_AIR)
-    global.recDistanceInAir+=abs(xVel)+abs(yVel)
+    //global.recDistanceInAir+=abs(xVel)+abs(yVel)
+    global.recDistanceInAir+=(abs(xVel)+abs(yVel))*gDeltaTime //60fps change: see above
   //off-screen (above room)
   if y<0
-    global.recTimeSpentOffscreen+=1
+    //global.recTimeSpentOffscreen+=1
+    global.recTimeSpentOffscreen+=gDeltaTime //60fps change: see above
   //keep player inside room
   if y>room_height+64
   {
@@ -260,7 +265,8 @@ if global.gamePaused=false
   }
 
   //Soothing Spring
-  if bInsideSoothingSpring=1
+  //if bInsideSoothingSpring=1
+  if bInsideSoothingSpring=1 and gDeltaDoTicks //60fps change: whole points, once per 30fps tick
   {
     life+=1
   }
@@ -273,24 +279,25 @@ if global.gamePaused=false
     if comboCharge>1.01
       comboCharge=1.01
   }
+  //60fps change: recharge per 30fps tick (*gDeltaTime)
   if spiritEnergy<maxSpiritEnergy
-    spiritEnergy+=baseSpiritRecharge+(global.SkSpiritMaster*0.15)+comboCharge+(level*0.008)
+    spiritEnergy+=(baseSpiritRecharge+(global.SkSpiritMaster*0.15)+comboCharge+(level*0.008))*gDeltaTime
   else if spiritEnergy>maxSpiritEnergy
     spiritEnergy=maxSpiritEnergy
   if fireEnergy<maxFireEnergy
-    fireEnergy+=baseElementRecharge+(global.SkFireMastery*0.2)+comboCharge+(level*0.002)
+    fireEnergy+=(baseElementRecharge+(global.SkFireMastery*0.2)+comboCharge+(level*0.002))*gDeltaTime
   else if fireEnergy>maxFireEnergy
     fireEnergy=maxFireEnergy
   if waterEnergy<maxWaterEnergy
-    waterEnergy+=baseElementRecharge+(global.SkWaterMastery*0.2)+comboCharge+(level*0.002)
+    waterEnergy+=(baseElementRecharge+(global.SkWaterMastery*0.2)+comboCharge+(level*0.002))*gDeltaTime
   else if waterEnergy>maxWaterEnergy
     waterEnergy=maxWaterEnergy
   if windEnergy<maxWindEnergy
-    windEnergy+=baseElementRecharge+(global.SkWindMastery*0.2)+comboCharge+(level*0.002)
+    windEnergy+=(baseElementRecharge+(global.SkWindMastery*0.2)+comboCharge+(level*0.002))*gDeltaTime
   else if windEnergy>maxWindEnergy
     windEnergy=maxWindEnergy
   if earthEnergy<maxEarthEnergy
-    earthEnergy+=baseElementRecharge+(global.SkEarthMastery*0.2)+comboCharge+(level*0.002)
+    earthEnergy+=(baseElementRecharge+(global.SkEarthMastery*0.2)+comboCharge+(level*0.002))*gDeltaTime
   else if earthEnergy>maxEarthEnergy
     earthEnergy=maxEarthEnergy
 
@@ -300,16 +307,22 @@ if global.gamePaused=false
 
   //blast off recovery
   if blastOffRecoveryTime>0
-    blastOffRecoveryTime-=1
+    //blastOffRecoveryTime-=1
+    blastOffRecoveryTime=max(0,blastOffRecoveryTime-gDeltaTime) //60fps change: counts 30fps ticks (and stops at 0: it's checked for =0)
 
   //dash invulnerability time
   if dashInvulnerabilityTime>0
   {
-    afterImage=instance_create(x,y,oPlayerAfterImage)
-    dashInvulnerabilityTime-=1
+    //afterImage=instance_create(x,y,oPlayerAfterImage)
+    //dashInvulnerabilityTime-=1
+    if gDeltaDoTicks {afterImage=instance_create(x,y,oPlayerAfterImage)} //60fps change: one after image per 30fps tick
+    dashInvulnerabilityTime=max(0,dashInvulnerabilityTime-gDeltaTime) //60fps change: counts 30fps ticks (and stops at 0: it's checked for =0)
   }
 
   //after image effect
+  //60fps change: one per 30fps tick (they were 2x/4x as many at 60/120fps)
+  if gDeltaDoTicks
+  {
   if sprite_index=sPlayerJumpSlash1 and jumpSlashPower>=200 //jump slash
     instance_create(x,y,oPlayerAfterImage)
   if currentAttackCombo=3 //3rd attack
@@ -321,19 +334,24 @@ if global.gamePaused=false
 
   if sprite_index=sPlayerMorphBall
     instance_create(x,y,oPlayerBallImage)
+  } //60fps change (added)
 
   //dash recovery
   if dashPoints<maxDashPoints
   {
     if dashRecoveryTime>=dashRecovery
     {
-      dashRecoveryTime=0
+      //dashRecoveryTime=0
+      //60fps change: the frame that adds the point counts as a whole 30fps tick, as at 30fps: the count starts again
+      //that far back (0 at 30fps)
+      dashRecoveryTime=gDeltaTime-1
       dashPoints+=1
     }
     else
     {
       if dashInvulnerabilityTime=0
-        dashRecoveryTime+=1
+        //dashRecoveryTime+=1
+        dashRecoveryTime+=gDeltaTime //60fps change: counts 30fps ticks
     }
 
     if global.optDashWarn=1 //Low dash warning
@@ -378,12 +396,14 @@ if global.gamePaused=false
       playMusic(tempMplay,0)
     }
     else
-      raveTime-=1
+      //raveTime-=1
+      raveTime-=gDeltaTime //60fps change: counts 30fps ticks
   }
   //idle time
   if xVel=0 and yVel=0
   {
-    idleTime+=1
+    //idleTime+=1
+    idleTime+=gDeltaTime //60fps change: counts 30fps ticks
     if idleTime>global.recLongestIdleTime
       global.recLongestIdleTime=idleTime
   }
@@ -401,7 +421,8 @@ if global.gamePaused=false
   //---------- STATUS EFFECTS ----------
   if statusPoison>0
   {
-    statusPoison-=1
+    //statusPoison-=1
+    statusPoison-=gDeltaTime //60fps change: counts 30fps ticks; it still passes every even number once, so the damage is the same
     if statusPoison mod 2=0
       life-=1
     if statusPoison<=0
@@ -413,12 +434,19 @@ if global.gamePaused=false
   }
   if statusSpiritDrain>0
   {
-    statusSpiritDrain-=1
-    spiritEnergy-=2
-    fireEnergy-=2
-    waterEnergy-=2
-    windEnergy-=2
-    earthEnergy-=2
+    //60fps change: per 30fps tick
+    //statusSpiritDrain-=1
+    //spiritEnergy-=2
+    //fireEnergy-=2
+    //waterEnergy-=2
+    //windEnergy-=2
+    //earthEnergy-=2
+    statusSpiritDrain-=gDeltaTime
+    spiritEnergy-=2*gDeltaTime
+    fireEnergy-=2*gDeltaTime
+    waterEnergy-=2*gDeltaTime
+    windEnergy-=2*gDeltaTime
+    earthEnergy-=2*gDeltaTime
     if spiritEnergy<0
       spiritEnergy=0
     if fireEnergy<0
@@ -438,7 +466,8 @@ if global.gamePaused=false
   }
   if statusSkillLock>0
   {
-    statusSkillLock-=1
+    //statusSkillLock-=1
+    statusSkillLock-=gDeltaTime //60fps change: counts 30fps ticks
     if statusSkillLock<=0
     {
       newDamage=instance_create(x,y-(sprite_height/2),oStatusAlert);
@@ -449,12 +478,13 @@ if global.gamePaused=false
 
   //------------------------------------
   //difficulty times
+  //60fps change: counts 30fps ticks
   if global.difficulty=1
-    global.recEasyTime+=1
+    global.recEasyTime+=gDeltaTime
   else if global.difficulty=2
-    global.recNormalTime+=1
+    global.recNormalTime+=gDeltaTime
   else if global.difficulty=3
-    global.recHardTime+=1
+    global.recHardTime+=gDeltaTime
 }
 #define Keyboard_89
 /*"/*'/**//* YYD ACTION
@@ -701,7 +731,10 @@ if global.debugMenu=true
   //==================== ROOM SPEED ====================
   else if debugMenu=14
   {
-    room_speed=get_integer("Change Room Speed.",room_speed)
+    //room_speed=get_integer("Change Room Speed.",room_speed)
+    //60fps change: oGame sets room_speed every frame from the frame rate (F2), so this is a speed in 30fps terms (30 is
+    //normal) that multiplies it
+    global.debugSpeedMul=max(1,get_integer("Change Room Speed (30 is normal).",round(30*global.debugSpeedMul)))/30
   }
   //==================== CHANGE SHROUD WARN ====================
   else if debugMenu=15

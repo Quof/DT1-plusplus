@@ -114,7 +114,9 @@ if oPlayer1.attackState=oPlayer1.TECH_WAVE_OF_AWESOME
     attackType=TECH_WAVE_OF_AWESOME_U
     sprite_index=sTechWoA_U
     image_xscale=1
-    direction=0
+    //direction=0
+    _direction=0 //60fps change: _speed/_direction instead of GM's speed/direction (see correctSpeedDirection)
+    _speed=0 //60fps change (added)
     flySpeed=8
     returnTime=30
   }
@@ -135,7 +137,8 @@ if oPlayer1.attackState=oPlayer1.TECH_WAVE_OF_AWESOME
     }
     lifeTime=60
   }
-  alarm[0]=3
+  //alarm[0]=3
+  alarm[0]=3/gDeltaTime //60fps change: alarms count frames; 3 30fps ticks as before
 }
 #define Alarm_0
 /*"/*'/**//* YYD ACTION
@@ -153,15 +156,18 @@ action_id=603
 applies_to=self
 */
 event_inherited()
+//60fps change: moves, turns and counts down per 30fps tick (moveTo takes this frame's share: *gDeltaTime)
 if global.gamePaused=false
 {
   if attackType=TECH_WAVE_OF_AWESOME_N
   {
     if oPlayer1.bUseBusterShot=1
-      x+=xVel
+      //x+=xVel
+      x+=xVel*gDeltaTime //60fps change: see above
     else
     {
-      moveTo(xVel,yVel)
+      //moveTo(xVel,yVel)
+      moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: see above
       if isCollisionLeft(1)
       {
         oPlayer1.attackState=0
@@ -176,19 +182,23 @@ if global.gamePaused=false
     if lifeTime<=0
       instance_destroy()
     else
-      lifeTime-=1
+      //lifeTime-=1
+      lifeTime-=gDeltaTime //60fps change: see above
   }
   else if attackType=TECH_WAVE_OF_AWESOME_D
   {
-    yVel+=0.5
+    //yVel+=0.5
+    yVel+=0.5*gDeltaTime //60fps change: see above
     if image_xscale=1
     {
-      image_angle-=10
+      //image_angle-=10
+      image_angle-=10*gDeltaTime //60fps change: see above
       xVel=8
     }
     else
     {
-      image_angle+=10
+      //image_angle+=10
+      image_angle+=10*gDeltaTime //60fps change: see above
       xVel=-8
     }
     if isCollisionBottom(1)
@@ -211,34 +221,46 @@ if global.gamePaused=false
   }
   else if attackType=TECH_WAVE_OF_AWESOME_U
   {
+    //60fps change: _speed/_direction instead of GM's speed/direction, which GM applies in full every frame; moved by
+    //correctSpeedDirection below
     if eType<=1
     {
       if eType=1
       {
-        direction=180
+        //direction=180
+        _direction=180 //60fps change: see above
         image_xscale=-1
       }
       eType=2
     }
-    speed=flySpeed
-    returnTime-=1
+    //speed=flySpeed
+    //returnTime-=1
+    _speed=flySpeed //60fps change: see above
+    returnTime-=gDeltaTime //60fps change: counts 30fps ticks
     if image_xscale=1
     {
-      image_angle+=25
-      direction+=5
+      //image_angle+=25
+      //direction+=5
+      image_angle+=25*gDeltaTime //60fps change: per 30fps tick
+      _direction+=5*gDeltaTime //60fps change: see above
     }
     else
     {
-      image_angle-=25
-      direction-=5
+      //image_angle-=25
+      //direction-=5
+      image_angle-=25*gDeltaTime //60fps change: per 30fps tick
+      _direction-=5*gDeltaTime //60fps change: see above
     }
     if returnTime<=0
     {
-      direction=point_direction(x,y,oCharacter.x,oCharacter.y-22)
+      //direction=point_direction(x,y,oCharacter.x,oCharacter.y-22)
+      _direction=point_direction(x,y,oCharacter.x,oCharacter.y-22) //60fps change: see above
       dist=point_distance(x,y,oCharacter.x,oCharacter.y-22)
       if dist<24
-        instance_destroy()
+        //instance_destroy()
+        {instance_destroy(); exit} //60fps change: (exit: don't move it below once it's gone)
     }
+    correctSpeedDirection(id) //60fps change (added): the move GM's speed/direction made (this frame's share of it)
   }
   else if attackType=TECH_WAVE_OF_AWESOME_F
   {
@@ -265,13 +287,16 @@ if global.gamePaused=false
       instance_destroy()
     }
     else
-      lifeTime-=1
-    moveTo(xVel,yVel)
+      //lifeTime-=1
+      lifeTime-=gDeltaTime //60fps change: see above
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: see above
   }
 }
 else
   if attackType=TECH_WAVE_OF_AWESOME_U
-    speed=0
+    //speed=0
+    _speed=0 //60fps change: (it doesn't move while paused anyway: correctSpeedDirection only runs above)
 #define Collision_oEnemyBase
 /*"/*'/**//* YYD ACTION
 lib_id=1

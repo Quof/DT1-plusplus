@@ -231,6 +231,7 @@ if bCanTakeDamage=true
         xVel=2
       y-=2
       yVel=-4
+      xVelSetExt=1; yVelSetExt=1 //60fps change (added): knockback speed set once: the 30fps formula for it (see pMoveToWrapNew)
     }
     //damage sound
     playSound(global.snd_PlayerDamaged[0],0,1)
@@ -401,6 +402,7 @@ if bCanTakeDamage=true
               else
                 oPlayer1.yVel=-3.1
               oPlayer1.yAcc=-3
+              oPlayer1.yVelSetExt=1 //60fps change (added): set speed + one-off push: a full 30fps tick's worth (see pMoveToWrapNew)
             }
           }
         }

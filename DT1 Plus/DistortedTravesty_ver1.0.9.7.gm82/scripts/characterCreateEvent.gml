@@ -202,5 +202,44 @@ hurricaneDash=0            //how long the character is in the hurricane dash
 dashMomentumTime=0         //holds the dash momentum for a bit
 backDashRec=0              //used for controlling when the player can stop back dash momentum
 
+//60fps change (added): variables for running above 30fps (see characterStepEvent and pMoveToWrapNew)
+ditherCounter=0            //counts frames; pMoveTo uses it to spread the leftover part of a pixel over the frames
+xVelSetTick=0              //code set xVel/yVel directly this frame (or gave a one-off push): pMoveToWrapNew uses the 30fps formula
+yVelSetTick=0
+xVelSetExt=0               //the same, but set by other objects (knockback, jumpers, Blast Off); cleared once pMoveToWrapNew used it
+yVelSetExt=0
+xVelHold=0                 //how long a velocity set just once is kept unchanged (pMoveToWrapNew)
+yVelHold=0
+xVelSetPrev=0              //whether the last move had a set velocity (pMoveToWrapNew)
+yVelSetPrev=0
+xVelSetRun=0               //how long (in 30fps ticks) the velocity has been set every frame (pMoveToWrapNew)
+yVelSetRun=0
+xAccInputWalk=0            //the walking/climbing input's acceleration this frame (pMoveToWrapNew's stopping bodge)
+effectiveMaxSlope=maxSlope //maxSlope for this frame's share of a tick (pMoveToWrapNew)
+speedmod=1                 //slowdown on upward slopes (pMoveToWrapNew)
+landTickHold=0             //rest of the 30fps tick a dash-momentum landing still counts as in the air (characterStepEvent)
+dashTickTime=0             //rest of a dash's first 30fps tick (pMoveDashForward/pMoveDashBack/pMoveAirDash, characterStepEvent)
+dashTickXAcc=0             //the dash frame's xAcc, kept for the rest of that tick
+airDashKick=0              //the air dash's upward kick, added over its first 30fps tick (pMoveAirDash)
+airDashKickTime=0
+jumpReleaseHold=0          //letting go of jump starts full gravity this much later (characterStepEvent)
+runStartSteps=1.5          //ticks left/right must be held before running starts (>1 at 30fps, same as >=1.5 there)
+//jump corrections above 30fps (pJumpCorrection, for pMoveJump and pMoveDashForward/pMoveDashBack), worked out by
+//simulating the 30fps jumps: [0] at 60fps, [1] at 120fps. These are for jump setups other than the game's own (which
+//pJumpCorrection has exact values for): fitted over all of those at once, they match within 1-2 pixels
+jumpBodge[0]=1             //multiplier on initialJumpAcc
+jumpBodge[1]=0.99
+jumpGravComp[0]=0.05       //multiplier on grav added at jump time
+jumpGravComp[1]=-0.05
+jumpSeed[0]=1              //ditherCounter at jump time (pMoveTo's pixel dither starts from here)
+jumpSeed[1]=4
+hopBodge[0]=1.01           //the same for the dash hops (initialJumpAcc/2)
+hopBodge[1]=1
+hopGravComp[0]=0.08
+hopGravComp[1]=0
+hopSeed[0]=7
+hopSeed[1]=6
+jcBodge=1; jcGravComp=0; jcSeed=0 //what pJumpCorrection picked for the current jump
+
 //makes the object "active" (don't edit)
 makeActive()

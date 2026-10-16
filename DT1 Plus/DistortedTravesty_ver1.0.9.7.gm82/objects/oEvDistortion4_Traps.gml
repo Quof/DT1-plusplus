@@ -4,18 +4,20 @@ lib_id=1
 action_id=603
 applies_to=self
 */
+//GM8.2 change: the traps are looked up by their old GM8.1 ids (see GID); again in the Step, in case they weren't
+//registered yet when this was made
 if room=rDistortionW4_3
 {
-  circleTrap1=(289722)
-  circleTrap2=(289767)
+  circleTrap1=(GID(289722))
+  circleTrap2=(GID(289767))
   moveProg=0
 }
 else if room=rDistortionW4_4
 {
-  circleTrap1=(290480)
-  circleTrap2A=(290684)
-  circleTrap2B=(290685)
-  circleTrap2C=(290686)
+  circleTrap1=(GID(290480))
+  circleTrap2A=(GID(290684))
+  circleTrap2B=(GID(290685))
+  circleTrap2C=(GID(290686))
   moveProg=0
   moveProg2=0
 }
@@ -25,6 +27,19 @@ lib_id=1
 action_id=603
 applies_to=self
 */
+//GM8.2 change (added): see the Create event
+if room=rDistortionW4_3
+{
+  if !instance_exists(circleTrap1) {circleTrap1=(GID(289722))}
+  if !instance_exists(circleTrap2) {circleTrap2=(GID(289767))}
+}
+else if room=rDistortionW4_4
+{
+  if !instance_exists(circleTrap1) {circleTrap1=(GID(290480))}
+  if !instance_exists(circleTrap2A) {circleTrap2A=(GID(290684))}
+  if !instance_exists(circleTrap2B) {circleTrap2B=(GID(290685))}
+  if !instance_exists(circleTrap2C) {circleTrap2C=(GID(290686))}
+}
 if global.gamePaused=false
 {
   if room=rDistortionW4_3

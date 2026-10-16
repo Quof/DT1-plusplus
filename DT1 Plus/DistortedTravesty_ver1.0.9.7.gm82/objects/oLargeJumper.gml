@@ -18,7 +18,9 @@ if global.gamePaused=false
   if bouncePlayerTime>0
   {
     oPlayer1.yVel=-16
-    bouncePlayerTime-=1
+    oPlayer1.yVelSetExt=1 //60fps change (added): the player's speed is set every frame: the 30fps formula for it (see pMoveToWrapNew)
+    //bouncePlayerTime-=1
+    bouncePlayerTime-=gDeltaTime //60fps change: counts 30fps ticks
   }
   yVel+=0.3
   if isCollisionBottom(1)
@@ -39,6 +41,7 @@ if other.yVel>0
 {
   oPlayer1.canAirDash=1
   other.yVel=-16
+  other.yVelSetExt=1 //60fps change (added): see the Step
   if other.attackState=other.PART_JUMP_SLASH_1
   {
     oPlayer1.attackState=0

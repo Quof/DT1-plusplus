@@ -28,8 +28,11 @@ if oPlayer1.attackState=oPlayer1.TECH_MENTAL_INSURRECTION
   else
     skillPower=40
 
-  alarm[0]=5/image_speed
-  alarm[1]=7
+  //60fps change: alarms count frames, so the lengths are /gDeltaTime (in 30fps ticks, as before)
+  //alarm[0]=5/image_speed
+  //alarm[1]=7
+  alarm[0]=5/image_speed/gDeltaTime
+  alarm[1]=7/gDeltaTime
 }
 else if oPlayer1.attackState=oPlayer1.TECH_KUDEKU
 {
@@ -42,8 +45,10 @@ else if oPlayer1.attackState=oPlayer1.TECH_KUDEKU
   sprite_index=sTechKudeku
   skillPower=200+(oPlayer1.hitCombo*3)
   kudekuString=choose("KUDEKU!!","AWESOME!!","SWEET!!","BAD ASS!!")
-  alarm[0]=4/image_speed
-  alarm[1]=6
+  //alarm[0]=4/image_speed
+  //alarm[1]=6
+  alarm[0]=4/image_speed/gDeltaTime //60fps change: see above
+  alarm[1]=6/gDeltaTime //60fps change: see above
 }
 else if oPlayer1.attackState=oPlayer1.TECH_GRAND_SLAM
 {
@@ -52,7 +57,8 @@ else if oPlayer1.attackState=oPlayer1.TECH_GRAND_SLAM
   skillPower=oPlayer1.jumpSlashPower*1.1
   image_xscale=1+(skillPower/200)
   image_yscale=1+(skillPower/150)
-  alarm[0]=10/image_speed
+  //alarm[0]=10/image_speed
+  alarm[0]=10/image_speed/gDeltaTime //60fps change: see above
 }
 
 if attackType=TECH_KUDEKU
@@ -111,7 +117,9 @@ applies_to=self
 event_inherited()
 if attackType=TECH_KUDEKU
 {
-  cirRad+=3
+  //60fps change: grows, shrinks and spins per 30fps tick (*gDeltaTime)
+  //cirRad+=3
+  cirRad+=3*gDeltaTime
 
   if image_xscale>0
     x=oPlayer1.x+34
@@ -120,15 +128,20 @@ if attackType=TECH_KUDEKU
   y=oPlayer1.y-32
 
   if image_xscale>0
-    image_xscale-=0.07
+    //image_xscale-=0.07
+    image_xscale-=0.07*gDeltaTime
   else
-    image_xscale+=0.07
-  image_yscale-=0.07
+    //image_xscale+=0.07
+    image_xscale+=0.07*gDeltaTime
+  //image_yscale-=0.07
+  image_yscale-=0.07*gDeltaTime
 
   if image_xscale>0
-    image_angle-=15
+    //image_angle-=15
+    image_angle-=15*gDeltaTime
   else
-    image_angle+=15
+    //image_angle+=15
+    image_angle+=15*gDeltaTime
 }
 #define Draw_0
 /*"/*'/**//* YYD ACTION

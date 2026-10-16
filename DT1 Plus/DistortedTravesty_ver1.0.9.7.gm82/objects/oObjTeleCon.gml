@@ -17,6 +17,7 @@ applies_to=self
 //teleport object
 if keyboard_check_pressed(ord(global.ctrlUp)) and global.gamePaused=false
 {
+  if variable_local_exists("objCache") {objID=GID(objCache)} //GM8.2 change (added): the room gives the object's old GM8.1 id (objCache); look it up (see GID)
   objID.x=teleX
   objID.y=teleY
 }
