@@ -1,0 +1,2 @@
+# DT1-plus
+DT3 60FPS
