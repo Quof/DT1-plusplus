@@ -1,0 +1,10 @@
+background_hspeed[0]=1
+background_vspeed[0]=0.25
+oPlayer1.x=64
+oPlayer1.y=992
+global.cTimerMinute=0
+global.cTimerSecond=50
+global.cTimerHundred=0
+global.sofsCurrent=10
+gameEvent=instance_create(0,0,oEvSoFSW1)
+gameEvent.currentFloor=99

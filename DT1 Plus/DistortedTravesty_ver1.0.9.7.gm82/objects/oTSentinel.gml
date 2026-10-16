@@ -1,0 +1,201 @@
+#define Create_0
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+event_inherited()
+image_speed=0.1
+
+//Enemy base statistics
+eName="Train Sentinel"
+maxLife=1100
+life=maxLife
+expWorth=1000
+physicalPower=230
+physicalDefense=110
+spiritDefense=95
+FIREresist=-60
+WATERresist=70
+WINDresist=90
+EARTHresist=-30
+baseItemChance=80
+dropInd=-20
+moneyWorth=70
+bCanDealDamage=false
+if global.difficulty=1
+{
+  hoverAcc=2.2
+  reShootTime=110
+  multiShotMax=1
+}
+else if global.difficulty=2
+{
+  hoverAcc=2.5
+  reShootTime=90
+  multiShotMax=2
+}
+else if global.difficulty=3
+{
+  hoverAcc=2.8
+  reShootTime=70
+  multiShotMax=3
+}
+else if global.difficulty=4
+{
+  hoverAcc=3.1
+  reShootTime=65
+  multiShotMax=4
+}
+shootTime=reShootTime-25
+multiShot=multiShotMax
+shotCycle=0
+hoverEffect=0
+detectDistY=256
+dieEffect=sMMExplosion
+dieSound=global.snd_CASdie
+effectYscale=2
+difficultyAdjustments(global.difficulty)
+combatText="A large combat robot. Very high durability and Physical Defense can make trashing them a pain. I highly recommend Crippling them as its the best way to bring them down fast. They have a very distinct movement pattern. It will wait till it finds a target, then hover down, and fire lasers at it. The lasers are a 3-way spread. After a few shots, it will hover back up and will choose a new spot and repeat."
+sideText="Now that's a nice combat machine! Made of decent material, can hover, AND shoots lasers! The Darkness knows how to choose its defenses."
+cripplePointText=">Full Swing#>Fireball#>Full Swing"
+#define Step_0
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+if global.gamePaused=false
+{
+  makeEnemyActive()
+  if bActive=true and stunnedTime=0 and dieFade=0
+  {
+    //direction
+    if shotCycle!=4
+    {
+      if x<=oPlayer1.x
+        image_xscale=1
+      else
+        image_xscale=-1
+    }
+    //attack pattern
+    if shotCycle>=0 and shotCycle<=2 //hover down
+    {
+      if y<ystart+160
+        y+=hoverAcc
+      else
+        shootTime+=1
+    }
+    else if shotCycle=3 //hover up
+    {
+      sprite_index=sTSentinelStand
+      if y>ystart-32
+        y-=hoverAcc
+      else
+        shotCycle+=1
+    }
+    else if shotCycle>=4 //hover over
+    {
+      shotCycle+=1
+      if shotCycle<=50
+      {
+        if image_xscale=1
+          x+=hoverAcc
+        else
+          x-=hoverAcc
+      }
+      if shotCycle>=70
+        shotCycle=0
+    }
+    //shoot
+    if shootTime>=reShootTime-10
+      sprite_index=sTSentinelShoot
+    if shootTime>=reShootTime
+    {
+      if multiShot>0 and shootTime mod 20=0
+      {
+        var x1,dir;
+        if image_xscale=1
+          x1=28
+        else
+          x1=-28
+        dir=point_direction(x+x1,y-60,oPlayer1.x,oPlayer1.y-22)
+        dir-=12
+        for (i=0;i<2;i+=1)
+        {
+          newAttack[i]=instance_create(x+x1,y-60,oLaserB)
+          newAttack[i].physicalPower=physicalPower
+          newAttack[i].direction=dir
+          newAttack[i].bulletSpeed=5
+          dir+=24
+        }
+        multiShot-=1
+        if multiShot=0
+        {
+          shootTime=0
+          multiShot=multiShotMax
+          shotCycle+=1
+        }
+      }
+    }
+  }
+  enemyStepEvent()
+}
+#define Collision_oPartSlashes
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+event_inherited()
+if cripplePointProgress=0
+{
+  if damageTime=flashTime and dieFade=0 and other.attackType=other.PART_H_SLASH
+  {
+    cripplePointPTime=30
+    cripplePointProgress=1
+  }
+}
+else if cripplePointProgress=2
+{
+  if damageTime=flashTime and dieFade=0 and other.attackType=other.PART_H_SLASH
+    inflictStatus(0)
+}
+#define Collision_oSpell
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+event_inherited()
+if cripplePointProgress=1
+{
+  if damageTime=flashTime and dieFade=0 and other.currentSpell="FIREBALL"
+  {
+    cripplePointPTime=30
+    cripplePointProgress=2
+  }
+}
+#define Draw_0
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+hoverEffect+=1
+if hoverEffect mod 2=0
+{
+  if image_xscale=1
+  {
+    rX1=4
+    rX2=12
+  }
+  else
+  {
+    rX1=-4
+    rX2=-12
+  }
+  draw_sprite(sTSentinelRocketFire,-1,x+rX1,y+4)
+  draw_sprite(sTSentinelRocketFire,-1,x-rX2,y+10)
+}
+event_inherited()

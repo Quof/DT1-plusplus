@@ -1,0 +1,133 @@
+#define Create_0
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+event_inherited()
+y+=1
+makeActive()
+setCollisionBounds(-13,-22,13,-1)
+
+//Enemy base statistics
+eName="Shell Crawler"
+maxLife=650
+life=maxLife
+expWorth=425
+physicalPower=210
+physicalDefense=80
+spiritDefense=10
+FIREresist=-10
+WINDresist=65
+EARTHresist=-50
+baseItemChance=70
+moneyWorth=54
+bCanDealDamage=false
+dieEffect=sMMExplosion
+dieSound=global.snd_CASdie
+if global.difficulty=1
+{
+  runAcc=0.3
+  reShootTime=75
+}
+else if global.difficulty=2
+{
+  runAcc=0.4
+  reShootTime=65
+}
+else if global.difficulty=3
+{
+  runAcc=0.5
+  reShootTime=55
+}
+else if global.difficulty=4
+{
+  runAcc=0.75
+  reShootTime=40
+}
+shootTime=20
+difficultyAdjustments(global.difficulty)
+combatText="A small highly armored mobile tank bot. Incredibly slow moving, but can fire off a high powered cannon blast. It will stop moving before it fires."
+sideText="I don't quite get why it's in this place, but we'll just blame it on the Distortion Effect."
+cripplePointText=">Earth Fused Downward Strike"
+#define Step_0
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+if global.gamePaused=false
+{
+  makeEnemyActive()
+  if bActive=true and stunnedTime=0 and dieFade=0
+  {
+    if shootTime<reShootTime-15 and shootTime>6
+    {
+      if x>oCharacter.x
+      {
+        image_xscale=-1
+        xVel=-runAcc
+      }
+      else
+      {
+        image_xscale=1
+        xVel=runAcc
+      }
+    }
+
+    if shootTime>=reShootTime-15
+      xVel=0
+
+    if shootTime>=reShootTime
+    {
+      if image_xscale=1
+        offsetShotX=12
+      else
+        offsetShotX=-12
+      newAttack=instance_create(x+offsetShotX,y-14,oCannonBullet)
+      newAttack.physicalPower=physicalPower
+      newAttack.sprite_index=sSCBlast
+      newAttack.bulletSpeed=6
+      if image_xscale=1
+        newAttack.direction=0
+      else
+      {
+        newAttack.direction=180
+        newAttack.image_xscale=-1
+      }
+      shootTime=0
+    }
+    else
+      shootTime+=1
+
+    yVel+=0.2
+    if isCollisionBottom(1)
+      yVel=0
+    if isCollisionLeft(1)
+      xVel=runAcc
+    if isCollisionRight(1)
+      xVel=-runAcc
+    moveTo(xVel,yVel)
+    if isCollisionSolid()
+      y-=2
+
+    if y>room_height+30
+    {
+      if questType>0
+        enemyQuest(questType)
+      instance_destroy()
+    }
+  }
+  enemyStepEvent()
+}
+#define Collision_oPartSlashes
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+event_inherited()
+if damageTime=flashTime and dieFade=0 and other.attackType=other.PART_V_SLASH and other.elementType=4
+{
+  inflictStatus(0)
+}

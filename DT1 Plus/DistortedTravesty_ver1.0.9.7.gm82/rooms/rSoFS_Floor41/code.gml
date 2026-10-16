@@ -1,0 +1,12 @@
+background_index[1]=backSoFSElevator
+background_visible[1]=true
+background_vspeed[1]=4
+background_hspeed[0]=1
+background_vspeed[0]=0.25
+global.cTimerMinute=1
+global.cTimerSecond=0
+global.cTimerHundred=0
+global.sofsCurrent=9
+gameEvent=instance_create(0,0,oEvSoFSW1)
+gameEvent.currentFloor=41
+levelEvent=instance_create(0,0,oEvSoFSConvo1)

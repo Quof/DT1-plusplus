@@ -1,0 +1,5 @@
+bShowArrow=false
+exitType=0
+newMapX=0
+newMapY=0
+toRoom=rFortL2_4

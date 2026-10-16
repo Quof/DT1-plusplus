@@ -1,0 +1,16 @@
+#define Step_0
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+image_angle+=oColorIndControl.rotateAmt
+#define Draw_0
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+if oColorIndControl.warnTime>=oColorIndControl.warnDelay
+  draw_sprite_ext(sprite_index,image_index,x,y,oColorIndControl.visualWarnSize,oColorIndControl.visualWarnSize,image_angle*2,image_blend,oColorIndControl.visualWarnAlpha)
+draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,image_angle,image_blend,image_alpha)

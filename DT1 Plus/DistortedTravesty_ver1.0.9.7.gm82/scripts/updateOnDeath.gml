@@ -1,0 +1,19 @@
+/*
+This script is called when the player dies.
+*/
+stopLoopingSounds()
+global.p1Level=oPlayer1.level
+global.p1MaxLife=oPlayer1.maxLife
+global.p1MaxSpiritEnergy=oPlayer1.maxSpiritEnergy
+global.p1MaxFireEnergy=oPlayer1.maxFireEnergy
+global.p1MaxWaterEnergy=oPlayer1.maxWaterEnergy
+global.p1MaxWindEnergy=oPlayer1.maxWindEnergy
+global.p1MaxEarthEnergy=oPlayer1.maxEarthEnergy
+global.p1TotalExp=oPlayer1.expTotal
+global.p1CurrentExp=oPlayer1.expCurrent
+global.p1ExpNext=oPlayer1.expNext
+global.p1PhysicalPower=oPlayer1.physicalPower-oPlayer1.gemBonusP
+global.p1PhysicalDefense=oPlayer1.physicalDefense-oPlayer1.armorBonus
+global.p1SpiritPower=oPlayer1.spiritPower-oPlayer1.gemBonusS
+global.p1SpiritDefense=oPlayer1.spiritDefense-oPlayer1.ringBonus
+global.killingSpree=0

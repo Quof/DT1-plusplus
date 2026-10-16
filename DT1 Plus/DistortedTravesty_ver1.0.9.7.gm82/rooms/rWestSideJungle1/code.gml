@@ -1,0 +1,33 @@
+global.location="West Side Jungle"
+backFollow=instance_create(0,0,oBackgroundFollow)
+backFollow.type=0
+backFollow.backSet=backWestSideJungle
+backFollow.wSize=512
+backFollow.hSize=384
+backFollowFore=instance_create(0,0,oBackgroundFollow)
+backFollowFore.type=2
+backFollowFore.backSet=backFG1WestSideJungle
+backFollowFore.xMoveScale=0.55
+backFollowFore.yMoveScale=0.55
+backFollowFore.depth=1499999
+backFollowFore=instance_create(0,0,oBackgroundFollow)
+backFollowFore.type=2
+backFollowFore.backSet=backFG2WestSideJungle
+backFollowFore.xMoveScale=0.85
+backFollowFore.yMoveScale=0.85
+backFollowFore.bgAlpha=0.4
+backFollowFore.depth=5
+
+if global.showArea=true and global.gameProgress>=100
+{
+  areaDisplay=instance_create(0,0,oAreaDisplay)
+  areaDisplay.areaString="West Side Jungle"
+}
+if global.gameProgress<=99
+  global.gameProgress=100
+if global.gameProgress=100
+  levelEvent=instance_create(0,0,oEvWSJungleW1)
+mapShroudSpawn(1)
+var tempMplay;
+tempMplay=findMusic()
+playMusic(tempMplay,0)

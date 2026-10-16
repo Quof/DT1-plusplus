@@ -1,0 +1,3 @@
+xDir=0
+yDir=1
+shiftChange=96

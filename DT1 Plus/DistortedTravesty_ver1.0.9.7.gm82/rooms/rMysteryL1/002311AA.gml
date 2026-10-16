@@ -1,0 +1,10 @@
+bShowArrow=true
+exitType=1
+newMapX=0
+newMapY=0
+toRoom=rMysteryL2
+newTrans=16
+image_xscale=9
+image_yscale=0.5
+newArrowPosX=48
+newArrowPosY=32

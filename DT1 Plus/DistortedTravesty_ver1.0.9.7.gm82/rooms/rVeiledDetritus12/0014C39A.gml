@@ -1,0 +1,9 @@
+bShowArrow=true
+exitType=1
+newMapX=144
+newMapY=320
+toRoom=rVeiledDetritus11
+newTrans=16
+image_xscale=3
+newArrowPosX=16
+newArrowPosY=32

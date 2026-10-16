@@ -1,0 +1,20 @@
+backFollow=instance_create(0,0,oBackgroundFollow)
+backFollow.type=2
+backFollow.backSet=backShadyWoods
+backFollow.image_xscale=1.6
+backFollow.image_yscale=1.6
+backFollow.xMoveScale=0.75
+backFollow.yMoveScale=0.75
+backFollowFore=instance_create(0,0,oBackgroundFollow)
+backFollowFore.type=2
+backFollowFore.backSet=backShadyWoodsTrees
+backFollowFore.image_xscale=1.13
+backFollowFore.image_yscale=1.13
+backFollowFore.xMoveScale=-0.2
+backFollowFore.yMoveScale=-0.2
+backFollowFore.depth=5
+
+if global.gameProgress<=245
+  global.gameProgress=246
+if global.gameProgress=246 or global.gameProgress=249
+  levelEvent=instance_create(0,0,oEvShadyWoodsW1)

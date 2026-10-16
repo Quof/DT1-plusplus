@@ -1,0 +1,9 @@
+bShowArrow=true
+exitType=1
+newMapX=0
+newMapY=0
+newStep=30
+newTrans=20
+toRoom=rDonutPlains1Secret
+image_xscale=2
+y-=128

@@ -1,0 +1,5 @@
+bShowArrow=true
+exitType=1
+newMapX=6096
+newMapY=208
+toRoom=rVDlock4_1

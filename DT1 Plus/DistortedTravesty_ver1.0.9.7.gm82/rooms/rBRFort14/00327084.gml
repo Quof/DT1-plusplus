@@ -1,0 +1,10 @@
+bShowArrow=true
+exitType=1
+newMapX=256
+newMapY=96
+toRoom=rBRFort13
+newTrans=17
+image_xscale=4
+image_yscale=0.5
+newArrowPosX=16
+newArrowPosY=16

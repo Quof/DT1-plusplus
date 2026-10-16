@@ -1,0 +1,2 @@
+view_shooter_x=336
+shooterFieldMid=168

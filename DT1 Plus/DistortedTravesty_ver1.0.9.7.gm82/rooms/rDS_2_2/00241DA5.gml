@@ -1,0 +1,9 @@
+sprite_index=sMovingPlatform2
+xDir=0
+yDir=-2
+shiftChange=64
+spriteChange=12
+bBottomPlat=0
+newRangeY=room_height*2
+image_yscale=16
+y-=(image_yscale-1)*16

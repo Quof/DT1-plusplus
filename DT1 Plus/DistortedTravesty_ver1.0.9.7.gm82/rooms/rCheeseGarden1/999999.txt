@@ -1,0 +1,4 @@
+tileVegetableValley,1168,272,0,48,16,16,0,1,1,4294967295
+tileVegetableValley,1184,192,0,48,16,16,0,1,1,4294967295
+tileVegetableValley,1200,256,0,48,16,16,0,1,1,4294967295
+tileVegetableValley,1216,224,0,48,16,16,0,1,1,4294967295

@@ -1,0 +1,9 @@
+parasolSpawner=instance_create(0,0,oParasolSpawner)
+parasolSpawner.reSpawnSpeed=160
+backFollow=instance_create(0,0,oBackgroundFollow)
+backFollow.type=2
+backFollow.backSet=backVegetableValley
+backFollow.image_xscale=2.29
+backFollow.image_yscale=2.29
+backFollow.xMoveScale=0.75
+backFollow.yMoveScale=1

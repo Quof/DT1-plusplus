@@ -1,0 +1,60 @@
+#define Create_0
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+spawnDirection=0
+spawnX=0
+spawnTime=0
+reversePlane=0
+#define Step_0
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+if global.gamePaused=false
+{
+  if spawnDirection=0
+  {
+    difSpawnChange=round(reSpawnSpeed/5)
+    if global.difficulty=1
+      reSpawnSpeed+=difSpawnChange
+    else if global.difficulty=3
+      reSpawnSpeed-=difSpawnChange
+    else if global.difficulty=4
+      reSpawnSpeed-=round(difSpawnChange*1.1)
+    if oPlayer1.x<128
+      spawnDirection=1
+    else
+      spawnDirection=2
+  }
+  if spawnTime>=reSpawnSpeed
+  {
+    if spawnDirection=1
+      spawnX=view_xview+view_wview+96
+    else
+      spawnX=view_xview-96
+    ranSpawn=view_yview[0]+random_range(y1,y2)
+    b2Plane=instance_create(spawnX,ranSpawn,oB2SpiritPlane)
+    b2Plane.bActive=true
+    if reversePlane>=1
+    {
+      reversePlane+=1
+      if reversePlane>=4
+      {
+        b2Plane.runAcc=13
+        b2Plane.bombWait=9-global.difficulty
+        if spawnDirection=1
+          b2Plane.x-=768
+        else
+          b2Plane.x+=768
+        reversePlane=1
+      }
+    }
+    spawnTime=irandom_range(0,spawnRanRange)
+  }
+  else
+    spawnTime+=1
+}

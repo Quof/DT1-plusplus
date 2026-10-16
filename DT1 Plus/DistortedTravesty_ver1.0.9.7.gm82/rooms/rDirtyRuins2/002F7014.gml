@@ -1,0 +1,1 @@
+newDetectX=128

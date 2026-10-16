@@ -1,0 +1,2 @@
+swingSpeed=-4
+image_angle=90

@@ -1,0 +1,9 @@
+sprite_index=sDataPortal
+image_yscale=1.5
+bShowArrow=false
+exitType=0
+newMapX=416
+newMapY=160
+toRoom=rDataSegment8
+newStep=60
+newTrans=20

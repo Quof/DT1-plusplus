@@ -1,0 +1,12 @@
+depth=10
+sprite_index=sInvisibleSolidMask
+image_xscale=3
+image_yscale=2
+moveProg=3
+bReverse=0
+shiftSpd=2
+spriteChange=0
+newRight=112
+newDown=112
+newLeft=112
+newUp=112

@@ -1,0 +1,5 @@
+sprite_index=sMovingPlatform2
+xDir=2
+yDir=0
+shiftChange=96
+spriteChange=2

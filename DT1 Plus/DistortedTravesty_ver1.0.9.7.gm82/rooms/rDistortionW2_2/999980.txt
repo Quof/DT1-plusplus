@@ -1,0 +1,4 @@
+backWindowTButtons,872,133,0,0,50,15,0,1,1,4294967295
+backWindowTFolder,328,134,0,0,16,14,0,1,1,4294967295
+backWindowTFolder,1352,518,0,0,16,14,0,1,1,4294967295
+backWindowTButtons,1960,517,0,0,50,15,0,1,1,4294967295

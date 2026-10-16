@@ -1,0 +1,9 @@
+background_hspeed[0]=1
+background_vspeed[0]=0.25
+global.cTimerMinute=1
+global.cTimerSecond=30
+global.cTimerHundred=0
+global.sofsCurrent=7
+gameEvent=instance_create(0,0,oEvSoFSW1)
+gameEvent.currentFloor=31
+levelEvent=instance_create(0,0,oEvSoFSConvo1)

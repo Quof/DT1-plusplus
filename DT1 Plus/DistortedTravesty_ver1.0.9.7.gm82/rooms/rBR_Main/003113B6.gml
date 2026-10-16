@@ -1,0 +1,2 @@
+toRoom=rBR_EnflamedBlazingRobot
+type=16

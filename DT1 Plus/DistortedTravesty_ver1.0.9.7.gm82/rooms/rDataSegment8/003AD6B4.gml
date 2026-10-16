@@ -1,0 +1,11 @@
+if global.VDportals[2]>=110
+  image_blend=make_color_rgb(255,150,150)
+sprite_index=sDataPortal
+image_yscale=1.5
+bShowArrow=false
+exitType=0
+newMapX=0
+newMapY=0
+toRoom=rDS_3_1
+newStep=60
+newTrans=20

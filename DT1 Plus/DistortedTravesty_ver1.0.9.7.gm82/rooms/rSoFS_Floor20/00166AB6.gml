@@ -1,0 +1,2 @@
+newDDX=512
+newDDY=160

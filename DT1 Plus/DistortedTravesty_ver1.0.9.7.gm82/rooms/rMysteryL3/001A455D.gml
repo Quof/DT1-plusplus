@@ -1,0 +1,10 @@
+objCreate=oPlatformTouch
+reSpawnTime=70
+offsetX=-16
+offsetY=room_height
+newDist=room_width
+newSprite=sMovingPlatform6
+newXspeed=0
+newYspeed=-2
+frameSpeed=0.33
+visible=false

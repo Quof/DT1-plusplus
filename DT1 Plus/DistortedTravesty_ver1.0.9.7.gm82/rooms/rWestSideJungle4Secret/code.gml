@@ -1,0 +1,24 @@
+backFollow=instance_create(0,0,oBackgroundFollow)
+backFollow.type=0
+backFollow.backSet=backWestSideJungle
+backFollow.wSize=512
+backFollow.hSize=384
+backFollowFore=instance_create(0,0,oBackgroundFollow)
+backFollowFore.type=2
+backFollowFore.backSet=backFG1WestSideJungle
+backFollowFore.xMoveScale=0.55
+backFollowFore.yMoveScale=0.55
+backFollowFore.depth=1499999
+backFollowFore=instance_create(0,0,oBackgroundFollow)
+backFollowFore.type=2
+backFollowFore.backSet=backFG2WestSideJungle
+backFollowFore.xMoveScale=0.85
+backFollowFore.yMoveScale=0.85
+backFollowFore.bgAlpha=0.4
+backFollowFore.depth=5
+
+if global.gameProgress<=103
+  global.gameProgress=104
+
+if global.gameProgress=104
+  levelEvent=instance_create(0,0,oEvWSJungleW1)

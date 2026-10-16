@@ -1,0 +1,9 @@
+bShowArrow=true
+exitType=1
+newMapX=256
+newMapY=144
+toRoom=rPrimaryMemoryEscape4
+image_xscale=4
+newTrans=17
+newArrowPosX=24
+newArrowPosY=-48

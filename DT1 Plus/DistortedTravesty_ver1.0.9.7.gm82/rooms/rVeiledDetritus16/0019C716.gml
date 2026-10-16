@@ -1,0 +1,20 @@
+image_blend=c_blue
+swAmount=4
+switchID[0]=instance_create(192,336,oTimedSwitch)
+switchID[1]=instance_create(304,336,oTimedSwitch)
+switchID[2]=instance_create(192,416,oTimedSwitch)
+switchID[3]=instance_create(304,416,oTimedSwitch)
+triggerID=14
+image_yscale=1.75
+if global.switchTrigger[14]=1
+{
+  switchID[0].activated=2
+  switchID[0].image_speed=1
+  switchID[1].activated=2
+  switchID[1].image_speed=1
+  switchID[2].activated=2
+  switchID[2].image_speed=1
+  switchID[3].activated=2
+  switchID[3].image_speed=1
+  instance_destroy()
+}
