@@ -139,7 +139,8 @@ if global.gamePaused=false
       physicalDefense=setPDefense*5
       spiritDefense=setSDefense*5
       if life<maxLife
-        life+=1
+        //life+=1
+        life+=gDeltaTime //60fps change: per 30fps tick
     }
     else if specialAttack=2
     {
@@ -168,14 +169,18 @@ if global.gamePaused=false
       miniEye[i].x=x+lengthdir_x(miniEyeXDist,miniEyeDir+(i*45))
       miniEye[i].y=y+lengthdir_y(miniEyeYDist,miniEyeDir+(i*45))
     }
-    miniEyeDir+=miniEyeSpeed
-    miniEyeTime+=1
+    //miniEyeDir+=miniEyeSpeed
+    miniEyeDir+=miniEyeSpeed*gDeltaTime //60fps change: per 30fps tick
+    //miniEyeTime+=1
+    miniEyeTime+=gDeltaTime //60fps change: counts 30fps ticks
     if miniEyePattern=0 //initial spread
     {
       if miniEyeTime<=48
       {
-        miniEyeXDist+=1
-        miniEyeYDist+=1
+        //miniEyeXDist+=1
+        miniEyeXDist+=1*gDeltaTime //60fps change: per 30fps tick
+        //miniEyeYDist+=1
+        miniEyeYDist+=1*gDeltaTime //60fps change: per 30fps tick
       }
       if miniEyeTime>=80
       {
@@ -187,13 +192,18 @@ if global.gamePaused=false
     {
       if miniEyeTime<=50
       {
-        miniEyeXDist+=1
-        miniEyeYDist-=0.1
+        //miniEyeXDist+=1
+        miniEyeXDist+=1*gDeltaTime //60fps change: per 30fps tick
+        //miniEyeYDist-=0.1
+        miniEyeYDist-=0.1*gDeltaTime //60fps change: per 30fps tick
       }
-      else if miniEyeTime>=111 and miniEyeTime<=160
+      //else if miniEyeTime>=111 and miniEyeTime<=160
+      else if miniEyeTime>110 and miniEyeTime<=160 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
       {
-        miniEyeXDist-=1
-        miniEyeYDist+=0.1
+        //miniEyeXDist-=1
+        miniEyeXDist-=1*gDeltaTime //60fps change: per 30fps tick
+        //miniEyeYDist+=0.1
+        miniEyeYDist+=0.1*gDeltaTime //60fps change: per 30fps tick
       }
       else if miniEyeTime>=200
       {
@@ -205,13 +215,18 @@ if global.gamePaused=false
     {
       if miniEyeTime<=50
       {
-        miniEyeXDist-=0.1
-        miniEyeYDist+=1
+        //miniEyeXDist-=0.1
+        miniEyeXDist-=0.1*gDeltaTime //60fps change: per 30fps tick
+        //miniEyeYDist+=1
+        miniEyeYDist+=1*gDeltaTime //60fps change: per 30fps tick
       }
-      else if miniEyeTime>=111 and miniEyeTime<=160
+      //else if miniEyeTime>=111 and miniEyeTime<=160
+      else if miniEyeTime>110 and miniEyeTime<=160 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
       {
-        miniEyeXDist+=0.1
-        miniEyeYDist-=1
+        //miniEyeXDist+=0.1
+        miniEyeXDist+=0.1*gDeltaTime //60fps change: per 30fps tick
+        //miniEyeYDist-=1
+        miniEyeYDist-=1*gDeltaTime //60fps change: per 30fps tick
       }
       else if miniEyeTime>=200
       {
@@ -222,7 +237,8 @@ if global.gamePaused=false
     //movement **************************************************
     if breakProgress=2
     {
-      startMoveTime+=1
+      //startMoveTime+=1
+      startMoveTime+=gDeltaTime //60fps change: counts 30fps ticks
       if startMoveTime>=75
       {
         moveTime=moveWait-90
@@ -250,20 +266,25 @@ if global.gamePaused=false
         {
           destinX=512
           destinY=112
-          direction=point_direction(x,y,destinX,destinY)
-          speed=2
+          //direction=point_direction(x,y,destinX,destinY)
+          _direction=point_direction(x,y,destinX,destinY) //60fps change: _speed/_direction stand in for speed/direction (see correctSpeedDirection at the end)
+          //speed=2
+          _speed=2 //60fps change: _speed/_direction stand in for speed/direction (see correctSpeedDirection at the end)
           if point_distance(x,y,destinX,destinY)<3
           {
             specialAtkTime=1
-            speed=0
+            //speed=0
+            _speed=0 //60fps change: _speed/_direction stand in for speed/direction (see correctSpeedDirection at the end)
             x=destinX
             y=destinY
           }
         }
         else if specialAtkTime>=1 //create rocks
         {
-          specialAtkTime+=1
-          if specialAtkTime=30
+          //specialAtkTime+=1
+          specialAtkTime+=gDeltaTime //60fps change: counts 30fps ticks
+          //if specialAtkTime=30
+          if scrCountPass(specialAtkTime,30) //60fps change: once, when the count reaches it
           {
             for(i=0;i<specialAmount;i+=1)
             {
@@ -274,7 +295,8 @@ if global.gamePaused=false
               specialRightA[i].elementType=4
               specialRightA[i].spiritPower=spiritPower
               specialRightA[i].bulletSpeed=i+1
-              specialRightA[i].direction=180
+              //specialRightA[i].direction=180
+              specialRightA[i]._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
 
               specialLeftA[i]=instance_create(x,y,oMMeShot1)
               specialLeftA[i].sprite_index=sNeteryuRock
@@ -283,15 +305,18 @@ if global.gamePaused=false
               specialLeftA[i].elementType=4
               specialLeftA[i].spiritPower=spiritPower
               specialLeftA[i].bulletSpeed=i+1
-              specialLeftA[i].direction=0
+              //specialLeftA[i].direction=0
+              specialLeftA[i]._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             }
           }
-          else if specialAtkTime=32 //Jeremy's message about attack sucking
+          //else if specialAtkTime=32 //Jeremy's message about attack sucking
+          else if scrCountPass(specialAtkTime,32) //Jeremy's message about attack sucking //60fps change: once, when the count reaches it
           {
             msgCreate("This is going to suck.#Also you can't deflect this attack, just dodge it.",0,oMessagePerson,global.mainCharacters[1],0,1)
             newMessage.fadingTime=90
           }
-          else if specialAtkTime=44 //stop rocks from moving
+          //else if specialAtkTime=44 //stop rocks from moving
+          else if scrCountPass(specialAtkTime,44) //stop rocks from moving //60fps change: once, when the count reaches it
           {
             for(i=0;i<specialAmount;i+=1)
             {
@@ -300,7 +325,8 @@ if global.gamePaused=false
             }
             specialProg=0
           }
-          else if specialAtkTime=56 //lightning strike
+          //else if specialAtkTime=56 //lightning strike
+          else if scrCountPass(specialAtkTime,56) //lightning strike //60fps change: once, when the count reaches it
           {
             playSound(global.snd_Shock,0,0.9)
             instance_create(0,0,oViewShaker)
@@ -323,7 +349,8 @@ if global.gamePaused=false
           }
           else if specialAtkTime>=120 and specialAtkTime<10000 //attack with rocks (create line)
           {
-            if specialAtkTime mod 12=0
+            //if specialAtkTime mod 12=0
+            if scrModPass(specialAtkTime,12) //60fps change: once each time the count reaches a multiple of it
             {
               for(i=0;i<9;i+=1)
               {
@@ -334,7 +361,8 @@ if global.gamePaused=false
                 specialRightB[i].elementType=4
                 specialRightB[i].spiritPower=spiritPower
                 specialRightB[i].bulletSpeed=i+1
-                specialRightB[i].direction=point_direction(specialRightA[specialProg].x,specialRightA[specialProg].y,oPlayer1.x,oPlayer1.y)
+                //specialRightB[i].direction=point_direction(specialRightA[specialProg].x,specialRightA[specialProg].y,oPlayer1.x,oPlayer1.y)
+                specialRightB[i]._direction=point_direction(specialRightA[specialProg].x,specialRightA[specialProg].y,oPlayer1.x,oPlayer1.y) //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
                 
                 specialLeftB[i]=instance_create(specialLeftA[specialProg].x,specialLeftA[specialProg].y,oMMeShot1)
                 specialLeftB[i].sprite_index=sNeteryuRock
@@ -343,7 +371,8 @@ if global.gamePaused=false
                 specialLeftB[i].elementType=4
                 specialLeftB[i].spiritPower=spiritPower
                 specialLeftB[i].bulletSpeed=i+1
-                specialLeftB[i].direction=point_direction(specialLeftA[specialProg].x,specialLeftA[specialProg].y,oPlayer1.x,oPlayer1.y)
+                //specialLeftB[i].direction=point_direction(specialLeftA[specialProg].x,specialLeftA[specialProg].y,oPlayer1.x,oPlayer1.y)
+                specialLeftB[i]._direction=point_direction(specialLeftA[specialProg].x,specialLeftA[specialProg].y,oPlayer1.x,oPlayer1.y) //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
               }
               with specialRightA[specialProg]
                 instance_destroy()
@@ -371,7 +400,8 @@ if global.gamePaused=false
       //------------------------- fortify -------------------------
       if specialAttack!=2
       {
-        fortifyTime+=1
+        //fortifyTime+=1
+        fortifyTime+=gDeltaTime //60fps change: counts 30fps ticks
         if fortifyDelay=0
         {
           if fortifyTime>=fortifyWait
@@ -386,18 +416,22 @@ if global.gamePaused=false
           {
             destinX=512
             destinY=176
-            direction=point_direction(x,y,destinX,destinY)
-            speed=2
+            //direction=point_direction(x,y,destinX,destinY)
+            _direction=point_direction(x,y,destinX,destinY) //60fps change: _speed/_direction stand in for speed/direction (see correctSpeedDirection at the end)
+            //speed=2
+            _speed=2 //60fps change: _speed/_direction stand in for speed/direction (see correctSpeedDirection at the end)
             if point_distance(x,y,destinX,destinY)<3
             {
               bMovedToCenter=1
-              speed=0
+              //speed=0
+              _speed=0 //60fps change: _speed/_direction stand in for speed/direction (see correctSpeedDirection at the end)
               x=destinX
               y=destinY
             }
           }
           
-          if fortifyTime=fortifyDelay //create laser points
+          //if fortifyTime=fortifyDelay //create laser points
+          if scrCountPass(fortifyTime,fortifyDelay) //create laser points //60fps change: once, when the count reaches it
           {
             laserDist=0
             laserAttackDir=0
@@ -422,9 +456,11 @@ if global.gamePaused=false
               }
             }
           }
-          else if fortifyTime>=fortifyDelay+1 and fortifyTime<=fortifyDelay+49 //extend lasers
+          //else if fortifyTime>=fortifyDelay+1 and fortifyTime<=fortifyDelay+49 //extend lasers
+          else if fortifyTime>fortifyDelay and fortifyTime<=fortifyDelay+49 //extend lasers //60fps change: the same 30fps ticks, counted in gDeltaTime steps
           {
-            laserDist+=6
+            //laserDist+=6
+            laserDist+=6*gDeltaTime //60fps change: per 30fps tick
             for(i=0;i<3;i+=1)
             {
               if i=2
@@ -439,10 +475,13 @@ if global.gamePaused=false
               }
             }
           }
-          else if fortifyTime>=fortifyDelay+50 and fortifyTime<=fortifyDelay+230 //laser attack
+          //else if fortifyTime>=fortifyDelay+50 and fortifyTime<=fortifyDelay+230 //laser attack
+          else if fortifyTime>fortifyDelay+49 and fortifyTime<=fortifyDelay+230 //laser attack //60fps change: the same 30fps ticks, counted in gDeltaTime steps
           {
-            laserAttackDir+=5
-            otherLaserDir-=2
+            //laserAttackDir+=5
+            laserAttackDir+=5*gDeltaTime //60fps change: per 30fps tick
+            //otherLaserDir-=2
+            otherLaserDir-=2*gDeltaTime //60fps change: per 30fps tick
             for(i=0;i<3;i+=1)
             {
               if i=2
@@ -492,18 +531,22 @@ if global.gamePaused=false
         else
         {
           //move normal
-          moveTime+=1
+          //moveTime+=1
+          moveTime+=gDeltaTime //60fps change: counts 30fps ticks
           if moveTime>=moveWait //choose new destination
           {
             destinX=(xCenter-roomSpan+64)+random(roomSpan-32)
             destinY=yGround-64-random(64)
             moveTime=0
           }
-          direction=point_direction(x,y,destinX,destinY)
+          //direction=point_direction(x,y,destinX,destinY)
+          _direction=point_direction(x,y,destinX,destinY) //60fps change: _speed/_direction stand in for speed/direction (see correctSpeedDirection at the end)
           if point_distance(x,y,destinX,destinY)<3
-            speed=0
+            //speed=0
+            _speed=0 //60fps change: _speed/_direction stand in for speed/direction (see correctSpeedDirection at the end)
           else
-            speed=1
+            //speed=1
+            _speed=1 //60fps change: _speed/_direction stand in for speed/direction (see correctSpeedDirection at the end)
         }
       }
     }
@@ -514,7 +557,8 @@ if global.gamePaused=false
       if breakProgress=3 or crossSpiralTime>crossSpiralDelay
       {
         if fortifyTime<fortifyWait
-          crossSpiralTime+=1
+          //crossSpiralTime+=1
+          crossSpiralTime+=gDeltaTime //60fps change: counts 30fps ticks
       }
       if crossSpiralDelay=0
       {
@@ -527,7 +571,8 @@ if global.gamePaused=false
       }
       if crossSpiralTime>=crossSpiralDelay and crossSpiralDelay!=0
       {
-        if crossSpiralTime>=crossSpiralDelay+10 and crossSpiralTime mod crossSpiralFreq=0
+        //if crossSpiralTime>=crossSpiralDelay+10 and crossSpiralTime mod crossSpiralFreq=0
+        if crossSpiralTime>=crossSpiralDelay+10 and scrModPass(crossSpiralTime,crossSpiralFreq) //60fps change: once each time the count reaches a multiple of it
         {
           csDir=point_direction(x,y,oPlayer1.x,oPlayer1.y-26)
           for(i=0;i<crossSpiralAmt;i+=1)
@@ -538,7 +583,8 @@ if global.gamePaused=false
             newBullet.elementType=4
             newBullet.spiritPower=spiritPower
             newBullet.bulletSpeed=2.5
-            newBullet.direction=csDir
+            //newBullet.direction=csDir
+            newBullet._direction=csDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             newBullet.arcTime=65
             newBullet.bulletArc=2
             newBullet.bDestroyOnOutside=1
@@ -554,7 +600,8 @@ if global.gamePaused=false
       }
     }
     //---------- Lightning Crush ----------
-    lightningCrushTime+=1
+    //lightningCrushTime+=1
+    lightningCrushTime+=gDeltaTime //60fps change: counts 30fps ticks
     if lightningCrushTime>=lightningCrushWait
     {
       for(i=0;i<lightningCrushAmt;i+=1)
@@ -670,7 +717,9 @@ if global.gamePaused=false
   enemyStepEvent()
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: _speed/_direction stand in for speed/direction (see correctSpeedDirection at the end)
+correctSpeedDirection(id) //60fps change (added): moves it by _speed in _direction, this frame's share of a 30fps tick
 #define Collision_oAttackBase
 /*"/*'/**//* YYD ACTION
 lib_id=1
@@ -728,8 +777,10 @@ if specialAtkTime>=10 and specialAtkTime<=55
   draw_sprite_ext(sWarningSymbol,-1,352,yGround,0.6,0.6,0,c_white,warnAlpha)
   draw_sprite_ext(sWarningSymbol,-1,512,yGround,0.6,0.6,0,c_white,warnAlpha)
   draw_sprite_ext(sWarningSymbol,-1,672,yGround,0.6,0.6,0,c_white,warnAlpha)
-  alphaChange+=1
-  if alphaChange=8
+  //alphaChange+=1
+  alphaChange+=gDeltaTime //60fps change: counts 30fps ticks
+  //if alphaChange=8
+  if alphaChange>=8 //60fps change: counts 30fps ticks; >= so it still flips if the frame rate changes mid-count
   {
     if warnAlpha=1
       warnAlpha=0

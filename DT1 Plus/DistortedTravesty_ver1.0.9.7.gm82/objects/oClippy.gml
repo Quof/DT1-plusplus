@@ -60,9 +60,13 @@ if global.gamePaused=false
     }
     else if messageShowProg=1
     {
-      y-=6
+      //y-=6
+      y-=6*gDeltaTime //60fps change: per 30fps tick
       if y<yOrig-100
+      {
         messageShowProg=2
+        y=yOrig-6*ceil((yOrig-y)/6) //60fps change (added): stops where 30fps stops (a whole number of 6px ticks up)
+      }
     }
   }
   enemyStepEvent()

@@ -81,7 +81,8 @@ if global.gamePaused=false
 
     //shoot
     if sprite_index=sStoneGuardFire
-      shootTime+=1
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: counts 30fps ticks
     if shootTime>=reShootTime+115
     {
       var x1;
@@ -104,7 +105,8 @@ if global.gamePaused=false
       newAttack.sprite_index=sGTmissile
       newAttack.bulletSpeed=9
       if image_xscale=-1
-        newAttack.direction=180
+        //newAttack.direction=180
+        newAttack._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       newAttack.image_xscale=1.5
       newAttack.image_yscale=1.5
 
@@ -112,7 +114,8 @@ if global.gamePaused=false
       newAttack.physicalPower=physicalPower
       newAttack.sprite_index=sGTmissile
       newAttack.bulletSpeed=9
-      newAttack.direction=90
+      //newAttack.direction=90
+      newAttack._direction=90 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       newAttack.image_xscale=1.5
       newAttack.image_yscale=1.5
       sprite_index=sStoneGuardWalk
@@ -122,9 +125,12 @@ if global.gamePaused=false
     //movement
     if sprite_index=sStoneGuardWalk and image_index!=curFrame
     {
-      moveTime+=1
-      shootTime+=1
-      if moveTime=1
+      //moveTime+=1
+      //shootTime+=1
+      moveTime+=gDeltaTime //60fps change: counts 30fps ticks
+      shootTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if moveTime=1
+      if scrCountPass(moveTime,1) //60fps change: once, when the count reaches it
       {
         xVel=runAcc
         if x>oCharacter.x
@@ -150,8 +156,10 @@ if global.gamePaused=false
     //animation
     if sprite_index=sStoneGuardWalk
     {
-      frameCount+=1
-      if frameCount mod moveFreq=0
+      //frameCount+=1
+      frameCount+=gDeltaTime //60fps change: counts 30fps ticks
+      //if frameCount mod moveFreq=0
+      if scrModPass(frameCount,moveFreq) //60fps change: once each time the count reaches a multiple of it
       {
         frameProg+=1
         if frameProg=1
@@ -168,17 +176,24 @@ if global.gamePaused=false
       }
     }
 
-    yVel+=0.3
+    //yVel+=0.3
+    yVel=scrGravAcc(yVel,0.3,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
-    if isCollisionLeft(1)
+    //if isCollisionLeft(1)
+    //  xVel*=-1
+    //if isCollisionRight(1)
+    //  xVel*=-1
+    //60fps change: only turn around when moving into the wall (it can still touch it on the next frame above 30fps)
+    if isCollisionLeftEdit(1)
       xVel*=-1
-    if isCollisionRight(1)
+    if isCollisionRightEdit(1)
       xVel*=-1
     if isCollisionSolid()
       y-=2
 
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     if y>room_height+30
     {
       if questType>0

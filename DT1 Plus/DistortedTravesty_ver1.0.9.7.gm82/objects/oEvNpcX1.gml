@@ -46,10 +46,13 @@ if global.gamePaused=false
   }
   else if assistProgress=1 //---------- wait/charge shot ----------
   {
-    waitTime+=1
-    if waitTime>=15
+    //waitTime+=1
+    waitTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if waitTime>=15
+    if waitTime>14 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      if chargeTime=0
+      //if chargeTime=0
+      if scrCountPass(chargeTime,0) //60fps change: once, when the count reaches it
       {
         eDistCheck=instance_nearest(oPlayer1.x,oPlayer1.y,oEnemyBase)
         if instance_exists(eDistCheck)
@@ -65,8 +68,10 @@ if global.gamePaused=false
         }
       }
 
-      chargeTime+=1
-      if chargeTime mod 7=0
+      //chargeTime+=1
+      chargeTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if chargeTime mod 7=0
+      if scrModPass(chargeTime,7) //60fps change: once each time the count reaches a multiple of it
         chargeAmt+=1
 
       if chargeTime>=60
@@ -87,7 +92,8 @@ if global.gamePaused=false
     for(i=0;i<3;i+=1)
     {
       newAttack=instance_create(x,y-17,oEvPMNpcXattack)
-      newAttack.direction=shotDir
+      //newAttack.direction=shotDir
+      newAttack._direction=shotDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       newAttack.fireSpeed=9.5
       shotDir+=25
     }
@@ -95,8 +101,10 @@ if global.gamePaused=false
   }
   else if assistProgress=3 //---------- wait ----------
   {
-    waitTime+=1
-    if waitTime=20
+    //waitTime+=1
+    waitTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if waitTime=20
+    if scrCountPass(waitTime,20) //60fps change: once, when the count reaches it
       sprite_index=sMegamanXIdle
     else if waitTime>=40
     {
@@ -135,8 +143,10 @@ if global.gamePaused=false
   }
   else if assistProgress=4 //---------- jump and attack again ----------
   {
-    waitTime+=1
-    if waitTime=45
+    //waitTime+=1
+    waitTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if waitTime=45
+    if scrCountPass(waitTime,45) //60fps change: once, when the count reaches it
     {
       sprite_index=sMegamanXJumpAim
       chargeTime=0
@@ -163,7 +173,8 @@ if global.gamePaused=false
       for(i=0;i<3;i+=1)
       {
         newAttack=instance_create(x,y-17,oEvPMNpcXattack)
-        newAttack.direction=shotDir
+        //newAttack.direction=shotDir
+        newAttack._direction=shotDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newAttack.fireSpeed=8
         shotDir+=25
       }
@@ -171,7 +182,8 @@ if global.gamePaused=false
       assistProgress=5
     }
 
-    yVel+=0.4
+    //yVel+=0.4
+    yVel+=0.4*gDeltaTime //60fps change: per 30fps tick
     if isCollisionLeft(1)
       xVel=5
     if isCollisionRight(1)
@@ -186,10 +198,13 @@ if global.gamePaused=false
   }
   else if assistProgress=5 //---------- wait ----------
   {
-    waitTime+=1
-    if waitTime=35
+    //waitTime+=1
+    waitTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if waitTime=35
+    if scrCountPass(waitTime,35) //60fps change: once, when the count reaches it
       assistProgress=10
-    yVel+=0.4
+    //yVel+=0.4
+    yVel+=0.4*gDeltaTime //60fps change: per 30fps tick
     if isCollisionLeft(1)
       xVel=5
     if isCollisionRight(1)
@@ -205,7 +220,8 @@ if global.gamePaused=false
   else if assistProgress=10 //---------- teleport ----------
   {
     sprite_index=sPlayerDiscombobulate
-    y-=14
+    //y-=14
+    y-=14*gDeltaTime //60fps change: per 30fps tick
     if y<-8
       instance_destroy()
   }
@@ -224,7 +240,8 @@ if chargeTime>0
   {
     draw_sprite_ext(sMMcharging,chargeFrame+(i*2),x,y-17,1+(i*0.5),1+(i*0.5),0,c_white,1)
   }
-  chargeFrame+=1
+  //chargeFrame+=1
+  chargeFrame+=gDeltaTime //60fps change: counts 30fps ticks
   if chargeFrame>=11
     chargeFrame=0
 }

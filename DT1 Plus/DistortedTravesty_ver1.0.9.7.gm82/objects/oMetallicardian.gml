@@ -107,17 +107,21 @@ if global.gamePaused=false
   {
     if teleportProgress=0
     {
-      attackDelay+=1
+      //attackDelay+=1
+      attackDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if attackDelay>=waitTime
       {
         if currentAttack=1 //metallic wave ==================================================
         {
-          attackTime+=1
+          //attackTime+=1
+          attackTime+=gDeltaTime //60fps change: counts 30fps ticks
           if attackProgress=0 //first wave
           {
-            if attackTime=1
+            //if attackTime=1
+            if scrCountPass(attackTime,1) //60fps change: once, when the count reaches it
               sprite_index=sMetallicardianHover
-            if attackTime=25
+            //if attackTime=25
+            if scrCountPass(attackTime,25) //60fps change: once, when the count reaches it
             {
               mWave=instance_create(x,y-32,oDustRScythe)
               mWave.sprite_index=sMetallicWave
@@ -125,10 +129,12 @@ if global.gamePaused=false
               mWave.spiritPower=spiritPower
               mWave.bulletSpeed=10
               if newLoc=1 or newLoc=6
-                mWave.direction=0
+                //mWave.direction=0
+                mWave._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
               else if newLoc=3 or newLoc=8
               {
-                mWave.direction=180
+                //mWave.direction=180
+                mWave._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
                 mWave.image_xscale=-1
               }
 
@@ -143,7 +149,8 @@ if global.gamePaused=false
           }
           else if attackProgress=1 //second wave
           {
-            if attackTime=3
+            //if attackTime=3
+            if scrCountPass(attackTime,3) //60fps change: once, when the count reaches it
             {
               if attackType=1 or attackType=3
                 newLoc=5
@@ -152,7 +159,8 @@ if global.gamePaused=false
               bChooseNewLocation=true
               effect_create_above(ef_smoke,x,y-(sprite_height/2),1,c_gray)
             }
-            if attackTime=12
+            //if attackTime=12
+            if scrCountPass(attackTime,12) //60fps change: once, when the count reaches it
             {
               mWave=instance_create(x,y-32,oDustRScythe)
               mWave.sprite_index=sMetallicWave
@@ -160,10 +168,12 @@ if global.gamePaused=false
               mWave.spiritPower=spiritPower
               mWave.bulletSpeed=10
               if newLoc=4
-                mWave.direction=0
+                //mWave.direction=0
+                mWave._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
               else if newLoc=5
               {
-                mWave.direction=180
+                //mWave.direction=180
+                mWave._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
                 mWave.image_xscale=-1
               }
               attackTime=0
@@ -172,7 +182,8 @@ if global.gamePaused=false
           }
           else if attackProgress=2 //third wave
           {
-            if attackTime=3
+            //if attackTime=3
+            if scrCountPass(attackTime,3) //60fps change: once, when the count reaches it
             {
               if attackType=1
                 newLoc=6
@@ -185,7 +196,8 @@ if global.gamePaused=false
               bChooseNewLocation=true
               effect_create_above(ef_smoke,x,y-(sprite_height/2),1,c_gray)
             }
-            if attackTime=12
+            //if attackTime=12
+            if scrCountPass(attackTime,12) //60fps change: once, when the count reaches it
             {
               mWave=instance_create(x,y-32,oDustRScythe)
               mWave.sprite_index=sMetallicWave
@@ -193,10 +205,12 @@ if global.gamePaused=false
               mWave.spiritPower=spiritPower
               mWave.bulletSpeed=10
               if newLoc=1 or newLoc=6
-                mWave.direction=0
+                //mWave.direction=0
+                mWave._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
               else if newLoc=3 or newLoc=8
               {
-                mWave.direction=180
+                //mWave.direction=180
+                mWave._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
                 mWave.image_xscale=-1
               }
               attackTime=0
@@ -236,16 +250,26 @@ if global.gamePaused=false
         }
         if currentAttack=2 //metallic light wave ==================================================
         {
-          attackTime+=1
+          //attackTime+=1
+          attackTime+=gDeltaTime //60fps change: counts 30fps ticks
           if attackProgress=0 //rise to position
           {
-            if attackTime=1
+            //if attackTime=1
+            if scrCountPass(attackTime,1) //60fps change: once, when the count reaches it
             {
               sprite_index=sMetallicardianRise
               riseUpSpeed=-12
             }
-            y+=riseUpSpeed
-            riseUpSpeed+=0.4
+            //y+=riseUpSpeed
+            //riseUpSpeed+=0.4
+            //60fps change: per 30fps tick: it moves, then speeds up at the end of each of its 30fps ticks (each time
+            //the count reaches a whole number), as at 30fps; from the frame that sets the speed (the count reaching 1)
+            if attackTime>=1
+            {
+              y+=riseUpSpeed*gDeltaTime
+              if scrModPass(attackTime,1)
+                riseUpSpeed+=0.4
+            }
             if riseUpSpeed>=0 and y>=272
             {
               y=psY2
@@ -255,23 +279,27 @@ if global.gamePaused=false
           }
           else if attackProgress=1 //fire waves
           {
-            if attackTime=1
+            //if attackTime=1
+            if scrCountPass(attackTime,1) //60fps change: once, when the count reaches it
             {
               sprite_index=sMetallicardianShock
               waveNum=0
             }
             if attackTime>=15
             {
-              if attackTime mod 10=0
+              //if attackTime mod 10=0
+              if scrModPass(attackTime,10) //60fps change: once each time the count reaches a multiple of it
               {
                 mLightWave=instance_create(x,y-32,oMetalLWave)
                 mLightWave.spiritPower=spiritPower-20
                 mLightWave.bulletSpeed=8
                 if newLoc=9
-                  mLightWave.direction=0
+                  //mLightWave.direction=0
+                  mLightWave._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
                 else if newLoc=10
                 {
-                  mLightWave.direction=180
+                  //mLightWave.direction=180
+                  mLightWave._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
                   mLightWave.image_xscale=-1
                 }
 
@@ -286,7 +314,8 @@ if global.gamePaused=false
           }
           else if attackProgress=2 //wait time
           {
-            if attackTime=1
+            //if attackTime=1
+            if scrCountPass(attackTime,1) //60fps change: once, when the count reaches it
               sprite_index=sMetallicardianIdle
             if attackTime>=round(waitTime*1.5)
               attackProgress=10
@@ -332,12 +361,15 @@ if global.gamePaused=false
         }
         if currentAttack=3 //metallic tornado ==================================================
         {
-          attackTime+=1
+          //attackTime+=1
+          attackTime+=gDeltaTime //60fps change: counts 30fps ticks
           if attackProgress=0 //attack
           {
-            if attackTime=1
+            //if attackTime=1
+            if scrCountPass(attackTime,1) //60fps change: once, when the count reaches it
               sprite_index=sMetallicardianHover
-            if attackTime=25
+            //if attackTime=25
+            if scrCountPass(attackTime,25) //60fps change: once, when the count reaches it
             {
               sprite_index=sMetallicardianShock
               if attackType=0
@@ -348,9 +380,11 @@ if global.gamePaused=false
                 mTornado.spiritPower=spiritPower
                 mTornado.bulletSpeed=5
                 if newLoc=2 or newLoc=7
-                  mTornado.direction=0
+                  //mTornado.direction=0
+                  mTornado._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
                 else if newLoc=4 or newLoc=5
-                  mTornado.direction=90
+                  //mTornado.direction=90
+                  mTornado._direction=90 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
 
                 mTornado=instance_create(x,y,oDustRScythe)
                 mTornado.sprite_index=sMetallicTornado
@@ -358,9 +392,11 @@ if global.gamePaused=false
                 mTornado.spiritPower=spiritPower
                 mTornado.bulletSpeed=5
                 if newLoc=2 or newLoc=7
-                  mTornado.direction=180
+                  //mTornado.direction=180
+                  mTornado._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
                 else if newLoc=4 or newLoc=5
-                  mTornado.direction=270
+                  //mTornado.direction=270
+                  mTornado._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
               }
               else
               {
@@ -373,7 +409,8 @@ if global.gamePaused=false
                   mTornado.type=2
                   mTornado.spiritPower=spiritPower
                   mTornado.bulletSpeed=5
-                  mTornado.direction=dir
+                  //mTornado.direction=dir
+                  mTornado._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
                   dir+=90
                 }
               }
@@ -420,20 +457,25 @@ if global.gamePaused=false
         }
         if currentAttack=10 //special: metallic twister ==================================================
         {
-          attackTime+=1
+          //attackTime+=1
+          attackTime+=gDeltaTime //60fps change: counts 30fps ticks
           if attackProgress=0 //attack
           {
-            if attackTime=1
+            //if attackTime=1
+            if scrCountPass(attackTime,1) //60fps change: once, when the count reaches it
               sprite_index=sMetallicardianTwister
-            if attackTime=50
+            //if attackTime=50
+            if scrCountPass(attackTime,50) //60fps change: once, when the count reaches it
             {
               mTornado=instance_create(224,psY3,oMetalTwister)
               mTornado.spiritPower=spiritPower
-              mTornado.direction=0
+              //mTornado.direction=0
+              mTornado._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
               mTornado.twisterPasses=twisterPasses
               mTornado=instance_create(672,psY3,oMetalTwister)
               mTornado.spiritPower=spiritPower
-              mTornado.direction=180
+              //mTornado.direction=180
+              mTornado._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
               mTornado.twisterPasses=twisterPasses
             }
             if attackTime>=55
@@ -462,8 +504,10 @@ if global.gamePaused=false
     }
     else if teleportProgress=1 //teleport away
     {
-      teleportTimer+=1
-      if teleportTimer=1
+      //teleportTimer+=1
+      teleportTimer+=gDeltaTime //60fps change: counts 30fps ticks
+      //if teleportTimer=1
+      if scrCountPass(teleportTimer,1) //60fps change: once, when the count reaches it
       {
         playSound(global.snd_Teleport,0,1)
         attackType=0
@@ -473,8 +517,10 @@ if global.gamePaused=false
         else if doubleAttack=3
           doubleAttack=1
       }
-      colorBlend-=15
-      image_alpha-=0.06
+      //colorBlend-=15
+      colorBlend-=15*gDeltaTime //60fps change: per 30fps tick
+      //image_alpha-=0.06
+      image_alpha-=0.06*gDeltaTime //60fps change: per 30fps tick
       image_blend=make_color_rgb(colorBlend,colorBlend,colorBlend)
       if teleportTimer>=17 //choose new location
       {
@@ -485,14 +531,16 @@ if global.gamePaused=false
           specialAttack+=1
           newLoc=11
           bChooseNewLocation=true
-          teleportTimer=0
+          //teleportTimer=0
+          teleportTimer=gDeltaTime-1 //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
           teleportProgress=2
         }
 
         if currentAttack!=10
         {
           //normal attack teleport spot
-          if teleportTimer=17
+          //if teleportTimer=17
+          if scrCountPass(teleportTimer,17) //60fps change: once, when the count reaches it
           {
             newLoc=choose(1,2,3,4,5,6,7,8,9,10)    // -final make
             bChooseNewLocation=true
@@ -533,7 +581,8 @@ if global.gamePaused=false
             {
               currentAttack=2
             }
-            teleportTimer=0
+            //teleportTimer=0
+            teleportTimer=gDeltaTime-1 //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
             teleportProgress=2
           }
         }
@@ -543,20 +592,25 @@ if global.gamePaused=false
     {
       if teleportTimer>=10
       {
-        teleportTimer=0
+        //teleportTimer=0
+        teleportTimer=gDeltaTime-1 //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
         teleportProgress=3
       }
       else
-        teleportTimer+=1
+        //teleportTimer+=1
+        teleportTimer+=gDeltaTime //60fps change: counts 30fps ticks
     }
     else if teleportProgress=3 //teleport in
     {
       if newLoc<=8 //normal
       {
-        if teleportTimer=1
+        //if teleportTimer=1
+        if scrCountPass(teleportTimer,1) //60fps change: once, when the count reaches it
           playSound(global.snd_Teleport,0,1)
-        colorBlend+=15
-        image_alpha+=0.06
+        //colorBlend+=15
+        colorBlend+=15*gDeltaTime //60fps change: per 30fps tick
+        //image_alpha+=0.06
+        image_alpha+=0.06*gDeltaTime //60fps change: per 30fps tick
         image_blend=make_color_rgb(colorBlend,colorBlend,colorBlend)
         if teleportTimer>=17
         {
@@ -566,7 +620,8 @@ if global.gamePaused=false
           teleportProgress=0
         }
         else
-          teleportTimer+=1
+          //teleportTimer+=1
+          teleportTimer+=gDeltaTime //60fps change: counts 30fps ticks
       }
       else //rise up
       {
@@ -658,8 +713,10 @@ if global.gamePaused=false
     //fire start
     if instance_exists(fireCreate)
     {
-      fireCreate.image_angle+=15
-      fireCreate.y+=8
+      //fireCreate.image_angle+=15
+      fireCreate.image_angle+=15*gDeltaTime //60fps change: per 30fps tick
+      //fireCreate.y+=8
+      fireCreate.y+=8*gDeltaTime //60fps change: per 30fps tick
       if fireCreate.y>=psY3
       {
         for(i=232;i<680;i+=16)

@@ -56,8 +56,10 @@ applies_to=self
 */
 if sceneProgress=0
 {
-  sceneDelay+=1
-  if sceneDelay=1
+  //sceneDelay+=1
+  sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+  //if sceneDelay=1
+  if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
   {
     var tempMplay;
     tempMplay=global.msc_BRFintro
@@ -74,19 +76,23 @@ if sceneProgress=0
 else if sceneProgress=1
 {
   if bossFinishFadeAlpha>0
-    bossFinishFadeAlpha-=0.1
+    //bossFinishFadeAlpha-=0.1
+    bossFinishFadeAlpha-=0.1*gDeltaTime //60fps change: per 30fps tick
   else if bossFinishFadeAlpha<=0
     sceneProgress+=1
 }
 else if sceneProgress=2
 {
-  sceneDelay+=1
+  //sceneDelay+=1
+  sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
   tile_layer_shift(1000000,0.9,0)
   tile_layer_shift(999999,1.15,0)
-  if sceneDelay>=300
+  //if sceneDelay>=300
+  if sceneDelay>299 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
   {
     tile_layer_shift(999998,-1.5,0)
-    playerImage.x-=1.5
+    //playerImage.x-=1.5
+    playerImage.x-=1.5*gDeltaTime //60fps change: per 30fps tick
   }
   if sceneDelay>=630
   {
@@ -96,7 +102,8 @@ else if sceneProgress=2
 }
 else if sceneProgress=3
 {
-  sceneDelay+=1
+  //sceneDelay+=1
+  sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
   if sceneDelay>=285
   {
     sceneDelay=0
@@ -108,7 +115,8 @@ else if sceneProgress=4
   stopAllMusic()
   global.gameProgress=155
   global.gamePaused=false
-  transition_steps=30
+  //transition_steps=30
+  transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
   transition_kind=21
   room_goto(rBRFort1)
 }

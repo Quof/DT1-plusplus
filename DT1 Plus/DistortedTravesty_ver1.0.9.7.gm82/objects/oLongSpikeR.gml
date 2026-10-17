@@ -70,11 +70,15 @@ if global.gamePaused=false
       bTargetFound=true
       seekTime=seekMax
     }
-    seekTime-=1
-    if seekTime>0
+    //seekTime-=1
+    seekTime-=gDeltaTime //60fps change: counts 30fps ticks
+    //if seekTime>0
+    if seekTime>=1 //60fps change: the same 30fps ticks (it counts down in gDeltaTime steps; the same as >0 in whole ticks)
     {
-      extendDist-=seekSpeed
-      xCheck-=seekSpeed
+      //extendDist-=seekSpeed
+      extendDist-=seekSpeed*gDeltaTime //60fps change: per 30fps tick
+      //xCheck-=seekSpeed
+      xCheck-=seekSpeed*gDeltaTime //60fps change: per 30fps tick
     }
     else if seekTime<-waitTime
     {
@@ -88,8 +92,10 @@ if global.gamePaused=false
       }
       else
       {
-        extendDist+=seekSpeed
-        xCheck+=seekSpeed
+        //extendDist+=seekSpeed
+        extendDist+=seekSpeed*gDeltaTime //60fps change: per 30fps tick
+        //xCheck+=seekSpeed
+        xCheck+=seekSpeed*gDeltaTime //60fps change: per 30fps tick
       }
     }
     image_yscale=8-extendDist

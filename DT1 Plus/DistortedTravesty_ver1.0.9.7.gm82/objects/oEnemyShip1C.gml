@@ -52,26 +52,34 @@ event_inherited()
 if global.gamePaused=false
 {
   //---------- move pattern ----------
-  moveInTime-=1
-  if moveInTime=0
+  //moveInTime-=1
+  moveInTime-=gDeltaTime //60fps change: counts 30fps ticks
+  //if moveInTime=0
+  if moveInTime<=0 //60fps change: <= so it still happens if the frame rate changes mid-count
     bDestroyIfOffScreen=1
-  speed=moveSpeed
+  //speed=moveSpeed
+  _speed=moveSpeed //60fps change: _speed/_direction stand in for speed/direction (see correctSpeedDirection at the end)
 
   //---------- bullet pattern ----------
-  bullet_Time+=1
+  //bullet_Time+=1
+  bullet_Time+=gDeltaTime //60fps change: counts 30fps ticks
   if bullet_Time>=bullet_Delay
   {
-    if bullet_Time mod bulletFreq=0
+    //if bullet_Time mod bulletFreq=0
+    if scrModPass(bullet_Time,bulletFreq) //60fps change: once each time the count reaches a multiple of it
     {
       newBullet=instance_create(x,y,oEnemyShipBulletNormal)
 
       newBullet.bDestroyIfOffScreen=true
       newBullet.bulletSpeed=bullet_Speed
-      newBullet.direction=270
+      //newBullet.direction=270
+      newBullet._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
     }
     if bullet_Time>=bullet_Delay+sprayLength
       bullet_Time=0
   }
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above
+correctSpeedDirection(id) //60fps change (added): moves it by _speed in _direction, this frame's share of a 30fps tick

@@ -36,16 +36,21 @@ if global.gamePaused=false
     if init=0
     {
       if image_xscale=-1
-        direction=180
+        //direction=180
+        _direction=180 //60fps change: _direction stands in for direction (see correctSpeedDirection)
       image_speed=0
       image_index=1
       init=1
     }
-    speed=fireSpeed
+    //speed=fireSpeed
+    _speed=fireSpeed //60fps change: moved by correctSpeedDirection (end of the step)
   }
-  decayTime-=1
+  //decayTime-=1
+  decayTime-=gDeltaTime //60fps change: counts 30fps ticks
   if decayTime<=0
     instance_destroy()
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above
+correctSpeedDirection(id) //60fps change (added): moves it by _speed in _direction, this frame's share of a 30fps tick

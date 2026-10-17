@@ -59,27 +59,35 @@ if global.gamePaused=false
   if activateBoss=1
   {
     //guard with arms
-    guardTime+=1
+    //guardTime+=1
+    guardTime+=gDeltaTime //60fps change: counts 30fps ticks
     if guardTime>=guardWait
     {
-      if guardTime=guardWait
+      //if guardTime=guardWait
+      if scrCountPass(guardTime,guardWait) //60fps change: once, when the count reaches it
         sprite_index=sPhalUarmsBlock
-      else if guardTime=guardWait+5
+      //else if guardTime=guardWait+5
+      else if scrCountPass(guardTime,guardWait+5) //60fps change: once, when the count reaches it
         image_index=1
-      else if guardTime=guardWait+10
+      //else if guardTime=guardWait+10
+      else if scrCountPass(guardTime,guardWait+10) //60fps change: once, when the count reaches it
         image_index=2
-      else if guardTime=guardWait+shieldWait
+      //else if guardTime=guardWait+shieldWait
+      else if scrCountPass(guardTime,guardWait+shieldWait) //60fps change: once, when the count reaches it
         image_index=1
-      else if guardTime=guardWait+shieldWait+5
+      //else if guardTime=guardWait+shieldWait+5
+      else if scrCountPass(guardTime,guardWait+shieldWait+5) //60fps change: once, when the count reaches it
         image_index=0
-      else if guardTime=guardWait+shieldWait+10
+      //else if guardTime=guardWait+shieldWait+10
+      else if guardTime>=guardWait+shieldWait+10 //60fps change: >= so it still resets if the frame rate changes mid-count
       {
         sprite_index=sPhalUarmsIdle
         guardTime=0
       }
     }
     //energy wave attack
-    energyWaveTime+=1
+    //energyWaveTime+=1
+    energyWaveTime+=gDeltaTime //60fps change: counts 30fps ticks
     if energyWaveDelay=0
     {
       if energyWaveTime>=energyWaveWait
@@ -90,7 +98,8 @@ if global.gamePaused=false
     }
     if energyWaveTime>=energyWaveDelay and energyWaveDelay!=0
     {
-      if energyWaveTime=energyWaveDelay
+      //if energyWaveTime=energyWaveDelay
+      if scrCountPass(energyWaveTime,energyWaveDelay) //60fps change: once, when the count reaches it
       {
         afterImage=instance_create(x,y,oEnemyAfterImage)
         afterImage.image_alpha=1
@@ -100,7 +109,8 @@ if global.gamePaused=false
         afterImage.xScalingSet=0.15
         afterImage.yScalingSet=0.15
       }
-      if energyWaveTime>=energyWaveDelay+20 and energyWaveTime mod eWaveFreq=0
+      //if energyWaveTime>=energyWaveDelay+20 and energyWaveTime mod eWaveFreq=0
+      if energyWaveTime>=energyWaveDelay+20 and scrModPass(energyWaveTime,eWaveFreq) //60fps change: once each time the count reaches a multiple of it
       {
         var x1,y1,pDir;
         if sprite_index=sPhalUarmsIdle
@@ -120,7 +130,8 @@ if global.gamePaused=false
         eWaveAtk.elementType=3
         eWaveAtk.spiritPower=spiritPower
         eWaveAtk.bulletSpeed=6
-        eWaveAtk.direction=pDir
+        //eWaveAtk.direction=pDir
+        eWaveAtk._direction=pDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       }
       if energyWaveTime>=energyWaveDelay+75
         energyWaveTime=0

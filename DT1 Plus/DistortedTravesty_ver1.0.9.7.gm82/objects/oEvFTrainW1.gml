@@ -38,8 +38,10 @@ if global.gameProgress=87 //intro to Fright Train
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -92,7 +94,8 @@ else if global.gameProgress=88 //trap event
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -111,7 +114,8 @@ else if global.gameProgress=88 //trap event
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=110
     {
       sceneDelay=0
@@ -130,7 +134,8 @@ else if global.gameProgress=88 //trap event
   }
   else if sceneProgress=5
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=190
     {
       sceneDelay=0
@@ -157,8 +162,10 @@ if global.gameProgress=91 //Fright Train Interior
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -290,8 +297,10 @@ else if global.gameProgress=94 //Fright Train Elevator Start
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -310,8 +319,10 @@ else if global.gameProgress=94 //Fright Train Elevator Start
     msgCreate("I guessed that by the elevator music playing, but why?",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=4
   {
-    sceneDelay+=1
-    if sceneDelay=20
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=20
+    if scrCountPass(sceneDelay,20) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_Clang,0,1)
       background_vspeed[0]=4
@@ -378,7 +389,8 @@ else if global.gameProgress=95 //Fright Train Elevator Control
   }
   else if sceneProgress=12
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -413,11 +425,14 @@ else if global.gameProgress=97 and room=rFrightTrain7 //Boss Fight (Quick Time D
   else if sceneProgress=1
   {
     if oPlayer1.y<192
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=60
       {
@@ -438,8 +453,10 @@ else if global.gameProgress=97 and room=rFrightTrain7 //Boss Fight (Quick Time D
     msgCreate("I will lock down this world with them and The Darkness will take the worlds' Muffins!#It will consume and control everything!#We will be the worlds' masters!",1,oMessageCutscene,global.mainCharacters[4])
   else if sceneProgress=7
   {
-    sceneDelay+=1
-    if sceneDelay=40
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=40
+    if scrCountPass(sceneDelay,40) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_SwitchHit,0,1)
       with oQTD_Orb
@@ -457,12 +474,16 @@ else if global.gameProgress=97 and room=rFrightTrain7 //Boss Fight (Quick Time D
     msgCreate("Not if I have anything to say about it.",1,oMessageCutscene,global.mainCharacters[5])
   else if sceneProgress=10
   {
-    sceneDelay+=1
-    if sceneDelay>=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=30
+    if sceneDelay>29 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      if sceneDelay=50
+      //if sceneDelay=50
+      if scrCountPass(sceneDelay,50) //60fps change: once, when the count reaches it
         npcInformant.image_xscale=1
-      npcSyrus.y+=8
+      //npcSyrus.y+=8
+      npcSyrus.y+=8*gDeltaTime //60fps change: per 30fps tick
       if npcSyrus.y>=224
       {
         npcSyrus.sprite_index=sSyrusGroundHit
@@ -474,8 +495,10 @@ else if global.gameProgress=97 and room=rFrightTrain7 //Boss Fight (Quick Time D
   }
   else if sceneProgress=11
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
       npcSyrus.sprite_index=sSyrusPointDUp
     else if sceneDelay>=60
     {
@@ -489,7 +512,8 @@ else if global.gameProgress=97 and room=rFrightTrain7 //Boss Fight (Quick Time D
   else if sceneProgress=12
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.2
+      //bossFinishFadeAlpha+=0.2
+      bossFinishFadeAlpha+=0.2*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
     {
       npcSyrus.sprite_index=sSyrusStand
@@ -499,13 +523,15 @@ else if global.gameProgress=97 and room=rFrightTrain7 //Boss Fight (Quick Time D
   else if sceneProgress=13
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.2
+      //bossFinishFadeAlpha-=0.2
+      bossFinishFadeAlpha-=0.2*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=14
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=40
     {
       sceneDelay=0
@@ -530,20 +556,28 @@ else if global.gameProgress=97 and room=rFrightTrain7 //Boss Fight (Quick Time D
     msgCreate("I'll see to it that you suffer!",1,oMessageCutscene,global.mainCharacters[4])
   else if sceneProgress=23
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       npcInformant.sprite_index=sInformantEye
-    else if sceneDelay=8
+    //else if sceneDelay=8
+    else if scrCountPass(sceneDelay,8) //60fps change: once, when the count reaches it
       npcInformant.image_index=1
-    else if sceneDelay=15
+    //else if sceneDelay=15
+    else if scrCountPass(sceneDelay,15) //60fps change: once, when the count reaches it
       npcInformant.image_index=2
-    else if sceneDelay=22
+    //else if sceneDelay=22
+    else if scrCountPass(sceneDelay,22) //60fps change: once, when the count reaches it
       npcInformant.image_index=3
-    else if sceneDelay=29
+    //else if sceneDelay=29
+    else if scrCountPass(sceneDelay,29) //60fps change: once, when the count reaches it
       npcInformant.image_index=4
-    else if sceneDelay=36
+    //else if sceneDelay=36
+    else if scrCountPass(sceneDelay,36) //60fps change: once, when the count reaches it
       npcInformant.image_index=5
-    else if sceneDelay=43
+    //else if sceneDelay=43
+    else if scrCountPass(sceneDelay,43) //60fps change: once, when the count reaches it
       npcInformant.image_index=6
     else if sceneDelay>=55
     {
@@ -555,8 +589,10 @@ else if global.gameProgress=97 and room=rFrightTrain7 //Boss Fight (Quick Time D
     msgCreate("Not this time!",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=25
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       oPlayer1.sprite_index=sPlayerWalk
       var yPlace;
@@ -569,15 +605,19 @@ else if global.gameProgress=97 and room=rFrightTrain7 //Boss Fight (Quick Time D
         yPlace-=64
       }
     }
-    if sceneDelay>=1 and sceneDelay<=8
+    //if sceneDelay>=1 and sceneDelay<=8
+    if sceneDelay>0 and sceneDelay<=8 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      oPlayer1.x+=6
+      //oPlayer1.x+=6
+      oPlayer1.x+=6*gDeltaTime //60fps change: per 30fps tick
       for(i=0;i<4;i+=1)
       {
-        lightningBolt[i].y+=24
+        //lightningBolt[i].y+=24
+        lightningBolt[i].y+=24*gDeltaTime //60fps change: per 30fps tick
       }
     }
-    if sceneDelay=9
+    //if sceneDelay=9
+    if scrCountPass(sceneDelay,9) //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1
@@ -586,13 +626,15 @@ else if global.gameProgress=97 and room=rFrightTrain7 //Boss Fight (Quick Time D
   else if sceneProgress=26
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.2
+      //bossFinishFadeAlpha+=0.2
+      bossFinishFadeAlpha+=0.2*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=27
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=20
     {
       oPlayer1.x=240
@@ -613,13 +655,15 @@ else if global.gameProgress=97 and room=rFrightTrain7 //Boss Fight (Quick Time D
   else if sceneProgress=28
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.2
+      //bossFinishFadeAlpha-=0.2
+      bossFinishFadeAlpha-=0.2*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=29
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=40
     {
       sceneDelay=0
@@ -630,7 +674,8 @@ else if global.gameProgress=97 and room=rFrightTrain7 //Boss Fight (Quick Time D
     msgCreate("That was close.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=31
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=20
     {
       oPlayer1.sprite_index=sPlayerIdle
@@ -642,8 +687,10 @@ else if global.gameProgress=97 and room=rFrightTrain7 //Boss Fight (Quick Time D
     msgCreate("Wait, where did they go?",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=33
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_SwitchHit,0,1)
       with oQTD_Orb
@@ -673,8 +720,10 @@ else if global.gameProgress=97 and room=rFrightTrain7 //Boss Fight (Quick Time D
     msgCreate("Wouldn't give it a second thought.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=42
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       barrier1=instance_create(144,0,oBossBarrier)
       barrier2=instance_create(144,64,oBossBarrier)
@@ -706,14 +755,17 @@ else if global.gameProgress=98 //boss fight ends (Quick Time Distorter)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       oPlayer1.x=288
@@ -730,13 +782,15 @@ else if global.gameProgress=98 //boss fight ends (Quick Time Distorter)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -763,8 +817,10 @@ else if global.gameProgress=98 //boss fight ends (Quick Time Distorter)
     msgCreate("Oh dude, I almost forgot!",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=14
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       bossFinishFadeAlpha=1
       oPlayer1.sprite_index=sPlayerLookUp
@@ -772,8 +828,10 @@ else if global.gameProgress=98 //boss fight ends (Quick Time Distorter)
       muffin.muffinType=2
       playSound(global.snd_BreakOut,0,1)
     }
-    else if sceneDelay>=9 and sceneDelay<=109
-      bossFinishFadeAlpha-=0.01
+    //else if sceneDelay>=9 and sceneDelay<=109
+    else if sceneDelay>8 and sceneDelay<=109 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //bossFinishFadeAlpha-=0.01
+      bossFinishFadeAlpha-=0.01*gDeltaTime //60fps change: per 30fps tick
     else if sceneDelay>=120
     {
       sceneDelay=0
@@ -808,8 +866,10 @@ else if global.gameProgress=98 //boss fight ends (Quick Time Distorter)
     msgCreate("The hell?",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=23
   {
-    sceneDelay+=1
-    if sceneDelay=15
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=15
+    if scrCountPass(sceneDelay,15) //60fps change: once, when the count reaches it
     {
       npcPhisitan=instance_create(368,192,oMisc)
       npcPhisitan.type=0
@@ -864,8 +924,10 @@ else if global.gameProgress=98 //boss fight ends (Quick Time Distorter)
     msgCreate("Well once again, good luck, you will need it.",1,oMessageCutscene,"Phisitan")
   else if sceneProgress=41
   {
-    sceneDelay+=1
-    if sceneDelay=10
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_BreakOut,0,1)
       effect_create_above(ef_smoke,npcPhisitan.x,npcPhisitan.y-14,2,c_gray)

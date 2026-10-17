@@ -58,16 +58,25 @@ if global.gamePaused=false
       image_xscale=1
     else
       image_xscale=-1
-    bobTime+=1
-    if bobTime>=1 and bobTime<=20
-      y+=0.7
-    else if bobTime>=21 and bobTime<=40
+    //60fps change: bobTime counts 30fps ticks in fractions; tick n's frames have values above n-1 up to n, so the
+    //ranges' ">=n" lower bounds are ">n-1" (each covers the same ticks as at 30fps); the moves are per 30fps tick
+    //bobTime+=1
+    //if bobTime>=1 and bobTime<=20
+    //  y+=0.7
+    //else if bobTime>=21 and bobTime<=40
+    bobTime+=gDeltaTime
+    if bobTime>0 and bobTime<=20
+      y+=0.7*gDeltaTime
+    else if bobTime>20 and bobTime<=40
     {
-      y-=0.7
-      if bobTime=40
+      //y-=0.7
+      y-=0.7*gDeltaTime
+      //if bobTime=40
+      if bobTime>=40 //60fps change: (it counts in fractions)
         bobTime=0
     }
-    x+=xVel
+    //x+=xVel
+    x+=xVel*gDeltaTime
     if findTargetX>inactiveDist/2
     {
       if questType>0

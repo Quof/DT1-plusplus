@@ -212,12 +212,17 @@ applies_to=self
 */
 //60fps change (added): Begin Step (from DT3 60FPS): decide whether this frame is a 30fps tick before any instance's
 //Step event runs. F2 cycles the frame rate between 30, 60 and 120 (scrSetFrameRate)
+if !variable_global_exists("gameFrameRateNext") {global.gameFrameRateNext=global.gameFrameRate}
 if keyboard_check_pressed(vk_f2)
 {
-  if global.gameFrameRate==30 {scrSetFrameRate(60)}
-  else if global.gameFrameRate==60 {scrSetFrameRate(120)}
-  else {scrSetFrameRate(30)}
+  if global.gameFrameRateNext==30 {global.gameFrameRateNext=60}
+  else if global.gameFrameRateNext==60 {global.gameFrameRateNext=120}
+  else {global.gameFrameRateNext=30}
 }
+//the new rate starts with a 30fps tick (the last frame finished one): timers count 30fps ticks in gDeltaTime steps
+//and check for exact counts, so they have to stay on the same steps (0.25 steps switching to 0.5 halfway through a
+//0.5 step would skip the whole numbers)
+if global.gameFrameRateNext!=global.gameFrameRate and gDeltaDoTicks>0 {scrSetFrameRate(global.gameFrameRateNext)}
 room_speed=global.gameFrameRate*global.debugSpeedMul
 gDeltaTime=30/global.gameFrameRate
 

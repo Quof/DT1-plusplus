@@ -63,14 +63,22 @@ if global.gamePaused=false
   if bActive=true and stunnedTime=0 and dieFade=0
   {
 
-    bobTime+=1
-    if bobTime>=1 and bobTime<=20
-      y+=bobAmount
-    else if bobTime>=25 and bobTime<=44
-      y-=bobAmount
+    //60fps change: bobTime counts 30fps ticks in fractions; tick n's frames have values above n-1 up to n, so the
+    //ranges' ">=n" lower bounds are ">n-1" (each covers the same ticks as at 30fps); the moves are per 30fps tick
+    //bobTime+=1
+    //if bobTime>=1 and bobTime<=20
+    //  y+=bobAmount
+    //else if bobTime>=25 and bobTime<=44
+    //  y-=bobAmount
+    bobTime+=gDeltaTime
+    if bobTime>0 and bobTime<=20
+      y+=bobAmount*gDeltaTime
+    else if bobTime>24 and bobTime<=44
+      y-=bobAmount*gDeltaTime
     else if bobTime>=49
       bobTime=0
-    x+=xVel
+    //x+=xVel
+    x+=xVel*gDeltaTime
     if findTargetX>inactiveDist/2
     {
       if questType>0

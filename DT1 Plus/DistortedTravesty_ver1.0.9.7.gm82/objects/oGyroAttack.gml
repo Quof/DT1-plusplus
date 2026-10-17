@@ -21,7 +21,8 @@ if global.gamePaused=false
 {
   if seek=0
   {
-    x+=bulletSpeed
+    //x+=bulletSpeed
+    x+=bulletSpeed*gDeltaTime //60fps change: per 30fps tick
     if point_distance(x,0,oPlayer1.x,0)<16
     {
       if y>oPlayer1.y //below player
@@ -32,7 +33,8 @@ if global.gamePaused=false
     }
   }
   else if seek=1
-    y+=bulletSpeed
+    //y+=bulletSpeed
+    y+=bulletSpeed*gDeltaTime //60fps change: per 30fps tick
 }
 #define Other_0
 /*"/*'/**//* YYD ACTION

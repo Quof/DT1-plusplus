@@ -24,26 +24,30 @@ if global.gamePaused=false
   {
     if type=0 //down
     {
-      y+=4
+      //y+=4
+      y+=4*gDeltaTime //60fps change: per 30fps tick
       if y>=room_height+16
         instance_destroy()
     }
     else if type=1 //up
     {
-      y-=4
+      //y-=4
+      y-=4*gDeltaTime //60fps change: per 30fps tick
       if y<=-16
         instance_destroy()
     }
     else if type=2 //right
     {
-      x+=4
+      //x+=4
+      x+=4*gDeltaTime //60fps change: per 30fps tick
       if x>=room_width+16
         instance_destroy()
     }
     else
     if type=3 //left
     {
-      x-=4
+      //x-=4
+      x-=4*gDeltaTime //60fps change: per 30fps tick
       if x<=-16
         instance_destroy()
     }

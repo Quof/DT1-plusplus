@@ -41,8 +41,10 @@ if global.gamePaused=false
       image_yscale=1
     else
       image_yscale=-1
-    yVel-=0.3
-    y+=yVel
+    //yVel-=0.3
+    yVel=scrGravAcc(yVel,-0.3,1) //60fps change: gravity (upward) per 30fps tick, following the 30fps arc
+    //y+=yVel
+    y+=yVel*gDeltaTime //60fps change: per 30fps tick
     if yVel<1 and y<ystart
     {
       yVel=0
@@ -53,5 +55,6 @@ if global.gamePaused=false
     }
   }
   if rising<0
-    rising+=1
+    //rising+=1
+    rising+=gDeltaTime //60fps change: counts 30fps ticks
 }

@@ -350,9 +350,11 @@ for(i=0;i<floaterAmount;i+=1)
   newFloater.image_alpha=random_range(0.1,0.4)
   newFloater.drawType=1
   newFloater.actorType=0
-  newFloater.direction=random(360)
+  //newFloater.direction=random(360)
+  newFloater._direction=random(360) //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
   newFloater.image_angle=random(360)
-  newFloater.speed=random_range(-1.5,1.5)
+  //newFloater.speed=random_range(-1.5,1.5)
+  newFloater._speed=random_range(-1.5,1.5) //60fps change: _speed (it moves by _speed/_direction, see correctSpeedDirection)
   newFloater.rotateSpeed=random_range(-4,4)
   newFloater.dirChange=random_range(-4,4)
   var spriteUse;
@@ -416,8 +418,10 @@ if global.gameProgress=325 //intro to Primary Memory
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -456,8 +460,10 @@ else if global.gameProgress=327 //Hexor interferes
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -495,8 +501,10 @@ else if global.gameProgress=329 //Jeremy gets control
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -534,8 +542,10 @@ else if global.gameProgress=331 //The Darkness is helping us
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -565,8 +575,10 @@ else if global.gameProgress=333 //Getting close
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -600,8 +612,10 @@ else if global.gameProgress=335 //The outer core
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -642,11 +656,14 @@ else if global.gameProgress=336 and room=rPrimaryMemory6 //Boss Fight (Mecha Gua
   else if sceneProgress=1
   {
     if oPlayer1.y<320
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=30
       {
@@ -657,8 +674,10 @@ else if global.gameProgress=336 and room=rPrimaryMemory6 //Boss Fight (Mecha Gua
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
       npcArtist.image_xscale=-1
     else if sceneDelay>=45
     {
@@ -674,11 +693,15 @@ else if global.gameProgress=336 and room=rPrimaryMemory6 //Boss Fight (Mecha Gua
     msgCreate("As you wish.",1,oMessageCutscene,"The Artist")
   else if sceneProgress=6
   {
-    sceneDelay+=1
-    if sceneDelay>=30 and sceneDelay<=99
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=30 and sceneDelay<=99
+    if sceneDelay>29 and sceneDelay<=99 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      npcArtist.x+=3
-      npcArtist.image_alpha-=0.04
+      //npcArtist.x+=3
+      npcArtist.x+=3*gDeltaTime //60fps change: per 30fps tick
+      //npcArtist.image_alpha-=0.04
+      npcArtist.image_alpha-=0.04*gDeltaTime //60fps change: per 30fps tick
       if npcArtist.image_alpha<=0
       {
         sceneDelay=100
@@ -696,8 +719,10 @@ else if global.gameProgress=336 and room=rPrimaryMemory6 //Boss Fight (Mecha Gua
     msgCreate("I've enabled your buster shot,#just blast this thing out of your way.",1,oMessageCutscene,global.mainCharacters[1])
   else if sceneProgress=9
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       with oMisc
         instance_destroy()
@@ -743,14 +768,17 @@ else if global.gameProgress=337 //boss fight ends (Mecha Guardian)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       xShowTime=-1
@@ -772,13 +800,15 @@ else if global.gameProgress=337 //boss fight ends (Mecha Guardian)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -838,8 +868,10 @@ if global.gameProgress=339 //The Artist and Final Boss fight (Mitra)
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -856,15 +888,19 @@ if global.gameProgress=339 //The Artist and Final Boss fight (Mitra)
     msgCreate("I'm right here.",1,oMessageCutscene,"The Artist")
   else if sceneProgress=3
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       boss=instance_create(544,240,oMitra)
       boss.image_xscale=-1
       boss.image_alpha=0
     }
-    else if sceneDelay>=21 and sceneDelay<=70
-      boss.image_alpha+=0.02
+    //else if sceneDelay>=21 and sceneDelay<=70
+    else if sceneDelay>20 and sceneDelay<=70 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //boss.image_alpha+=0.02
+      boss.image_alpha+=0.02*gDeltaTime //60fps change: per 30fps tick
     else if sceneDelay>=100
     {
       sceneDelay=0
@@ -909,8 +945,10 @@ if global.gameProgress=339 //The Artist and Final Boss fight (Mitra)
     msgCreate("Okay, let's do this!",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=22
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       oPlayer1.raveTime=0
       global.gameProgress=340
@@ -940,14 +978,17 @@ else if global.gameProgress=340 //boss fight ends (Mitra)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       oPlayer1.x=1776
@@ -973,8 +1014,10 @@ else if global.gameProgress=341 //time to escape from Primary Memory
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -988,11 +1031,14 @@ else if global.gameProgress=341 //time to escape from Primary Memory
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
     {
-      sceneDelay+=1
-      if sceneDelay=60
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=60
+      if scrCountPass(sceneDelay,60) //60fps change: once, when the count reaches it
       {
         sceneDelay=0
         sceneProgress+=1
@@ -1001,8 +1047,10 @@ else if global.gameProgress=341 //time to escape from Primary Memory
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=10
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
     {
       var tempMplay;
       tempMplay=findMusic()
@@ -1037,8 +1085,10 @@ else if global.gameProgress=341 //time to escape from Primary Memory
     msgCreate("You don't have your auto recovery anymore. Regardless, hurry!!",1,oMessageCutscene,global.mainCharacters[1])
   else if sceneProgress=13
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       global.cTimerMinute=4
       global.cTimerSecond=5
@@ -1077,11 +1127,14 @@ else if global.gameProgress=349 and room=rPrimaryMemoryEscape5 //the player wins
   else if sceneProgress=1
   {
     if oPlayer1.y<304
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=20
       {
@@ -1098,8 +1151,10 @@ else if global.gameProgress=349 and room=rPrimaryMemoryEscape5 //the player wins
     msgCreate("Too late, you're gone.",1,oMessageCutscene,global.mainCharacters[1])
   else if sceneProgress=5
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       flashScreen=instance_create(0,0,oScreenFlash)
       flashScreen.image_alpha=1
@@ -1122,7 +1177,8 @@ else if global.gameProgress=349 and room=rPrimaryMemoryEscape5 //the player wins
     msgCreate("Just need to get you to a safe area now.",1,oMessageCutscene,global.mainCharacters[1])
   else if sceneProgress=10
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -1141,8 +1197,10 @@ else if global.gameProgress=349 and room=rPrimaryMemoryEscape5 //the player wins
     msgCreate("Damn, let me try a few things...",1,oMessageCutscene,global.mainCharacters[1])
   else if sceneProgress=16
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       barrierL=instance_create(4560,112,oEventBarrier)
       barrierL.image_yscale=3
@@ -1164,14 +1222,17 @@ else if global.gameProgress=350 and room=rPrimaryMemoryEscape5 //the last few se
   {
     if global.cTimerSecond<=2
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       {
         global.gamePaused=true
         stopPlayer()
       }
       if bossFinishFadeAlpha<1
-        bossFinishFadeAlpha+=0.05
+        //bossFinishFadeAlpha+=0.05
+        bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
       else if bossFinishFadeAlpha>=1
       {
         global.gameProgress=351
@@ -1185,7 +1246,8 @@ else if global.gameProgress=350 and room=rPrimaryMemoryEscape5 //the last few se
 //---------------------------------------- room specific events ----------------------------------------
 if room=rPrimaryMemory1 //************************************************************
 {
-  platformCreateDelay-=1
+  //platformCreateDelay-=1
+  platformCreateDelay-=gDeltaTime //60fps change: counts 30fps ticks
   if platformCreateDelay<=0
   {
     if oPlayer1.y>=room_height-12
@@ -1234,22 +1296,29 @@ if room=rPrimaryMemory1 //******************************************************
     {
       if backFollow[0].image_yscale<6
       {
-        backFollow[0].image_xscale+=0.015
-        backFollow[0].image_yscale+=0.015
-        backFollow[1].image_xscale+=0.015
-        backFollow[1].image_yscale+=0.015
+        //backFollow[0].image_xscale+=0.015
+        backFollow[0].image_xscale+=0.015*gDeltaTime //60fps change: per 30fps tick
+        //backFollow[0].image_yscale+=0.015
+        backFollow[0].image_yscale+=0.015*gDeltaTime //60fps change: per 30fps tick
+        //backFollow[1].image_xscale+=0.015
+        backFollow[1].image_xscale+=0.015*gDeltaTime //60fps change: per 30fps tick
+        //backFollow[1].image_yscale+=0.015
+        backFollow[1].image_yscale+=0.015*gDeltaTime //60fps change: per 30fps tick
       }
     }
   }
 }
 else if room=rPrimaryMemory2 //************************************************************
 {
-  invertColorBlockTime+=1
+  //invertColorBlockTime+=1
+  invertColorBlockTime+=gDeltaTime //60fps change: counts 30fps ticks
   if invertColorBlockTime>=50
   {
     newInverter=instance_create(view_xview[0]+view_wview+16,0,oEvPrimColorInvert)
-    newInverter.direction=180
-    newInverter.speed=random_range(0.5,2.5)
+    //newInverter.direction=180
+    newInverter._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
+    //newInverter.speed=random_range(0.5,2.5)
+    newInverter._speed=random_range(0.5,2.5) //60fps change: _speed (it moves by _speed/_direction, see correctSpeedDirection)
     newInverter.xSize=irandom_range(64,144)
     newInverter.ySize=room_height
     invertColorBlockTime=irandom(30)
@@ -1260,7 +1329,8 @@ else if room=rPrimaryMemory4 //*************************************************
   if global.gamePaused=false //spawn X to assist
   {
     if !instance_exists(oEvNpcX1)
-      xShowTime+=1
+      //xShowTime+=1
+      xShowTime+=gDeltaTime //60fps change: counts 30fps ticks
 
     eDistCheck=instance_nearest(oPlayer1.x,oPlayer1.y,oEnemyBase)
     if instance_exists(eDistCheck)
@@ -1291,18 +1361,22 @@ else if room=rPrimaryMemory4 //*************************************************
   }
   else if enemyProgress=1 //short talk
   {
-    enemyProgTime+=1
-    if enemyProgTime=10
+    //enemyProgTime+=1
+    enemyProgTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if enemyProgTime=10
+    if scrCountPass(enemyProgTime,10) //60fps change: once, when the count reaches it
     {
       msgCreate("Damn it, not the Shrouds.",0,oMessagePerson,global.mainCharacters[0],0,1)
       newMessage.fadingTime=100
     }
-    else if enemyProgTime=110
+    //else if enemyProgTime=110
+    else if scrCountPass(enemyProgTime,110) //60fps change: once, when the count reaches it
     {
       msgCreate("They have come to help.",0,oMessagePerson,global.mainCharacters[2],0,1)
       newMessage.fadingTime=100
     }
-    else if enemyProgTime=210
+    //else if enemyProgTime=210
+    else if scrCountPass(enemyProgTime,210) //60fps change: once, when the count reaches it
     {
       msgCreate("Awesome.",0,oMessagePerson,global.mainCharacters[0],0,1)
       newMessage.fadingTime=100
@@ -1312,8 +1386,10 @@ else if room=rPrimaryMemory4 //*************************************************
   }
   else if enemyProgress=2 //spawn more enemies
   {
-    enemyProgTime+=1
-    if enemyProgTime=50
+    //enemyProgTime+=1
+    enemyProgTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if enemyProgTime=50
+    if scrCountPass(enemyProgTime,50) //60fps change: once, when the count reaches it
     {
       var eXplacer,eYplacer;
       eXplacer=2560
@@ -1336,7 +1412,8 @@ else if room=rPrimaryMemory4 //*************************************************
         eXplacer+=32
       }
     }
-    else if enemyProgTime=180
+    //else if enemyProgTime=180
+    else if scrCountPass(enemyProgTime,180) //60fps change: once, when the count reaches it
     {
       var eXplacer,eYplacer;
       eXplacer=640
@@ -1360,8 +1437,10 @@ else if room=rPrimaryMemory4 //*************************************************
   }
   else if enemyProgress=4 //spawn more enemies
   {
-    enemyProgTime+=1
-    if enemyProgTime=50
+    //enemyProgTime+=1
+    enemyProgTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if enemyProgTime=50
+    if scrCountPass(enemyProgTime,50) //60fps change: once, when the count reaches it
     {
       var eXplacer,eYplacer;
       eXplacer=2192
@@ -1374,7 +1453,8 @@ else if room=rPrimaryMemory4 //*************************************************
         eXplacer+=32
       }
     }
-    else if enemyProgTime=200
+    //else if enemyProgTime=200
+    else if scrCountPass(enemyProgTime,200) //60fps change: once, when the count reaches it
     {
       var eXplacer,eYplacer;
       eXplacer=768
@@ -1387,7 +1467,8 @@ else if room=rPrimaryMemory4 //*************************************************
         eXplacer+=32
       }
     }
-    else if enemyProgTime=350
+    //else if enemyProgTime=350
+    else if scrCountPass(enemyProgTime,350) //60fps change: once, when the count reaches it
     {
       var eXplacer,eYplacer;
       eXplacer=3888
@@ -1410,8 +1491,10 @@ else if room=rPrimaryMemory4 //*************************************************
   }
   else if enemyProgress=6 //spawn more enemies
   {
-    enemyProgTime+=1
-    if enemyProgTime=30
+    //enemyProgTime+=1
+    enemyProgTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if enemyProgTime=30
+    if scrCountPass(enemyProgTime,30) //60fps change: once, when the count reaches it
     {
       var eXplacer,eYplacer;
       eXplacer=3408
@@ -1429,7 +1512,8 @@ else if room=rPrimaryMemory4 //*************************************************
         eYplacer+=32
       }
     }
-    else if enemyProgTime=240
+    //else if enemyProgTime=240
+    else if scrCountPass(enemyProgTime,240) //60fps change: once, when the count reaches it
     {
       newEnemy=instance_create(2288,160,oDataBombLauncher)
       newEnemy.bActive=1
@@ -1490,8 +1574,10 @@ else if room=rPrimaryMemory4 //*************************************************
   }
   else if enemyProgress=8 //spawn more enemies
   {
-    enemyProgTime+=1
-    if enemyProgTime=30
+    //enemyProgTime+=1
+    enemyProgTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if enemyProgTime=30
+    if scrCountPass(enemyProgTime,30) //60fps change: once, when the count reaches it
     {
       var eXplacer,eYplacer;
       eXplacer=1344
@@ -1504,7 +1590,8 @@ else if room=rPrimaryMemory4 //*************************************************
         eXplacer+=64
       }
     }
-    else if enemyProgTime=150
+    //else if enemyProgTime=150
+    else if scrCountPass(enemyProgTime,150) //60fps change: once, when the count reaches it
     {
       var eXplacer,eYplacer;
       eXplacer=1328
@@ -1517,7 +1604,8 @@ else if room=rPrimaryMemory4 //*************************************************
         eXplacer+=random_range(56,72)
       }
     }
-    else if enemyProgTime=300
+    //else if enemyProgTime=300
+    else if scrCountPass(enemyProgTime,300) //60fps change: once, when the count reaches it
     {
       var eXplacer,eYplacer;
       eXplacer=1824
@@ -1551,7 +1639,8 @@ else if room=rPrimaryMemory4 //*************************************************
 }
 else if room=rPrimaryMemory5 //************************************************************
 {
-  platformCreateDelay-=1
+  //platformCreateDelay-=1
+  platformCreateDelay-=gDeltaTime //60fps change: counts 30fps ticks
   if platformCreateDelay<=0
   {
     if oPlayer1.x>10000
@@ -1588,7 +1677,8 @@ else if room=rPrimaryMemory5 //*************************************************
 
   if oPlayer1.x>12000 and oPlayer1.x<16512 and oPlayer1.image_xscale=1
   {
-    laserBeamTime-=1
+    //laserBeamTime-=1
+    laserBeamTime-=gDeltaTime //60fps change: counts 30fps ticks
     if laserBeamTime<=0
     {
       newLaser=instance_create(oPlayer1.x+100,room_height,oEvSkyLaser)
@@ -1605,8 +1695,10 @@ else if room=rPrimaryMemory6 or room=rBR_MechaGuardian //***********************
 {
   if global.gamePaused=false //spawn X to assist
   {
-    if !instance_exists(oEvNpcX1) and xShowTime>-1
-      xShowTime+=1
+    //if !instance_exists(oEvNpcX1) and xShowTime>-1
+    if !instance_exists(oEvNpcX1) and xShowTime>=0 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //xShowTime+=1
+      xShowTime+=gDeltaTime //60fps change: counts 30fps ticks
 
     eDistCheck=instance_nearest(oPlayer1.x,oPlayer1.y,oEnemyBase)
     if instance_exists(eDistCheck)
@@ -1629,7 +1721,8 @@ else if room=rPrimaryMemory6 or room=rBR_MechaGuardian //***********************
   {
     if instance_number(oEnemyBase)<7
     {
-      enemySpawnTime+=1
+      //enemySpawnTime+=1
+      enemySpawnTime+=gDeltaTime //60fps change: counts 30fps ticks
       if enemySpawnTime>=330
       {
         enemySpawnType+=1
@@ -1709,31 +1802,42 @@ if global.gamePaused=false
   if boostedRecovery>0
   {
     if oPlayer1.spiritEnergy<oPlayer1.maxSpiritEnergy
-      oPlayer1.spiritEnergy+=boostedRecovery
+      //oPlayer1.spiritEnergy+=boostedRecovery
+      oPlayer1.spiritEnergy+=boostedRecovery*gDeltaTime //60fps change: per 30fps tick
     if oPlayer1.fireEnergy<oPlayer1.maxFireEnergy
-      oPlayer1.fireEnergy+=boostedRecovery
+      //oPlayer1.fireEnergy+=boostedRecovery
+      oPlayer1.fireEnergy+=boostedRecovery*gDeltaTime //60fps change: per 30fps tick
     if oPlayer1.waterEnergy<oPlayer1.maxWaterEnergy
-      oPlayer1.waterEnergy+=boostedRecovery
+      //oPlayer1.waterEnergy+=boostedRecovery
+      oPlayer1.waterEnergy+=boostedRecovery*gDeltaTime //60fps change: per 30fps tick
     if oPlayer1.windEnergy<oPlayer1.maxWindEnergy
-      oPlayer1.windEnergy+=boostedRecovery
+      //oPlayer1.windEnergy+=boostedRecovery
+      oPlayer1.windEnergy+=boostedRecovery*gDeltaTime //60fps change: per 30fps tick
     if oPlayer1.earthEnergy<oPlayer1.maxEarthEnergy
-      oPlayer1.earthEnergy+=boostedRecovery
+      //oPlayer1.earthEnergy+=boostedRecovery
+      oPlayer1.earthEnergy+=boostedRecovery*gDeltaTime //60fps change: per 30fps tick
   }
   if lifeRecovery>0
   {
     if oPlayer1.life<oPlayer1.maxLife
-      oPlayer1.life+=lifeRecovery
+      //oPlayer1.life+=lifeRecovery
+      oPlayer1.life+=lifeRecovery*gDeltaTime //60fps change: per 30fps tick
   }
 }
 
 //---------- scroll data background ----------
 if backScrollType=1
 {
-  backScrollTime+=1
-  if backScrollTime>=211 and backScrollTime<=260
-    background_alpha[backIndex]+=0.002
-  else if backScrollTime>=361 and backScrollTime<=410
-    background_alpha[backIndex]-=0.002
+  //backScrollTime+=1
+  backScrollTime+=gDeltaTime //60fps change: counts 30fps ticks
+  //if backScrollTime>=211 and backScrollTime<=260
+  if backScrollTime>210 and backScrollTime<=260 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+    //background_alpha[backIndex]+=0.002
+    background_alpha[backIndex]+=0.002*gDeltaTime //60fps change: per 30fps tick
+  //else if backScrollTime>=361 and backScrollTime<=410
+  else if backScrollTime>360 and backScrollTime<=410 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+    //background_alpha[backIndex]-=0.002
+    background_alpha[backIndex]-=0.002*gDeltaTime //60fps change: per 30fps tick
   else if backScrollTime>=411
     backScrollTime=0
 }

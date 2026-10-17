@@ -47,7 +47,8 @@ if global.gamePaused=false
       wallHit=true
     if isCollisionTop(1)
       wallHit=true
-    moveTo(throwSpeed*cos(degtorad(dir)),-throwSpeed*sin(degtorad(dir)))
+    //moveTo(throwSpeed*cos(degtorad(dir)),-throwSpeed*sin(degtorad(dir)))
+    moveTo(throwSpeed*cos(degtorad(dir))*gDeltaTime,-throwSpeed*sin(degtorad(dir))*gDeltaTime) //60fps change: this frame's share of a 30fps tick
   }
   else
   {
@@ -57,11 +58,16 @@ if global.gamePaused=false
       spiritPower-=20
       size=2
     }
-    image_angle-=30
-    image_xscale+=growSpeed
-    image_yscale+=growSpeed
-    image_alpha-=0.02
-    spiralTime+=1
+    //image_angle-=30
+    image_angle-=30*gDeltaTime //60fps change: per 30fps tick
+    //image_xscale+=growSpeed
+    image_xscale+=growSpeed*gDeltaTime //60fps change: per 30fps tick
+    //image_yscale+=growSpeed
+    image_yscale+=growSpeed*gDeltaTime //60fps change: per 30fps tick
+    //image_alpha-=0.02
+    image_alpha-=0.02*gDeltaTime //60fps change: per 30fps tick
+    //spiralTime+=1
+    spiralTime+=gDeltaTime //60fps change: counts 30fps ticks
     if spiralTime>=20
       instance_destroy()
   }

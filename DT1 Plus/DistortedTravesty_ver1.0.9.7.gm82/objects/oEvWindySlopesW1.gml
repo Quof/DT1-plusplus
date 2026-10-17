@@ -20,8 +20,10 @@ if global.gameProgress=184 //intro to Windy Slopes
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -63,8 +65,10 @@ else if global.gameProgress=189 and room=rWindyCaves2 //no dashing here
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -107,7 +111,8 @@ else if room=rWindyCaves2 and global.gameProgress=190 //enemy trap event
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -123,7 +128,8 @@ else if room=rWindyCaves2 and global.gameProgress=190 //enemy trap event
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=180
     {
       sceneDelay=0
@@ -142,7 +148,8 @@ else if room=rWindyCaves2 and global.gameProgress=190 //enemy trap event
   }
   else if sceneProgress=5
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=330
     {
       sceneDelay=0
@@ -161,7 +168,8 @@ else if room=rWindyCaves2 and global.gameProgress=190 //enemy trap event
   }
   else if sceneProgress=7
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=150
     {
       sceneDelay=0
@@ -177,7 +185,8 @@ else if room=rWindyCaves2 and global.gameProgress=190 //enemy trap event
   }
   else if sceneProgress=9
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=450
     {
       sceneDelay=0
@@ -196,7 +205,8 @@ else if room=rWindyCaves2 and global.gameProgress=190 //enemy trap event
   }
   else if sceneProgress=11
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=210
     {
       sceneDelay=0
@@ -239,11 +249,14 @@ else if global.gameProgress=193 and room=rWindyCaves4 //Boss Fight (Enflamed Bla
   else if sceneProgress=1
   {
     if oPlayer1.y<288
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=20
       {
@@ -254,16 +267,20 @@ else if global.gameProgress=193 and room=rWindyCaves4 //Boss Fight (Enflamed Bla
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       boss=instance_create(448,368,oEnflamedBlazingBat)
       boss.image_xscale=-1
     }
-    else if sceneDelay>=30
+    //else if sceneDelay>=30
+    else if sceneDelay>29 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if boss.y>240
-        boss.y-=2
+        //boss.y-=2
+        boss.y-=2*gDeltaTime //60fps change: per 30fps tick
       else
       {
         sceneDelay=0
@@ -273,7 +290,8 @@ else if global.gameProgress=193 and room=rWindyCaves4 //Boss Fight (Enflamed Bla
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -298,8 +316,10 @@ else if global.gameProgress=193 and room=rWindyCaves4 //Boss Fight (Enflamed Bla
     msgCreate("Failed diplomacy check.",1,oMessageCutscene,global.mainCharacters[1])
   else if sceneProgress=12
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       bDrawBossImage=false
       boss.visible=true
@@ -332,14 +352,17 @@ else if global.gameProgress=194 //boss fight ends (Enflamed Blazing Bat)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       oPlayer1.x=320
@@ -361,13 +384,15 @@ else if global.gameProgress=194 //boss fight ends (Enflamed Blazing Bat)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -404,8 +429,10 @@ else if global.gameProgress=194 //boss fight ends (Enflamed Blazing Bat)
     msgCreate("Oh, and I'll release the barrier on my treasure a few rooms back.#This is merely a ploy to make you backtrack and lengthen gameplay.",1,oMessageCutscene,"Blazing The Bat")
   else if sceneProgress=19
   {
-    sceneDelay+=1
-    if sceneDelay=10
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
     {
       for(i=0;i<3;i+=1)
         effect_create_above(ef_ring,npcBBat.x,npcBBat.y,i,c_red)
@@ -455,13 +482,15 @@ else if global.gameProgress=195 and room=rWindySlopes4 //Into Distortion 3
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.1
+      //bossFinishFadeAlpha+=0.1
+      bossFinishFadeAlpha+=0.1*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=60
     {
       sceneDelay=0
@@ -501,7 +530,8 @@ else if global.gameProgress=216 and room=rWindySlopes5 and global.gamePaused=fal
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.1
+      //bossFinishFadeAlpha-=0.1
+      bossFinishFadeAlpha-=0.1*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
     {
       msgCreate("It's out here too?!",0,oMessagePerson,global.mainCharacters[0],0,1)
@@ -516,13 +546,18 @@ else if global.gameProgress=216 and room=rWindySlopes5 and global.gamePaused=fal
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
-    if sceneDelay>=1 and sceneDelay<=120
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=1 and sceneDelay<=120
+    if sceneDelay>0 and sceneDelay<=120 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      boss.x+=bossMoveSpd
-      boss.y-=bossMoveSpd/4
+      //boss.x+=bossMoveSpd
+      boss.x+=bossMoveSpd*gDeltaTime //60fps change: per 30fps tick
+      //boss.y-=bossMoveSpd/4
+      boss.y-=bossMoveSpd/4*gDeltaTime //60fps change: per 30fps tick
       if bossMoveSpd<7
-        bossMoveSpd+=0.35
+        //bossMoveSpd+=0.35
+        bossMoveSpd+=0.35*gDeltaTime //60fps change: per 30fps tick
     }
     else if sceneDelay>=121
     {
@@ -544,8 +579,10 @@ else if global.gameProgress=218 and room=rWindySlopes6 //a plane
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()

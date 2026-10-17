@@ -43,8 +43,11 @@ if global.gamePaused=false
     mHead=instance_create(spawnX,ranSpawn,enemySpawn)
     mHead.bActive=true
     mHead.bobTime=round(random(54))
-    spawnTime=0
+    //spawnTime=0
+    //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
+    spawnTime=gDeltaTime-1
   }
   else
-    spawnTime+=1
+    //spawnTime+=1
+    spawnTime+=gDeltaTime //60fps change: see above
 }

@@ -22,8 +22,10 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  yVel+=0.2
-  image_angle+=20
+  //yVel+=0.2
+  yVel=scrGravAcc(yVel,0.2,1) //60fps change: gravity per 30fps tick, following the 30fps arc
+  //image_angle+=20
+  image_angle+=20*gDeltaTime //60fps change: per 30fps tick
 
   if isCollisionTop(1)
     bGroundHit=true
@@ -41,5 +43,6 @@ if global.gamePaused=false
     lineRootStrike.elementType=4
     instance_destroy()
   }
-  moveTo(xVel,yVel)
+  //moveTo(xVel,yVel)
+  moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 }

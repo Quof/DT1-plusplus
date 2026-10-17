@@ -28,7 +28,8 @@ if global.gamePaused=false
   {
     if global.shroudThreat>=1000
     {
-      spawnTime+=1
+      //spawnTime+=1
+      spawnTime+=gDeltaTime //60fps change: counts 30fps ticks
       if spawnTime>=15
       {
         spawnTime=0
@@ -55,7 +56,8 @@ if global.gamePaused=false
   }
   else if shroudProg=1
   {
-    spawnTime+=1
+    //spawnTime+=1
+    spawnTime+=gDeltaTime //60fps change: counts 30fps ticks
     if spawnTime>=120
       shroudProg=2
   }
@@ -103,8 +105,10 @@ if global.gamePaused=false
   {
     if global.gameProgress>=195 //Blazing
     {
-      blazingTime+=1
-      if blazingTime=180
+      //blazingTime+=1
+      blazingTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if blazingTime=180
+      if scrCountPass(blazingTime,180) //60fps change: once, when the count reaches it
         blazingBat=instance_create(x,y,oBlazingAssist)
     }
     //win/lose condition

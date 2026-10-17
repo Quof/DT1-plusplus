@@ -88,7 +88,8 @@ if global.gamePaused=false
   if bActive=true and stunnedTime=0 and dieFade=0
   {
     //new spawn wait
-    spawnWait-=1
+    //spawnWait-=1
+    spawnWait-=gDeltaTime //60fps change: counts 30fps ticks
     if spawnWait<=0
     {
       if x>oCharacter.x
@@ -96,8 +97,10 @@ if global.gamePaused=false
       else
         xVel=runAcc
       //shoot
-      shootTime+=1
-      if shootTime=shootWait-16
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if shootTime=shootWait-16
+      if scrCountPass(shootTime,shootWait-16) //60fps change: once, when the count reaches it
       {
         afterImage=instance_create(x,y,oEnemyAfterImage)
         afterImage.image_alpha=1
@@ -136,7 +139,8 @@ if global.gamePaused=false
         shootTime=0
       }
       //duplicate
-      duplicateTime+=1
+      //duplicateTime+=1
+      duplicateTime+=gDeltaTime //60fps change: counts 30fps ticks
       if duplicateTime>=duplicateWait
       {
         newSlime=instance_create(x,y-12,oSludgeCreature)
@@ -145,7 +149,8 @@ if global.gamePaused=false
       }
     }
 
-    yVel+=0.3
+    //yVel+=0.3
+    yVel=scrGravAcc(yVel,0.3,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
     {
       yVel=0
@@ -156,7 +161,8 @@ if global.gamePaused=false
       xVel=1
     if isCollisionRight(1)
       xVel=-1
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 
     if y>room_height+30
     {

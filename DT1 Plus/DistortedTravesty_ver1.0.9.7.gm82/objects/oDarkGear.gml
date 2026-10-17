@@ -114,7 +114,8 @@ if global.gamePaused=false
   if bActive=true and dieFade=0
   {
     //movement **************************************************
-    teleportTime+=1
+    //teleportTime+=1
+    teleportTime+=gDeltaTime //60fps change: counts 30fps ticks
     if teleportTime>=teleportWait
     {
       effect_create_above(ef_ring,x,y,1,c_black)
@@ -126,7 +127,8 @@ if global.gamePaused=false
     }
     //attacks **************************************************
     //---------- Cross Spiral ----------
-    crossSpiralTime+=1
+    //crossSpiralTime+=1
+    crossSpiralTime+=gDeltaTime //60fps change: counts 30fps ticks
     if crossSpiralDelay=0
     {
       if crossSpiralTime>=crossSpiralWait
@@ -137,7 +139,8 @@ if global.gamePaused=false
     }
     if crossSpiralTime>=crossSpiralDelay and crossSpiralDelay!=0
     {
-      if crossSpiralTime=crossSpiralDelay+1
+      //if crossSpiralTime=crossSpiralDelay+1
+      if scrCountPass(crossSpiralTime,crossSpiralDelay+1) //60fps change: once, when the count reaches it
       {
         afterImage=instance_create(x,y,oEnemyAfterImage)
         afterImage.image_alpha=1
@@ -156,12 +159,16 @@ if global.gamePaused=false
 
         dgFlareDir=0
       }
-      else if crossSpiralTime>=crossSpiralDelay+1 and crossSpiralTime<=crossSpiralDelay+30
+      //else if crossSpiralTime>=crossSpiralDelay+1 and crossSpiralTime<=crossSpiralDelay+30
+      else if crossSpiralTime>crossSpiralDelay+1 and crossSpiralTime<=crossSpiralDelay+30 //60fps change: the same 30fps ticks, counted in gDeltaTime steps (from after the one-shot above, which makes what this moves; at 30fps that took the +1 tick)
       {
-        dgFlareL.x-=7
-        dgFlareR.x+=7
+        //dgFlareL.x-=7
+        dgFlareL.x-=7*gDeltaTime //60fps change: per 30fps tick
+        //dgFlareR.x+=7
+        dgFlareR.x+=7*gDeltaTime //60fps change: per 30fps tick
       }
-      else if crossSpiralTime>=crossSpiralDelay+45 and crossSpiralTime mod crossSpiralAmt=0
+      //else if crossSpiralTime>=crossSpiralDelay+45 and crossSpiralTime mod crossSpiralAmt=0
+      else if crossSpiralTime>=crossSpiralDelay+45 and scrModPass(crossSpiralTime,crossSpiralAmt) //60fps change: once each time the count reaches a multiple of it
       {
         //left
         newBullet=instance_create(dgFlareL.x,dgFlareL.y,oMMeShot1)
@@ -169,14 +176,16 @@ if global.gamePaused=false
         newBullet.image_blend=make_color_rgb(255,190,190)
         newBullet.physicalPower=physicalPower
         newBullet.bulletSpeed=7
-        newBullet.direction=dgFlareDir+90
+        //newBullet.direction=dgFlareDir+90
+        newBullet._direction=dgFlareDir+90 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.image_angle=dgFlareDir+90
         newBullet=instance_create(dgFlareL.x,dgFlareL.y,oMMeShot1)
         newBullet.sprite_index=sEbulletDiamond
         newBullet.image_blend=make_color_rgb(255,190,190)
         newBullet.physicalPower=physicalPower
         newBullet.bulletSpeed=7
-        newBullet.direction=dgFlareDir+270
+        //newBullet.direction=dgFlareDir+270
+        newBullet._direction=dgFlareDir+270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.image_angle=dgFlareDir+270
         //right
         newBullet=instance_create(dgFlareR.x,dgFlareR.y,oMMeShot1)
@@ -184,14 +193,16 @@ if global.gamePaused=false
         newBullet.image_blend=make_color_rgb(190,190,255)
         newBullet.physicalPower=physicalPower
         newBullet.bulletSpeed=7
-        newBullet.direction=dgFlareDir
+        //newBullet.direction=dgFlareDir
+        newBullet._direction=dgFlareDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.image_angle=dgFlareDir
         newBullet=instance_create(dgFlareR.x,dgFlareR.y,oMMeShot1)
         newBullet.sprite_index=sEbulletDiamond
         newBullet.image_blend=make_color_rgb(190,190,255)
         newBullet.physicalPower=physicalPower
         newBullet.bulletSpeed=7
-        newBullet.direction=dgFlareDir+180
+        //newBullet.direction=dgFlareDir+180
+        newBullet._direction=dgFlareDir+180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.image_angle=dgFlareDir+180
 
         dgFlareDir+=5
@@ -208,7 +219,8 @@ if global.gamePaused=false
       }
     }
     //---------- Judge Line ----------
-    judgeLineTime+=1
+    //judgeLineTime+=1
+    judgeLineTime+=gDeltaTime //60fps change: counts 30fps ticks
     if judgeLineDelay=0
     {
       if judgeLineTime>=judgeLineWait
@@ -219,7 +231,8 @@ if global.gamePaused=false
     }
     if judgeLineTime>=judgeLineDelay and judgeLineDelay!=0
     {
-      if judgeLineTime=judgeLineDelay+1
+      //if judgeLineTime=judgeLineDelay+1
+      if scrCountPass(judgeLineTime,judgeLineDelay+1) //60fps change: once, when the count reaches it
       {
         dgJudgeL=instance_create(x,y,oMisc)
         dgJudgeL.sprite_index=sColorRotoDisc
@@ -234,12 +247,16 @@ if global.gamePaused=false
         else
           judgeDir=0
       }
-      else if judgeLineTime>=judgeLineDelay+1 and judgeLineTime<=judgeLineDelay+30
+      //else if judgeLineTime>=judgeLineDelay+1 and judgeLineTime<=judgeLineDelay+30
+      else if judgeLineTime>judgeLineDelay+1 and judgeLineTime<=judgeLineDelay+30 //60fps change: the same 30fps ticks, counted in gDeltaTime steps (from after the one-shot above, which makes what this moves; at 30fps that took the +1 tick)
       {
-        dgJudgeL.x-=7
-        dgJudgeR.x+=7
+        //dgJudgeL.x-=7
+        dgJudgeL.x-=7*gDeltaTime //60fps change: per 30fps tick
+        //dgJudgeR.x+=7
+        dgJudgeR.x+=7*gDeltaTime //60fps change: per 30fps tick
       }
-      else if judgeLineTime>=judgeLineDelay+45 and judgeLineTime mod judgeLineAmt=0
+      //else if judgeLineTime>=judgeLineDelay+45 and judgeLineTime mod judgeLineAmt=0
+      else if judgeLineTime>=judgeLineDelay+45 and scrModPass(judgeLineTime,judgeLineAmt) //60fps change: once each time the count reaches a multiple of it
       {
         //left
         newBullet=instance_create(dgJudgeL.x,dgJudgeL.y,oMMeShot1)
@@ -247,29 +264,36 @@ if global.gamePaused=false
         newBullet.image_blend=make_color_rgb(190,255,190)
         newBullet.physicalPower=physicalPower
         newBullet.bulletSpeed=5
-        newBullet.direction=0
+        //newBullet.direction=0
+        newBullet._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         //right
         newBullet=instance_create(dgJudgeR.x,dgJudgeR.y,oMMeShot1)
         newBullet.sprite_index=sEbulletSmall
         newBullet.image_blend=make_color_rgb(190,255,190)
         newBullet.physicalPower=physicalPower
         newBullet.bulletSpeed=5
-        newBullet.direction=180
+        //newBullet.direction=180
+        newBullet._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       }
 
-      if judgeLineTime>=judgeLineDelay+45 //move energy balls
+      //if judgeLineTime>=judgeLineDelay+45 //move energy balls
+      if judgeLineTime>judgeLineDelay+44 //move energy balls //60fps change: the same 30fps ticks, counted in gDeltaTime steps
       {
         if judgeDir=0 //down
         {
-          dgJudgeL.y+=4
-          dgJudgeR.y+=4
+          //dgJudgeL.y+=4
+          dgJudgeL.y+=4*gDeltaTime //60fps change: per 30fps tick
+          //dgJudgeR.y+=4
+          dgJudgeR.y+=4*gDeltaTime //60fps change: per 30fps tick
           if dgJudgeL.y>=yGround
             judgeDir=1
         }
         else if judgeDir=1 //up
         {
-          dgJudgeL.y-=4
-          dgJudgeR.y-=4
+          //dgJudgeL.y-=4
+          dgJudgeL.y-=4*gDeltaTime //60fps change: per 30fps tick
+          //dgJudgeR.y-=4
+          dgJudgeR.y-=4*gDeltaTime //60fps change: per 30fps tick
           if dgJudgeL.y<=80
             judgeDir=0
         }
@@ -287,7 +311,8 @@ if global.gamePaused=false
     }
     //---------- Rose Spark ----------
     if bossProgress>=2
-      roseSparkTime+=1
+      //roseSparkTime+=1
+      roseSparkTime+=gDeltaTime //60fps change: counts 30fps ticks
     if roseSparkDelay=0
     {
       if roseSparkTime>=roseSparkWait
@@ -298,7 +323,8 @@ if global.gamePaused=false
     }
     if roseSparkTime>=roseSparkDelay and roseSparkDelay!=0
     {
-      if roseSparkTime=roseSparkDelay+1
+      //if roseSparkTime=roseSparkDelay+1
+      if scrCountPass(roseSparkTime,roseSparkDelay+1) //60fps change: once, when the count reaches it
       {
         dgRose=instance_create(x,y,oMisc)
         dgRose.sprite_index=sColorRotoDisc
@@ -308,7 +334,8 @@ if global.gamePaused=false
         dgRose.image_yscale=1.25
         dgRose.type=1
       }
-      else if roseSparkTime=roseSparkDelay+45
+      //else if roseSparkTime=roseSparkDelay+45
+      else if scrCountPass(roseSparkTime,roseSparkDelay+45) //60fps change: once, when the count reaches it
       {
         roseStart=instance_create(dgRose.x,dgRose.y,oMMeShot1)
         roseStart.sprite_index=sColorRotoDisc
@@ -318,7 +345,8 @@ if global.gamePaused=false
         roseStart.physicalPower=physicalPower
         roseStart.size=2
         roseStart.bulletSpeed=3.5
-        roseStart.direction=point_direction(dgRose.x,dgRose.y,oPlayer1.x,oPlayer1.y-26)
+        //roseStart.direction=point_direction(dgRose.x,dgRose.y,oPlayer1.x,oPlayer1.y-26)
+        roseStart._direction=point_direction(dgRose.x,dgRose.y,oPlayer1.x,oPlayer1.y-26) //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         sparkNum=0
         sparkNumMax=0
         sparkBurst=0
@@ -326,7 +354,8 @@ if global.gamePaused=false
         with dgRose
           instance_destroy()
       }
-      else if roseSparkTime>=roseSparkDelay+46 and roseSparkTime<10000 and roseSparkTime mod roseSparkAmt=0
+      //else if roseSparkTime>=roseSparkDelay+46 and roseSparkTime<10000 and roseSparkTime mod roseSparkAmt=0
+      else if roseSparkTime>=roseSparkDelay+46 and roseSparkTime<10000 and scrModPass(roseSparkTime,roseSparkAmt) //60fps change: once each time the count reaches a multiple of it
       {
         if instance_exists(roseStart)
         {
@@ -345,7 +374,8 @@ if global.gamePaused=false
             rosePetal[sparkNumMax,i].image_blend=make_color_rgb(255,255,190)
             rosePetal[sparkNumMax,i].physicalPower=physicalPower
             rosePetal[sparkNumMax,i].bulletSpeed=0
-            rosePetal[sparkNumMax,i].direction=roseDir
+            //rosePetal[sparkNumMax,i].direction=roseDir
+            rosePetal[sparkNumMax,i]._direction=roseDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             rosePetal[sparkNumMax,i].image_angle=roseDir
             roseDir+=360/roseSparkPeddles
           }
@@ -359,8 +389,10 @@ if global.gamePaused=false
       }
       else if roseSparkTime>=10000
       {
-        sparkBurst+=1
-        if sparkBurst mod 10=0
+        //sparkBurst+=1
+        sparkBurst+=gDeltaTime //60fps change: counts 30fps ticks
+        //if sparkBurst mod 10=0
+        if scrModPass(sparkBurst,10) //60fps change: once each time the count reaches a multiple of it
         {
           if sparkNum<sparkNumMax
           {

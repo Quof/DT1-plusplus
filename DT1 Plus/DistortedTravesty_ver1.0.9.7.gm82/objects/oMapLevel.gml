@@ -205,7 +205,8 @@ if oWorldMap.choseLevel>0 and selectionMade=true
   screenFlash-=0.1
   if screenFlash<=0
   {
-    transition_steps=10
+    //transition_steps=10
+    transition_steps=10/gDeltaTime //60fps change: transition_steps counts frames: the same time
     transition_kind=21
     room_goto(zoneLoc1)
   }

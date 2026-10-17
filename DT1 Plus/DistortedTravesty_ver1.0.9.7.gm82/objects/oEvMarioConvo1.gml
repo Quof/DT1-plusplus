@@ -38,7 +38,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=1
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     else if charDialogue[0]=2
@@ -64,8 +65,10 @@ if global.gamePaused=false
     {
       stringToShow="Ping test..."
       messageWidth=string_width(stringToShow)
-      pingTest+=1
-      if pingTest<=130
+      //pingTest+=1
+      pingTest+=gDeltaTime //60fps change: counts 30fps ticks
+      //if pingTest<=130
+      if pingTest<=130 and scrModPass(pingTest,1) //60fps change: a message once per 30fps tick (each time the count reaches a whole number), as at 30fps
       {
         randomPosX=random(view_xview[0]+view_wview[0])
         randomPosY=random(view_yview[0]+view_hview[0])
@@ -85,7 +88,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=3
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     else if charDialogue[0]=4
@@ -97,7 +101,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=5
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     else if charDialogue[0]=6
@@ -109,7 +114,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=7
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     else if charDialogue[0]=8
@@ -143,7 +149,8 @@ if global.gamePaused=false
       }
       else if charDialogue[0]=2
       {
-        convo[0]+=1
+        //convo[0]+=1
+        convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
         if convo[0]>=90 charDialogue[0]+=1
       }
       else if charDialogue[0]=3
@@ -155,7 +162,8 @@ if global.gamePaused=false
       }
       else if charDialogue[0]=4
       {
-        convo[0]+=1
+        //convo[0]+=1
+        convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
         if convo[0]>=90 charDialogue[0]+=1
       }
       else if charDialogue[0]=5
@@ -167,7 +175,8 @@ if global.gamePaused=false
       }
       else if charDialogue[0]=6
       {
-        convo[0]+=1
+        //convo[0]+=1
+        convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
         if convo[0]>=90 charDialogue[0]+=1
       }
       else if charDialogue[0]=7
@@ -190,7 +199,8 @@ if global.gamePaused=false
       }
       else if charDialogue[1]=2
       {
-        convo[0]+=1
+        //convo[0]+=1
+        convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
         if convo[0]>=90 charDialogue[1]+=1
       }
       else if charDialogue[1]=3
@@ -227,7 +237,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=1
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     else if charDialogue[0]=2
@@ -239,7 +250,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=3
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=70 charDialogue[0]+=1
     }
     else if charDialogue[0]=4
@@ -266,7 +278,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=1
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     if charDialogue[0]=2
@@ -278,7 +291,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=3
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     else if charDialogue[0]=4
@@ -307,7 +321,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=1
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     else if charDialogue[0]=2
@@ -319,7 +334,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=3
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     else if charDialogue[0]=4
@@ -338,7 +354,8 @@ if global.gamePaused=false
     }
     else if charDialogue[1]=1
     {
-      convo[1]+=1
+      //convo[1]+=1
+      convo[1]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[1]>=90 charDialogue[1]+=1
     }
     if charDialogue[1]=2
@@ -366,7 +383,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=1
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     else if charDialogue[0]=2
@@ -378,7 +396,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=3
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     else if charDialogue[0]=4
@@ -390,7 +409,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=5
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     else if charDialogue[0]=6
@@ -418,7 +438,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=1
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     else if charDialogue[0]=2
@@ -430,7 +451,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=3
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90
       {
         if oPlayer1.x>=2000
@@ -454,7 +476,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=21
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     else if charDialogue[0]=22
@@ -489,8 +512,10 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=1
     {
-      SCrawler.x+=12
-      convo[0]+=1
+      //SCrawler.x+=12
+      SCrawler.x+=12*gDeltaTime //60fps change: per 30fps tick
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90
       {
         charDialogue[0]+=1
@@ -507,7 +532,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=3
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     else if charDialogue[0]=4
@@ -535,7 +561,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=1
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     else if charDialogue[0]=2
@@ -547,7 +574,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=3
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=90 charDialogue[0]+=1
     }
     else if charDialogue[0]=4

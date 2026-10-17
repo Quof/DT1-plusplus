@@ -55,7 +55,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=1
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=45
       {
         charDialogue[0]+=1
@@ -178,7 +179,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=1
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=60
       {
         charDialogue[0]+=1
@@ -205,7 +207,8 @@ if global.gamePaused=false
     }
     if charDialogue[0]=0
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=30
       {
         charDialogue[0]+=1
@@ -220,7 +223,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=2
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=60
       {
         charDialogue[0]+=1
@@ -235,7 +239,8 @@ if global.gamePaused=false
     }
     else if charDialogue[0]=4
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=45
       {
         charDialogue[0]+=1
@@ -252,7 +257,8 @@ if global.gamePaused=false
 
   if room=rDiveL1 or room=rDiveL2 or room=rDiveL3 or room=rDiveL4
   {
-    bubbleTime-=1
+    //bubbleTime-=1
+    bubbleTime-=gDeltaTime //60fps change: counts 30fps ticks
     if bubbleTime<=0
     {
       newBubble=instance_create(oPlayer1.x,oPlayer1.y-36,oPlayerAirBubble)
@@ -275,7 +281,8 @@ if global.MMmysteryProg=1 and room=rMysteryL2 //random dialogue
   {
     if charDialogue[0]=1
     {
-      convo[0]+=1
+      //convo[0]+=1
+      convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
       if convo[0]>=45
       {
         charDialogue[0]+=1

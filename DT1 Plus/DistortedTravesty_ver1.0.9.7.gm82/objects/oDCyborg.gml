@@ -100,12 +100,14 @@ if global.gamePaused=false
           image_xscale=1
       }
 
-      attackDelay+=1
+      //attackDelay+=1
+      attackDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if attackDelay>=waitTime
       {
         if currentAttack=0 //normal rock throw
         {
-          if attackDelay=waitTime
+          //if attackDelay=waitTime
+          if scrCountPass(attackDelay,waitTime) //60fps change: once, when the count reaches it
           {
             sprite_index=sNeteryuArmRaise
             image_index=0
@@ -114,8 +116,10 @@ if global.gamePaused=false
           }
           if image_index=1
             image_speed=0
-          rockThrow+=1
-          if rockThrow=10
+          //rockThrow+=1
+          rockThrow+=gDeltaTime //60fps change: counts 30fps ticks
+          //if rockThrow=10
+          if scrCountPass(rockThrow,10) //60fps change: once, when the count reaches it
           {
             for (i=0;i<rockAmount;i+=1)
             {
@@ -124,9 +128,11 @@ if global.gamePaused=false
               rockAttack[rockAmount].throwDelay=(i*7)+20
             }
           }
-          if rockThrow=50
+          //if rockThrow=50
+          if scrCountPass(rockThrow,50) //60fps change: once, when the count reaches it
             sprite_index=sNeteryuArmOut
-          if rockThrow=85
+          //if rockThrow=85
+          if rockThrow>=85 //60fps change: >= so it still happens if the frame rate changes mid-count (it resets)
           {
             attackDelay=0
             image_speed=0.2
@@ -136,9 +142,11 @@ if global.gamePaused=false
         }
         else if currentAttack=1 //big rock
         {
-          if attackDelay=waitTime
+          //if attackDelay=waitTime
+          if scrCountPass(attackDelay,waitTime) //60fps change: once, when the count reaches it
             sprite_index=sNeteryuArmIn
-          else if attackDelay=waitTime+20
+          //else if attackDelay=waitTime+20
+          else if scrCountPass(attackDelay,waitTime+20) //60fps change: once, when the count reaches it
           {
             sprite_index=sNeteryuArmOut
             bigRockAttack=instance_create(x,y-128,oNetBigRock)
@@ -148,7 +156,8 @@ if global.gamePaused=false
             bigRockAttack.spiritPower=spiritPower+50
             bigRockAttack.xVel=-2
           }
-          else if attackDelay=waitTime+45
+          //else if attackDelay=waitTime+45
+          else if attackDelay>=waitTime+45 //60fps change: >= so it still happens if the frame rate changes mid-count (it resets)
           {
             attackDelay=0
             sprite_index=sNeteryuIdle
@@ -157,7 +166,8 @@ if global.gamePaused=false
         }
         else if currentAttack=2 //special rock throw
         {
-          if attackDelay=waitTime
+          //if attackDelay=waitTime
+          if scrCountPass(attackDelay,waitTime) //60fps change: once, when the count reaches it
           {
             sprite_index=sNeteryuArmIn
             centerY=y+52
@@ -211,7 +221,8 @@ if global.gamePaused=false
             sRockAttack.throwDelay=delayBase
             delayBase+=7
           }
-          else if attackDelay=waitTime+115
+          //else if attackDelay=waitTime+115
+          else if attackDelay>=waitTime+115 //60fps change: >= so it still happens if the frame rate changes mid-count (it resets)
           {
             bigRockAttack=instance_create(x,y,oNetBigRock)
             bigRockAttack.spiritPower=spiritPower+50
@@ -229,7 +240,8 @@ if global.gamePaused=false
       if teleportTimer>=timeTillTeleport
       {
         bCanTakeDamage=false
-        teleportTimer=0
+        //teleportTimer=0
+        teleportTimer=gDeltaTime-1 //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
         teleportProgress=1
         //spike attack
         spikeAttack=instance_create(random(448)+128,64,oNetSpike)
@@ -241,13 +253,20 @@ if global.gamePaused=false
     }
     else if teleportProgress=1 //teleport away
     {
+      //if image_xscale>0
+      //  image_xscale-=0.025
+      //else
+      //  image_xscale+=0.025
+      //image_yscale+=0.15
+      //60fps change: per 30fps tick
       if image_xscale>0
-        image_xscale-=0.025
+        image_xscale-=0.025*gDeltaTime
       else
-        image_xscale+=0.025
-      image_yscale+=0.15
+        image_xscale+=0.025*gDeltaTime
+      image_yscale+=0.15*gDeltaTime
 
-      if teleportTimer=1
+      //if teleportTimer=1
+      if scrCountPass(teleportTimer,1) //60fps change: once, when the count reaches it
         playSound(global.snd_Teleport,0,1)
       if teleportTimer>=40 //choose new location
       {
@@ -266,28 +285,35 @@ if global.gamePaused=false
           x=xTele[xTeleSpot]
           y=yTele[currentAttack]
         }
-        teleportTimer=0
+        //teleportTimer=0
+        teleportTimer=gDeltaTime-1 //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
         teleportProgress=2
       }
       else
-        teleportTimer+=1
+        //teleportTimer+=1
+        teleportTimer+=gDeltaTime //60fps change: see above
     }
     else if teleportProgress=2 //slight wait time
     {
       if teleportTimer>=10
       {
-        teleportTimer=0
+        //teleportTimer=0
+        teleportTimer=gDeltaTime-1 //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
         teleportProgress=3
       }
       else
-        teleportTimer+=1
+        //teleportTimer+=1
+        teleportTimer+=gDeltaTime //60fps change: see above
     }
     else if teleportProgress=3 //teleport in
     {
-      image_xscale+=0.025
-      image_yscale-=0.15
+      //image_xscale+=0.025
+      //image_yscale-=0.15
+      image_xscale+=0.025*gDeltaTime //60fps change: per 30fps tick
+      image_yscale-=0.15*gDeltaTime //60fps change: per 30fps tick
 
-      if teleportTimer=1
+      //if teleportTimer=1
+      if scrCountPass(teleportTimer,1) //60fps change: once, when the count reaches it
         playSound(global.snd_Teleport,0,1)
       if teleportTimer>=40
       {
@@ -297,7 +323,8 @@ if global.gamePaused=false
         teleportProgress=0
       }
       else
-        teleportTimer+=1
+        //teleportTimer+=1
+        teleportTimer+=gDeltaTime //60fps change: counts 30fps ticks
     }
     //scripted attacks
     if lifePercent<=0.66 and specialRockAttack=0

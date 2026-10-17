@@ -105,26 +105,31 @@ if global.gamePaused=false
     //movement
     if moveTime>=moveChange
     {
-      moveTime=0
+      //moveTime=0
+      //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
+      moveTime=gDeltaTime-1
       xVel=0
       yVel=0
       currentMovement=round(random(2))
     }
     else
-      moveTime+=1
+      //moveTime+=1
+      moveTime+=gDeltaTime //60fps change: see above
     if currentMovement=0 //slide to player, slight up & down movement
     {
       if moveDuration>=0 and moveDuration<=90
       {
         if x>=oPlayer1.x
         {
-          xVel-=0.01
+          //xVel-=0.01
+          xVel-=0.01*gDeltaTime //60fps change: per 30fps tick
           if xVel<-0.5
             xVel=-0.5
         }
         else
         {
-          xVel+=0.01
+          //xVel+=0.01
+          xVel+=0.01*gDeltaTime //60fps change: per 30fps tick
           if xVel>0.5
             xVel=0.5
         }
@@ -149,8 +154,10 @@ if global.gamePaused=false
     {
       if moveTime>=0 and moveTime<=20
       {
-        effect_create_above(ef_smoke,(x-(sprite_width/2))+random(sprite_width),(y-(sprite_height/2))+random(sprite_height),0,c_black)
-        if moveTime=20
+        if gDeltaDoTicks //60fps change (added): the smoke once per 30fps tick
+          effect_create_above(ef_smoke,(x-(sprite_width/2))+random(sprite_width),(y-(sprite_height/2))+random(sprite_height),0,c_black)
+        //if moveTime=20
+        if scrCountPass(moveTime,20) //60fps change: once, when the count reaches it
         {
           xVel=slamSpeed
           yVel=slamSpeed
@@ -163,7 +170,8 @@ if global.gamePaused=false
       }
     }
     //attacks
-    attackDelay+=1
+    //attackDelay+=1
+    attackDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if attackDelay>=waitTime
     {
       if currentAttack=0 //bouncing fireballs
@@ -179,8 +187,10 @@ if global.gamePaused=false
       }
       if currentAttack=1 //falling fireballs
       {
-        attackProgress+=1
-        if attackProgress mod fireRate=0
+        //attackProgress+=1
+        attackProgress+=gDeltaTime //60fps change: counts 30fps ticks
+        //if attackProgress mod fireRate=0
+        if scrModPass(attackProgress,fireRate) //60fps change: once each time the count reaches a multiple of it
         {
           fireAttack=instance_create(x,y,oDTorsoFire)
           fireAttack.spiritPower=spiritPower
@@ -195,7 +205,8 @@ if global.gamePaused=false
       }
     }
     //lightning attack
-    lightningDelay+=1
+    //lightningDelay+=1
+    lightningDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if lightningDelay>=lightningTime
     {
       for (ii=0;ii<=lightningAmount;ii+=1)
@@ -260,15 +271,20 @@ if global.gamePaused=false
       bossProgress+=1
     }
   }
-  if isCollisionTop(1)
+  //if isCollisionTop(1)
+  if isCollisionTop(1) and (gDeltaTime==1 or yVel<0) //60fps change: above 30fps, only bounce off what it's moving into (it can still be touching it on the next frame)
     yVel*=-1
-  if isCollisionBottom(1)
+  //if isCollisionBottom(1)
+  if isCollisionBottom(1) and (gDeltaTime==1 or yVel>0) //60fps change: see above
     yVel*=-1
-  if isCollisionLeft(1)
+  //if isCollisionLeft(1)
+  if isCollisionLeft(1) and (gDeltaTime==1 or xVel<0) //60fps change: see above
     xVel*=-1
-  if isCollisionRight(1)
+  //if isCollisionRight(1)
+  if isCollisionRight(1) and (gDeltaTime==1 or xVel>0) //60fps change: see above
     xVel*=-1
-  moveTo(xVel,yVel)
+  //moveTo(xVel,yVel)
+  moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
   enemyStepEvent()
 }
 #define Collision_oSpell
@@ -301,15 +317,18 @@ action_id=603
 applies_to=self
 */
 event_inherited()
-fFrameTime+=1
-hFrameTime+=1
+//fFrameTime+=1
+fFrameTime+=gDeltaTime //60fps change: counts 30fps ticks
+//hFrameTime+=1
+hFrameTime+=gDeltaTime //60fps change: counts 30fps ticks
 if fFrameTime=9
   fatFrame=1
 else if fFrameTime=18
   fatFrame=2
 else if fFrameTime=27
   fatFrame=1
-else if fFrameTime=36
+//else if fFrameTime=36
+else if fFrameTime>=36 //60fps change: >= so it still resets if the frame rate changes mid-count
 {
   fatFrame=0
   fFrameTime=0
@@ -320,7 +339,8 @@ else if hFrameTime=16
   heartFrame=2
 else if hFrameTime=24
   heartFrame=1
-else if hFrameTime=32
+//else if hFrameTime=32
+else if hFrameTime>=32 //60fps change: >= so it still resets if the frame rate changes mid-count
 {
   heartFrame=0
   hFrameTime=0

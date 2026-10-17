@@ -36,16 +36,20 @@ if global.gameProgress=58 //intro to Distortion
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       oPlayer1.image_speed=0.1
       oPlayer1.sprite_index=sPlayerIdle
     }
-    else if sceneDelay>=90 and sceneDelay<=130
+    //else if sceneDelay>=90 and sceneDelay<=130
+    else if sceneDelay>89 and sceneDelay<=130 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if bossFinishFadeAlpha>0
-        bossFinishFadeAlpha-=0.04
+        //bossFinishFadeAlpha-=0.04
+        bossFinishFadeAlpha-=0.04*gDeltaTime //60fps change: per 30fps tick
     }
     else if sceneDelay>=150
     {
@@ -91,11 +95,14 @@ else if global.gameProgress=62 and room=rDistortionW1_4 //Boss Fight (Abyss Lord
   else if sceneProgress=1
   {
     if oPlayer1.y<288
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=30
       {
@@ -106,28 +113,41 @@ else if global.gameProgress=62 and room=rDistortionW1_4 //Boss Fight (Abyss Lord
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       oTempEffect=object_add()
       oE1=instance_create(432,160,oTempEffect)
-      oE1.direction=90
+      //oE1.direction=90
+      oE1._direction=90 //60fps change: _speed/_direction (it's made at run time with object_add, so the with oTempEffect below moves it)
+      oE1._speed=0 //60fps change (added)
       oE2=instance_create(176,160,oTempEffect)
-      oE2.direction=270
+      //oE2.direction=270
+      oE2._direction=270 //60fps change: see above
+      oE2._speed=0 //60fps change (added)
     }
     with oTempEffect
     {
-      if speed=0
+      //if speed=0
+      if _speed=0 //60fps change: see above
       {
-        speed=8
+        //speed=8
+        _speed=8 //60fps change: see above
         dirChange=4
       }
-      effect_create_above(ef_smoke,x,y,0,c_black)
-      direction+=dirChange
-      dirChange+=0.05
+      //effect_create_above(ef_smoke,x,y,0,c_black)
+      if gDeltaDoTicks effect_create_above(ef_smoke,x,y,0,c_black) //60fps change: once per 30fps tick
+      //direction+=dirChange
+      _direction+=dirChange*gDeltaTime //60fps change: turns per 30fps tick
+      //dirChange+=0.05
+      dirChange+=0.05*gDeltaTime //60fps change: per 30fps tick
+      correctSpeedDirection(id) //60fps change (added): moves it by _speed in _direction, this frame's share of a 30fps tick
     }
 
-    if sceneDelay=60
+    //if sceneDelay=60
+    if scrCountPass(sceneDelay,60) //60fps change: once, when the count reaches it
     {
       bossFinishFadeAlpha=1
       with oTempEffect
@@ -135,10 +155,12 @@ else if global.gameProgress=62 and room=rDistortionW1_4 //Boss Fight (Abyss Lord
       object_delete(oTempEffect)
       boss=instance_create(304,160,oAbyssLordBody)
     }
-    else if sceneDelay>=61 and sceneDelay<=90
+    //else if sceneDelay>=61 and sceneDelay<=90
+    else if sceneDelay>60 and sceneDelay<=90 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if bossFinishFadeAlpha>0
-        bossFinishFadeAlpha-=0.04
+        //bossFinishFadeAlpha-=0.04
+        bossFinishFadeAlpha-=0.04*gDeltaTime //60fps change: per 30fps tick
     }
     else if sceneDelay>=100
     {
@@ -160,8 +182,10 @@ else if global.gameProgress=62 and room=rDistortionW1_4 //Boss Fight (Abyss Lord
     msgCreate("Stop calling me that!!",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=9
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       barrier1=instance_create(48,224,oBossBarrier)
       barrier2=instance_create(544,224,oBossBarrier)
@@ -194,14 +218,17 @@ else if global.gameProgress=63 //boss fight ends (Abyss Lord)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       oPlayer1.x=304
@@ -218,13 +245,15 @@ else if global.gameProgress=63 //boss fight ends (Abyss Lord)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -273,11 +302,14 @@ else if global.gameProgress=64 and room=rDistortionW1_5 //Fire Tunnel Escape
   else if sceneProgress=1
   {
     if oPlayer1.y<288
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=15
       {
@@ -320,7 +352,8 @@ else if global.gameProgress=65 and room=rDistortionW1_5 //Explosion start
   {
     if deathLineX>=oPlayer1.x
       oPlayer1.life-=oPlayer1.maxLife
-    deathLineX+=deathLineSpeed
+    //deathLineX+=deathLineSpeed
+    deathLineX+=deathLineSpeed*gDeltaTime //60fps change: per 30fps tick
     if deathExplosionDelayFront>=3
     {
       explosion=instance_create(deathLineX-random(32),random(160)+160,oEffect)
@@ -329,7 +362,8 @@ else if global.gameProgress=65 and room=rDistortionW1_5 //Explosion start
       deathExplosionDelayFront=0
     }
     else
-      deathExplosionDelayFront+=1
+      //deathExplosionDelayFront+=1
+      deathExplosionDelayFront+=gDeltaTime //60fps change: counts 30fps ticks
 
     if deathExplosionDelayBack>=5
     {
@@ -340,7 +374,8 @@ else if global.gameProgress=65 and room=rDistortionW1_5 //Explosion start
       deathExplosionDelayBack=0
     }
     else
-      deathExplosionDelayBack+=1
+      //deathExplosionDelayBack+=1
+      deathExplosionDelayBack+=gDeltaTime //60fps change: counts 30fps ticks
 
     if oPlayer1.x>=3952
     {
@@ -355,11 +390,14 @@ else if global.gameProgress=65 and room=rDistortionW1_5 //Explosion start
   else if sceneProgress=2
   {
     if oPlayer1.y<288
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=30
       {
@@ -412,8 +450,10 @@ if global.gameProgress=68 and room=rDistortionW1_7 //End of Distortion 1
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       fadeColor=c_black
@@ -439,7 +479,8 @@ if global.gameProgress=68 and room=rDistortionW1_7 //End of Distortion 1
     msgCreate("What?",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=5
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=20
     {
       sceneDelay=0
@@ -449,13 +490,15 @@ if global.gameProgress=68 and room=rDistortionW1_7 //End of Distortion 1
   else if sceneProgress=6
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.01
+      //bossFinishFadeAlpha+=0.01
+      bossFinishFadeAlpha+=0.01*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=7
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -466,9 +509,12 @@ if global.gameProgress=68 and room=rDistortionW1_7 //End of Distortion 1
     msgCreate("What is going on?",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=9
   {
-    sceneDelay+=1
-    if sceneDelay>=1 and sceneDelay<=64
-      lightSize+=0.5
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=1 and sceneDelay<=64
+    if sceneDelay>0 and sceneDelay<=64 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //lightSize+=0.5
+      lightSize+=0.5*gDeltaTime //60fps change: per 30fps tick
     else if sceneDelay>=100
     {
       sceneDelay=0
@@ -513,9 +559,12 @@ if global.gameProgress=68 and room=rDistortionW1_7 //End of Distortion 1
     msgCreate("Sounds good, let's do this.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=28
   {
-    sceneDelay+=1
-    if sceneDelay>=1 and sceneDelay<=64
-      lightSize-=0.5
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=1 and sceneDelay<=64
+    if sceneDelay>0 and sceneDelay<=64 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //lightSize-=0.5
+      lightSize-=0.5*gDeltaTime //60fps change: per 30fps tick
     else if sceneDelay>=80
     {
       sceneDelay=0
@@ -525,7 +574,8 @@ if global.gameProgress=68 and room=rDistortionW1_7 //End of Distortion 1
   else if sceneProgress=29
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.01
+      //bossFinishFadeAlpha-=0.01
+      bossFinishFadeAlpha-=0.01*gDeltaTime //60fps change: per 30fps tick
     if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
@@ -566,13 +616,15 @@ if global.gameProgress=68 and room=rDistortionW1_7
     draw_set_alpha(random(0.05)+0.3)
     if bSizeUp=false
     {
-      sizeMod-=0.1
+      //sizeMod-=0.1
+      sizeMod-=0.1*gDeltaTime //60fps change: per 30fps tick
       if sizeMod<=-2
         bSizeUp=true
     }
     else
     {
-      sizeMod+=0.1
+      //sizeMod+=0.1
+      sizeMod+=0.1*gDeltaTime //60fps change: per 30fps tick
       if sizeMod>=4
         bSizeUp=false
     }

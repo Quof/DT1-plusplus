@@ -50,13 +50,16 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true and stunnedTime=0 and dieFade=0
   {
-    shootTime+=1
+    //shootTime+=1
+    shootTime+=gDeltaTime //60fps change: counts 30fps ticks
     if shootTime>=reShootTime-20
     {
-      colorChangeTime+=1
+      //colorChangeTime+=1
+      colorChangeTime+=gDeltaTime //60fps change: counts 30fps ticks
       if colorChangeTime=1
         image_blend=c_silver
-      else if colorChangeTime=4
+      //else if colorChangeTime=4
+      else if colorChangeTime>=4 //60fps change: >= so the cycle still ends if the frame rate changes mid-count
       {
         image_blend=c_white
         colorChangeTime=0
@@ -70,7 +73,8 @@ if global.gamePaused=false
       newAttack.sprite_index=sPinkWave
       newAttack.spiritPower=spiritPower
       newAttack.damageType="SPIRIT"
-      newAttack.direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-22)
+      //newAttack.direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-22)
+      newAttack._direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-22) //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       newAttack.bulletSpeed=6
       shootTime=0
     }

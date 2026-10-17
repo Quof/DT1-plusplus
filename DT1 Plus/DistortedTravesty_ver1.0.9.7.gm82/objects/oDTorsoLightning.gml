@@ -29,13 +29,15 @@ if global.gamePaused=false
 {
   if bCanDealDamage=true
   {
-    decayTime+=1
+    //decayTime+=1
+    decayTime+=gDeltaTime //60fps change: counts 30fps ticks
     if decayTime>=10
       instance_destroy()
   }
   else
   {
-    delay-=1
+    //delay-=1
+    delay-=gDeltaTime //60fps change: counts 30fps ticks
     if delay<=0
     {
       if init=0
@@ -44,10 +46,12 @@ if global.gamePaused=false
         init=1
       }
       if lineWarn<1
-        lineWarn+=0.05
+        //lineWarn+=0.05
+        lineWarn+=0.05*gDeltaTime //60fps change: per 30fps tick
       else
       {
-        lineWarn+=1
+        //lineWarn+=1
+        lineWarn+=gDeltaTime //60fps change: counts 30fps ticks
         if lineWarn>=9
         {
           playSound(global.snd_Shock,0,0.7)

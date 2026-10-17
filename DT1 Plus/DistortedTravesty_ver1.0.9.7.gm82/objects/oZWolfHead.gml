@@ -60,30 +60,39 @@ if global.gamePaused=false
   if bActive=true and stunnedTime=0 and dieFade=0
   {
     //movement
-    moveTime+=1
+    //moveTime+=1
+    moveTime+=gDeltaTime //60fps change: counts 30fps ticks
     if moveProgress=0 or moveProgress=2
     {
+      //60fps change: per 30fps tick
       if image_xscale=1
-        x+=moveSpd
+        //x+=moveSpd
+        x+=moveSpd*gDeltaTime
       else if image_xscale=-1
-        x-=moveSpd
+        //x-=moveSpd
+        x-=moveSpd*gDeltaTime
 
-      if moveTime=moveSegment
+      //if moveTime=moveSegment
+      if moveTime>=moveSegment //60fps change: >= so it still shoots if the frame rate changes mid-count (it resets below)
       {
         newAttack=instance_create(x,y+4,oCannonBullet)
         newAttack.sprite_index=sWolfHeadFireball
         newAttack.physicalPower=physicalPower
         newAttack.bulletSpeed=8
         if image_xscale=1
-          newAttack.direction=0
+          //newAttack.direction=0
+          newAttack._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         else
-          newAttack.direction=180
+          //newAttack.direction=180
+          newAttack._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       }
     }
     else if moveProgress=1
-      y+=moveSpd
+      //y+=moveSpd
+      y+=moveSpd*gDeltaTime //60fps change: per 30fps tick
     else if moveProgress=3
-      y-=moveSpd
+      //y-=moveSpd
+      y-=moveSpd*gDeltaTime //60fps change: per 30fps tick
 
     if moveTime>=moveSegment
     {

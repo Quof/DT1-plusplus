@@ -61,17 +61,25 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true and dieFade=0
   {
-    speed=startSpeed
+    //60fps change: _speed/_direction instead of GM's speed/direction (moved by correctSpeedDirection below; whoever
+    //makes it sets _direction), and it slows down per 30fps tick
+    //speed=startSpeed
+    _speed=startSpeed
     if startSpeed>minSpeed
-      startSpeed-=ranSpeedDown
-    if direction=90 and y<-32 //up
+      //startSpeed-=ranSpeedDown
+      startSpeed-=ranSpeedDown*gDeltaTime
+    //if direction=90 and y<-32 //up
+    if _direction=90 and y<-32 //up
       instance_destroy()
-    else if direction=270 and y>room_height+32 //down
+    //else if direction=270 and y>room_height+32 //down
+    else if _direction=270 and y>room_height+32 //down
       instance_destroy()
   }
   if bActive=false
     instance_destroy()
+  correctSpeedDirection(id) //60fps change (added): this frame's share of the move GM's speed made
   enemyStepEvent()
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above

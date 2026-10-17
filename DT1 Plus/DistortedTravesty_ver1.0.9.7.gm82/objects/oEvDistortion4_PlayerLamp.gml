@@ -31,9 +31,11 @@ if bLowView=1 and global.gamePaused=false
 {
   //decrease view size and keep from going too small
   if vWidth>vWidthMax/2
-    vWidth-=1
+    //vWidth-=1
+    vWidth-=gDeltaTime //60fps change: counts 30fps ticks
   if vHeight>vHeightMax/2
-    vHeight-=0.75
+    //vHeight-=0.75
+    vHeight-=0.75*gDeltaTime //60fps change: per 30fps tick
 
   //keep view size from going over max size
   if vWidth>vWidthMax
@@ -54,13 +56,15 @@ else
   draw_set_alpha(glowAlpha)
   if bSizeUp=false
   {
-    sizeMod-=0.25
+    //sizeMod-=0.25
+    sizeMod-=0.25*gDeltaTime //60fps change: per 30fps tick
     if sizeMod<=-24
       bSizeUp=true
   }
   else
   {
-    sizeMod+=0.25
+    //sizeMod+=0.25
+    sizeMod+=0.25*gDeltaTime //60fps change: per 30fps tick
     if sizeMod>=48
       bSizeUp=false
   }

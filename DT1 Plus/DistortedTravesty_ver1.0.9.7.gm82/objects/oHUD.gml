@@ -1584,7 +1584,8 @@ if global.gamePaused=true and menuOpen=true
           global.worldMapY=-1000
           writeToPlayerGlobals()
           transition_kind=20
-          transition_steps=30
+          //transition_steps=30
+          transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
           room_goto(rWorldMap)
         }
       }

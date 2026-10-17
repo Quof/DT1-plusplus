@@ -34,7 +34,8 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true
   {
-    spawnTime+=1
+    //spawnTime+=1
+    spawnTime+=gDeltaTime //60fps change: counts 30fps ticks
     if spawnDir=0 //right
     {
       if init=1
@@ -54,7 +55,8 @@ if global.gamePaused=false
       }
     }
 
-    if spawnTime mod spawnSpd=0
+    //if spawnTime mod spawnSpd=0
+    if scrModPass(spawnTime,spawnSpd) //60fps change: once each time the count reaches a multiple of it
     {
       if spawnDir=0 //fly right
         xOffset=oPlayer1.x-(view_wview[0]/2)-random(8)

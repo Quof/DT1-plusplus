@@ -60,7 +60,8 @@ if global.gamePaused=false
       image_xscale=1
     else
       image_xscale=-1
-    x+=xVel
+    //x+=xVel
+    x+=xVel*gDeltaTime //60fps change: per 30fps tick
     if findTargetX>inactiveDist/2
     {
       if questType>0

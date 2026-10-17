@@ -23,7 +23,8 @@ if type=0
   if text_Pos<string_length(text_Full)
   {
     draw_text(x,y,text_New)
-    typingSpeed-=1
+    //typingSpeed-=1
+    typingSpeed-=gDeltaTime //60fps change: counts 30fps ticks
     if typingSpeed<=0
     {
       text_Pos+=1
@@ -37,7 +38,8 @@ if type=0
     draw_text(x,y,text_Full)
     if bFadeOut=1
     {
-      image_alpha-=0.02
+      //image_alpha-=0.02
+      image_alpha-=0.02*gDeltaTime //60fps change: per 30fps tick
       if image_alpha<=0
         instance_destroy()
     }

@@ -121,20 +121,24 @@ if global.gamePaused=false
         }
       }
 
-      attackDelay+=1
+      //attackDelay+=1
+      attackDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if attackDelay>=waitTime
       {
         if currentAttack=0 //throw Dark Ball toward player
         {
           if ballThrow=0
             sprite_index=sDarkMindArmsUp
-          ballThrow+=1
-          if ballThrow=10+ballDelay
+          //ballThrow+=1
+          ballThrow+=gDeltaTime //60fps change: counts 30fps ticks
+          //if ballThrow=10+ballDelay
+          if scrCountPass(ballThrow,10+ballDelay) //60fps change: once, when the count reaches it
           {
             effect_create_above(ef_ring,x-39,y-13,0,c_black)
             effect_create_above(ef_ring,x+34,y-2,0,c_black)
           }
-          if ballThrow=10+ballDelay*3
+          //if ballThrow=10+ballDelay*3
+          if scrCountPass(ballThrow,10+ballDelay*3) //60fps change: once, when the count reaches it
           {
             ballAttack[0]=instance_create(x-39,y-39,oDMDarkBall)
             ballAttack[0].spiritPower=spiritPower
@@ -144,7 +148,8 @@ if global.gamePaused=false
             ballAttack[1].type=1
             sprite_index=sDarkMindAnger
           }
-          if ballThrow=10+ballDelay*4
+          //if ballThrow=10+ballDelay*4
+          if scrCountPass(ballThrow,10+ballDelay*4) //60fps change: once, when the count reaches it
           {
             attackDelay=0
             sprite_index=sDarkMindIdle
@@ -156,13 +161,16 @@ if global.gamePaused=false
         {
           if ballThrow=0
             sprite_index=sDarkMindArmsUp
-          ballThrow+=1
-          if ballThrow=10+ballDelay
+          //ballThrow+=1
+          ballThrow+=gDeltaTime //60fps change: counts 30fps ticks
+          //if ballThrow=10+ballDelay
+          if scrCountPass(ballThrow,10+ballDelay) //60fps change: once, when the count reaches it
           {
             effect_create_above(ef_ring,x-39,y-13,0,c_black)
             effect_create_above(ef_ring,x+34,y-2,0,c_black)
           }
-          if ballThrow=10+ballDelay*4
+          //if ballThrow=10+ballDelay*4
+          if scrCountPass(ballThrow,10+ballDelay*4) //60fps change: once, when the count reaches it
           {
             ballAttack[0]=instance_create(x-39,y-39,oDMDarkBall)
             ballAttack[0].spiritPower=spiritPower
@@ -172,7 +180,8 @@ if global.gamePaused=false
             ballAttack[1].type=3
             sprite_index=sDarkMindAnger
           }
-          if ballThrow=10+ballDelay*5
+          //if ballThrow=10+ballDelay*5
+          if scrCountPass(ballThrow,10+ballDelay*5) //60fps change: once, when the count reaches it
           {
             attackDelay=0
             sprite_index=sDarkMindIdle
@@ -184,13 +193,16 @@ if global.gamePaused=false
         {
           if ballThrow=0
             sprite_index=sDarkMindArmsUp
-          ballThrow+=1
-          if ballThrow=10+ballDelay
+          //ballThrow+=1
+          ballThrow+=gDeltaTime //60fps change: counts 30fps ticks
+          //if ballThrow=10+ballDelay
+          if scrCountPass(ballThrow,10+ballDelay) //60fps change: once, when the count reaches it
           {
             effect_create_above(ef_ring,x,y,0,c_black)
             effect_create_above(ef_ring,x,y,1,c_black)
           }
-          if ballThrow=10+ballDelay*3
+          //if ballThrow=10+ballDelay*3
+          if scrCountPass(ballThrow,10+ballDelay*3) //60fps change: once, when the count reaches it
           {
             dir=0
             for (i=0;i<4;i+=1)
@@ -203,7 +215,8 @@ if global.gamePaused=false
             }
             sprite_index=sDarkMindAnger
           }
-          if ballThrow=10+ballDelay*4
+          //if ballThrow=10+ballDelay*4
+          if scrCountPass(ballThrow,10+ballDelay*4) //60fps change: once, when the count reaches it
           {
             attackDelay=0
             sprite_index=sDarkMindIdle
@@ -228,29 +241,40 @@ if global.gamePaused=false
               image_xscale=1
             }
           }
-          ballThrow+=1
-          if ballThrow=10+ballDelay
+          //ballThrow+=1
+          ballThrow+=gDeltaTime //60fps change: counts 30fps ticks
+          //if ballThrow=10+ballDelay
+          if scrCountPass(ballThrow,10+ballDelay) //60fps change: once, when the count reaches it
           {
             effect_create_above(ef_ring,x,y,0,c_black)
             effect_create_above(ef_ring,x,y,1,c_black)
           }
-          if ballThrow=29+ballDelay
+          //if ballThrow=29+ballDelay
+          if scrCountPass(ballThrow,29+ballDelay) //60fps change: once, when the count reaches it
             sprite_index=sDarkMindAnger
-          if ballThrow>=30+ballDelay
+          //if ballThrow>=30+ballDelay
+          if ballThrow>29+ballDelay //60fps change: the same 30fps ticks, counted in gDeltaTime steps
           {
-            x+=slideAttackX
+            //x+=slideAttackX
+            x+=slideAttackX*gDeltaTime //60fps change: per 30fps tick
             if tossDownDelay<=0
             {
               ballAttack=instance_create(x,y,oDMDarkBall)
               ballAttack.spiritPower=spiritPower
               ballAttack.type=5
-              ballAttack.direction=270
-              tossDownDelay=tossDelay
+              //ballAttack.direction=270
+              ballAttack._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
+              //tossDownDelay=tossDelay
+              //60fps change: counts down 30fps ticks; the frame that drops the ball counts as a whole tick, as at
+              //30fps (it doesn't count down), so the count starts that much lower (tossDelay at 30fps)
+              tossDownDelay=tossDelay+1-gDeltaTime
             }
             else
-              tossDownDelay-=1
+              //tossDownDelay-=1
+              tossDownDelay-=gDeltaTime //60fps change: see above
           }
-          if ballThrow=70+ballDelay
+          //if ballThrow=70+ballDelay
+          if scrCountPass(ballThrow,70+ballDelay) //60fps change: once, when the count reaches it
           {
             attackDelay=0
             sprite_index=sDarkMindIdle
@@ -262,13 +286,16 @@ if global.gamePaused=false
         {
           if ballThrow=0
             sprite_index=sDarkMindAnger
-          ballThrow+=1
-          if ballThrow=15+ballDelay
+          //ballThrow+=1
+          ballThrow+=gDeltaTime //60fps change: counts 30fps ticks
+          //if ballThrow=15+ballDelay
+          if scrCountPass(ballThrow,15+ballDelay) //60fps change: once, when the count reaches it
           {
             vortexAttack=instance_create(x,y,oDMDarkVortex)
             vortexAttack.spiritPower=spiritPower*1.5
           }
-          if ballThrow=30+ballDelay
+          //if ballThrow=30+ballDelay
+          if scrCountPass(ballThrow,30+ballDelay) //60fps change: once, when the count reaches it
           {
             attackDelay=0
             sprite_index=sDarkMindIdle
@@ -281,15 +308,18 @@ if global.gamePaused=false
       if teleportTimer>=timeTillTeleport
       {
         bCanTakeDamage=false
-        teleportTimer=0
+        //teleportTimer=0
+        teleportTimer=gDeltaTime-1 //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
         teleportProgress=1
       }
     }
     else if teleportProgress=1 //teleport away
     {
       image_blend=make_color_rgb(30,30,30)
-      image_yscale-=0.1
-      if teleportTimer=1
+      //image_yscale-=0.1
+      image_yscale-=0.1*gDeltaTime //60fps change: per 30fps tick
+      //if teleportTimer=1
+      if scrCountPass(teleportTimer,1) //60fps change: once, when the count reaches it
         playSound(global.snd_Teleport,0,1)
       if teleportTimer>=10 //choose new location
       {
@@ -333,26 +363,32 @@ if global.gamePaused=false
           y=yGround-156
         }
 
-        teleportTimer=0
+        //teleportTimer=0
+        teleportTimer=gDeltaTime-1 //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
         teleportProgress=2
       }
       else
-        teleportTimer+=1
+        //teleportTimer+=1
+        teleportTimer+=gDeltaTime //60fps change: see above
     }
     else if teleportProgress=2 //slight wait time
     {
       if teleportTimer>=10
       {
-        teleportTimer=0
+        //teleportTimer=0
+        teleportTimer=gDeltaTime-1 //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
         teleportProgress=3
       }
       else
-        teleportTimer+=1
+        //teleportTimer+=1
+        teleportTimer+=gDeltaTime //60fps change: see above
     }
     else if teleportProgress=3 //teleport in
     {
-      image_yscale+=0.05
-      if teleportTimer=1
+      //image_yscale+=0.05
+      image_yscale+=0.05*gDeltaTime //60fps change: per 30fps tick
+      //if teleportTimer=1
+      if scrCountPass(teleportTimer,1) //60fps change: once, when the count reaches it
       {
         visible=true
         playSound(global.snd_Teleport,0,1)
@@ -365,7 +401,8 @@ if global.gamePaused=false
         teleportProgress=0
       }
       else
-        teleportTimer+=1
+        //teleportTimer+=1
+        teleportTimer+=gDeltaTime //60fps change: counts 30fps ticks
     }
     //scale difficulty
     if lifePercent<=0.9 and lifePercent>=0.76 and bossProgress=0

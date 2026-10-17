@@ -16,7 +16,8 @@ applies_to=self
 showMessage(view_xview[0]+x,view_yview[0]+y,message,talker,messageColor,1,window)
 
 colJBorder=make_color_rgb(184,104,8)
-jIntChange+=1
+//jIntChange+=1
+jIntChange+=gDeltaTime //60fps change: counts 30fps ticks
 if jIntChange<=14
   colJInt=make_color_rgb(213,180,112)
 else

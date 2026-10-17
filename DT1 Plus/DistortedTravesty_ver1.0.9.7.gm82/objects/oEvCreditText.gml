@@ -24,7 +24,8 @@ lib_id=1
 action_id=603
 applies_to=self
 */
-y-=scrollSpeed
+//y-=scrollSpeed
+y-=scrollSpeed*gDeltaTime //60fps change: per 30fps tick
 if y<=-(64+string_height(creditString))
   instance_destroy()
 #define Draw_0

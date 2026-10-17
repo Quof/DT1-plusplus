@@ -26,8 +26,19 @@ if gDeltaDoTicks != 0
 }
 
 //moves all of the solids so that none of them collide with the character
+//60fps change (added): at 30fps this runs the original code. Above 30fps a solid's velocity and acceleration (xVel/yVel,
+//xAcc/yAcc, still in 30fps units) are read once per 30fps tick, on the tick's first frame: that tick's whole-pixel move is
+//worked out as at 30fps (the same dither, from the tick's number) and made over the tick's frames, so the solid is exactly
+//where 30fps puts it by the tick's last frame (gDeltaDoTicks), which is when the solids' own Step logic runs (it's gated
+//to that frame). Pushing and carrying the players work as before, a pixel at a time
+var tTickStart,tTickNum;
+tTickStart=(gDeltaTime==1 or abs(gDeltaTick-gDeltaTime)<0.0001) //(gDeltaTick: how far into the tick this frame ends)
+if gDeltaTime==1 {tTickNum=oGame.time} else {tTickNum=oGame.time30+1} //(time30 counts finished ticks)
 with oMovingSolid
 {
+  if !variable_local_exists("mstFramesLeft") {mstXLeft=0; mstYLeft=0; mstFramesLeft=0; mstEndX=x; mstEndY=y} //60fps change (added)
+  if tTickStart //60fps change (added): see above
+  {
   //applies the acceleration
   xVel+=xAcc
   yVel+=yAcc
@@ -40,9 +51,12 @@ with oMovingSolid
     xAcc=0
   if approximatelyZero(yAcc)
     yAcc=0
+  } //60fps change (added)
   //moves the solid, pushes the character, carries the character, and stops if the character will be crushed by another solid
   mstXPrev=x
   mstYPrev=y
+  if tTickStart //60fps change (added): see above
+  {
   //change the decimal arguments to integer variables with relation to time
   xVelFrac=frac(abs(xVel))
   yVelFrac=frac(abs(yVel))
@@ -50,10 +64,12 @@ with oMovingSolid
   yVelInteger=0
   if xVelFrac!=0
     if round(1/xVelFrac)!=0
-       xVelInteger=(oGame.time mod round(1/xVelFrac)=0)
+       //xVelInteger=(oGame.time mod round(1/xVelFrac)=0)
+       xVelInteger=(tTickNum mod round(1/xVelFrac)=0) //60fps change: the tick's number (oGame.time at 30fps)
   if yVelFrac!=0
     if round(1/yVelFrac)!=0
-      yVelInteger=(oGame.time mod round(1/yVelFrac)=0)
+      //yVelInteger=(oGame.time mod round(1/yVelFrac)=0)
+      yVelInteger=(tTickNum mod round(1/yVelFrac)=0) //60fps change: see above
   xVelInteger+=floor(abs(xVel))
   yVelInteger+=floor(abs(yVel))
   if xVel<0
@@ -62,6 +78,36 @@ with oMovingSolid
     yVelInteger*=-1
   xVelInteger=round(xVelInteger)
   yVelInteger=round(yVelInteger)
+  } //60fps change (added)
+  var tSkip;
+  tSkip=0
+  if gDeltaTime!=1 //60fps change (added): above 30fps, this frame's part of the tick's move (see above), front-loaded
+  {
+    if tTickStart {mstXLeft=xVelInteger; mstYLeft=yVelInteger; mstFramesLeft=round(1/gDeltaTime)}
+    else
+    {
+      //put somewhere new since the last frame (snapped into place): the rest of this tick's move is dropped
+      if x!=mstEndX {mstXLeft=0}
+      if y!=mstEndY {mstYLeft=0}
+    }
+    if mstFramesLeft>0
+    {
+      xVelInteger=sign(mstXLeft)*ceil(abs(mstXLeft)/mstFramesLeft)
+      yVelInteger=sign(mstYLeft)*ceil(abs(mstYLeft)/mstFramesLeft)
+      mstXLeft-=xVelInteger
+      mstYLeft-=yVelInteger
+      mstFramesLeft-=1
+    }
+    else
+    {
+      xVelInteger=0
+      yVelInteger=0
+    }
+    //nothing to move this frame: the rest would do nothing (it only pushes or carries the players when the solid moves)
+    tSkip=(xVelInteger=0 and yVelInteger=0)
+  }
+  if tSkip=0 //60fps change (added): see above
+  {
   //calculate the collision bounds of the character -- we'll need it later
   with oCharacter
     calculateCollisionBounds()
@@ -223,12 +269,17 @@ with oMovingSolid
     x+=xVelInteger
     y+=yVelInteger
   }
+  } //60fps change (added): see tSkip above
+  mstEndX=x //60fps change (added): where this frame left it (see "snapped into place" above)
+  mstEndY=y //60fps change (added)
 }
 //finished oMovingSolid code
 //accelerates the oMoveableSolid objects downwards
 with oMoveableSolid
 {
   yMPrev=y
+  if gDeltaTime==1 //60fps change (added): the original code at 30fps
+  {
   yVel+=oGame.moveableSolidGrav
   //moves the moveable solid down
   for(y=y;y<yMPrev+yVel;y+=1)
@@ -239,6 +290,36 @@ with oMoveableSolid
     {
       yVel=0
       break
+    }
+  }
+  }
+  else
+  {
+    //60fps change (added): above 30fps gravity is added once per 30fps tick (its first frame, as for the moving solids) and
+    //the pixels the 30fps loop would try to fall that tick are made over the tick's frames, checked a pixel at a time as before
+    if !variable_local_exists("mstFramesLeftM") {mstYLeftM=0; mstFramesLeftM=0}
+    if tTickStart
+    {
+      yVel+=oGame.moveableSolidGrav
+      mstYLeftM=max(0,ceil(yVel))
+      mstFramesLeftM=round(1/gDeltaTime)
+    }
+    var tMStep;
+    tMStep=0
+    if mstFramesLeftM>0
+    {
+      tMStep=ceil(mstYLeftM/mstFramesLeftM)
+      mstYLeftM-=tMStep
+      mstFramesLeftM-=1
+    }
+    for(y=y;y<yMPrev+tMStep;y+=1)
+    {
+      if place_meeting(x,y+1,oSolid) or isCollisionCharacterBottom(1)
+      {
+        yVel=0
+        mstYLeftM=0
+        break
+      }
     }
   }
 }

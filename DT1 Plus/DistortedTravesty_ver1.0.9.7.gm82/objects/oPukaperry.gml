@@ -61,13 +61,18 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true and dieFade=0
   {
-    shootTime+=1
+    //60fps change: shootTime counts 30fps ticks; _speed/_direction instead of GM's speed/direction (moved by
+    //correctSpeedDirection below)
+    //shootTime+=1
+    shootTime+=gDeltaTime
     if image_index=0 //roaming
     {
-      speed=6
+      //speed=6
+      _speed=6
       if bFindDirection=false
       {
-        direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-28)
+        //direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-28)
+        _direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-28)
         bFindDirection=true
       }
       if shootTime>=20
@@ -83,13 +88,15 @@ if global.gamePaused=false
     }
     else if image_index=1 //shooting/waiting
     {
-      speed=0
+      //speed=0
+      _speed=0 //60fps change: see above
       if shootTime=waitTime/2
       {
         newAttack=instance_create(x,y,oMMeShot1)
         newAttack.physicalPower=physicalPower
         newAttack.bulletSpeed=shootSpeed
-        newAttack.direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-28)
+        //newAttack.direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-28)
+        newAttack._direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-28) //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       }
       else if shootTime>=waitTime
       {
@@ -98,7 +105,9 @@ if global.gamePaused=false
       }
     }
   }
+  correctSpeedDirection(id) //60fps change (added): this frame's share of the move GM's speed made
   enemyStepEvent()
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above

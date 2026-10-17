@@ -188,42 +188,50 @@ if global.gamePaused=false
       {
         if currSpd>=0
         {
-          currSpd-=pDistX/5
+          //currSpd-=pDistX/5
+          currSpd-=pDistX/5*gDeltaTime //60fps change: per 30fps tick
           if pDistOrigX<16 and currSpd<3
             currSpd=0
         }
         else
-          currSpd-=pDistX/10
+          //currSpd-=pDistX/10
+          currSpd-=pDistX/10*gDeltaTime //60fps change: per 30fps tick
       }
       else //go right
       {
         if currSpd<=0
         {
-          currSpd+=pDistX/5
+          //currSpd+=pDistX/5
+          currSpd+=pDistX/5*gDeltaTime //60fps change: per 30fps tick
           if pDistOrigX<16 and currSpd>-3
             currSpd=0
         }
         else
-          currSpd+=pDistX/10
+          //currSpd+=pDistX/10
+          currSpd+=pDistX/10*gDeltaTime //60fps change: per 30fps tick
       }
 
       if currSpd>maxSpd
         currSpd=maxSpd
       else if currSpd<-maxSpd
         currSpd=-maxSpd
-      x+=currSpd
+      //x+=currSpd
+      x+=currSpd*gDeltaTime //60fps change: per 30fps tick
 
       if y>oPlayer1.y+16
-        y-=1
+        //y-=1
+        y-=1*gDeltaTime //60fps change: per 30fps tick
       if y<oPlayer1.y-maxYDist
-        y+=1
+        //y+=1
+        y+=1*gDeltaTime //60fps change: per 30fps tick
     }
     //attacks **********************************************************************
     if bSpecialActive=0
     {
       if currentAttack=0 //---------- Normal Attack: Dark Energy ----------
       {
-        darkEnergyTime+=1
+        //darkEnergyTime+=1
+        darkEnergyTime+=gDeltaTime //60fps change: counts 30fps ticks
         if darkEnergyDelay=0
         {
           if darkEnergyTime>=darkEnergyWait
@@ -234,9 +242,11 @@ if global.gamePaused=false
         }
         if darkEnergyTime>=darkEnergyDelay and darkEnergyDelay!=0
         {
-          if darkEnergyTime=darkEnergyDelay+1 //open mouth
+          //if darkEnergyTime=darkEnergyDelay+1 //open mouth
+          if scrCountPass(darkEnergyTime,darkEnergyDelay+1) //open mouth //60fps change: once, when the count reaches it
             sprite_index=sShroudLHeadM
-          else if darkEnergyTime=darkEnergyDelay+35 //create fire
+          //else if darkEnergyTime=darkEnergyDelay+35 //create fire
+          else if scrCountPass(darkEnergyTime,darkEnergyDelay+35) //create fire //60fps change: once, when the count reaches it
           {
             darkBall=instance_create(x,y-19,oShroudLFire)
             darkBall.throwSpeed=6
@@ -251,7 +261,8 @@ if global.gamePaused=false
       }
       else if currentAttack=1 //---------- Normal Attack: Ground Blast ----------
       {
-        groundBlastTime+=1
+        //groundBlastTime+=1
+        groundBlastTime+=gDeltaTime //60fps change: counts 30fps ticks
         if groundBlastDelay=0
         {
           if groundBlastTime>=groundBlastWait
@@ -262,7 +273,8 @@ if global.gamePaused=false
         }
         if groundBlastTime>=groundBlastDelay and groundBlastDelay!=0
         {
-          if groundBlastTime=groundBlastDelay+1 //open mouth
+          //if groundBlastTime=groundBlastDelay+1 //open mouth
+          if scrCountPass(groundBlastTime,groundBlastDelay+1) //open mouth //60fps change: once, when the count reaches it
           {
             sprite_index=sShroudLHeadM
             afterImage=instance_create(x,y,oEnemyAfterImage)
@@ -275,12 +287,16 @@ if global.gamePaused=false
             gbX2=416
             gbSize=32
           }
-          else if groundBlastTime>=groundBlastDelay+21 and groundBlastTime<=groundBlastDelay+36 //show ground wave
+          //else if groundBlastTime>=groundBlastDelay+21 and groundBlastTime<=groundBlastDelay+36 //show ground wave
+          else if groundBlastTime>groundBlastDelay+20 and groundBlastTime<=groundBlastDelay+36 //show ground wave //60fps change: the same 30fps ticks, counted in gDeltaTime steps
           {
-            gbX1+=24
-            gbX2-=24
+            //gbX1+=24
+            gbX1+=24*gDeltaTime //60fps change: per 30fps tick
+            //gbX2-=24
+            gbX2-=24*gDeltaTime //60fps change: per 30fps tick
           }
-          else if groundBlastTime=groundBlastDelay+51 //create attack
+          //else if groundBlastTime=groundBlastDelay+51 //create attack
+          else if scrCountPass(groundBlastTime,groundBlastDelay+51) //create attack //60fps change: once, when the count reaches it
           {
             playSound(global.snd_Shock,0,0.75)
             playSound(global.snd_CASdie,0,1)
@@ -309,10 +325,14 @@ if global.gamePaused=false
           }
 
           //size up and down wave
-          if groundBlastTime>=groundBlastDelay+21 and groundBlastTime<=groundBlastDelay+28
-            gbSize+=8
-          if groundBlastTime>=groundBlastDelay+29 and groundBlastTime<=groundBlastDelay+36
-            gbSize-=8
+          //if groundBlastTime>=groundBlastDelay+21 and groundBlastTime<=groundBlastDelay+28
+          if groundBlastTime>groundBlastDelay+20 and groundBlastTime<=groundBlastDelay+28 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
+            //gbSize+=8
+            gbSize+=8*gDeltaTime //60fps change: per 30fps tick
+          //if groundBlastTime>=groundBlastDelay+29 and groundBlastTime<=groundBlastDelay+36
+          if groundBlastTime>groundBlastDelay+28 and groundBlastTime<=groundBlastDelay+36 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
+            //gbSize-=8
+            gbSize-=8*gDeltaTime //60fps change: per 30fps tick
         }
       }
     }
@@ -320,7 +340,8 @@ if global.gamePaused=false
     if specialAttack!=5 and specialAttack!=8
     {
       //---------- Extra Attack: Shroud Laser ----------
-      shroudLaserTime+=1
+      //shroudLaserTime+=1
+      shroudLaserTime+=gDeltaTime //60fps change: counts 30fps ticks
       if shroudLaserTime>=shroudLaserWait
       {
         for(i=0;i<shroudLaserAmt;i+=1)
@@ -341,7 +362,8 @@ if global.gamePaused=false
       //---------- Extra Attack: Head Laser ----------
       if bossProgress>=10 and bossProgress<=14
       {
-        headLaserTime+=1
+        //headLaserTime+=1
+        headLaserTime+=gDeltaTime //60fps change: counts 30fps ticks
         if headLaserTime>=headLaserWait
         {
           laserHeadR=instance_create(xCenter-roomSpan-24,oPlayer1.y-26,oHeadLaserSpewer)
@@ -359,7 +381,8 @@ if global.gamePaused=false
       //---------- Extra Attack: Gravity Bomb ----------
       if bossProgress>=15
       {
-        gravityBombTime+=1
+        //gravityBombTime+=1
+        gravityBombTime+=gDeltaTime //60fps change: counts 30fps ticks
         if groundBlastDelay=0
         {
           if gravityBombTime>=gravityBombWait
@@ -370,7 +393,8 @@ if global.gamePaused=false
         }
         if gravityBombTime>=groundBlastDelay and groundBlastDelay!=0
         {
-          if gravityBombTime mod 5=0 //afterimage
+          //if gravityBombTime mod 5=0 //afterimage
+          if scrModPass(gravityBombTime,5) //afterimage //60fps change: once each time the count reaches a multiple of it
           {
             afterImage=instance_create(x,y,oEnemyAfterImage)
             afterImage.sprite_index=sprite_index
@@ -440,8 +464,10 @@ if global.gamePaused=false
         spiritDefense=round(setSDefense*100)
       }
 
-      specialAttackTime+=1
-      if specialAttackTime=1 //create heads
+      //specialAttackTime+=1
+      specialAttackTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if specialAttackTime=1 //create heads
+      if scrCountPass(specialAttackTime,1) //create heads //60fps change: once, when the count reaches it
       {
         fakeHeadR=instance_create(x+72,y-32,oSLFakeHead)
         fakeHeadR.type=1
@@ -470,8 +496,10 @@ if global.gamePaused=false
         spiritDefense=round(setSDefense*100)
       }
 
-      specialAttackTime+=1
-      if specialAttackTime=1 //create side lasers
+      //specialAttackTime+=1
+      specialAttackTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if specialAttackTime=1 //create side lasers
+      if scrCountPass(specialAttackTime,1) //create side lasers //60fps change: once, when the count reaches it
       {
         newLaser=instance_create(80,yGround,oSLLaser)
         newLaser.spiritPower=spiritPower
@@ -490,7 +518,8 @@ if global.gamePaused=false
         newLaser.idleTime=850
         newLaser.bShake=0
       }
-      else if specialAttackTime=40 //wave 1
+      //else if specialAttackTime=40 //wave 1
+      else if scrCountPass(specialAttackTime,40) //wave 1 //60fps change: once, when the count reaches it
       {
         ultimateBH=instance_create(xCenter-96,128,oSLUltimateBH)
         ultimateBH.dirChange=2
@@ -501,7 +530,8 @@ if global.gamePaused=false
         ultimateBH.shotFreq=6
         ultimateBH.decayTime=210
       }
-      else if specialAttackTime=120 //wave 2
+      //else if specialAttackTime=120 //wave 2
+      else if scrCountPass(specialAttackTime,120) //wave 2 //60fps change: once, when the count reaches it
       {
         ultimateBH=instance_create(xCenter-96,160,oSLUltimateBH)
         ultimateBH.dirChange=-3
@@ -512,7 +542,8 @@ if global.gamePaused=false
         ultimateBH.shotFreq=5
         ultimateBH.decayTime=210
       }
-      else if specialAttackTime=220 //wave 3
+      //else if specialAttackTime=220 //wave 3
+      else if scrCountPass(specialAttackTime,220) //wave 3 //60fps change: once, when the count reaches it
       {
         ultimateBH=instance_create(xCenter,160,oSLUltimateBH)
         ultimateBH.dirChange=5
@@ -523,7 +554,8 @@ if global.gamePaused=false
         ultimateBH.shotFreq=4
         ultimateBH.decayTime=150
       }
-      else if specialAttackTime=360 //wave 4
+      //else if specialAttackTime=360 //wave 4
+      else if scrCountPass(specialAttackTime,360) //wave 4 //60fps change: once, when the count reaches it
       {
         ultimateBH=instance_create(xCenter,128,oSLUltimateBH)
         ultimateBH.dirChange=5
@@ -534,7 +566,8 @@ if global.gamePaused=false
         ultimateBH.shotFreq=2
         ultimateBH.decayTime=210
       }
-      else if specialAttackTime=500 //wave 5
+      //else if specialAttackTime=500 //wave 5
+      else if scrCountPass(specialAttackTime,500) //wave 5 //60fps change: once, when the count reaches it
       {
         ultimateBH=instance_create(xCenter-96,128,oSLUltimateBH)
         ultimateBH.dirChange=4
@@ -545,7 +578,8 @@ if global.gamePaused=false
         ultimateBH.shotFreq=4
         ultimateBH.decayTime=210
       }
-      else if specialAttackTime=650 //wave 6
+      //else if specialAttackTime=650 //wave 6
+      else if scrCountPass(specialAttackTime,650) //wave 6 //60fps change: once, when the count reaches it
       {
         ultimateBH=instance_create(xCenter+96,96,oSLUltimateBH)
         ultimateBH.dirChange=5
@@ -566,7 +600,8 @@ if global.gamePaused=false
         ultimateBH.decayTime=150
         ultimateBH.image_angle=90
       }
-      else if specialAttackTime=770 //wave 7
+      //else if specialAttackTime=770 //wave 7
+      else if scrCountPass(specialAttackTime,770) //wave 7 //60fps change: once, when the count reaches it
       {
         ultimateBH=instance_create(xCenter,128,oSLUltimateBH)
         ultimateBH.dirChange=5
@@ -577,7 +612,8 @@ if global.gamePaused=false
         ultimateBH.shotFreq=1
         ultimateBH.decayTime=100
       }
-      else if specialAttackTime=891 //end attack
+      //else if specialAttackTime=891 //end attack
+      else if scrCountPass(specialAttackTime,891) //end attack //60fps change: once, when the count reaches it
       {
         flashScreen=instance_create(0,0,oScreenFlash)
         flashScreen.image_alpha=1
@@ -616,8 +652,10 @@ if global.gamePaused=false
         spiritDefense=round(setSDefense*100)
       }
 
-      specialAttackTime+=1
-      if specialAttackTime=1
+      //specialAttackTime+=1
+      specialAttackTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if specialAttackTime=1
+      if scrCountPass(specialAttackTime,1) //60fps change: once, when the count reaches it
       {
         with oHeadLaserSpewer {idleTime=2}
         lHandRecoveryTime=0
@@ -654,7 +692,8 @@ if global.gamePaused=false
         laserHeadL.spiritPower=spiritPower/1.1
         laserHeadL.idleTime=135
       }
-      else if specialAttackTime=120
+      //else if specialAttackTime=120
+      else if scrCountPass(specialAttackTime,120) //60fps change: once, when the count reaches it
       {
         newLaser=instance_create(192,yGround,oSLLaser)
         newLaser.spiritPower=spiritPower/1.1
@@ -665,7 +704,8 @@ if global.gamePaused=false
         newLaser.idleTime=140
         newLaser.bShake=0
       }
-      else if specialAttackTime=210
+      //else if specialAttackTime=210
+      else if scrCountPass(specialAttackTime,210) //60fps change: once, when the count reaches it
       {
         newLaser=instance_create(192,yGround,oSLLaser)
         newLaser.spiritPower=spiritPower/1.1
@@ -685,7 +725,8 @@ if global.gamePaused=false
         laserHeadL.spiritPower=spiritPower/1.1
         laserHeadL.idleTime=135
       }
-      else if specialAttackTime=300
+      //else if specialAttackTime=300
+      else if scrCountPass(specialAttackTime,300) //60fps change: once, when the count reaches it
       {
         laserHead[0]=instance_create(xCenter,192,oHeadLaserSpewer)
         laserHead[0].type=1
@@ -707,7 +748,8 @@ if global.gamePaused=false
         laserHead[3].spiritPower=spiritPower/1.1
         laserHead[3].idleTime=270
       }
-      else if specialAttackTime=420
+      //else if specialAttackTime=420
+      else if scrCountPass(specialAttackTime,420) //60fps change: once, when the count reaches it
       {
         newLaser=instance_create(80,yGround,oSLLaser)
         newLaser.spiritPower=spiritPower/1.1
@@ -726,7 +768,8 @@ if global.gamePaused=false
         newLaser.idleTime=70
         newLaser.bShake=0
       }
-      else if specialAttackTime=500
+      //else if specialAttackTime=500
+      else if scrCountPass(specialAttackTime,500) //60fps change: once, when the count reaches it
       {
         laserHeadR=instance_create(xCenter-roomSpan-24,272,oHeadLaserSpewer)
         laserHeadR.type=1
@@ -747,7 +790,8 @@ if global.gamePaused=false
         laserHeadL.spiritPower=spiritPower/1.1
         laserHeadL.idleTime=70
       }
-      else if specialAttackTime=600
+      //else if specialAttackTime=600
+      else if scrCountPass(specialAttackTime,600) //60fps change: once, when the count reaches it
       {
         newLaser=instance_create(80,yGround,oSLLaser)
         newLaser.spiritPower=spiritPower/1.1
@@ -768,42 +812,48 @@ if global.gamePaused=false
           laserGridX+=64
         }
       }
-      else if specialAttackTime=690
+      //else if specialAttackTime=690
+      else if scrCountPass(specialAttackTime,690) //60fps change: once, when the count reaches it
       {
         newLaser=instance_create(oPlayer1.x,yGround,oSLLaser)
         newLaser.spiritPower=spiritPower/1.1
         newLaser.idleTime=400
         newLaser.bShake=1
       }
-      else if specialAttackTime=730
+      //else if specialAttackTime=730
+      else if scrCountPass(specialAttackTime,730) //60fps change: once, when the count reaches it
       {
         newLaser=instance_create(oPlayer1.x,yGround,oSLLaser)
         newLaser.spiritPower=spiritPower/1.1
         newLaser.idleTime=400
         newLaser.bShake=1
       }
-      else if specialAttackTime=770
+      //else if specialAttackTime=770
+      else if scrCountPass(specialAttackTime,770) //60fps change: once, when the count reaches it
       {
         newLaser=instance_create(oPlayer1.x,yGround,oSLLaser)
         newLaser.spiritPower=spiritPower/1.1
         newLaser.idleTime=400
         newLaser.bShake=1
       }
-      else if specialAttackTime=810
+      //else if specialAttackTime=810
+      else if scrCountPass(specialAttackTime,810) //60fps change: once, when the count reaches it
       {
         newLaser=instance_create(oPlayer1.x,yGround,oSLLaser)
         newLaser.spiritPower=spiritPower/1.1
         newLaser.idleTime=400
         newLaser.bShake=1
       }
-      else if specialAttackTime=850
+      //else if specialAttackTime=850
+      else if scrCountPass(specialAttackTime,850) //60fps change: once, when the count reaches it
       {
         newLaser=instance_create(oPlayer1.x,yGround,oSLLaser)
         newLaser.spiritPower=spiritPower/1.1
         newLaser.idleTime=400
         newLaser.bShake=1
       }
-      else if specialAttackTime=950 //end attack
+      //else if specialAttackTime=950 //end attack
+      else if scrCountPass(specialAttackTime,950) //end attack //60fps change: once, when the count reaches it
       {
         with oLatchCrystal
           instance_destroy()
@@ -817,10 +867,12 @@ if global.gamePaused=false
         bSpecialActive=0
       }
 
-      if specialAttackTime>=301 and specialAttackTime<=619 //rotate heads
+      //if specialAttackTime>=301 and specialAttackTime<=619 //rotate heads
+      if specialAttackTime>300 and specialAttackTime<=619 //rotate heads //60fps change: the same 30fps ticks, counted in gDeltaTime steps
       {
         for(i=0;i<4;i+=1)
-          laserHead[i].image_angle-=1
+          //laserHead[i].image_angle-=1
+          laserHead[i].image_angle-=1*gDeltaTime //60fps change: per 30fps tick
       }
     }
 
@@ -831,11 +883,13 @@ if global.gamePaused=false
       {
         if darkEnergyTime<darkEnergyWait
         {
-          darkEnergyTime+=0.25
+          //darkEnergyTime+=0.25
+          darkEnergyTime+=0.25*gDeltaTime //60fps change: per 30fps tick
           if darkEnergyTime>darkEnergyWait
             darkEnergyTime=darkEnergyWait
         }
-        lHandRecoveryTime+=1
+        //lHandRecoveryTime+=1
+        lHandRecoveryTime+=gDeltaTime //60fps change: counts 30fps ticks
         if lHandRecoveryTime>=lHandRecoveryDelay
         {
           effect_create_above(ef_smoke,x-88,y-18,2,c_black)
@@ -850,11 +904,13 @@ if global.gamePaused=false
       {
         if darkEnergyTime<darkEnergyWait
         {
-          darkEnergyTime+=0.25
+          //darkEnergyTime+=0.25
+          darkEnergyTime+=0.25*gDeltaTime //60fps change: per 30fps tick
           if darkEnergyTime>darkEnergyWait
             darkEnergyTime=darkEnergyWait
         }
-        rHandRecoveryTime+=1
+        //rHandRecoveryTime+=1
+        rHandRecoveryTime+=gDeltaTime //60fps change: counts 30fps ticks
         if rHandRecoveryTime>=rHandRecoveryDelay
         {
           effect_create_above(ef_smoke,x+88,y-18,2,c_black)
@@ -1124,18 +1180,32 @@ if global.gamePaused=false
     }
   }
   //****************************** bob up and down ******************************
-  sLordMoveTime+=1
-  if sLordMoveTime>=1 and sLordMoveTime<=21
-    sLordMove+=0.04
-  else if sLordMoveTime>=22 and sLordMoveTime<=42
-    sLordMove-=0.04
-  else if sLordMoveTime>=52 and sLordMoveTime<=72
-    sLordMove-=0.04
-  else if sLordMoveTime>=73 and sLordMoveTime<=93
-    sLordMove+=0.04
+  //sLordMoveTime+=1
+  //if sLordMoveTime>=1 and sLordMoveTime<=21
+  //  sLordMove+=0.04
+  //else if sLordMoveTime>=22 and sLordMoveTime<=42
+  //  sLordMove-=0.04
+  //else if sLordMoveTime>=52 and sLordMoveTime<=72
+  //  sLordMove-=0.04
+  //else if sLordMoveTime>=73 and sLordMoveTime<=93
+  //  sLordMove+=0.04
+  //else if sLordMoveTime>=103
+  //  sLordMoveTime=0
+  //y+=sLordMove
+  //60fps change: the float counts 30fps ticks (the same ticks: >a-1 is >=a in whole ticks), and its speed changes
+  //and moves it per 30fps tick
+  sLordMoveTime+=gDeltaTime
+  if sLordMoveTime>0 and sLordMoveTime<=21
+    sLordMove+=0.04*gDeltaTime
+  else if sLordMoveTime>21 and sLordMoveTime<=42
+    sLordMove-=0.04*gDeltaTime
+  else if sLordMoveTime>51 and sLordMoveTime<=72
+    sLordMove-=0.04*gDeltaTime
+  else if sLordMoveTime>72 and sLordMoveTime<=93
+    sLordMove+=0.04*gDeltaTime
   else if sLordMoveTime>=103
     sLordMoveTime=0
-  y+=sLordMove
+  y+=sLordMove*gDeltaTime
   enemyStepEvent()
 }
 #define Collision_oAttackBase

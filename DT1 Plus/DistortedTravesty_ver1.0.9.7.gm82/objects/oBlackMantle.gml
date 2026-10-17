@@ -73,7 +73,8 @@ if global.gamePaused=false
   {
     if attackProgress=0 //wait to phase in
     {
-      phaseTime+=1
+      //phaseTime+=1
+      phaseTime+=gDeltaTime //60fps change: counts 30fps ticks
       if phaseTime>=phaseWait
       {
         //find new spot
@@ -91,7 +92,8 @@ if global.gamePaused=false
     }
     else if attackProgress=1 //phase in
     {
-      xSplit-=1
+      //xSplit-=1
+      xSplit-=1*gDeltaTime //60fps change: per 30fps tick
       if xSplit<=0
       {
         bCanDealDamage=true
@@ -101,12 +103,15 @@ if global.gamePaused=false
     }
     else if attackProgress=2 //wait and attack
     {
-      idleTime+=1
+      //idleTime+=1
+      idleTime+=gDeltaTime //60fps change: counts 30fps ticks
       if idleTime>=idleWait
       {
-        if idleTime=idleWait
+        //if idleTime=idleWait
+        if scrCountPass(idleTime,idleWait) //60fps change: once, when the count reaches it
           sprite_index=sBlackMantleArmUp
-        else if idleTime=idleWait+15
+        //else if idleTime=idleWait+15
+        else if scrCountPass(idleTime,idleWait+15) //60fps change: once, when the count reaches it
         {
           sprite_index=sBlackMantleCast
           var dir,arc;
@@ -122,13 +127,15 @@ if global.gamePaused=false
             newBullet.bDestroyOnOutside=1
             newBullet.elementType=1
             newBullet.bulletSpeed=5
-            newBullet.direction=dir
+            //newBullet.direction=dir
+            newBullet._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             newBullet.arcTime=arc
             newBullet.bulletArc=10
             dir+=360/fireAmount
           }
         }
-        else if idleTime=idleWait+40
+        //else if idleTime=idleWait+40
+        else if idleTime>=idleWait+40 //60fps change: >= so it still resets if the frame rate changes mid-count
         {
           sprite_index=sBlackMantleIdle
           bCanDealDamage=false
@@ -140,7 +147,8 @@ if global.gamePaused=false
     }
     else if attackProgress=3 //phase out
     {
-      xSplit+=1
+      //xSplit+=1
+      xSplit+=1*gDeltaTime //60fps change: per 30fps tick
       if xSplit>=32
         attackProgress=0
     }

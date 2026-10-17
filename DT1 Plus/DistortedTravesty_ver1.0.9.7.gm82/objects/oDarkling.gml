@@ -21,9 +21,11 @@ if global.gamePaused=false
     if dir=1
       image_xscale=-1
   if dir=0
-    x+=flySpeed
+    //x+=flySpeed
+    x+=flySpeed*gDeltaTime //60fps change: per 30fps tick
   else if dir=1
-    x-=flySpeed
+    //x-=flySpeed
+    x-=flySpeed*gDeltaTime //60fps change: per 30fps tick
   if point_distance(x,0,oPlayer1.x,0)>512
     instance_destroy()
 }

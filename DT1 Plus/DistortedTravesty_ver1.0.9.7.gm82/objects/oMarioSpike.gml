@@ -49,6 +49,7 @@ if init=0
 if global.gamePaused=false
 {
   makeEnemyActive()
-  image_angle+=swingSpeed
+  //image_angle+=swingSpeed
+  image_angle+=swingSpeed*gDeltaTime //60fps change: per 30fps tick
   followInstance()
 }

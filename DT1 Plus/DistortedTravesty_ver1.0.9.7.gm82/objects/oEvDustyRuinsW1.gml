@@ -19,8 +19,10 @@ if global.gameProgress=71 //intro to Dusty Ruins
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -73,87 +75,108 @@ else if global.gameProgress=73 //Dusty Ruins 2 Rock Trap
   }
   if sceneProgress=1 and global.gamePaused=false
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1568,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=60
+    //else if sceneDelay=60
+    else if scrCountPass(sceneDelay,60) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1824,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=120
+    //else if sceneDelay=120
+    else if scrCountPass(sceneDelay,120) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1696,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=165
+    //else if sceneDelay=165
+    else if scrCountPass(sceneDelay,165) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1632,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=210
+    //else if sceneDelay=210
+    else if scrCountPass(sceneDelay,210) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1760,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=270
+    //else if sceneDelay=270
+    else if scrCountPass(sceneDelay,270) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1568,-48,oBigBoulder); boulder.bActive=true
       boulder=instance_create(1824,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=345
+    //else if sceneDelay=345
+    else if scrCountPass(sceneDelay,345) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1632,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=390
+    //else if sceneDelay=390
+    else if scrCountPass(sceneDelay,390) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1760,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=480
+    //else if sceneDelay=480
+    else if scrCountPass(sceneDelay,480) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1568,-48,oBigBoulder); boulder.bActive=true
       boulder=instance_create(1824,-48,oBigBoulder); boulder.bActive=true
       boulder=instance_create(1696,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=570
+    //else if sceneDelay=570
+    else if scrCountPass(sceneDelay,570) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1824,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=615
+    //else if sceneDelay=615
+    else if scrCountPass(sceneDelay,615) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1760,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=660
+    //else if sceneDelay=660
+    else if scrCountPass(sceneDelay,660) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1696,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=705
+    //else if sceneDelay=705
+    else if scrCountPass(sceneDelay,705) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1632,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=750
+    //else if sceneDelay=750
+    else if scrCountPass(sceneDelay,750) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1568,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=810
+    //else if sceneDelay=810
+    else if scrCountPass(sceneDelay,810) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1568,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=840
+    //else if sceneDelay=840
+    else if scrCountPass(sceneDelay,840) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1632,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=870
+    //else if sceneDelay=870
+    else if scrCountPass(sceneDelay,870) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1696,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=900
+    //else if sceneDelay=900
+    else if scrCountPass(sceneDelay,900) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1760,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=930
+    //else if sceneDelay=930
+    else if scrCountPass(sceneDelay,930) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1824,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=1050
+    //else if sceneDelay=1050
+    else if scrCountPass(sceneDelay,1050) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_SwitchHit,0,1)
       with oEventBarrier
@@ -187,11 +210,14 @@ else if global.gameProgress=76 and room=rDustyRuins5 //Boss Fight (Flame Instiga
   else if sceneProgress=1
   {
     if oPlayer1.y<320
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=60
       {
@@ -202,8 +228,10 @@ else if global.gameProgress=76 and room=rDustyRuins5 //Boss Fight (Flame Instiga
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       boss=instance_create(496,320,oFlameInstigator)
       boss.sprite_index=sKredaeusRainFire1
@@ -223,16 +251,21 @@ else if global.gameProgress=76 and room=rDustyRuins5 //Boss Fight (Flame Instiga
         newImage[i].delay=7*i
       }
     }
-    else if sceneDelay>=2
+    //else if sceneDelay>=2
+    else if sceneDelay>1 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       for (i=0;i<10;i+=1) //spawn in effect
       {
-        newImage[i].delay-=1
+        //newImage[i].delay-=1
+        newImage[i].delay-=gDeltaTime //60fps change: per 30fps tick
         if newImage[i].delay<=0 and newImage[i].image_alpha<0.09
         {
-          newImage[i].image_alpha+=0.01
-          newImage[i].image_xscale+=0.34
-          newImage[i].image_yscale-=0.34
+          //newImage[i].image_alpha+=0.01
+          newImage[i].image_alpha+=0.01*gDeltaTime //60fps change: per 30fps tick
+          //newImage[i].image_xscale+=0.34
+          newImage[i].image_xscale+=0.34*gDeltaTime //60fps change: per 30fps tick
+          //newImage[i].image_yscale-=0.34
+          newImage[i].image_yscale-=0.34*gDeltaTime //60fps change: per 30fps tick
         }
       }
     }
@@ -244,14 +277,17 @@ else if global.gameProgress=76 and room=rDustyRuins5 //Boss Fight (Flame Instiga
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       boss.image_alpha=1
       with oMisc
         instance_destroy()
     }
-    else if sceneDelay=10
+    //else if sceneDelay=10
+    else if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
       boss.sprite_index=sKredaeusIdle
     if sceneDelay>=40
     {
@@ -275,8 +311,10 @@ else if global.gameProgress=76 and room=rDustyRuins5 //Boss Fight (Flame Instiga
     msgCreate("It's just not happening man.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=11
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       boss.sprite_index=sKredaeusShootStraight
       boss.image_index=1
@@ -293,8 +331,10 @@ else if global.gameProgress=76 and room=rDustyRuins5 //Boss Fight (Flame Instiga
     msgCreate("Kick ass!!#I hope this is as epic as I'm hoping it will be.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=14
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       boss.sprite_index=sKredaeusIdle
       barrier1=instance_create(144,256,oBossBarrier)
@@ -326,14 +366,17 @@ else if global.gameProgress=77 //boss fight ends (Flame Instigator)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       oPlayer1.x=416
@@ -350,13 +393,15 @@ else if global.gameProgress=77 //boss fight ends (Flame Instigator)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -367,8 +412,10 @@ else if global.gameProgress=77 //boss fight ends (Flame Instigator)
     msgCreate("Piece of cake.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=6
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       newPowerUp=instance_create(oPlayer1.x-8,oPlayer1.y-96,oMisc)
       newPowerUp.type=0
@@ -387,10 +434,13 @@ else if global.gameProgress=77 //boss fight ends (Flame Instigator)
     msgCreate("Awesome, I love new abilities!",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=8
   {
-    sceneDelay+=1
-    if sceneDelay>=31 and sceneDelay<=78
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=31 and sceneDelay<=78
+    if sceneDelay>30 and sceneDelay<=78 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      newPowerUp.y+=1.25
+      //newPowerUp.y+=1.25
+      newPowerUp.y+=1.25*gDeltaTime //60fps change: per 30fps tick
     }
     if sceneDelay>=100
     {
@@ -486,7 +536,8 @@ else if global.gameProgress=79 and room=rDustyRuins6 //Quicktime Event
   }
   else if sceneProgress=6
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=45
     {
       qtTextEvent=""
@@ -532,125 +583,152 @@ if room=rDirtyRuins1 and global.gamePaused=false
   }
   if sceneProgress=1 and global.gamePaused=false
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
       boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=120
+    //else if sceneDelay=120
+    else if scrCountPass(sceneDelay,120) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1024,-48,oBigBoulder); boulder.bActive=true
       boulder=instance_create(1216,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=160
+    //else if sceneDelay=160
+    else if scrCountPass(sceneDelay,160) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1120,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=220
+    //else if sceneDelay=220
+    else if scrCountPass(sceneDelay,220) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=230
+    //else if sceneDelay=230
+    else if scrCountPass(sceneDelay,230) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1024,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=240
+    //else if sceneDelay=240
+    else if scrCountPass(sceneDelay,240) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1120,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=250
+    //else if sceneDelay=250
+    else if scrCountPass(sceneDelay,250) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1216,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=260
+    //else if sceneDelay=260
+    else if scrCountPass(sceneDelay,260) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=350
+    //else if sceneDelay=350
+    else if scrCountPass(sceneDelay,350) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=360
+    //else if sceneDelay=360
+    else if scrCountPass(sceneDelay,360) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1216,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=370
+    //else if sceneDelay=370
+    else if scrCountPass(sceneDelay,370) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1120,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=380
+    //else if sceneDelay=380
+    else if scrCountPass(sceneDelay,380) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1024,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=390
+    //else if sceneDelay=390
+    else if scrCountPass(sceneDelay,390) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=480
+    //else if sceneDelay=480
+    else if scrCountPass(sceneDelay,480) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
       boulder=instance_create(1120,-48,oBigBoulder); boulder.bActive=true
       boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=520
+    //else if sceneDelay=520
+    else if scrCountPass(sceneDelay,520) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(1024,-48,oBigBoulder); boulder.bActive=true
       boulder=instance_create(1216,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=680
+    //else if sceneDelay=680
+    else if scrCountPass(sceneDelay,680) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
       boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=710
+    //else if sceneDelay=710
+    else if scrCountPass(sceneDelay,710) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
       boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=740
+    //else if sceneDelay=740
+    else if scrCountPass(sceneDelay,740) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
       boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=770
-    {
-      boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
-      boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
-      boulder=instance_create(1120,-48,oBigBoulder); boulder.bActive=true
-    }
-    else if sceneDelay=800
-    {
-      boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
-      boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
-    }
-    else if sceneDelay=830
-    {
-      boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
-      boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
-    }
-    else if sceneDelay=860
-    {
-      boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
-      boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
-    }
-    else if sceneDelay=890
-    {
-      boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
-      boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
-    }
-    else if sceneDelay=920
+    //else if sceneDelay=770
+    else if scrCountPass(sceneDelay,770) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
       boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
       boulder=instance_create(1120,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=950
+    //else if sceneDelay=800
+    else if scrCountPass(sceneDelay,800) //60fps change: once, when the count reaches it
     {
       boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
       boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
     }
-    else if sceneDelay=1020
+    //else if sceneDelay=830
+    else if scrCountPass(sceneDelay,830) //60fps change: once, when the count reaches it
+    {
+      boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
+      boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
+    }
+    //else if sceneDelay=860
+    else if scrCountPass(sceneDelay,860) //60fps change: once, when the count reaches it
+    {
+      boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
+      boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
+    }
+    //else if sceneDelay=890
+    else if scrCountPass(sceneDelay,890) //60fps change: once, when the count reaches it
+    {
+      boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
+      boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
+    }
+    //else if sceneDelay=920
+    else if scrCountPass(sceneDelay,920) //60fps change: once, when the count reaches it
+    {
+      boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
+      boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
+      boulder=instance_create(1120,-48,oBigBoulder); boulder.bActive=true
+    }
+    //else if sceneDelay=950
+    else if scrCountPass(sceneDelay,950) //60fps change: once, when the count reaches it
+    {
+      boulder=instance_create(928,-48,oBigBoulder); boulder.bActive=true
+      boulder=instance_create(1312,-48,oBigBoulder); boulder.bActive=true
+    }
+    //else if sceneDelay=1020
+    else if scrCountPass(sceneDelay,1020) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_SwitchHit,0,1)
       with oEventBarrier

@@ -96,29 +96,39 @@ if global.gamePaused=false
   if bActive=true and dieFade=0
   {
     //******************** MOVEMENT ********************
-    moveTime+=1
+    //moveTime+=1
+    moveTime+=gDeltaTime //60fps change: counts 30fps ticks
     if moveTime>=moveDelay
     {
-      bulletDropTime+=1
+      //bulletDropTime+=1
+      bulletDropTime+=gDeltaTime //60fps change: counts 30fps ticks
       if bulletDropTime>=bulletDropDelay
       {
         newBullet=instance_create(x,y,oMMeShot1)
         newBullet.physicalPower=physicalPower
         newBullet.bulletSpeed=7
-        newBullet.direction=270
+        //newBullet.direction=270
+        newBullet._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         bulletDropTime=0
       }
 
-      moveProgress+=1
-      if moveProgress>=1 and moveProgress<=48
-        y-=2
-      else if moveProgress>=49 and moveProgress<=145
+      //moveProgress+=1
+      moveProgress+=gDeltaTime //60fps change: counts 30fps ticks
+      //if moveProgress>=1 and moveProgress<=48
+      if moveProgress>0 and moveProgress<=48 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
+        //y-=2
+        y-=2*gDeltaTime //60fps change: per 30fps tick
+      //else if moveProgress>=49 and moveProgress<=145
+      else if moveProgress>48 and moveProgress<=145 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
       {
         if currentSide="LEFT"
-          x+=2
+          //x+=2
+          x+=2*gDeltaTime //60fps change: per 30fps tick
         else if currentSide="RIGHT"
-          x-=2
-        if moveProgress=145
+          //x-=2
+          x-=2*gDeltaTime //60fps change: per 30fps tick
+        //if moveProgress=145
+        if scrCountPass(moveProgress,145) //60fps change: once, when the count reaches it
         {
           if currentSide="LEFT"
           {
@@ -132,8 +142,10 @@ if global.gamePaused=false
           }
         }
       }
-      else if moveProgress>=146 and moveProgress<194
-        y+=2
+      //else if moveProgress>=146 and moveProgress<194
+      else if moveProgress>145 and moveProgress<=193 //60fps change: the same 30fps ticks, counted in gDeltaTime steps (<=193 is <194 in whole ticks)
+        //y+=2
+        y+=2*gDeltaTime //60fps change: per 30fps tick
       else if moveProgress>=195
       {
         bulletDropTime=0
@@ -143,7 +155,8 @@ if global.gamePaused=false
     }
 
     //******************** BULLET SPREAD ********************
-    bulletSpreadTime+=1
+    //bulletSpreadTime+=1
+    bulletSpreadTime+=gDeltaTime //60fps change: counts 30fps ticks
     if bulletSpreadTime>=bulletSpreadDelay
     {
       var dir,xOffset,yOffset;
@@ -157,7 +170,8 @@ if global.gamePaused=false
         newBullet.physicalPower=physicalPower
         newBullet.bDestroyOnOutside=1
         newBullet.bulletSpeed=5
-        newBullet.direction=dir
+        //newBullet.direction=dir
+        newBullet._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.arcTime=78
         newBullet.bulletArc=5
         newBullet.image_blend=make_color_rgb(100,100,255)
@@ -166,7 +180,8 @@ if global.gamePaused=false
         newBullet.physicalPower=physicalPower
         newBullet.bDestroyOnOutside=1
         newBullet.bulletSpeed=7.5
-        newBullet.direction=dir
+        //newBullet.direction=dir
+        newBullet._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.arcTime=57
         newBullet.bulletArc=7.5
         newBullet.image_blend=make_color_rgb(255,255,100)
@@ -175,7 +190,8 @@ if global.gamePaused=false
         newBullet.physicalPower=physicalPower
         newBullet.bDestroyOnOutside=1
         newBullet.bulletSpeed=10
-        newBullet.direction=dir
+        //newBullet.direction=dir
+        newBullet._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.arcTime=36
         newBullet.bulletArc=10
         newBullet.image_blend=make_color_rgb(255,100,100)
@@ -184,7 +200,8 @@ if global.gamePaused=false
       bulletSpreadTime=0
     }
     //******************** BULLET CIRCLE ********************
-    bulletCircleTime+=1
+    //bulletCircleTime+=1
+    bulletCircleTime+=gDeltaTime //60fps change: counts 30fps ticks
     if bulletCircleTime>=bulletCircleDelay
     {
       var dir,xOffset,yOffset;
@@ -197,14 +214,17 @@ if global.gamePaused=false
         newBullet=instance_create(x+xOffset,y+yOffset,oMMeShot1)
         newBullet.physicalPower=physicalPower
         newBullet.bulletSpeed=2.5
-        newBullet.direction=dir
+        //newBullet.direction=dir
+        newBullet._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         dir+=12
       }
       bulletCircleTime=0
     }
     //******************** BULLET LINE ********************
-    bulletLineTime+=1
-    if bulletLineTime>=bulletLineDelay
+    //bulletLineTime+=1
+    bulletLineTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if bulletLineTime>=bulletLineDelay
+    if bulletLineTime>=bulletLineDelay and scrModPass(bulletLineTime,1) //60fps change: a bullet once per 30fps tick (each time the count reaches a whole number; every tick at 30fps)
     {
       var dir,xOffset,yOffset;
       dir=point_direction(x,y,oPlayer1.x,oPlayer1.y-26)
@@ -214,7 +234,8 @@ if global.gamePaused=false
       newBullet=instance_create(x+xOffset,y+yOffset,oMMeShot1)
       newBullet.physicalPower=physicalPower
       newBullet.bulletSpeed=4
-      newBullet.direction=bulletLineDir
+      //newBullet.direction=bulletLineDir
+      newBullet._direction=bulletLineDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       bulletLineDir+=2
       if bulletLineDir>=360
       {

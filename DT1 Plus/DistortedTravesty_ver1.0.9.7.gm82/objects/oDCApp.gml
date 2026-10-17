@@ -43,10 +43,13 @@ if global.gamePaused=false
   }
   if type=0
   {
-    throwDelay-=1
-    if throwDelay=0
+    //throwDelay-=1
+    throwDelay-=gDeltaTime //60fps change: counts 30fps ticks
+    //if throwDelay=0
+    if scrCountPassDown(throwDelay,0) //60fps change: once, when the count reaches 0
     {
-      direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-22)
+      //direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-22)
+      _direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-22) //60fps change: _direction stands in for direction (see correctSpeedDirection)
       bCanDealDamage=true
     }
   }
@@ -54,13 +57,18 @@ if global.gamePaused=false
   if throwDelay<=0
   {
     if throwSpeed<12
-      throwSpeed+=0.25
-    speed=throwSpeed
+      //throwSpeed+=0.25
+      throwSpeed=min(12,scrGravAcc(throwSpeed,0.25,1)) //60fps change: speeds up per 30fps tick, following the 30fps path (the same at 30fps)
+    //speed=throwSpeed
+    _speed=throwSpeed //60fps change: moved by correctSpeedDirection (end of the step)
   }
 
-  decayTime-=1
+  //decayTime-=1
+  decayTime-=gDeltaTime //60fps change: counts 30fps ticks
   if decayTime<=0
     instance_destroy()
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above
+correctSpeedDirection(id) //60fps change (added): moves it by _speed in _direction, this frame's share of a 30fps tick

@@ -75,12 +75,16 @@ if global.gamePaused=false
       image_xscale=1
     else
       image_xscale=-1
-    x+=xVel
+    //x+=xVel
+    x+=xVel*gDeltaTime //60fps change: per 30fps tick
 
+    //60fps change: counts 30fps ticks
     if x>oCharacter.x and image_xscale=1
-      turnTime+=1
+      //turnTime+=1
+      turnTime+=gDeltaTime
     else if x<oCharacter.x and image_xscale=-1
-      turnTime+=1
+      //turnTime+=1
+      turnTime+=gDeltaTime
     if turnTime>=50
     {
       xVel*=-1
@@ -95,10 +99,14 @@ if global.gamePaused=false
       newAttack.sprite_index=sGreenYoshiEgg
       newAttack.direction=270
       newAttack.bulletSpeed=5
-      shootTime=0
+      //shootTime=0
+      //60fps change: counts 30fps ticks; the frame that shoots counts as a whole tick, as at 30fps (it doesn't count
+      //up), so the count starts that far back (0 at 30fps)
+      shootTime=gDeltaTime-1
     }
     else
-      shootTime+=1
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: see above
   }
   enemyStepEvent()
 }

@@ -63,7 +63,8 @@ if global.gamePaused=false
     else
       image_angle=-findTargetX/8+90
 
-    shootTime+=1
+    //shootTime+=1
+    shootTime+=gDeltaTime //60fps change: counts 30fps ticks
     if shootTime>=reShootTime //fire toward player
     {
       if x>oCharacter.x
@@ -122,7 +123,8 @@ if global.gamePaused=false
       }
       else if multishot=1 //close to Static Sentry
       {
-        if shootTime mod 3=0
+        //if shootTime mod 3=0
+        if scrModPass(shootTime,3) //60fps change: once each time the count reaches a multiple of it
         {
           shotAmt+=1
           if shotAmt=1
@@ -157,7 +159,8 @@ if global.gamePaused=false
       }
       else if multishot=2 //close to Aerial Sentry
       {
-        if shootTime mod 3=0
+        //if shootTime mod 3=0
+        if scrModPass(shootTime,3) //60fps change: once each time the count reaches a multiple of it
         {
           shotAmt+=1
           if shotAmt=1
@@ -195,7 +198,8 @@ if global.gamePaused=false
       }
     }
 
-    yVel+=0.2
+    //yVel+=0.2
+    yVel=scrGravAcc(yVel,0.2,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
     if isCollisionLeft(1)
@@ -204,7 +208,8 @@ if global.gamePaused=false
       xVel=0
     if isCollisionSolid()
       y-=2
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 
     if y>room_height+30
       instance_destroy()

@@ -74,8 +74,10 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true and stunnedTime=0 and dieFade=0
   {
-    flyTime+=1
-    if flyTime>=60
+    //flyTime+=1
+    flyTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if flyTime>=60
+    if flyTime>59 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps; with >= it flew half a tick more each cycle)
     {
       if scytheTime=0
       {
@@ -86,10 +88,13 @@ if global.gamePaused=false
         else
           image_xscale=1
       }
-      scytheTime+=1
+      //scytheTime+=1
+      scytheTime+=gDeltaTime //60fps change: counts 30fps ticks
       if scytheTime>5
-        y+=runAcc+(runAcc/3.2)*difAdjustSpd
-      if scytheTime=scytheDelay //fire scythe
+        //y+=runAcc+(runAcc/3.2)*difAdjustSpd
+        y+=(runAcc+(runAcc/3.2)*difAdjustSpd)*gDeltaTime //60fps change: per 30fps tick
+      //if scytheTime=scytheDelay //fire scythe
+      if scrCountPass(scytheTime,scytheDelay) //fire scythe //60fps change: once, when the count reaches it
       {
         if image_xscale=1
           xOffset=36
@@ -99,14 +104,17 @@ if global.gamePaused=false
         newBullet.type=1
         newBullet.spiritPower=spiritPower
         newBullet.bulletSpeed=8
-        newBullet.direction=point_direction(x,y,oCharacter.x,oCharacter.y-22)+10
+        //newBullet.direction=point_direction(x,y,oCharacter.x,oCharacter.y-22)+10
+        newBullet._direction=point_direction(x,y,oCharacter.x,oCharacter.y-22)+10 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet=instance_create(x+xOffset,y-48,oDustRScythe)
         newBullet.type=1
         newBullet.spiritPower=spiritPower
         newBullet.bulletSpeed=8
-        newBullet.direction=point_direction(x,y,oCharacter.x,oCharacter.y-22)-10
+        //newBullet.direction=point_direction(x,y,oCharacter.x,oCharacter.y-22)-10
+        newBullet._direction=point_direction(x,y,oCharacter.x,oCharacter.y-22)-10 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       }
-      if scytheTime>=scytheDelay+(scytheDelay/3) //revert
+      //if scytheTime>=scytheDelay+(scytheDelay/3) //revert
+      if scytheTime>=ceil(scytheDelay+(scytheDelay/3)) //revert //60fps change: the 30fps tick it reaches it (it counts in gDeltaTime steps)
       {
         sprite_index=sDustReaperFly
         bCanDealDamage=false
@@ -127,10 +135,13 @@ if global.gamePaused=false
     else
     {
       if dir=0
-        x-=runAcc/2.1
+        //x-=runAcc/2.1
+        x-=runAcc/2.1*gDeltaTime //60fps change: per 30fps tick
       else
-        x+=runAcc/2.1
-      y-=runAcc
+        //x+=runAcc/2.1
+        x+=runAcc/2.1*gDeltaTime //60fps change: per 30fps tick
+      //y-=runAcc
+      y-=runAcc*gDeltaTime //60fps change: per 30fps tick
     }
   }
   enemyStepEvent()

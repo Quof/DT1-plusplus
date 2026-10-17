@@ -61,8 +61,10 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  speed=3
-  destroyTime-=1
+  //speed=3
+  _speed=3 //60fps change: moved by correctSpeedDirection (end of the step)
+  //destroyTime-=1
+  destroyTime-=gDeltaTime //60fps change: counts 30fps ticks
   if destroyTime<=0
   {
     if surfaceUsed=1
@@ -71,7 +73,9 @@ if global.gamePaused=false
   }
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above
+correctSpeedDirection(id) //60fps change (added): moves it by _speed in _direction, this frame's share of a 30fps tick
 #define Draw_0
 /*"/*'/**//* YYD ACTION
 lib_id=1

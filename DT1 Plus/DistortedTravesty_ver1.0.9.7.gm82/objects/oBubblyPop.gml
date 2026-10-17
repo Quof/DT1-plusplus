@@ -52,7 +52,8 @@ if global.gamePaused=false
   {
     if yVel=0
     {
-      hopTime-=1
+      //hopTime-=1
+      hopTime-=gDeltaTime //60fps change: counts 30fps ticks
       image_speed=0
     }
     else
@@ -63,7 +64,8 @@ if global.gamePaused=false
       yVel=-7
       hopTime=20+round(random(30))
     }
-    popTime-=1
+    //popTime-=1
+    popTime-=gDeltaTime //60fps change: counts 30fps ticks
     if popTime<=0 and yVel>=2 and yVel<=5
     {
       effect=instance_create(x,y-sprite_height,oEffect)
@@ -73,17 +75,20 @@ if global.gamePaused=false
       {
         newBullet=instance_create(x,y-sprite_height,oBubblyBullet)
         newBullet.spiritPower=spiritPower
-        newBullet.direction=dirEff
+        //newBullet.direction=dirEff
+        newBullet._direction=dirEff //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         dirEff-=45
       }
       if questType>0
         enemyQuest(questType)
       instance_destroy()
     }
-    yVel+=0.2
+    //yVel+=0.2
+    yVel=scrGravAcc(yVel,0.2,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     if isCollisionSolid()
       y-=2
 

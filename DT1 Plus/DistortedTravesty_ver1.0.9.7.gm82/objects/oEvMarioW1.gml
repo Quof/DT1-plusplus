@@ -30,20 +30,26 @@ if global.gameProgress=14 //intro to Mario World
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       oPlayer1.image_speed=0.1
       oPlayer1.sprite_index=sPlayerLayDown
     }
-    else if sceneDelay>=90 and sceneDelay<=130
+    //else if sceneDelay>=90 and sceneDelay<=130
+    else if sceneDelay>89 and sceneDelay<=130 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if bossFinishFadeAlpha>0
-        bossFinishFadeAlpha-=0.04
+        //bossFinishFadeAlpha-=0.04
+        bossFinishFadeAlpha-=0.04*gDeltaTime //60fps change: per 30fps tick
     }
-    else if sceneDelay=180
+    //else if sceneDelay=180
+    else if scrCountPass(sceneDelay,180) //60fps change: once, when the count reaches it
       oPlayer1.sprite_index=sPlayerGetUp1
-    else if sceneDelay=195
+    //else if sceneDelay=195
+    else if scrCountPass(sceneDelay,195) //60fps change: once, when the count reaches it
       oPlayer1.sprite_index=sPlayerGetUp2
     else if sceneDelay>=250
     {
@@ -72,12 +78,16 @@ if global.gameProgress=14 //intro to Mario World
     msgCreate("Eh...?",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=8
   {
-    sceneDelay+=1
-    if sceneDelay=10
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
       oPlayer1.sprite_index=sPlayerGetUp3
-    else if sceneDelay=25
+    //else if sceneDelay=25
+    else if scrCountPass(sceneDelay,25) //60fps change: once, when the count reaches it
       oPlayer1.sprite_index=sPlayerGetUp4
-    else if sceneDelay=40
+    //else if sceneDelay=40
+    else if scrCountPass(sceneDelay,40) //60fps change: once, when the count reaches it
       oPlayer1.sprite_index=sPlayerIdle
     else if sceneDelay>=80
     {
@@ -134,8 +144,10 @@ else if global.gameProgress=17 //Toad Town intro
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -175,8 +187,10 @@ else if global.gameProgress=19 //talk to Toad Mayor (first time)
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       fadeColor=c_black
@@ -190,7 +204,8 @@ else if global.gameProgress=19 //talk to Toad Mayor (first time)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.04
+      //bossFinishFadeAlpha+=0.04
+      bossFinishFadeAlpha+=0.04*gDeltaTime //60fps change: per 30fps tick
     else
     {
       stopPlayer()
@@ -203,11 +218,14 @@ else if global.gameProgress=19 //talk to Toad Mayor (first time)
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay>=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=30
+    if sceneDelay>29 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if bossFinishFadeAlpha>0
-        bossFinishFadeAlpha-=0.04
+        //bossFinishFadeAlpha-=0.04
+        bossFinishFadeAlpha-=0.04*gDeltaTime //60fps change: per 30fps tick
       else
         sceneProgress+=1
     }
@@ -266,8 +284,10 @@ else if global.gameProgress=21 //intro to Rumpy Mountains
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       global.gamePaused=true
     else if sceneDelay>=60
     {
@@ -298,8 +318,10 @@ else if global.gameProgress=24 //intro to Old Castle
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       global.gamePaused=true
     else if sceneDelay>=60
     {
@@ -330,8 +352,10 @@ else if global.gameProgress=27 //Old Castle change
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       global.gamePaused=true
     else if sceneDelay>=45
     {
@@ -370,8 +394,10 @@ else if global.gameProgress=29 //Old Castle Distortion
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       global.gamePaused=true
     else if sceneDelay>=45
     {
@@ -409,7 +435,8 @@ else if global.gameProgress=31 and room=rOldCastle5 //boss fight (Dark Mind)
   else if sceneProgress=1
   {
     if oPlayer1.y<304
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
       oPlayer1.sprite_index=sPlayerIdle
@@ -418,17 +445,22 @@ else if global.gameProgress=31 and room=rOldCastle5 //boss fight (Dark Mind)
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       screenFlash=1
       oPlayer1.sprite_index=sPlayerGuard
       boss=instance_create(544,240,oDarkMind)
       playSound(global.snd_BreakOut,0,1)
     }
-    else if sceneDelay>=9 and sceneDelay<=109
-      screenFlash-=0.01
-    else if sceneDelay=120
+    //else if sceneDelay>=9 and sceneDelay<=109
+    else if sceneDelay>8 and sceneDelay<=109 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //screenFlash-=0.01
+      screenFlash-=0.01*gDeltaTime //60fps change: per 30fps tick
+    //else if sceneDelay=120
+    else if scrCountPass(sceneDelay,120) //60fps change: once, when the count reaches it
       oPlayer1.sprite_index=sPlayerIdle
     else if sceneDelay>=140
     {
@@ -464,8 +496,10 @@ else if global.gameProgress=31 and room=rOldCastle5 //boss fight (Dark Mind)
     msgCreate("Gonna have to stomp its ass into the ground then!",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=13
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       barrier1=instance_create(176,240,oBossBarrier)
       oPlayer1.raveTime=0
@@ -495,14 +529,17 @@ else if global.gameProgress=32 //boss fight ends (Dark Mind)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       oPlayer1.x=408
@@ -519,13 +556,15 @@ else if global.gameProgress=32 //boss fight ends (Dark Mind)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -548,8 +587,10 @@ else if global.gameProgress=32 //boss fight ends (Dark Mind)
     msgCreate("Hmm?",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=12
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       bossFinishFadeAlpha=1
       oPlayer1.sprite_index=sPlayerLookUp
@@ -557,8 +598,10 @@ else if global.gameProgress=32 //boss fight ends (Dark Mind)
       muffin.muffinType=0
       playSound(global.snd_BreakOut,0,1)
     }
-    else if sceneDelay>=9 and sceneDelay<=109
-      bossFinishFadeAlpha-=0.01
+    //else if sceneDelay>=9 and sceneDelay<=109
+    else if sceneDelay>8 and sceneDelay<=109 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //bossFinishFadeAlpha-=0.01
+      bossFinishFadeAlpha-=0.01*gDeltaTime //60fps change: per 30fps tick
     else if sceneDelay>=120
     {
       sceneDelay=0
@@ -631,8 +674,10 @@ else if global.gameProgress=34 //talk to Toad Mayor (second time)
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       fadeColor=c_black
@@ -646,7 +691,8 @@ else if global.gameProgress=34 //talk to Toad Mayor (second time)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.04
+      //bossFinishFadeAlpha+=0.04
+      bossFinishFadeAlpha+=0.04*gDeltaTime //60fps change: per 30fps tick
     else
     {
       stopPlayer()
@@ -659,11 +705,14 @@ else if global.gameProgress=34 //talk to Toad Mayor (second time)
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay>=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=30
+    if sceneDelay>29 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if bossFinishFadeAlpha>0
-        bossFinishFadeAlpha-=0.04
+        //bossFinishFadeAlpha-=0.04
+        bossFinishFadeAlpha-=0.04*gDeltaTime //60fps change: per 30fps tick
       else
       {
         sceneProgress+=1
@@ -716,14 +765,16 @@ else if global.gameProgress=34 //talk to Toad Mayor (second time)
 if room=rDonutPlains1Secret and global.gamePaused=false //autoscroll right
 {
   if autoScroll.x<2816
-    autoScroll.x+=2.25
+    //autoScroll.x+=2.25
+    autoScroll.x+=2.25*gDeltaTime //60fps change: per 30fps tick
   if autoScroll.x-(view_wview[0]/2)-20>oPlayer1.x
     oPlayer1.life-=oPlayer1.maxLife
 }
 else if room=rRumpyMountains2Secret and global.gamePaused=false //autoscroll right
 {
   if autoScroll.x<2816
-    autoScroll.x+=2.25
+    //autoScroll.x+=2.25
+    autoScroll.x+=2.25*gDeltaTime //60fps change: per 30fps tick
   if autoScroll.x-(view_wview[0]/2)-20>oPlayer1.x
     oPlayer1.life-=oPlayer1.maxLife
 }

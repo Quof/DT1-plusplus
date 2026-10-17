@@ -15,7 +15,8 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  frameTime-=1
+  //frameTime-=1
+  frameTime-=gDeltaTime //60fps change: counts 30fps ticks
   if frameTime<=0
   {
     timeLeft-=1

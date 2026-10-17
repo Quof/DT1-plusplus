@@ -118,14 +118,18 @@ if global.gamePaused=false
     //movement **************************************************
     if bigAttackTime<bigAttackWait
     {
-      teleportTime+=1
+      //teleportTime+=1
+      teleportTime+=gDeltaTime //60fps change: counts 30fps ticks
       if teleportTime>=teleportDelay
       {
-        if teleportTime=teleportDelay
+        //if teleportTime=teleportDelay
+        if scrCountPass(teleportTime,teleportDelay) //60fps change: once, when the count reaches it
           bCanTakeDamage=false
-        if teleportTime>=teleportDelay+1 and teleportTime<=teleportDelay+999 //teleport line disappear
+        //if teleportTime>=teleportDelay+1 and teleportTime<=teleportDelay+999 //teleport line disappear
+        if teleportTime>teleportDelay and teleportTime<=teleportDelay+999 //teleport line disappear //60fps change: the same 30fps ticks, counted in gDeltaTime steps
         {
-          teleLineY-=6
+          //teleLineY-=6
+          teleLineY-=6*gDeltaTime //60fps change: per 30fps tick
           if teleLineY<0
           {
             teleLineY=0
@@ -144,9 +148,11 @@ if global.gamePaused=false
             teleportTime=teleportDelay+1000
           }
         }
-        else if teleportTime>=teleportDelay+1005 //teleport line reappear
+        //else if teleportTime>=teleportDelay+1005 //teleport line reappear
+        else if teleportTime>teleportDelay+1004 //teleport line reappear //60fps change: the same 30fps ticks, counted in gDeltaTime steps
         {
-          teleLineY+=6
+          //teleLineY+=6
+          teleLineY+=6*gDeltaTime //60fps change: per 30fps tick
           if teleLineY>=sprite_height
           {
             teleLineY=sprite_height
@@ -164,7 +170,8 @@ if global.gamePaused=false
           image_xscale=1
 
         //---------- Red Circle ----------
-        redCircleTime+=1
+        //redCircleTime+=1
+        redCircleTime+=gDeltaTime //60fps change: counts 30fps ticks
         if redCircleTime>=redCircleWait
         {
           var x1,y1,cirDir;
@@ -189,7 +196,8 @@ if global.gamePaused=false
           redAtk=instance_create(x+x1,y+y1,oSpireGuardRed)
           redAtk.movePattern=normalAtkSeq
           redAtk.moveSpeed=3
-          redAtk.direction=cirDir
+          //redAtk.direction=cirDir
+          redAtk._direction=cirDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
 
           normalAtkSeq+=1
           if normalAtkSeq=2
@@ -197,7 +205,8 @@ if global.gamePaused=false
           redCircleTime=0
         }
         //---------- Blue Circle ----------
-        blueCircleTime+=1
+        //blueCircleTime+=1
+        blueCircleTime+=gDeltaTime //60fps change: counts 30fps ticks
         if blueCircleTime>=blueCircleWait
         {
           var x1,y1,cirDir;
@@ -222,7 +231,8 @@ if global.gamePaused=false
           blueAtk=instance_create(x+x1,y+y1,oSpireGuardBlue)
           blueAtk.movePattern=normalAtkSeq
           blueAtk.moveSpeed=3
-          blueAtk.direction=cirDir
+          //blueAtk.direction=cirDir
+          blueAtk._direction=cirDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
 
           normalAtkSeq+=1
           if normalAtkSeq=2
@@ -230,7 +240,8 @@ if global.gamePaused=false
           blueCircleTime=0
         }
         //---------- Green Circle ----------
-        greenCircleTime+=1
+        //greenCircleTime+=1
+        greenCircleTime+=gDeltaTime //60fps change: counts 30fps ticks
         if greenCircleTime>=greenCircleWait
         {
           var x1,y1,cirDir;
@@ -255,7 +266,8 @@ if global.gamePaused=false
           greenAtk=instance_create(x+x1,y+y1,oSpireGuardGreen)
           greenAtk.movePattern=normalAtkSeq
           greenAtk.moveSpeed=3
-          greenAtk.direction=cirDir
+          //greenAtk.direction=cirDir
+          greenAtk._direction=cirDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
 
           normalAtkSeq+=1
           if normalAtkSeq=2
@@ -267,7 +279,8 @@ if global.gamePaused=false
     if teleportTime<teleportDelay
     {
       //-------------------- BIG ATTACK --------------------
-      bigAttackTime+=1
+      //bigAttackTime+=1
+      bigAttackTime+=gDeltaTime //60fps change: counts 30fps ticks
       if bigAttackDelay=0
       {
         if bigAttackTime>=bigAttackWait
@@ -278,7 +291,8 @@ if global.gamePaused=false
       }
       if bigAttackTime>=bigAttackDelay and bigAttackDelay!=0
       {
-        if bigAttackTime=bigAttackDelay
+        //if bigAttackTime=bigAttackDelay
+        if scrCountPass(bigAttackTime,bigAttackDelay) //60fps change: once, when the count reaches it
         {
           afterImage=instance_create(x,y,oEnemyAfterImage)
           afterImage.image_alpha=1
@@ -306,7 +320,8 @@ if global.gamePaused=false
         }
         if currentAttack=1 //---------- outward red circle ----------
         {
-          if bigAttackTime=bigAttackDelay+40
+          //if bigAttackTime=bigAttackDelay+40
+          if scrCountPass(bigAttackTime,bigAttackDelay+40) //60fps change: once, when the count reaches it
           {
             var cirDir;
             cirDir=0
@@ -315,11 +330,13 @@ if global.gamePaused=false
               bigAtkRed[i]=instance_create(xCenter,yGround-128,oSpireGuardRed)
               bigAtkRed[i].movePattern=0
               bigAtkRed[i].moveSpeed=1
-              bigAtkRed[i].direction=cirDir
+              //bigAtkRed[i].direction=cirDir
+              bigAtkRed[i]._direction=cirDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
               cirDir+=360/bigAtk1Amt
             }
           }
-          else if bigAttackTime=bigAttackDelay+220
+          //else if bigAttackTime=bigAttackDelay+220
+          else if scrCountPass(bigAttackTime,bigAttackDelay+220) //60fps change: once, when the count reaches it
           {
             for(i=0;i<bigAtk1Amt;i+=1)
             {
@@ -337,7 +354,8 @@ if global.gamePaused=false
         }
         else if currentAttack=2 //---------- circling blue circle ----------
         {
-          if bigAttackTime=bigAttackDelay+40
+          //if bigAttackTime=bigAttackDelay+40
+          if scrCountPass(bigAttackTime,bigAttackDelay+40) //60fps change: once, when the count reaches it
           {
             blueCirDist=8
             blueCirSpin=0
@@ -353,10 +371,13 @@ if global.gamePaused=false
               cirDir+=360/bigAtk1Amt
             }
           }
-          else if bigAttackTime>=bigAttackDelay+41 and bigAttackTime<=bigAttackDelay+219
+          //else if bigAttackTime>=bigAttackDelay+41 and bigAttackTime<=bigAttackDelay+219
+          else if bigAttackTime>bigAttackDelay+40 and bigAttackTime<=bigAttackDelay+219 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
           {
-            blueCirDist+=1
-            blueCirSpin+=4
+            //blueCirDist+=1
+            blueCirDist+=1*gDeltaTime //60fps change: per 30fps tick
+            //blueCirSpin+=4
+            blueCirSpin+=4*gDeltaTime //60fps change: per 30fps tick
             var cirDir;
             cirDir=0
             for(i=0;i<bigAtk1Amt;i+=1)
@@ -366,7 +387,8 @@ if global.gamePaused=false
               cirDir+=360/bigAtk1Amt
             }
           }
-          else if bigAttackTime=bigAttackDelay+220
+          //else if bigAttackTime=bigAttackDelay+220
+          else if scrCountPass(bigAttackTime,bigAttackDelay+220) //60fps change: once, when the count reaches it
           {
             for(i=0;i<bigAtk1Amt;i+=1)
             {
@@ -384,53 +406,67 @@ if global.gamePaused=false
         }
         else if currentAttack=3 //---------- straight green circle ----------
         {
-          if bigAttackTime=bigAttackDelay+40
+          //if bigAttackTime=bigAttackDelay+40
+          if scrCountPass(bigAttackTime,bigAttackDelay+40) //60fps change: once, when the count reaches it
           {
             bigAtkGreen=instance_create(xCenter+roomSpan+64,yGround-192,oSpireGuardGreen)
             bigAtkGreen.movePattern=0
             bigAtkGreen.moveSpeed=3.5
-            bigAtkGreen.direction=185
+            //bigAtkGreen.direction=185
+            bigAtkGreen._direction=185 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           }
-          else if bigAttackTime=bigAttackDelay+80
+          //else if bigAttackTime=bigAttackDelay+80
+          else if scrCountPass(bigAttackTime,bigAttackDelay+80) //60fps change: once, when the count reaches it
           {
             bigAtkGreen=instance_create(xCenter-roomSpan-64,yGround-192,oSpireGuardGreen)
             bigAtkGreen.movePattern=0
             bigAtkGreen.moveSpeed=3.5
-            bigAtkGreen.direction=-5
+            //bigAtkGreen.direction=-5
+            bigAtkGreen._direction=-5 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           }
-          else if bigAttackTime=bigAttackDelay+110
+          //else if bigAttackTime=bigAttackDelay+110
+          else if scrCountPass(bigAttackTime,bigAttackDelay+110) //60fps change: once, when the count reaches it
           {
             bigAtkGreen=instance_create(xCenter+roomSpan+64,yGround-192,oSpireGuardGreen)
             bigAtkGreen.movePattern=0
             bigAtkGreen.moveSpeed=3.5
-            bigAtkGreen.direction=185
+            //bigAtkGreen.direction=185
+            bigAtkGreen._direction=185 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           }
-          else if bigAttackTime=bigAttackDelay+130
+          //else if bigAttackTime=bigAttackDelay+130
+          else if scrCountPass(bigAttackTime,bigAttackDelay+130) //60fps change: once, when the count reaches it
           {
             bigAtkGreen=instance_create(xCenter-roomSpan-64,yGround-192,oSpireGuardGreen)
             bigAtkGreen.movePattern=0
             bigAtkGreen.moveSpeed=3.5
-            bigAtkGreen.direction=-5
+            //bigAtkGreen.direction=-5
+            bigAtkGreen._direction=-5 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           }
-          else if bigAttackTime=bigAttackDelay+140
+          //else if bigAttackTime=bigAttackDelay+140
+          else if scrCountPass(bigAttackTime,bigAttackDelay+140) //60fps change: once, when the count reaches it
           {
             bigAtkGreen=instance_create(xCenter+roomSpan+64,yGround-192,oSpireGuardGreen)
             bigAtkGreen.movePattern=0
             bigAtkGreen.moveSpeed=3.5
-            bigAtkGreen.direction=185
+            //bigAtkGreen.direction=185
+            bigAtkGreen._direction=185 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           }
-          else if bigAttackTime=bigAttackDelay+170
+          //else if bigAttackTime=bigAttackDelay+170
+          else if scrCountPass(bigAttackTime,bigAttackDelay+170) //60fps change: once, when the count reaches it
           {
             bigAtkGreen=instance_create(xCenter+roomSpan+64,yGround-192,oSpireGuardGreen)
             bigAtkGreen.movePattern=0
             bigAtkGreen.moveSpeed=3.5
-            bigAtkGreen.direction=185
+            //bigAtkGreen.direction=185
+            bigAtkGreen._direction=185 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             bigAtkGreen=instance_create(xCenter-roomSpan-64,yGround-192,oSpireGuardGreen)
             bigAtkGreen.movePattern=0
             bigAtkGreen.moveSpeed=3.5
-            bigAtkGreen.direction=-5
+            //bigAtkGreen.direction=-5
+            bigAtkGreen._direction=-5 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           }
-          else if bigAttackTime=bigAttackDelay+210
+          //else if bigAttackTime=bigAttackDelay+210
+          else if scrCountPass(bigAttackTime,bigAttackDelay+210) //60fps change: once, when the count reaches it
           {
             redCircleTime-=20
             blueCircleTime-=20
@@ -443,52 +479,65 @@ if global.gamePaused=false
         }
         else if currentAttack=4 //---------- straight all color circle ----------
         {
-          if bigAttackTime=bigAttackDelay+40
+          //if bigAttackTime=bigAttackDelay+40
+          if scrCountPass(bigAttackTime,bigAttackDelay+40) //60fps change: once, when the count reaches it
           {
             bigAtkRed=instance_create(xCenter,yGround-128,oSpireGuardRed)
             bigAtkRed.movePattern=0
             bigAtkRed.moveSpeed=2
-            bigAtkRed.direction=90
+            //bigAtkRed.direction=90
+            bigAtkRed._direction=90 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             bigAtkBlue=instance_create(xCenter,yGround-128,oSpireGuardBlue)
             bigAtkBlue.movePattern=0
             bigAtkBlue.moveSpeed=2
-            bigAtkBlue.direction=210
+            //bigAtkBlue.direction=210
+            bigAtkBlue._direction=210 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             bigAtkGreen=instance_create(xCenter,yGround-128,oSpireGuardGreen)
             bigAtkGreen.movePattern=0
             bigAtkGreen.moveSpeed=2
-            bigAtkGreen.direction=330
+            //bigAtkGreen.direction=330
+            bigAtkGreen._direction=330 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           }
-          else if bigAttackTime=bigAttackDelay+100
+          //else if bigAttackTime=bigAttackDelay+100
+          else if scrCountPass(bigAttackTime,bigAttackDelay+100) //60fps change: once, when the count reaches it
           {
             bigAtkRed=instance_create(xCenter,yGround-128,oSpireGuardGreen)
             bigAtkRed.movePattern=0
             bigAtkRed.moveSpeed=2
-            bigAtkRed.direction=90
+            //bigAtkRed.direction=90
+            bigAtkRed._direction=90 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             bigAtkBlue=instance_create(xCenter,yGround-128,oSpireGuardRed)
             bigAtkBlue.movePattern=0
             bigAtkBlue.moveSpeed=2
-            bigAtkBlue.direction=210
+            //bigAtkBlue.direction=210
+            bigAtkBlue._direction=210 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             bigAtkGreen=instance_create(xCenter,yGround-128,oSpireGuardBlue)
             bigAtkGreen.movePattern=0
             bigAtkGreen.moveSpeed=2
-            bigAtkGreen.direction=330
+            //bigAtkGreen.direction=330
+            bigAtkGreen._direction=330 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           }
-          else if bigAttackTime=bigAttackDelay+160
+          //else if bigAttackTime=bigAttackDelay+160
+          else if scrCountPass(bigAttackTime,bigAttackDelay+160) //60fps change: once, when the count reaches it
           {
             bigAtkRed=instance_create(xCenter,yGround-128,oSpireGuardBlue)
             bigAtkRed.movePattern=0
             bigAtkRed.moveSpeed=2
-            bigAtkRed.direction=90
+            //bigAtkRed.direction=90
+            bigAtkRed._direction=90 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             bigAtkBlue=instance_create(xCenter,yGround-128,oSpireGuardGreen)
             bigAtkBlue.movePattern=0
             bigAtkBlue.moveSpeed=2
-            bigAtkBlue.direction=210
+            //bigAtkBlue.direction=210
+            bigAtkBlue._direction=210 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             bigAtkGreen=instance_create(xCenter,yGround-128,oSpireGuardRed)
             bigAtkGreen.movePattern=0
             bigAtkGreen.moveSpeed=2
-            bigAtkGreen.direction=330
+            //bigAtkGreen.direction=330
+            bigAtkGreen._direction=330 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           }
-          else if bigAttackTime=bigAttackDelay+210
+          //else if bigAttackTime=bigAttackDelay+210
+          else if scrCountPass(bigAttackTime,bigAttackDelay+210) //60fps change: once, when the count reaches it
           {
             redCircleTime-=20
             blueCircleTime-=20
@@ -501,12 +550,15 @@ if global.gamePaused=false
         }
         else if currentAttack=10 //---------- super attack with all color circles ----------
         {
-          if bigAttackTime>=bigAttackDelay+20 and bigAttackTime<=bigAttackDelay+59
+          //if bigAttackTime>=bigAttackDelay+20 and bigAttackTime<=bigAttackDelay+59
+          if bigAttackTime>bigAttackDelay+19 and bigAttackTime<=bigAttackDelay+59 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
           {
             oEvSoFSW1.fadeColor=c_black
-            oEvSoFSW1.bossFinishFadeAlpha+=0.005
+            //oEvSoFSW1.bossFinishFadeAlpha+=0.005
+            oEvSoFSW1.bossFinishFadeAlpha+=0.005*gDeltaTime //60fps change: per 30fps tick
           }
-          else if bigAttackTime=bigAttackDelay+80
+          //else if bigAttackTime=bigAttackDelay+80
+          else if scrCountPass(bigAttackTime,bigAttackDelay+80) //60fps change: once, when the count reaches it
           {
             var x1;
             x1=xCenter-96
@@ -515,58 +567,72 @@ if global.gamePaused=false
               bigAtkGreen=instance_create(x1,yGround+64,oSpireGuardGreen)
               bigAtkGreen.movePattern=0
               bigAtkGreen.moveSpeed=2.5
-              bigAtkGreen.direction=90
+              //bigAtkGreen.direction=90
+              bigAtkGreen._direction=90 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
               x1+=96
             }
           }
-          else if bigAttackTime=bigAttackDelay+210
+          //else if bigAttackTime=bigAttackDelay+210
+          else if scrCountPass(bigAttackTime,bigAttackDelay+210) //60fps change: once, when the count reaches it
           {
             bigAtkRed=instance_create(xCenter,yGround-256,oSpireGuardRed)
             bigAtkRed.movePattern=0
             bigAtkRed.moveSpeed=3.25
-            bigAtkRed.direction=225
+            //bigAtkRed.direction=225
+            bigAtkRed._direction=225 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             bigAtkRed=instance_create(xCenter,yGround-256,oSpireGuardRed)
             bigAtkRed.movePattern=0
             bigAtkRed.moveSpeed=3.25
-            bigAtkRed.direction=315
+            //bigAtkRed.direction=315
+            bigAtkRed._direction=315 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             bigAtkRed=instance_create(xCenter,yGround,oSpireGuardRed)
             bigAtkRed.movePattern=0
             bigAtkRed.moveSpeed=3.25
-            bigAtkRed.direction=45
+            //bigAtkRed.direction=45
+            bigAtkRed._direction=45 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             bigAtkRed=instance_create(xCenter,yGround,oSpireGuardRed)
             bigAtkRed.movePattern=0
             bigAtkRed.moveSpeed=3.25
-            bigAtkRed.direction=135
+            //bigAtkRed.direction=135
+            bigAtkRed._direction=135 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           }
-          else if bigAttackTime=bigAttackDelay+320
+          //else if bigAttackTime=bigAttackDelay+320
+          else if scrCountPass(bigAttackTime,bigAttackDelay+320) //60fps change: once, when the count reaches it
           {
             bigAtkBlue=instance_create(xCenter-roomSpan-32,yGround-128,oSpireGuardBlue)
             bigAtkBlue.movePattern=0
             bigAtkBlue.moveSpeed=3.25
-            bigAtkBlue.direction=0
+            //bigAtkBlue.direction=0
+            bigAtkBlue._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             bigAtkBlue=instance_create(xCenter+roomSpan+32,yGround-128,oSpireGuardBlue)
             bigAtkBlue.movePattern=0
             bigAtkBlue.moveSpeed=3.25
-            bigAtkBlue.direction=180
+            //bigAtkBlue.direction=180
+            bigAtkBlue._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             bigAtkBlue=instance_create(xCenter,yGround+32,oSpireGuardBlue)
             bigAtkBlue.movePattern=0
             bigAtkBlue.moveSpeed=3.25
-            bigAtkBlue.direction=90
+            //bigAtkBlue.direction=90
+            bigAtkBlue._direction=90 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             bigAtkBlue=instance_create(xCenter,yGround-288,oSpireGuardBlue)
             bigAtkBlue.movePattern=0
             bigAtkBlue.moveSpeed=3.25
-            bigAtkBlue.direction=270
+            //bigAtkBlue.direction=270
+            bigAtkBlue._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           }
-          else if bigAttackTime=bigAttackDelay+430
+          //else if bigAttackTime=bigAttackDelay+430
+          else if scrCountPass(bigAttackTime,bigAttackDelay+430) //60fps change: once, when the count reaches it
           {
             bigAtkGreen=instance_create(xCenter+roomSpan+32,yGround-192,oSpireGuardGreen)
             bigAtkGreen.movePattern=0
             bigAtkGreen.moveSpeed=1.75
-            bigAtkGreen.direction=175
+            //bigAtkGreen.direction=175
+            bigAtkGreen._direction=175 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             bigAtkGreen=instance_create(xCenter-roomSpan-32,yGround-192,oSpireGuardGreen)
             bigAtkGreen.movePattern=0
             bigAtkGreen.moveSpeed=1.75
-            bigAtkGreen.direction=5
+            //bigAtkGreen.direction=5
+            bigAtkGreen._direction=5 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             bigAtkRed=instance_create(xCenter+roomSpan+32,yGround+32,oSpireGuardRed)
             bigAtkRed.movePattern=0
             bigAtkRed.moveSpeed=0
@@ -583,7 +649,8 @@ if global.gamePaused=false
             bigAtkBlue.movePattern=270
             bigAtkBlue.moveSpeed=0
           }
-          else if bigAttackTime=bigAttackDelay+640
+          //else if bigAttackTime=bigAttackDelay+640
+          else if scrCountPass(bigAttackTime,bigAttackDelay+640) //60fps change: once, when the count reaches it
           {
             with oSpireGuardRed
               instance_destroy()
@@ -592,9 +659,12 @@ if global.gamePaused=false
             with oSpireGuardGreen
               instance_destroy()
           }
-          else if bigAttackTime>=bigAttackDelay+641 and bigAttackTime<=bigAttackDelay+670
-            oEvSoFSW1.bossFinishFadeAlpha-=0.005
-          else if bigAttackTime=bigAttackDelay+671
+          //else if bigAttackTime>=bigAttackDelay+641 and bigAttackTime<=bigAttackDelay+670
+          else if bigAttackTime>bigAttackDelay+640 and bigAttackTime<=bigAttackDelay+670 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
+            //oEvSoFSW1.bossFinishFadeAlpha-=0.005
+            oEvSoFSW1.bossFinishFadeAlpha-=0.005*gDeltaTime //60fps change: per 30fps tick
+          //else if bigAttackTime=bigAttackDelay+671
+          else if scrCountPass(bigAttackTime,bigAttackDelay+671) //60fps change: once, when the count reaches it
           {
             baseColor=c_white
             image_blend=baseColor

@@ -46,7 +46,8 @@ if global.gamePaused=false
   makeEnemyActive()
   if dieFade=0
   {
-    shootTime+=1
+    //shootTime+=1
+    shootTime+=gDeltaTime //60fps change: counts 30fps ticks
     if shootTime=shootWait
       effect_create_above(ef_ring,x,y,0,c_silver)
     else if shootTime>=shootWait+15
@@ -57,7 +58,8 @@ if global.gamePaused=false
       newBullet.sprite_index=sEbulletDiamond
       newBullet.physicalPower=physicalPower
       newBullet.bulletSpeed=7
-      newBullet.direction=shotDir
+      //newBullet.direction=shotDir
+      newBullet._direction=shotDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       newBullet.image_angle=shotDir
       shootTime=0
     }

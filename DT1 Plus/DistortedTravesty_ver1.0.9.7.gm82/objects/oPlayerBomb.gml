@@ -19,12 +19,17 @@ if global.gamePaused=false
 {
   x=oPlayerShip.x
   y=oPlayerShip.y
-  decay-=1
-  image_xscale+=0.18
-  image_yscale+=0.12
+  //decay-=1
+  decay-=gDeltaTime //60fps change: counts 30fps ticks
+  //image_xscale+=0.18
+  image_xscale+=0.18*gDeltaTime //60fps change: per 30fps tick
+  //image_yscale+=0.12
+  image_yscale+=0.12*gDeltaTime //60fps change: per 30fps tick
 
-  if decay<=9
-    image_alpha-=0.1
+  //if decay<=9
+  if decay<10 //60fps change: the same 30fps ticks: it counts down in gDeltaTime steps before this check, so a tick's first frames sit just above 9
+    //image_alpha-=0.1
+    image_alpha-=0.1*gDeltaTime //60fps change: per 30fps tick
   if decay<=0
     instance_destroy()
 }

@@ -59,7 +59,8 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  shootTime+=1
+  //shootTime+=1
+  shootTime+=gDeltaTime //60fps change: counts 30fps ticks
   if shootTime>=shootDelay
   {
     newAttack=instance_create(x+8,y+8,objectUse)
@@ -69,7 +70,8 @@ if global.gamePaused=false
     newAttack.spiritPower=spiritPower
     newAttack.elementType=elementType
     newAttack.bulletSpeed=bulletSpeed
-    newAttack.direction=dir
+    //newAttack.direction=dir
+    newAttack._direction=dir //60fps change: _direction: the shots it makes (oTrapProjectile, oBTurretShot, oTrapProjGrav) use _direction, see correctSpeedDirection
     shootTime=0
   }
 }

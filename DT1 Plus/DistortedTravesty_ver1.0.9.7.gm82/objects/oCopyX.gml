@@ -120,7 +120,8 @@ if global.gamePaused=false
   if bActive=true and dieFade=0
   {
     if animChange!=-1
-      animChange+=1
+      //animChange+=1
+      animChange+=gDeltaTime //60fps change: counts 30fps ticks
     if sprite_index=sMegamanXIdle or sprite_index=sMegamanXJump
     {
       if x>oCharacter.x
@@ -129,10 +130,12 @@ if global.gamePaused=false
         image_xscale=1
     }
     //========================= choose next action =========================
-    attackDelay+=1
+    //attackDelay+=1
+    attackDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if currentAction>=0 and currentAction<=9 //on ground
     {
-      if attackDelay=round(waitTime/2)
+      //if attackDelay=round(waitTime/2)
+      if scrCountPass(attackDelay,round(waitTime/2)) //60fps change: once, when the count reaches it
         bChooseType=true
       if attackDelay>=waitTime
       {
@@ -171,7 +174,8 @@ if global.gamePaused=false
     //========================= actions =========================
     else if currentAction>=10 and currentAction<=19 //idle shot --------------------
     {
-      if attackDelay=1 //attack
+      //if attackDelay=1 //attack
+      if scrCountPass(attackDelay,1) //attack //60fps change: once, when the count reaches it
         bAttacking=true
       else if attackDelay>=10
       {
@@ -181,7 +185,8 @@ if global.gamePaused=false
     }
     else if currentAction>=20 and currentAction<=29 //dash toward player --------------------
     {
-      if attackDelay=1 //dash
+      //if attackDelay=1 //dash
+      if scrCountPass(attackDelay,1) //dash //60fps change: once, when the count reaches it
       {
         dashTime=irandom_range(9,15)
         if x>oPlayer1.x
@@ -189,7 +194,8 @@ if global.gamePaused=false
         else
           xVel=9
       }
-      else if attackDelay>=7 and attackDelay<=9 //jump
+      //else if attackDelay>=7 and attackDelay<=9 //jump
+      else if attackDelay>=7 and attackDelay<=9 and scrModPass(attackDelay,1) //jump //60fps change: the jump chance once per 30fps tick (each time the count reaches a whole number), as at 30fps
       {
         if oPlayer1.y<yGround-32
         {
@@ -201,7 +207,8 @@ if global.gamePaused=false
           }
         }
       }
-      else if attackDelay=16 //attack
+      //else if attackDelay=16 //attack
+      else if scrCountPass(attackDelay,16) //attack //60fps change: once, when the count reaches it
         bAttacking=true
       else if attackDelay>=36
       {
@@ -216,7 +223,8 @@ if global.gamePaused=false
     }
     else if currentAction>=30 and currentAction<=39 //dash jump toward player --------------------
     {
-      if attackDelay=1
+      //if attackDelay=1
+      if scrCountPass(attackDelay,1) //60fps change: once, when the count reaches it
       {
         dashTime=irandom_range(9,15)
         if x>oPlayer1.x
@@ -224,14 +232,16 @@ if global.gamePaused=false
         else
           xVel=9
       }
-      else if attackDelay=4
+      //else if attackDelay=4
+      else if scrCountPass(attackDelay,4) //60fps change: once, when the count reaches it
       {
         dashTime+=2
         y-=6
         yVel=-6
         jumpTime=3
       }
-      else if attackDelay=12 //attack
+      //else if attackDelay=12 //attack
+      else if scrCountPass(attackDelay,12) //attack //60fps change: once, when the count reaches it
       {
         if doubleStrike>=3
         {
@@ -258,7 +268,8 @@ if global.gamePaused=false
           }
         }
       }
-      else if attackDelay=41 and tempVal=0 //attack
+      //else if attackDelay=41 and tempVal=0 //attack
+      else if scrCountPass(attackDelay,41) and tempVal=0 //attack //60fps change: once, when the count reaches it
         bAttacking=true
       else if attackDelay>=46
       {
@@ -268,13 +279,15 @@ if global.gamePaused=false
     }
     else if currentAction>=40 and currentAction<=49 //jump in place --------------------
     {
-      if attackDelay=1
+      //if attackDelay=1
+      if scrCountPass(attackDelay,1) //60fps change: once, when the count reaches it
       {
         y-=6
         yVel=-6
         jumpTime=3
       }
-      else if attackDelay=10 //attack
+      //else if attackDelay=10 //attack
+      else if scrCountPass(attackDelay,10) //attack //60fps change: once, when the count reaches it
       {
         if doubleStrike>=3
         {
@@ -301,7 +314,8 @@ if global.gamePaused=false
           }
         }
       }
-      else if attackDelay=36 and tempVal=0 //attack
+      //else if attackDelay=36 and tempVal=0 //attack
+      else if scrCountPass(attackDelay,36) and tempVal=0 //attack //60fps change: once, when the count reaches it
         bAttacking=true
       else if attackDelay>=41
       {
@@ -313,13 +327,15 @@ if global.gamePaused=false
     {
       if currentAction=100
       {
-        if attackDelay=1
+        //if attackDelay=1
+        if scrCountPass(attackDelay,1) //60fps change: once, when the count reaches it
         {
           superCharge=1
           image_speed=0
           image_index=0
         }
-        else if attackDelay=2
+        //else if attackDelay=2
+        else if scrCountPass(attackDelay,2) //60fps change: once, when the count reaches it
         {
           if specialAttack=2
             currentColor=col_AcidBurst
@@ -330,11 +346,14 @@ if global.gamePaused=false
           baseColor=currentColor
           image_blend=baseColor
         }
-        else if attackDelay=9
+        //else if attackDelay=9
+        else if scrCountPass(attackDelay,9) //60fps change: once, when the count reaches it
           image_index=1
-        else if attackDelay=17
+        //else if attackDelay=17
+        else if scrCountPass(attackDelay,17) //60fps change: once, when the count reaches it
           image_index=2
-        else if attackDelay=25
+        //else if attackDelay=25
+        else if scrCountPass(attackDelay,25) //60fps change: once, when the count reaches it
         {
           superCharge=2
           image_speed=1
@@ -342,14 +361,18 @@ if global.gamePaused=false
         else if attackDelay>=26
         {
           if x>xCenter
-            x-=2
+            //x-=2
+            x-=2*gDeltaTime //60fps change: per 30fps tick
           else if x<xCenter
-            x+=2
+            //x+=2
+            x+=2*gDeltaTime //60fps change: per 30fps tick
 
           if y>yGround-112
-            y-=2
+            //y-=2
+            y-=2*gDeltaTime //60fps change: per 30fps tick
           else if y<yGround-112
-            y+=2
+            //y+=2
+            y+=2*gDeltaTime //60fps change: per 30fps tick
 
           if point_distance(x,y,xCenter,yGround-112)<3
           {
@@ -362,7 +385,8 @@ if global.gamePaused=false
       {
         if specialAttack=2
         {
-          if attackDelay mod acidFreq=0 and attackDelay<210
+          //if attackDelay mod acidFreq=0 and attackDelay<210
+          if scrModPass(attackDelay,acidFreq) and attackDelay<210 //60fps change: once each time the count reaches a multiple of it
           {
             xAcidBurst=instance_create(x,y-17,oCXacidBurst)
             xAcidBurst.physicalPower=physicalPower
@@ -381,9 +405,11 @@ if global.gamePaused=false
         }
         else if specialAttack=4
         {
-          if attackDelay=1
+          //if attackDelay=1
+          if scrCountPass(attackDelay,1) //60fps change: once, when the count reaches it
             tempVar=0
-          else if attackDelay mod 5=0 and attackDelay<121
+          //else if attackDelay mod 5=0 and attackDelay<121
+          else if scrModPass(attackDelay,5) and attackDelay<121 //60fps change: once each time the count reaches a multiple of it
           {
             xSpinBlade=instance_create(x,y-17,oCXspinningBlade)
             xSpinBlade.spiritPower=spiritPower
@@ -391,7 +417,8 @@ if global.gamePaused=false
             xSpinBlade.returnID=id
             xSpinBlade.xAdjust=0
             xSpinBlade.yAdjust=-17
-            xSpinBlade.direction=tempVar
+            //xSpinBlade.direction=tempVar
+            xSpinBlade._direction=tempVar //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             tempVar+=15
           }
           else if attackDelay>=140
@@ -405,9 +432,11 @@ if global.gamePaused=false
         }
         else if specialAttack=6
         {
-          if attackDelay=1
+          //if attackDelay=1
+          if scrCountPass(attackDelay,1) //60fps change: once, when the count reaches it
             tempVar=0
-          else if attackDelay=5
+          //else if attackDelay=5
+          else if scrCountPass(attackDelay,5) //60fps change: once, when the count reaches it
           {
             var dirSet;
             dirSet=0
@@ -417,11 +446,13 @@ if global.gamePaused=false
               xFrostShield.spiritPower=spiritPower
               xFrostShield.breakTime=35
               xFrostShield.spd=3
-              xFrostShield.direction=dirSet
+              //xFrostShield.direction=dirSet
+              xFrostShield._direction=dirSet //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
               dirSet+=90
             }
           }
-          else if attackDelay=40
+          //else if attackDelay=40
+          else if scrCountPass(attackDelay,40) //60fps change: once, when the count reaches it
           {
             var dirSet;
             dirSet=45
@@ -431,19 +462,22 @@ if global.gamePaused=false
               xFrostShield.spiritPower=spiritPower
               xFrostShield.breakTime=35
               xFrostShield.spd=3
-              xFrostShield.direction=dirSet
+              //xFrostShield.direction=dirSet
+              xFrostShield._direction=dirSet //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
               dirSet+=90
             }
           }
           else if attackDelay>=80 and attackDelay<=141
           {
-            if attackDelay mod 5=0
+            //if attackDelay mod 5=0
+            if scrModPass(attackDelay,5) //60fps change: once each time the count reaches a multiple of it
             {
               xFrostShield=instance_create(x,y-17,oCXfrostShield)
               xFrostShield.spiritPower=spiritPower
               xFrostShield.breakTime=35
               xFrostShield.spd=3
-              xFrostShield.direction=tempVar
+              //xFrostShield.direction=tempVar
+              xFrostShield._direction=tempVar //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
               tempVar+=30
             }
           }
@@ -484,12 +518,14 @@ if global.gamePaused=false
         xBuster.bulletSpeed=10
         if image_xscale=1
         {
-          xBuster.direction=0
+          //xBuster.direction=0
+          xBuster._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           xBuster.x+=20
         }
         else
         {
-          xBuster.direction=180
+          //xBuster.direction=180
+          xBuster._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           xBuster.image_xscale=-1
           xBuster-=20
         }
@@ -502,7 +538,8 @@ if global.gamePaused=false
         xSpinBlade.returnID=id
         xSpinBlade.xAdjust=0
         xSpinBlade.yAdjust=-17
-        xSpinBlade.direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-24)
+        //xSpinBlade.direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-24)
+        xSpinBlade._direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-24) //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         if image_xscale=1
           xSpinBlade.x+=20
         else
@@ -536,12 +573,14 @@ if global.gamePaused=false
         xTriadThunder.bulletSpeed=3
         if image_xscale=1
         {
-          xTriadThunder.direction=0
+          //xTriadThunder.direction=0
+          xTriadThunder._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           xTriadThunder.x+=20
         }
         else
         {
-          xTriadThunder.direction=180
+          //xTriadThunder.direction=180
+          xTriadThunder._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           xTriadThunder-=20
         }
       }
@@ -560,12 +599,14 @@ if global.gamePaused=false
           xSpeedBurner.bulletSpeed=7.5
           if image_xscale=1
           {
-            xSpeedBurner.direction=0
+            //xSpeedBurner.direction=0
+            xSpeedBurner._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             xSpeedBurner.x+=20
           }
           else
           {
-            xSpeedBurner.direction=180
+            //xSpeedBurner.direction=180
+            xSpeedBurner._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             xSpeedBurner.image_xscale=-1
             xSpeedBurner-=20
           }
@@ -591,7 +632,8 @@ if global.gamePaused=false
         xFrostShield=instance_create(x,y-yShotAdjust,oCXfrostShield)
         xFrostShield.spiritPower=spiritPower
         xFrostShield.spd=3
-        xFrostShield.direction=90
+        //xFrostShield.direction=90
+        xFrostShield._direction=90 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         xFrostShield.breakTime=50
         if image_xscale=1
           xFrostShield.x+=20
@@ -694,7 +736,8 @@ if global.gamePaused=false
         }
         else //in air
           sprite_index=sMegamanXJumpAim
-        attackTime-=1
+        //attackTime-=1
+        attackTime-=gDeltaTime //60fps change: counts 30fps ticks
       }
       else //not attacking
       {
@@ -721,16 +764,20 @@ if global.gamePaused=false
       if yVel=0 //on ground
       {
         if xVel>0
-          xVel-=0.75
+          //xVel-=0.75
+          xVel-=0.75*gDeltaTime //60fps change: per 30fps tick
         else if xVel<0
-          xVel+=0.75
+          //xVel+=0.75
+          xVel+=0.75*gDeltaTime //60fps change: per 30fps tick
       }
       else //in air - slow him down
       {
         if xVel>0
-          xVel-=0.5
+          //xVel-=0.5
+          xVel-=0.5*gDeltaTime //60fps change: per 30fps tick
         else if xVel<0
-          xVel+=0.5
+          //xVel+=0.5
+          xVel+=0.5*gDeltaTime //60fps change: per 30fps tick
       }
 
       if xVel>0 and xVel<1
@@ -739,7 +786,8 @@ if global.gamePaused=false
         xVel=0
     }
     else
-      dashTime-=1
+      //dashTime-=1
+      dashTime-=gDeltaTime //60fps change: counts 30fps ticks
 
     //scripted attacks
     if superCharge=0
@@ -801,22 +849,27 @@ if global.gamePaused=false
     }
   }
   if jumpTime<=0 and superCharge=0 and sBurner=0
-    yVel+=0.4
+    //yVel+=0.4
+    yVel=scrGravAcc(yVel,0.4,1) //60fps change: gravity per 30fps tick, following the 30fps arc
   else
-    jumpTime-=1
+    //jumpTime-=1
+    jumpTime-=gDeltaTime //60fps change: counts 30fps ticks
   if isCollisionBottom(1)
     yVel=0
-  if isCollisionLeft(1)
+  //if isCollisionLeft(1)
+  if isCollisionLeft(1) and (gDeltaTime==1 or xVel<0) //60fps change: above 30fps, only turn around when moving into the wall (it can still touch it on the next frame)
   {
     xVel*=-1
     image_xscale*=-1
   }
-  if isCollisionRight(1)
+  //if isCollisionRight(1)
+  if isCollisionRight(1) and (gDeltaTime==1 or xVel>0) //60fps change: see above
   {
     xVel*=-1
     image_xscale*=-1
   }
-  moveTo(xVel,yVel)
+  //moveTo(xVel,yVel)
+  moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
   enemyStepEvent()
 }
 #define Collision_oAttackBase
@@ -872,7 +925,8 @@ if life>0
   if bChargedShot=true
   {
     draw_sprite(sMMcharging,chargeFrame,x,y-17)
-    chargeFrame+=1
+    //chargeFrame+=1
+    chargeFrame+=gDeltaTime //60fps change: counts 30fps ticks
     if chargeFrame>=11
       chargeFrame=0
   }
@@ -881,7 +935,8 @@ if life>0
   if shieldTime>0
   {
     draw_sprite(sCXcrystalHunter,round(shieldTime/2),x,y-17)
-    shieldTime-=1
+    //shieldTime-=1
+    shieldTime=max(0,shieldTime-gDeltaTime) //60fps change: counts 30fps ticks (stops at 0: it's checked for =0)
     if shieldTime=0
       bCanTakeDamage=true
   }

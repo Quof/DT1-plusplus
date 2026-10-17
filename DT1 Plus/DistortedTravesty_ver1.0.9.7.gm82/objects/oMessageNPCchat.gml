@@ -21,7 +21,8 @@ if bFading=false
 }
 else
 {
-  image_alpha-=0.05
+  //image_alpha-=0.05
+  image_alpha-=0.05*gDeltaTime //60fps change: per 30fps tick
   if image_alpha<=0
     instance_destroy()
 }

@@ -20,7 +20,8 @@ applies_to=self
 //if the character stands on the platform, move the platform continuously
 if global.gamePaused=false
 {
-  if yVel!=0
+  //if yVel!=0
+  if yVel!=0 and gDeltaDoTicks //60fps change: the sparkles once per 30fps tick
   {
     for(i=0;i<4;i+=1)
     {

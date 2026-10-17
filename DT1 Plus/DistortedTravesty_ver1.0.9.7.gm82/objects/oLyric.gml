@@ -50,10 +50,15 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true and dieFade=0
   {
-    direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-28)
-    speed=moveSpeed
+    //60fps change: _speed/_direction instead of GM's speed/direction (moved by correctSpeedDirection below)
+    //direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-28)
+    //speed=moveSpeed
+    _direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-28)
+    _speed=moveSpeed
   }
+  correctSpeedDirection(id) //60fps change (added): this frame's share of the move GM's speed made
   enemyStepEvent()
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above

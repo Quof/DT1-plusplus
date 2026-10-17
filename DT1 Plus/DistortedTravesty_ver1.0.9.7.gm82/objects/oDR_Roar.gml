@@ -18,7 +18,8 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  soundRepeat-=1
+  //soundRepeat-=1
+  soundRepeat-=gDeltaTime //60fps change: counts 30fps ticks
   if soundRepeat<=0
   {
     playSound(global.snd_WindGust,0,0.8)
@@ -37,7 +38,8 @@ for (i=0;i<50;i+=1)
 {
   if windDir="RIGHT"
   {
-    effectLineX[i]+=8
+    //effectLineX[i]+=8
+    effectLineX[i]+=8*gDeltaTime //60fps change: per 30fps tick
     if effectLineX[i]>=oPlayer1.x+384
     {
       effectLineX[i]=oPlayer1.x-384
@@ -47,7 +49,8 @@ for (i=0;i<50;i+=1)
   }
   else
   {
-    effectLineX[i]-=8
+    //effectLineX[i]-=8
+    effectLineX[i]-=8*gDeltaTime //60fps change: per 30fps tick
     if effectLineX[i]<=oPlayer1.x-384
     {
       effectLineX[i]=oPlayer1.x+384

@@ -63,6 +63,7 @@ applies_to=self
 */
 if global.gamePaused=false
 {
+  var tJumpAcc; tJumpAcc=0 //60fps change (added): the jump's upward push, added in with the gravity at the end
   makeEnemyActive()
   if activateBoss=1
   {
@@ -78,7 +79,8 @@ if global.gamePaused=false
   if bActive=true and dieFade=0
   {
     if animChange!=-1
-      animChange+=1
+      //animChange+=1
+      animChange+=gDeltaTime //60fps change: counts 30fps ticks
     if sprite_index!=sMetaKnightCharging or sprite_index!=sMetaKnightStandSlash or sprite_index!=sMetaKnightRunSlash or sprite_index!=sMetaKnightDownStab
     {
       if x>oCharacter.x
@@ -89,7 +91,10 @@ if global.gamePaused=false
     //========================= choose next action =========================
     if currentAction>=0 and currentAction<=9 //on ground
     {
-      if attackDelay>=waitTime
+      //if attackDelay>=waitTime
+      //60fps change: it counts in gDeltaTime steps after the check, so the frame that resets it isn't counted (as at
+      //30fps): the wait ends that much sooner in the count, so it's the same length (>=waitTime at 30fps)
+      if attackDelay>=waitTime+1-gDeltaTime
       {
         if currentAction=5 //choose new action
         {
@@ -127,13 +132,16 @@ if global.gamePaused=false
         }
       }
       else
-        attackDelay+=1
+        //attackDelay+=1
+        attackDelay+=gDeltaTime //60fps change: counts 30fps ticks
     }
     //========================= actions =========================
     else if currentAction>=10 and currentAction<=19 //walk toward player
     {
-      attackDelay+=1; moveProgress+=1
-      if attackDelay=1
+      //attackDelay+=1; moveProgress+=1
+      attackDelay+=gDeltaTime; moveProgress+=gDeltaTime //60fps change: counts 30fps ticks
+      //if attackDelay=1
+      if scrCountPass(attackDelay,1) //60fps change: once, when the count reaches it
       {
         sprite_index=sMetaKnightWalk
         if random(10)>=9
@@ -159,7 +167,8 @@ if global.gamePaused=false
         currentAttack=10
       }
 
-      if moveProgress=30 and tempVal=0
+      //if moveProgress=30 and tempVal=0
+      if scrCountPass(moveProgress,30) and tempVal=0 //60fps change: once, when the count reaches it
       {
         xVel=0
         if random(10)>=6
@@ -174,8 +183,10 @@ if global.gamePaused=false
     }
     else if currentAction>=20 and currentAction<=29 //run toward player
     {
-      attackDelay+=1; moveProgress+=1
-      if attackDelay=1
+      //attackDelay+=1; moveProgress+=1
+      attackDelay+=gDeltaTime; moveProgress+=gDeltaTime //60fps change: counts 30fps ticks
+      //if attackDelay=1
+      if scrCountPass(attackDelay,1) //60fps change: once, when the count reaches it
       {
         sprite_index=sMetaKnightRun
         if random(10)>=9
@@ -208,7 +219,8 @@ if global.gamePaused=false
         currentAttack=20
       }
 
-      if moveProgress=22 and tempVal=0
+      //if moveProgress=22 and tempVal=0
+      if scrCountPass(moveProgress,22) and tempVal=0 //60fps change: once, when the count reaches it
       {
         animChange=0
         sprite_index=sMetaKnightJump
@@ -233,8 +245,10 @@ if global.gamePaused=false
     }
     else if currentAction>=30 and currentAction<=39 //fly up
     {
-      attackDelay+=1; moveProgress+=1
-      if attackDelay=1 and currentAttack!=40
+      //attackDelay+=1; moveProgress+=1
+      attackDelay+=gDeltaTime; moveProgress+=gDeltaTime //60fps change: counts 30fps ticks
+      //if attackDelay=1 and currentAttack!=40
+      if scrCountPass(attackDelay,1) and currentAttack!=40 //60fps change: once, when the count reaches it
       {
         sprite_index=sMetaKnightFly
         flyUp=true
@@ -244,9 +258,11 @@ if global.gamePaused=false
 
       if sprite_index=sMetaKnightFly and currentAttack!=40
       {
-        if moveProgress>=1 and moveProgress<=15
+        //if moveProgress>=1 and moveProgress<=15
+        if moveProgress>0 and moveProgress<=15 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
           yVel=-6
-        if moveProgress=16
+        //if moveProgress=16
+        if scrCountPass(moveProgress,16) //60fps change: once, when the count reaches it
           sprite_index=sMetaKnightFall
       }
 
@@ -277,7 +293,8 @@ if global.gamePaused=false
         sprite_index=sMetaKnightStandSlash
         image_index=0
       }
-      if animChange=6
+      //if animChange=6
+      if scrCountPass(animChange,6) //60fps change: once, when the count reaches it
       {
         currentAttack=0
         if extraSwdWave=true
@@ -322,7 +339,8 @@ if global.gamePaused=false
         sprite_index=sMetaKnightStandSlash
         image_index=0
       }
-      if animChange=6
+      //if animChange=6
+      if scrCountPass(animChange,6) //60fps change: once, when the count reaches it
       {
         currentAttack=0
         if image_xscale=1
@@ -360,10 +378,12 @@ if global.gamePaused=false
         effect.sprite_index=sGroundSmash
         shockwave=instance_create(x,y,oMetaKStabAir)
         shockwave.spiritPower=spiritPower
-        shockwave.direction=0
+        //shockwave.direction=0
+        shockwave._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         shockwave=instance_create(x,y,oMetaKStabAir)
         shockwave.spiritPower=spiritPower
-        shockwave.direction=180
+        //shockwave.direction=180
+        shockwave._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         shockwave.image_xscale=-1
         animChange=1000
       }
@@ -378,7 +398,8 @@ if global.gamePaused=false
         efOffset=-26
       else
         efOffset=26
-      effect_create_above(ef_star,x+efOffset,y-33,0,c_yellow)
+      if gDeltaDoTicks //60fps change (added): the effect once per 30fps tick
+        effect_create_above(ef_star,x+efOffset,y-33,0,c_yellow)
       xVel=0
 
       if animChange=0
@@ -394,7 +415,8 @@ if global.gamePaused=false
           y-=4
         }
       }
-      else if animChange=35
+      //else if animChange=35
+      else if scrCountPass(animChange,35) //60fps change: once, when the count reaches it
       {
         extraSwdWave=true
         tempVal=10
@@ -480,9 +502,11 @@ if global.gamePaused=false
     if sprite_index=sMetaKnightIdle or sprite_index=sMetaKnightStandSlash
     {
       if xVel>0
-        xVel-=0.5
+        //xVel-=0.5
+        xVel-=0.5*gDeltaTime //60fps change: per 30fps tick
       else if xVel<0
-        xVel+=0.5
+        //xVel+=0.5
+        xVel+=0.5*gDeltaTime //60fps change: per 30fps tick
 
       if xVel<1.1 and xVel>0
         xVel=0
@@ -493,9 +517,11 @@ if global.gamePaused=false
     //jumping
     if jumpTime>0
     {
-      jumpTime-=1
+      //jumpTime-=1
+      jumpTime-=gDeltaTime //60fps change: counts 30fps ticks
       if yVel>-7
-        yVel-=1
+        //yVel-=1
+        tJumpAcc=1 //60fps change: per 30fps tick, with the gravity below (one scrGravAcc a frame)
     }
 
     //check touch damage states
@@ -536,14 +562,16 @@ if global.gamePaused=false
       bossProgress+=1
     }
   }
-  yVel+=0.3
+  //yVel+=0.3
+  yVel=scrGravAcc(yVel,0.3-tJumpAcc,1) //60fps change: gravity (and the jump's push) per 30fps tick, following the 30fps arc
   if isCollisionBottom(1)
     yVel=0
   if isCollisionLeft(1)
     xVel=1
   if isCollisionRight(1)
     xVel=-1
-  moveTo(xVel,yVel)
+  //moveTo(xVel,yVel)
+  moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
   enemyStepEvent()
 }
 #define Collision_oPartSlashes

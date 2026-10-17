@@ -30,7 +30,8 @@ action_id=603
 applies_to=self
 */
 //if the character is standing on the platform, move the platform
-if global.gamePaused=false
+//if global.gamePaused=false
+if global.gamePaused=false and gDeltaDoTicks //60fps change: its logic runs once per 30fps tick (every frame at 30fps), on the tick's last frame: the platform engine (gameStepEvent) reads xVel/yVel once a tick and makes the tick's move over the frames, so here it's where it is at 30fps
 {
   if isCollisionCharacterTop(1)
   {

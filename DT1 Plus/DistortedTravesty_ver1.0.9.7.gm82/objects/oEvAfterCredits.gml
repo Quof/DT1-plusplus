@@ -20,8 +20,10 @@ if global.gameProgress=353 //What now
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       global.optIdentifier=0
@@ -37,8 +39,10 @@ if global.gameProgress=353 //What now
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1
@@ -47,11 +51,14 @@ if global.gameProgress=353 //What now
   else if sceneProgress=2
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
     {
-      sceneDelay+=1
-      if sceneDelay=70
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=70
+      if scrCountPass(sceneDelay,70) //60fps change: once, when the count reaches it
       {
         var tempMplay;
         tempMplay=global.msc_MarioOverworld
@@ -64,11 +71,14 @@ if global.gameProgress=353 //What now
   else if sceneProgress=3
   {
     if oPlayer1.image_alpha<1
-      oPlayer1.image_alpha+=0.01
+      //oPlayer1.image_alpha+=0.01
+      oPlayer1.image_alpha+=0.01*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=60
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=60
+      if scrCountPass(sceneDelay,60) //60fps change: once, when the count reaches it
       {
         sceneDelay=0
         sceneProgress+=1
@@ -85,8 +95,10 @@ if global.gameProgress=353 //What now
     msgCreate("I plan to.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=8
   {
-    sceneDelay+=1
-    if sceneDelay=45
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=45
+    if scrCountPass(sceneDelay,45) //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1
@@ -100,12 +112,16 @@ if global.gameProgress=353 //What now
     msgCreate("But if we could figure it out then...",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=12
   {
-    sceneDelay+=1
-    if sceneDelay=15
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=15
+    if scrCountPass(sceneDelay,15) //60fps change: once, when the count reaches it
       oPlayer1.sprite_index=sPlayerGetUp1
-    else if sceneDelay=20
+    //else if sceneDelay=20
+    else if scrCountPass(sceneDelay,20) //60fps change: once, when the count reaches it
       oPlayer1.sprite_index=sPlayerGetUp2
-    else if sceneDelay=35
+    //else if sceneDelay=35
+    else if scrCountPass(sceneDelay,35) //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1
@@ -168,8 +184,10 @@ if global.gameProgress=353 //What now
       msgCreate("Alright, here we go...",1,oMessageCutscene,global.mainCharacters[1])
     else if sceneProgress=39
     {
-      sceneDelay+=1
-      if sceneDelay=15
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=15
+      if scrCountPass(sceneDelay,15) //60fps change: once, when the count reaches it
       {
         propBomb=instance_create(384,-32,oMisc)
         propBomb.sprite_index=sB2Bomb
@@ -177,9 +195,11 @@ if global.gameProgress=353 //What now
         propBomb.image_speed=0
         propBomb.type=1
       }
-      else if sceneDelay>=16 and sceneDelay<=99
+      //else if sceneDelay>=16 and sceneDelay<=99
+      else if sceneDelay>15 and sceneDelay<=99 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
       {
-        propBomb.y+=6
+        //propBomb.y+=6
+        propBomb.y+=6*gDeltaTime //60fps change: per 30fps tick
         if propBomb.y+(propBomb.sprite_height/2)>=306
         {
           with propBomb
@@ -192,7 +212,8 @@ if global.gameProgress=353 //What now
           sceneDelay=100
         }
       }
-      else if sceneDelay=104
+      //else if sceneDelay=104
+      else if scrCountPass(sceneDelay,104) //60fps change: once, when the count reaches it
       {
         friendJeremy=instance_create(384,306,oMisc)
         friendJeremy.sprite_index=sJeremyMWIdle
@@ -201,7 +222,8 @@ if global.gameProgress=353 //What now
         friendJeremy.image_speed=0
         friendJeremy.type=1
       }
-      else if sceneDelay=150
+      //else if sceneDelay=150
+      else if scrCountPass(sceneDelay,150) //60fps change: once, when the count reaches it
       {
         sceneDelay=0
         sceneProgress+=1
@@ -213,12 +235,16 @@ if global.gameProgress=353 //What now
       msgCreate("Speechless? I know, it's awesome isn't it?",1,oMessageCutscene,global.mainCharacters[1])
     else if sceneProgress=42
     {
-      sceneDelay+=1
-      if sceneDelay=15
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=15
+      if scrCountPass(sceneDelay,15) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerGetUp1
-      else if sceneDelay=20
+      //else if sceneDelay=20
+      else if scrCountPass(sceneDelay,20) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerLayDown
-      else if sceneDelay=35
+      //else if sceneDelay=35
+      else if scrCountPass(sceneDelay,35) //60fps change: once, when the count reaches it
       {
         sceneDelay=0
         sceneProgress+=1
@@ -262,12 +288,16 @@ if global.gameProgress=353 //What now
       msgCreate("Yeah I do, I was just trying to brighten the mood.#If it makes you feel better, we got some awesome memories out of all this.#Besides, it will never truly be over. Gaming will go on forever.",1,oMessageCutscene,global.mainCharacters[1])
     else if sceneProgress=61
     {
-      sceneDelay+=1
-      if sceneDelay=15
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=15
+      if scrCountPass(sceneDelay,15) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerGetUp1
-      else if sceneDelay=20
+      //else if sceneDelay=20
+      else if scrCountPass(sceneDelay,20) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerGetUp2
-      else if sceneDelay=35
+      //else if sceneDelay=35
+      else if scrCountPass(sceneDelay,35) //60fps change: once, when the count reaches it
       {
         sceneDelay=0
         sceneProgress+=1
@@ -283,12 +313,16 @@ if global.gameProgress=353 //What now
       msgCreate("Awesome!",1,oMessageCutscene,global.mainCharacters[1])
     else if sceneProgress=65
     {
-      sceneDelay+=1
-      if sceneDelay=15
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=15
+      if scrCountPass(sceneDelay,15) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerGetUp1
-      else if sceneDelay=20
+      //else if sceneDelay=20
+      else if scrCountPass(sceneDelay,20) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerLayDown
-      else if sceneDelay=35
+      //else if sceneDelay=35
+      else if scrCountPass(sceneDelay,35) //60fps change: once, when the count reaches it
       {
         sceneDelay=0
         sceneProgress+=1
@@ -310,12 +344,16 @@ if global.gameProgress=353 //What now
       msgCreate("You know...",1,oMessageCutscene,global.mainCharacters[0])
     else if sceneProgress=73
     {
-      sceneDelay+=1
-      if sceneDelay=15
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=15
+      if scrCountPass(sceneDelay,15) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerGetUp1
-      else if sceneDelay=20
+      //else if sceneDelay=20
+      else if scrCountPass(sceneDelay,20) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerGetUp2
-      else if sceneDelay=35
+      //else if sceneDelay=35
+      else if scrCountPass(sceneDelay,35) //60fps change: once, when the count reaches it
       {
         sceneDelay=0
         sceneProgress+=1
@@ -341,12 +379,16 @@ if global.gameProgress=353 //What now
       msgCreate("Yep.",1,oMessageCutscene,global.mainCharacters[0])
     else if sceneProgress=83
     {
-      sceneDelay+=1
-      if sceneDelay=10
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=10
+      if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerGetUp3
-      else if sceneDelay=25
+      //else if sceneDelay=25
+      else if scrCountPass(sceneDelay,25) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerGetUp4
-      else if sceneDelay=40
+      //else if sceneDelay=40
+      else if scrCountPass(sceneDelay,40) //60fps change: once, when the count reaches it
       {
         oPlayer1.y+=1
         oPlayer1.sprite_index=sPlayerIdle
@@ -391,11 +433,14 @@ if global.gameProgress=353 //What now
   if sceneProgress=1000
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
     {
-      sceneDelay+=1
-      if sceneDelay=30
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=30
+      if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
       {
         sceneDelay=0
         sceneProgress+=1

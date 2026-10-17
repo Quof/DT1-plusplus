@@ -74,7 +74,8 @@ if global.gamePaused=false
       else
         image_xscale=1
     }
-    shootTime+=1
+    //shootTime+=1
+    shootTime+=gDeltaTime //60fps change: counts 30fps ticks
     if shootTime>=reShootTime
     {
       var dirOffset;
@@ -82,19 +83,22 @@ if global.gamePaused=false
         dirOffset=32
       else
         dirOffset=-32
-      if shootTime mod 2=0
+      //if shootTime mod 2=0
+      if scrModPass(shootTime,2) //60fps change: once each time the count reaches an even number
       {
         newAttack=instance_create(x,y-25,oMMeFlameHead)
         newAttack.spiritPower=spiritPower
         newAttack.bulletSpeed=8
         if image_xscale=1
         {
-          newAttack.direction=315
+          //newAttack.direction=315
+          newAttack._direction=315 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newAttack.type=0
         }
         else
         {
-          newAttack.direction=225
+          //newAttack.direction=225
+          newAttack._direction=225 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newAttack.image_xscale=-1
           newAttack.type=1
         }
@@ -107,12 +111,14 @@ if global.gamePaused=false
       }
     }
 
-    yVel+=0.3
+    //yVel+=0.3
+    yVel=scrGravAcc(yVel,0.3,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
     if isCollisionSolid()
       y-=2
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 
     if y>room_height+24
       instance_destroy()

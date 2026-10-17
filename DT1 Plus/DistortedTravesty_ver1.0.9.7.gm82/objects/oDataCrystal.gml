@@ -91,8 +91,10 @@ if global.gamePaused=false
   }
   else if sprayProgress=1 //warn player
   {
-    sprayTime+=1
-    if sprayTime=1
+    //sprayTime+=1
+    sprayTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sprayTime=1
+    if scrCountPass(sprayTime,1) //60fps change: once, when the count reaches it
     {
       afterImage=instance_create(x,y,oEnemyAfterImage)
       afterImage.image_alpha=1
@@ -102,7 +104,8 @@ if global.gamePaused=false
       afterImage.xScalingSet=0.12
       afterImage.yScalingSet=0.12
     }
-    else if sprayTime=50
+    //else if sprayTime=50
+    else if sprayTime>=50 //60fps change: >= so it still resets if the frame rate changes mid-count
     {
       if shotTime>shotWait
         shotTime-=30
@@ -113,8 +116,10 @@ if global.gamePaused=false
   }
   else if sprayProgress=2 //spray attack
   {
-    sprayTime+=1
-    if sprayTime mod sprayFreq=0
+    //sprayTime+=1
+    sprayTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sprayTime mod sprayFreq=0
+    if scrModPass(sprayTime,sprayFreq) //60fps change: once each time the count reaches a multiple of it
     {
       dir=0
       for(i=0;i<round(shotAmt/2)+eShotDistorted;i+=1)
@@ -137,7 +142,8 @@ if global.gamePaused=false
         newBullet.spiritPower=spiritPower
         newBullet.elementType=elementType
         newBullet.bulletSpeed=5
-        newBullet.direction=shotDir+dir
+        //newBullet.direction=shotDir+dir
+        newBullet._direction=shotDir+dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
 
         dir+=360/(round(shotAmt/2)+eShotDistorted)
       }
@@ -149,8 +155,10 @@ if global.gamePaused=false
 
   if bActive=true and stunnedTime=0 and dieFade=0 and (sprayProgress<1 or sprayProgress>2)
   {
-    shotTime+=1
-    if shotTime=shotWait
+    //shotTime+=1
+    shotTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if shotTime=shotWait
+    if scrCountPass(shotTime,shotWait) //60fps change: once, when the count reaches it
       {
         afterImage=instance_create(x,y,oEnemyAfterImage)
         afterImage.image_alpha=1
@@ -183,7 +191,8 @@ if global.gamePaused=false
         newBullet.spiritPower=spiritPower
         newBullet.elementType=elementType
         newBullet.bulletSpeed=5
-        newBullet.direction=dir
+        //newBullet.direction=dir
+        newBullet._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
 
         dir+=360/shotAmt
       }

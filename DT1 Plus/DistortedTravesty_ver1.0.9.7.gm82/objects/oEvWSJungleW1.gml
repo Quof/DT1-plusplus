@@ -23,8 +23,10 @@ if global.gameProgress=100 //intro to West Side Jungle
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -75,7 +77,8 @@ if global.gameProgress=102 and room=rWestSideJungle2 //enemy trap event
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -96,7 +99,8 @@ if global.gameProgress=102 and room=rWestSideJungle2 //enemy trap event
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=150
     {
       sceneDelay=0
@@ -117,7 +121,8 @@ if global.gameProgress=102 and room=rWestSideJungle2 //enemy trap event
   }
   else if sceneProgress=5
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=220
     {
       sceneDelay=0
@@ -138,7 +143,8 @@ if global.gameProgress=102 and room=rWestSideJungle2 //enemy trap event
   }
   else if sceneProgress=7
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=210
     {
       sceneDelay=0
@@ -159,7 +165,8 @@ if global.gameProgress=102 and room=rWestSideJungle2 //enemy trap event
   }
   else if sceneProgress=9
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=210
     {
       sceneDelay=0
@@ -180,7 +187,8 @@ if global.gameProgress=102 and room=rWestSideJungle2 //enemy trap event
   }
   else if sceneProgress=11
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=225
     {
       sceneDelay=0
@@ -225,11 +233,14 @@ else if global.gameProgress=105 and room=rWestSideJungle5 //Boss Fight (Dragonro
   else if sceneProgress=1
   {
     if oPlayer1.y<272
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=30
       {
@@ -242,10 +253,13 @@ else if global.gameProgress=105 and room=rWestSideJungle5 //Boss Fight (Dragonro
     msgCreate("Looks like I'm in for quite a treat here.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=3
   {
-    sceneDelay+=1
-    if sceneDelay=15
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=15
+    if scrCountPass(sceneDelay,15) //60fps change: once, when the count reaches it
       boss.sprite_index=sDragonrootHeadUp
-    else if sceneDelay=25
+    //else if sceneDelay=25
+    else if scrCountPass(sceneDelay,25) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_EnemyRoar1,0,1)
       boss.sprite_index=sDragonrootRoar
@@ -263,8 +277,10 @@ else if global.gameProgress=105 and room=rWestSideJungle5 //Boss Fight (Dragonro
     msgCreate("For a plant, its breath sure is nasty.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=6
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       newBarrierL1=instance_create(112,0,oBossBarrier)
       newBarrierL2=instance_create(112,64,oBossBarrier)
@@ -310,14 +326,17 @@ else if global.gameProgress=106 //boss fight ends (Dragonroot)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       with oDirtSpikeL
@@ -336,13 +355,15 @@ else if global.gameProgress=106 //boss fight ends (Dragonroot)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0

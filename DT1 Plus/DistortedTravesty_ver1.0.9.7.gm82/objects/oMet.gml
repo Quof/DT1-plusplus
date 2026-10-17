@@ -79,18 +79,24 @@ if global.gamePaused=false
         newAttack=instance_create(x,y-8,oMMeShot1)
         newAttack.physicalPower=physicalPower
         newAttack.bulletSpeed=4
-        newAttack.direction=dirOffset
+        //newAttack.direction=dirOffset
+        newAttack._direction=dirOffset //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         if dirOffset>90
           dirOffset+=45
         else
           dirOffset-=45
       }
-      shootTime=0
+      //shootTime=0
+      //60fps change: counts 30fps ticks; the frame that shoots counts as a whole tick, as at 30fps (it doesn't count
+      //up), so the count starts that far back (0 at 30fps)
+      shootTime=gDeltaTime-1
     }
     else
-      shootTime+=1
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: see above
 
-    yVel+=0.3
+    //yVel+=0.3
+    yVel=scrGravAcc(yVel,0.3,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
     if isCollisionLeft(1)
@@ -99,7 +105,8 @@ if global.gamePaused=false
       xVel=0
     if isCollisionSolid()
       y-=2
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 
     if y>room_height+24
       instance_destroy()

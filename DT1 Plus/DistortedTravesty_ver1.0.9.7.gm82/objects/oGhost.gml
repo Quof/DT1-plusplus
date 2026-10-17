@@ -61,7 +61,8 @@ if global.gamePaused=false
       effect.image_xscale=0.6
       effect.image_yscale=0.6
     }
-    fadeInTime+=1
+    //fadeInTime+=1
+    fadeInTime+=gDeltaTime //60fps change: counts 30fps ticks
     if fadeInTime>=14
     {
       visible=true
@@ -79,7 +80,8 @@ if global.gamePaused=false
     if instance_exists(oCharacter)
     {
       dir=point_direction(x,y,oCharacter.x,oCharacter.y-22)
-      moveTo(runAcc*cos(degtorad(dir)),-runAcc*sin(degtorad(dir)))
+      //moveTo(runAcc*cos(degtorad(dir)),-runAcc*sin(degtorad(dir)))
+      moveTo(runAcc*cos(degtorad(dir))*gDeltaTime,-runAcc*sin(degtorad(dir))*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     }
   }
   enemyStepEvent()

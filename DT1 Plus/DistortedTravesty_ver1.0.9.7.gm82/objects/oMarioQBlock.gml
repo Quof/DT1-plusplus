@@ -16,10 +16,13 @@ applies_to=self
 */
 if moveAnim>=1 and moveAnim<=4
 {
-  moveAnim+=1
-  if moveAnim=2
+  //moveAnim+=1
+  moveAnim+=gDeltaTime //60fps change: counts 30fps ticks
+  //if moveAnim=2
+  if scrCountPass(moveAnim,2) //60fps change: once, when the count reaches it
     y-=2
-  else if moveAnim=4
+  //else if moveAnim=4
+  else if scrCountPass(moveAnim,4) //60fps change: once, when the count reaches it
     y+=2
 }
 

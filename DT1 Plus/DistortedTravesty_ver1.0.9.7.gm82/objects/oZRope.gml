@@ -46,7 +46,8 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true and stunnedTime=0 and dieFade=0
   {
-    shootTime+=1
+    //shootTime+=1
+    shootTime+=gDeltaTime //60fps change: counts 30fps ticks (it still lands on reShootTime-10 exactly)
     if shootTime<reShootTime-10 and shootTime>1
     {
       if x>oCharacter.x
@@ -70,13 +71,16 @@ if global.gamePaused=false
       newAttack.spiritPower=spiritPower
       newAttack.bulletSpeed=7
       if image_xscale=1
-        newAttack.direction=0
+        //newAttack.direction=0
+        newAttack._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       else
-        newAttack.direction=180
+        //newAttack.direction=180
+        newAttack._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       shootTime=0
     }
 
-    yVel+=0.2
+    //yVel+=0.2
+    yVel=scrGravAcc(yVel,0.2,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
     if isCollisionLeft(1)
@@ -85,7 +89,8 @@ if global.gamePaused=false
       xVel=0
     if isCollisionSolid()
       y-=2
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 
     if y>room_height+30
       instance_destroy()

@@ -20,10 +20,14 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  speed=bulletSpeed
-  decayTime-=1
+  //speed=bulletSpeed
+  _speed=bulletSpeed //60fps change: moved by correctSpeedDirection (end of the step)
+  //decayTime-=1
+  decayTime-=gDeltaTime //60fps change: counts 30fps ticks
   if decayTime<=0
     instance_destroy()
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above
+correctSpeedDirection(id) //60fps change (added): moves it by _speed in _direction, this frame's share of a 30fps tick

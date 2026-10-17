@@ -88,8 +88,12 @@ if global.gamePaused=false
   //---------- move pattern ----------
   if patProg=0
   {
-    if y<128
-      y+=6
+    //if y<128
+    //  y+=6
+    //60fps change: 6 per 30fps tick. At 30fps it stopped on the first step at or past 128, which from y=-32 (where
+    //oEvSkyBaseW1 creates it) is 130; this stops there at any frame rate (smaller steps would stop sooner)
+    if y<130
+      y=min(130,y+6*gDeltaTime)
     else
       patProg=1
   }
@@ -97,7 +101,8 @@ if global.gamePaused=false
   //---------- bullet pattern ----------
   if bossLives=3 and patProg=1
   {
-    bullet_Time+=1
+    //bullet_Time+=1
+    bullet_Time+=gDeltaTime //60fps change: counts 30fps ticks
     if bullet_Time>=pat1_bullet_Delay
     {
       boss1Pat1(bulletPattern,pat1_cirAmt)
@@ -110,10 +115,12 @@ if global.gamePaused=false
   }
   else if bossLives=2
   {
-    bullet_Time+=1
+    //bullet_Time+=1
+    bullet_Time+=gDeltaTime //60fps change: counts 30fps ticks
     if bullet_Time>=pat2_bullet_Delay
     {
-      if bullet_Time mod pat2_bulletFreq=0
+      //if bullet_Time mod pat2_bulletFreq=0
+      if scrModPass(bullet_Time,pat2_bulletFreq) //60fps change: once each time the count reaches a multiple of it
       {
         boss1Pat2(bulletPattern,pat2_cirAmt)
         if bulletPattern=0
@@ -130,7 +137,8 @@ if global.gamePaused=false
           newBullet=instance_create(x,y,oEnemyShipBulletNormal)
           newBullet.bDestroyIfOffScreen=true
           newBullet.bulletSpeed=3.5
-          newBullet.direction=dir
+          //newBullet.direction=dir
+          newBullet._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           dir+=360/pat2_cirAmt
         }
         bullet_Time=0
@@ -139,7 +147,8 @@ if global.gamePaused=false
   }
   else if bossLives=1
   {
-    bullet_Time+=1
+    //bullet_Time+=1
+    bullet_Time+=gDeltaTime //60fps change: counts 30fps ticks
     if bullet_Time>=pat3_bullet_Delay
     {
       boss1Pat3(bulletPattern,pat3_cirAmt)

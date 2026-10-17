@@ -38,14 +38,17 @@ if global.gamePaused=false
   if init=0
   {
     if movePattern=1
-      direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-26)
+      //direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-26)
+      _direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-26) //60fps change: _speed/_direction stand in for speed/direction (see correctSpeedDirection)
     init=1
   }
   //********** Movement patterns **********
   if movePattern=0 or movePattern=1 //0: straight, 1: to player
-    speed=moveSpeed
+    //speed=moveSpeed
+    _speed=moveSpeed //60fps change: moved by correctSpeedDirection (end of the step)
   //********** Fire shots **********
-  shotTime+=1
+  //shotTime+=1
+  shotTime+=gDeltaTime //60fps change: counts 30fps ticks
   if shotTime>=shotDelay
   {
     shotDir=point_direction(x,y,oPlayer1.x,oPlayer1.y-26)
@@ -60,7 +63,8 @@ if global.gamePaused=false
       newBullet.spiritPower=oSpireGuardian.spiritPower
       newBullet.bDestroyOnOutside=1
       newBullet.bulletSpeed=5
-      newBullet.direction=shotDir
+      //newBullet.direction=shotDir
+      newBullet._direction=shotDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       newBullet.arcTime=35
       newBullet.bulletArc=5
       shotDir+=360/shotAmt
@@ -69,7 +73,9 @@ if global.gamePaused=false
   }
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above
+correctSpeedDirection(id) //60fps change (added): moves it by _speed in _direction, this frame's share of a 30fps tick
 #define Other_0
 /*"/*'/**//* YYD ACTION
 lib_id=1

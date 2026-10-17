@@ -15,11 +15,15 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  speed=12
-  direction=point_direction(x,y,oPlayerShip.x,oPlayerShip.y)
+  //speed=12
+  _speed=12 //60fps change: _speed/_direction stand in for speed/direction (see correctSpeedDirection at the end of the Step)
+  //direction=point_direction(x,y,oPlayerShip.x,oPlayerShip.y)
+  _direction=point_direction(x,y,oPlayerShip.x,oPlayerShip.y) //60fps change: see above
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above
+correctSpeedDirection(id) //60fps change (added): moves it by _speed in _direction, this frame's share of a 30fps tick
 #define Collision_oPlayerShip
 /*"/*'/**//* YYD ACTION
 lib_id=1

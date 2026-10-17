@@ -30,7 +30,8 @@ y=oQuickTimeDistorter.y-28
 path_start(pQTD_Orb,3,2,false)
 if bSpinning=true
 {
-  pos+=0.01
+  //pos+=0.01
+  pos+=0.01*gDeltaTime //60fps change: per 30fps tick
   if pos>=1
     pos=0
 }

@@ -26,7 +26,8 @@ if global.gamePaused=false
     if isCollisionCharacterTop(1)
     {
       with oPlayer1
-        moveTo(oGame.collisionTempId.pushPower,0)
+        //moveTo(oGame.collisionTempId.pushPower,0)
+        moveTo(oGame.collisionTempId.pushPower*gDeltaTime,0) //60fps change: this frame's share of a 30fps tick's push
     }
     if isCollisionCharacterTop(1,oEarthShift)
     {
@@ -49,7 +50,8 @@ if global.gamePaused=false
     if isCollisionCharacterTop(1,other)
     {
       with other
-        moveTo(oGame.collisionTempId.pushPower,0)
+        //moveTo(oGame.collisionTempId.pushPower,0)
+        moveTo(oGame.collisionTempId.pushPower*gDeltaTime,0) //60fps change: this frame's share of a 30fps tick's push
     }
   }
 }
@@ -68,7 +70,8 @@ if global.gamePaused=false
     if isCollisionCharacterTop(1,other)
     {
       with other
-        moveTo(oGame.collisionTempId.pushPower,0)
+        //moveTo(oGame.collisionTempId.pushPower,0)
+        moveTo(oGame.collisionTempId.pushPower*gDeltaTime,0) //60fps change: this frame's share of a 30fps tick's push
     }
   }
 }

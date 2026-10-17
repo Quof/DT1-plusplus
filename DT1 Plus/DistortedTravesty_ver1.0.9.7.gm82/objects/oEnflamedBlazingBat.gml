@@ -119,7 +119,8 @@ if global.gamePaused=false
       {
         if flyDir=0 //left
         {
-          x-=1
+          //x-=1
+          x-=1*gDeltaTime //60fps change: per 30fps tick
           if x<xCenter-roomSpan
           {
             image_xscale=1
@@ -128,7 +129,8 @@ if global.gamePaused=false
         }
         else if flyDir=1 //right
         {
-          x+=1
+          //x+=1
+          x+=1*gDeltaTime //60fps change: per 30fps tick
           if x>xCenter+roomSpan
           {
             image_xscale=-1
@@ -138,12 +140,15 @@ if global.gamePaused=false
       }
       else if specialAttack>=1
       {
-        specialAttack+=1
+        //specialAttack+=1
+        specialAttack+=gDeltaTime //60fps change: counts 30fps ticks (in the special attack it's a timer)
         if specialAttack>=1 and specialAttack<=19
         {
-          if specialAttack=2
+          //if specialAttack=2
+          if scrCountPass(specialAttack,2) //60fps change: once, when the count reaches it
             fireballTime=fireballWait-40
-          effect_create_above(ef_smokeup,x,y,1,c_red)
+          if gDeltaDoTicks //60fps change (added): the effect once per 30fps tick
+            effect_create_above(ef_smokeup,x,y,1,c_red)
           if specialAttack>=15
           {
             effect_create_above(ef_ring,x,y,1,c_red)
@@ -154,7 +159,8 @@ if global.gamePaused=false
         }
         else if specialAttack>=20 and specialAttack<=29
         {
-          if specialAttack=21
+          //if specialAttack=21
+          if scrCountPass(specialAttack,21) //60fps change: once, when the count reaches it
           {
             x=448
             y=160
@@ -168,7 +174,8 @@ if global.gamePaused=false
             specialAttack=49
           }
         }
-        else if specialAttack=50
+        //else if specialAttack=50
+        else if scrCountPass(specialAttack,50) //60fps change: once, when the count reaches it
         {
           playSound(global.snd_SpellFireball,0,0.95)
           for(i=0;i<6;i+=1)
@@ -180,7 +187,8 @@ if global.gamePaused=false
             fireWaveR[i].elementType=1
             fireWaveR[i].bulletSpeed=0
             fireWaveR[i].size=2
-            fireWaveR[i].direction=0
+            //fireWaveR[i].direction=0
+            fireWaveR[i]._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             fireWaveR[i].image_speed=0.4+random(0.1)
 
             fireWaveL[i]=instance_create(x,y,oCannonBullet)
@@ -190,30 +198,38 @@ if global.gamePaused=false
             fireWaveL[i].elementType=1
             fireWaveL[i].bulletSpeed=0
             fireWaveL[i].size=2
-            fireWaveL[i].direction=180
+            //fireWaveL[i].direction=180
+            fireWaveL[i]._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             fireWaveL[i].image_speed=0.4+random(0.1)
           }
         }
-        else if specialAttack>=51 and specialAttack<=90
+        //else if specialAttack>=51 and specialAttack<=90
+        else if specialAttack>50 and specialAttack<=90 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
         {
           for(i=0;i<6;i+=1)
           {
-            fireWaveR[i].x+=i+1
-            fireWaveL[i].x-=i+1
+            //fireWaveR[i].x+=i+1
+            //fireWaveL[i].x-=i+1
+            fireWaveR[i].x+=(i+1)*gDeltaTime //60fps change: per 30fps tick
+            fireWaveL[i].x-=(i+1)*gDeltaTime //60fps change: per 30fps tick
           }
         }
-        else if specialAttack=91
+        //else if specialAttack=91
+        else if scrCountPass(specialAttack,91) //60fps change: once, when the count reaches it
         {
           playSound(global.snd_SpellFireball,0,0.95)
           for(i=0;i<6;i+=1)
           {
             fireWaveR[i].bulletSpeed=10
-            fireWaveR[i].direction=90
+            //fireWaveR[i].direction=90
+            fireWaveR[i]._direction=90 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             fireWaveL[i].bulletSpeed=10
-            fireWaveL[i].direction=90
+            //fireWaveL[i].direction=90
+            fireWaveL[i]._direction=90 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           }
         }
-        else if specialAttack>=111 and specialAttack<=420
+        //else if specialAttack>=111 and specialAttack<=420
+        else if specialAttack>=111 and specialAttack<=420 and scrModPass(specialAttack,1) //60fps change: the spray once per 30fps tick (each time the count reaches a whole number; every tick at 30fps)
         {
           var dir;
           dir=0
@@ -227,7 +243,8 @@ if global.gamePaused=false
             newAttack.damageType="SPIRIT"
             newAttack.elementType=1
             newAttack.bulletSpeed=8
-            newAttack.direction=specialFireDir+dir
+            //newAttack.direction=specialFireDir+dir
+            newAttack._direction=specialFireDir+dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             newAttack.image_angle=specialFireDir+dir
             newAttack.image_speed=0.4+random(0.1)
             dir=180
@@ -241,13 +258,15 @@ if global.gamePaused=false
             newAttack.damageType="SPIRIT"
             newAttack.elementType=1
             newAttack.bulletSpeed=7
-            newAttack.direction=270
+            //newAttack.direction=270
+            newAttack._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             newAttack.image_angle=270
             newAttack.image_speed=0.4+random(0.1)
           }
           specialFireDir+=fireSpinSpd
         }
-        else if specialAttack=421
+        //else if specialAttack=421
+        else if scrCountPass(specialAttack,421) //60fps change: once, when the count reaches it
         {
           effect_create_above(ef_ring,x,y,1,c_red)
           x=448
@@ -258,7 +277,8 @@ if global.gamePaused=false
           bossProgress+=1
         }
 
-        if specialAttack=210
+        //if specialAttack=210
+        if scrCountPass(specialAttack,210) //60fps change: once, when the count reaches it
         {
           for(i=0;i<5;i+=1)
           {
@@ -268,12 +288,14 @@ if global.gamePaused=false
             newAttack.damageType="SPIRIT"
             newAttack.elementType=1
             newAttack.bulletSpeed=3
-            newAttack.direction=270
+            //newAttack.direction=270
+            newAttack._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             newAttack.image_angle=270
             newAttack.image_speed=0.4+random(0.1)
           }
         }
-        else if specialAttack=305
+        //else if specialAttack=305
+        else if scrCountPass(specialAttack,305) //60fps change: once, when the count reaches it
         {
           for(i=0;i<5;i+=1)
           {
@@ -283,7 +305,8 @@ if global.gamePaused=false
             newAttack.damageType="SPIRIT"
             newAttack.elementType=1
             newAttack.bulletSpeed=3
-            newAttack.direction=270
+            //newAttack.direction=270
+            newAttack._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             newAttack.image_angle=270
             newAttack.image_speed=0.4+random(0.1)
           }
@@ -292,8 +315,10 @@ if global.gamePaused=false
       //***** Fireball *****
       if specialAttack=0
       {
-        fireballTime+=1
-        if fireballTime=fireballWait-30
+        //fireballTime+=1
+        fireballTime+=gDeltaTime //60fps change: counts 30fps ticks
+        //if fireballTime=fireballWait-30
+        if scrCountPass(fireballTime,fireballWait-30) //60fps change: once, when the count reaches it
           effect_create_above(ef_smokeup,x,y,1,c_red)
         else if fireballTime>=fireballWait //fireball
         {
@@ -311,7 +336,8 @@ if global.gamePaused=false
             newAttack.damageType="SPIRIT"
             newAttack.elementType=1
             newAttack.bulletSpeed=6
-            newAttack.direction=dir
+            //newAttack.direction=dir
+            newAttack._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             newAttack.image_angle=direction
             newAttack.image_speed=0.5
             dir+=25
@@ -322,13 +348,16 @@ if global.gamePaused=false
     }
     else if batForm=1 //********** Transition **********
     {
-      specialAttack+=1
-      if specialAttack=5
+      //specialAttack+=1
+      specialAttack+=gDeltaTime //60fps change: counts 30fps ticks
+      //if specialAttack=5
+      if scrCountPass(specialAttack,5) //60fps change: once, when the count reaches it
       {
         msgCreate("Ugh, you got past my fire spam.#Looks like I'll need to try THAT!",0,oMessagePerson,"Blazing The Bat",0,1)
         newMessage.fadingTime=105
       }
-      else if specialAttack=95
+      //else if specialAttack=95
+      else if scrCountPass(specialAttack,95) //60fps change: once, when the count reaches it
       {
         msgCreate("Should be fun.",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=90
@@ -339,12 +368,14 @@ if global.gamePaused=false
         if x>xCenter+8
         {
           image_xscale=-1
-          x-=4
+          //x-=4
+          x-=4*gDeltaTime //60fps change: per 30fps tick
         }
         else if x<xCenter-8
         {
           image_xscale=1
-          x+=4
+          //x+=4
+          x+=4*gDeltaTime //60fps change: per 30fps tick
         }
         if x<=xCenter+8 and x>=xCenter-8
           bossProgress=1
@@ -352,7 +383,8 @@ if global.gamePaused=false
       else if bossProgress=1
       {
         if y<room_height+16
-          y+=4
+          //y+=4
+          y+=4*gDeltaTime //60fps change: per 30fps tick
         else
           bossProgress=2
       }
@@ -399,18 +431,22 @@ if global.gamePaused=false
       if flyDir=0 //in lava
       {
         //come out of lava
-        underLavaTime+=1
+        //underLavaTime+=1
+        underLavaTime+=gDeltaTime //60fps change: counts 30fps ticks
         if underLavaTime>=underLavaWait
         {
-          if underLavaTime=underLavaWait
+          //if underLavaTime=underLavaWait
+          if scrCountPass(underLavaTime,underLavaWait) //60fps change: once, when the count reaches it
             bCanTakeDamage=true
           if x>oCharacter.x
             image_xscale=-1
           else
             image_xscale=1
           if y>240 and handFlameTime<1000
-            y-=6
-          if underLavaTime=underLavaWait+5
+            //y-=6
+            y-=6*gDeltaTime //60fps change: per 30fps tick
+          //if underLavaTime=underLavaWait+5
+          if scrCountPass(underLavaTime,underLavaWait+5) //60fps change: once, when the count reaches it
           {
             for(i=0;i<riseFireAmount;i+=1)
             {
@@ -453,25 +489,30 @@ if global.gamePaused=false
         }
         //hand flame rise
         if underLavaTime>=underLavaWait
-          handFlameTime+=1
+          //handFlameTime+=1
+          handFlameTime+=gDeltaTime //60fps change: counts 30fps ticks
         if handFlameTime>=handFlameWait
         {
           if flameTempWait=0
             flameTempWait=handFlameWait
-          if handFlameTime=flameTempWait
+          //if handFlameTime=flameTempWait
+          if scrCountPass(handFlameTime,flameTempWait) //60fps change: once, when the count reaches it
           {
             handFlameX=x+x5
             handFlameY=y+y5
 
           }
-          else if handFlameTime>=flameTempWait+1 and handFlameTime<=flameTempWait+999
+          //else if handFlameTime>=flameTempWait+1 and handFlameTime<=flameTempWait+999
+          else if handFlameTime>flameTempWait and handFlameTime<=flameTempWait+999 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
           {
             if handFlameY>128
-              handFlameY-=2
+              //handFlameY-=2
+              handFlameY-=2*gDeltaTime //60fps change: per 30fps tick
             else
               handFlameTime=flameTempWait+1000
           }
-          else if handFlameTime=flameTempWait+1010
+          //else if handFlameTime=flameTempWait+1010
+          else if scrCountPass(handFlameTime,flameTempWait+1010) //60fps change: once, when the count reaches it
           {
             hFlameDist=0
             specialFireDir=0
@@ -489,7 +530,8 @@ if global.gamePaused=false
               handFlameB[i].bulletSpeed=0
             }
           }
-          else if handFlameTime>=flameTempWait+1011 and handFlameTime<=flameTempWait+1080
+          //else if handFlameTime>=flameTempWait+1011 and handFlameTime<=flameTempWait+1080
+          else if handFlameTime>flameTempWait+1010 and handFlameTime<=flameTempWait+1080 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
           {
             var dir;
             dir=0
@@ -497,14 +539,19 @@ if global.gamePaused=false
             {
               handFlameB[i].x=handFlameX+lengthdir_x(hFlameDist,specialFireDir+dir)
               handFlameB[i].y=handFlameY+lengthdir_y(hFlameDist,specialFireDir+dir)
-              handFlameB[i].image_angle+=3
+              //handFlameB[i].image_angle+=3
+              handFlameB[i].image_angle+=3*gDeltaTime //60fps change: per 30fps tick
               dir+=45
             }
-            handFlameY+=flameSpiralDrop
-            specialFireDir+=5
-            hFlameDist+=1
+            //handFlameY+=flameSpiralDrop
+            handFlameY+=flameSpiralDrop*gDeltaTime //60fps change: per 30fps tick
+            //specialFireDir+=5
+            specialFireDir+=5*gDeltaTime //60fps change: per 30fps tick
+            //hFlameDist+=1
+            hFlameDist+=1*gDeltaTime //60fps change: per 30fps tick
           }
-          else if handFlameTime=flameTempWait+1081
+          //else if handFlameTime=flameTempWait+1081
+          else if scrCountPass(handFlameTime,flameTempWait+1081) //60fps change: once, when the count reaches it
           {
             for(i=0;i<8;i+=1)
             {
@@ -526,7 +573,8 @@ if global.gamePaused=false
           }
           else if handFlameTime>=flameTempWait+1110
           {
-            y+=6
+            //y+=6
+            y+=6*gDeltaTime //60fps change: per 30fps tick
             if y>room_height+16
             {
               bCanTakeDamage=false
@@ -542,7 +590,8 @@ if global.gamePaused=false
         if bSwordOut=false
         {
           if underLavaTime>=underLavaWait
-            swordReleaseTime+=1
+            //swordReleaseTime+=1
+            swordReleaseTime+=gDeltaTime //60fps change: counts 30fps ticks
           if swordReleaseTime>=swordReleaseWait
           {
             effect_create_above(ef_ring,x+x4,y+y4,1,c_red)

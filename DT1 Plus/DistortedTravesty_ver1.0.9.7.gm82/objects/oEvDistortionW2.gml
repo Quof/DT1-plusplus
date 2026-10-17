@@ -65,19 +65,24 @@ if global.gameProgress=118 //intro to Distortion 2
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       oPlayer1.image_speed=0.1
       oPlayer1.sprite_index=sPlayerIdle
       snd_WindowsStartup=SS_LoadSound("Sound\DT_WindowsStartup.wav",0)
     }
-    else if sceneDelay=89
+    //else if sceneDelay=89
+    else if scrCountPass(sceneDelay,89) //60fps change: once, when the count reaches it
       playSound(snd_WindowsStartup,0,1)
-    else if sceneDelay>=90 and sceneDelay<=130
+    //else if sceneDelay>=90 and sceneDelay<=130
+    else if sceneDelay>89 and sceneDelay<=130 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if bossFinishFadeAlpha>0
-        bossFinishFadeAlpha-=0.04
+        //bossFinishFadeAlpha-=0.04
+        bossFinishFadeAlpha-=0.04*gDeltaTime //60fps change: per 30fps tick
     }
     else if sceneDelay>=210
     {
@@ -113,14 +118,19 @@ if global.gameProgress=118 //intro to Distortion 2
     msgCreate("You're an ass.",1,oMessageCutscene,"X")
   else if sceneProgress=14
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
       npcX.sprite_index=sPlayerDiscombobulate
-    else if sceneDelay=6
+    //else if sceneDelay=6
+    else if scrCountPass(sceneDelay,6) //60fps change: once, when the count reaches it
       npcX.image_index=0
-    else if sceneDelay>=7
+    //else if sceneDelay>=7
+    else if sceneDelay>6 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      npcX.y-=16
+      //npcX.y-=16
+      npcX.y-=16*gDeltaTime //60fps change: per 30fps tick
       if npcX.y<=0
       {
         with npcX
@@ -132,7 +142,8 @@ if global.gameProgress=118 //intro to Distortion 2
   }
   else if sceneProgress=15
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -162,8 +173,10 @@ else if global.gameProgress=121 and room=rDistortionW2_3 //Chat about scattered 
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       global.gamePaused=true
     else if sceneDelay>=45
     {
@@ -223,7 +236,8 @@ else if global.gameProgress=122 and room=rDistortionW2_3 //enemy trap event
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -244,7 +258,8 @@ else if global.gameProgress=122 and room=rDistortionW2_3 //enemy trap event
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=180
     {
       sceneDelay=0
@@ -273,7 +288,8 @@ else if global.gameProgress=122 and room=rDistortionW2_3 //enemy trap event
   }
   else if sceneProgress=5
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=300
     {
       sceneDelay=0
@@ -294,7 +310,8 @@ else if global.gameProgress=122 and room=rDistortionW2_3 //enemy trap event
   }
   else if sceneProgress=7
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=300
     {
       sceneDelay=0
@@ -323,7 +340,8 @@ else if global.gameProgress=122 and room=rDistortionW2_3 //enemy trap event
   }
   else if sceneProgress=9
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=330
     {
       sceneDelay=0
@@ -375,11 +393,14 @@ else if global.gameProgress=126 and room=rDistortionW2_6 //Boss Fight (Demon Cur
   else if sceneProgress=1
   {
     if oPlayer1.y<352
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=30
       {
@@ -400,8 +421,10 @@ else if global.gameProgress=126 and room=rDistortionW2_6 //Boss Fight (Demon Cur
     msgCreate("You cannot contain The Darkness that easily.#I will show you.",1,oMessageCutscene,global.mainCharacters[3])
   else if sceneProgress=7
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
     {
       rightArm=instance_create(boss.x+36,boss.y-48,oMisc)
       rightArm.type=0
@@ -415,21 +438,29 @@ else if global.gameProgress=126 and room=rDistortionW2_6 //Boss Fight (Demon Cur
       leftArm.image_speed=0.1
       leftArm.image_alpha=0
     }
-    else if sceneDelay>=31 and sceneDelay<=50
+    //else if sceneDelay>=31 and sceneDelay<=50
+    else if sceneDelay>30 and sceneDelay<=50 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      rightArm.image_alpha+=0.01
-      leftArm.image_alpha+=0.01
+      //rightArm.image_alpha+=0.01
+      rightArm.image_alpha+=0.01*gDeltaTime //60fps change: per 30fps tick
+      //leftArm.image_alpha+=0.01
+      leftArm.image_alpha+=0.01*gDeltaTime //60fps change: per 30fps tick
     }
     else if sceneDelay>=71 and sceneDelay<=90
-      effect_create_above(ef_smoke,boss.x+random(10),boss.y+random(10),0,c_black)
-    else if sceneDelay=91
+      //effect_create_above(ef_smoke,boss.x+random(10),boss.y+random(10),0,c_black)
+      if gDeltaDoTicks effect_create_above(ef_smoke,boss.x+random(10),boss.y+random(10),0,c_black) //60fps change: once per 30fps tick
+    //else if sceneDelay=91
+    else if scrCountPass(sceneDelay,91) //60fps change: once, when the count reaches it
       drawWRec=true
-    else if sceneDelay>=92
+    //else if sceneDelay>=92
+    else if sceneDelay>91 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      recSpread+=7
+      //recSpread+=7
+      recSpread+=7*gDeltaTime //60fps change: per 30fps tick
       if recSpread>=384
       {
-        recAlpha-=0.02
+        //recAlpha-=0.02
+        recAlpha-=0.02*gDeltaTime //60fps change: per 30fps tick
         boss.sprite_index=sDemonCursorDefault
         if recAlpha<=0
         {
@@ -452,8 +483,10 @@ else if global.gameProgress=126 and room=rDistortionW2_6 //Boss Fight (Demon Cur
     msgCreate("I feel so loved. I'm number two on its list.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=13
   {
-    sceneDelay+=1
-    if sceneDelay=25
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=25
+    if scrCountPass(sceneDelay,25) //60fps change: once, when the count reaches it
     {
       oEvDistortionWindows2.bossBackShow=true
       background_index[1]=backDCursorFight
@@ -462,7 +495,8 @@ else if global.gameProgress=126 and room=rDistortionW2_6 //Boss Fight (Demon Cur
       background_vtiled[1]=false
       background_htiled[1]=false
     }
-    else if sceneDelay=50
+    //else if sceneDelay=50
+    else if scrCountPass(sceneDelay,50) //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1
@@ -484,8 +518,10 @@ else if global.gameProgress=126 and room=rDistortionW2_6 //Boss Fight (Demon Cur
     msgCreate("You suck.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=21
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       with oMisc
         instance_destroy()
@@ -517,14 +553,17 @@ else if global.gameProgress=127 //boss fight ends (Demon Cursor)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       background_visible[1]=false
       oEvDistortionWindows2.bossBackShow=false
@@ -546,13 +585,15 @@ else if global.gameProgress=127 //boss fight ends (Demon Cursor)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -634,12 +675,14 @@ if room=rDistortionW2_2 and global.gamePaused=false //sliding window
   //move the window
   if oPlayer1.xVel>0
   {
-    windowX+=1
+    //windowX+=1
+    windowX+=gDeltaTime //60fps change: counts 30fps ticks
     window_set_position(windowX,windowY)
   }
   else if oPlayer1.xVel<0
   {
-    windowX-=1
+    //windowX-=1
+    windowX-=gDeltaTime //60fps change: counts 30fps ticks
     window_set_position(windowX,windowY)
   }
   else
@@ -721,8 +764,11 @@ if room=rDistortionW2_2
     if text_Pos<string_length(text_Full)
     {
       draw_text(1248,256,text_New)
+      if gDeltaDoTicks //60fps change (added): one letter per 30fps tick (the position stays a whole number)
+      { //60fps change (added)
       text_Pos+=1
       text_New+=string_char_at(text_Full,text_Pos)
+      } //60fps change (added)
       textCollision.image_xscale=string_width(text_New)
       textCollision.image_yscale=string_height(text_New)
     }
@@ -741,8 +787,11 @@ if room=rDistortionW2_2
     if text2_Pos<string_length(text2_Full)
     {
       draw_text(160,768,text2_New)
+      if gDeltaDoTicks //60fps change (added): one letter per 30fps tick (the position stays a whole number)
+      { //60fps change (added)
       text2_Pos+=1
       text2_New+=string_char_at(text2_Full,text2_Pos)
+      } //60fps change (added)
       text2Collision.image_xscale=string_width(text2_New)
       text2Collision.image_yscale=string_height(text_New)
     }
@@ -761,8 +810,11 @@ if room=rDistortionW2_2
     if text3_Pos<string_length(text3_Full)
     {
       draw_text(208,1104,text3_New)
+      if gDeltaDoTicks //60fps change (added): one letter per 30fps tick (the position stays a whole number)
+      { //60fps change (added)
       text3_Pos+=1
       text3_New+=string_char_at(text3_Full,text3_Pos)
+      } //60fps change (added)
       text3Collision.image_xscale=string_width(text3_New)
       text3Collision.image_yscale=string_height(text_New)
     }
@@ -783,8 +835,11 @@ else if room=rDistortionW2_3
     if text_Pos<string_length(text_Full)
     {
       draw_text(1568,480,text_New)
+      if gDeltaDoTicks //60fps change (added): one letter per 30fps tick (the position stays a whole number)
+      { //60fps change (added)
       text_Pos+=1
       text_New+=string_char_at(text_Full,text_Pos)
+      } //60fps change (added)
       textCollision.image_xscale=string_width(text_New)
       textCollision.image_yscale=string_height(text_New)
     }

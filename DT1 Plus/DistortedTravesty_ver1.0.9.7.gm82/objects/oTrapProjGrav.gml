@@ -24,8 +24,10 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  image_angle=direction
-  yVel+=grav
+  //image_angle=direction
+  image_angle=_direction //60fps change: _direction stands in for direction (see correctSpeedDirection)
+  //yVel+=grav
+  yVel=scrGravAcc(yVel,grav,1) //60fps change: gravity per 30fps tick, following the 30fps arc
   dist=point_distance(x,y,xstart,ystart)
   if dist>32
   {
@@ -40,7 +42,8 @@ if global.gamePaused=false
     if isCollisionSolid()
       instance_destroy()
   }
-  moveTo(xVel,yVel)
+  //moveTo(xVel,yVel)
+  moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 
   if y>room_height+32
     instance_destroy()

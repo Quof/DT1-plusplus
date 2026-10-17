@@ -324,7 +324,8 @@ else if room=rBR_TheArtist
 if bRoomTele=1
 {
   transition_kind=20
-  transition_steps=30
+  //transition_steps=30
+  transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
   room_goto(rBR_Main)
 }
 #define Draw_0
@@ -343,22 +344,34 @@ if room=rBR_Metallicardian and instance_exists(oMarioLava)
 
 if room=rBR_UltimatePhalanx
 {
-  lavaTopTimer+=1
-  if lavaTopTimer>=1 and lavaTopTimer<=200
-    lavaTop+=0.05
-  else if lavaTopTimer>=201 and lavaTopTimer<=400
+  //lavaTopTimer+=1
+  lavaTopTimer+=gDeltaTime //60fps change: counts 30fps ticks
+  //if lavaTopTimer>=1 and lavaTopTimer<=200
+  if lavaTopTimer>0 and lavaTopTimer<=200 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+    //lavaTop+=0.05
+    lavaTop+=0.05*gDeltaTime //60fps change: per 30fps tick
+  //else if lavaTopTimer>=201 and lavaTopTimer<=400
+  else if lavaTopTimer>200 and lavaTopTimer<=400 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
   {
-    lavaTop-=0.05
-    if lavaTopTimer=400
+    //lavaTop-=0.05
+    lavaTop-=0.05*gDeltaTime //60fps change: per 30fps tick
+    //if lavaTopTimer=400
+    if scrCountPass(lavaTopTimer,400) //60fps change: once, when the count reaches it
       lavaTopTimer=0
   }
-  lavaAlphaTimer+=1
-  if lavaAlphaTimer>=1 and lavaAlphaTimer<=300
-    lavaAlpha-=0.0005
-  else if lavaAlphaTimer>=301 and lavaAlphaTimer<=600
+  //lavaAlphaTimer+=1
+  lavaAlphaTimer+=gDeltaTime //60fps change: counts 30fps ticks
+  //if lavaAlphaTimer>=1 and lavaAlphaTimer<=300
+  if lavaAlphaTimer>0 and lavaAlphaTimer<=300 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+    //lavaAlpha-=0.0005
+    lavaAlpha-=0.0005*gDeltaTime //60fps change: per 30fps tick
+  //else if lavaAlphaTimer>=301 and lavaAlphaTimer<=600
+  else if lavaAlphaTimer>300 and lavaAlphaTimer<=600 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
   {
-    lavaAlpha+=0.0005
-    if lavaAlphaTimer=600
+    //lavaAlpha+=0.0005
+    lavaAlpha+=0.0005*gDeltaTime //60fps change: per 30fps tick
+    //if lavaAlphaTimer=600
+    if scrCountPass(lavaAlphaTimer,600) //60fps change: once, when the count reaches it
       lavaAlphaTimer=0
   }
 

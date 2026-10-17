@@ -55,19 +55,22 @@ if global.gamePaused=false
   }
   if seekTime>0
   {
-    seekTime-=1
+    //seekTime-=1
+    seekTime-=gDeltaTime //60fps change: counts 30fps ticks
     if isCollisionBottom(1)
     {
       bReturning=true
       yVel/=-3
     }
-    if seekTime=0 and bReturning=false
+    //if seekTime=0 and bReturning=false
+    if seekTime<=0 and bReturning=false //60fps change: <= so it still happens if the frame rate changes mid-count (this is in "if seekTime>0", so only once)
     {
       bReturning=true
       yVel/=-3
     }
   }
-  moveTo(xVel,yVel)
+  //moveTo(xVel,yVel)
+  moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 
   //Return to original position
   if bReturning=true

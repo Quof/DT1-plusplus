@@ -34,8 +34,10 @@ if global.gamePaused=false
   {
     if findTargetX>=56
     {
-      shootDelay+=1
-      if shootDelay=reshootTime-10
+      //shootDelay+=1
+      shootDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if shootDelay=reshootTime-10
+      if scrCountPass(shootDelay,reshootTime-10) //60fps change: once, when the count reaches it
         effect_create_above(ef_smokeup,x,y,0,c_aqua)
       if shootDelay>=reshootTime
       {

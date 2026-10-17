@@ -52,7 +52,8 @@ if global.gamePaused=false
   {
     if attackProgress=0 and y>yGround-8 //choose attack type
     {
-      shootTime-=1
+      //shootTime-=1
+      shootTime-=gDeltaTime //60fps change: counts 30fps ticks
       if dropType=0
       {
         dropType=-1
@@ -64,7 +65,8 @@ if global.gamePaused=false
         shootTime=10
       }
       sprite_index=sGyroManIdle
-      if shootTime=0
+      //if shootTime=0
+      if scrCountPassDown(shootTime,0) //60fps change: once, when the count reaches 0
       {
         dropType=0
         attackProgress=irandom(100)+attackPriority
@@ -87,8 +89,10 @@ if global.gamePaused=false
     }
     else if attackProgress=10 //stay on ground
     {
-      shootTime+=1
-      if shootTime=10
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if shootTime=10
+      if scrCountPass(shootTime,10) //60fps change: once, when the count reaches it
       {
         if x>oCharacter.x
           image_xscale=-1
@@ -98,7 +102,8 @@ if global.gamePaused=false
         image_index=0
         sprite_index=sGyroManThrow
       }
-      else if shootTime=20
+      //else if shootTime=20
+      else if scrCountPass(shootTime,20) //60fps change: once, when the count reaches it
       {
         image_index=1
         newAttack=instance_create(x,y-24,oGyroAttack)
@@ -114,7 +119,8 @@ if global.gamePaused=false
           newAttack.x-=6
         }
       }
-      else if shootTime=25
+      //else if shootTime=25
+      else if scrCountPass(shootTime,25) //60fps change: once, when the count reaches it
       {
         sprite_index=sGyroManIdle
         image_speed=0.5
@@ -124,15 +130,20 @@ if global.gamePaused=false
     }
     else if attackProgress=20 //fly up
     {
-      shootTime+=1
-      if shootTime=1
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if shootTime=1
+      if scrCountPass(shootTime,1) //60fps change: once, when the count reaches it
         sprite_index=sGyroManProp
-      else if shootTime>=11 and shootTime<=42
+      //else if shootTime>=11 and shootTime<=42
+      else if shootTime>10 and shootTime<=42 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
       {
         sprite_index=sGyroManJump
-        y-=5
+        //y-=5
+        y-=5*gDeltaTime //60fps change: per 30fps tick
       }
-      else if shootTime=60
+      //else if shootTime=60
+      else if scrCountPass(shootTime,60) //60fps change: once, when the count reaches it
       {
         if x>oCharacter.x
           image_xscale=-1
@@ -151,7 +162,8 @@ if global.gamePaused=false
           newAttack.x-=6
         }
       }
-      else if shootTime=85
+      //else if shootTime=85
+      else if scrCountPass(shootTime,85) //60fps change: once, when the count reaches it
       {
         dropType=choose(1,2)
         if dropType=1
@@ -170,10 +182,12 @@ if global.gamePaused=false
     }
 
     if yVel>0
-      yVel+=0.4
+      //yVel+=0.4
+      yVel=scrGravAcc(yVel,0.4,1) //60fps change: falls faster per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
   }
   enemyStepEvent()
 }

@@ -80,12 +80,15 @@ if global.gamePaused=false
       image_xscale=1
     else
       image_xscale=-1
-    x+=xVel
+    //x+=xVel
+    x+=xVel*gDeltaTime //60fps change: per 30fps tick
     //turn delay around if player is behind it
     if image_xscale=1 and x>oPlayer1.x //right
-      turnAroundTime+=1
+      //turnAroundTime+=1
+      turnAroundTime+=gDeltaTime //60fps change: counts 30fps ticks
     else if image_xscale=-1 and x<oPlayer1.x //left
-      turnAroundTime+=1
+      //turnAroundTime+=1
+      turnAroundTime+=gDeltaTime //60fps change: counts 30fps ticks
     else if (image_xscale=1 and x<oPlayer1.x) or (image_xscale=-1 and x>oPlayer1.x)
       turnAroundTime=0
     if turnAroundTime>=turnAroundTimeMax
@@ -97,10 +100,12 @@ if global.gamePaused=false
       multiShot=multiShotMax
     }
     //shoot
-    shootTime+=1
+    //shootTime+=1
+    shootTime+=gDeltaTime //60fps change: counts 30fps ticks
     if shootTime>=reShootTime
     {
-      if multiShot>0 and shootTime mod 20=0
+      //if multiShot>0 and shootTime mod 20=0
+      if multiShot>0 and scrModPass(shootTime,20) //60fps change: once each time the count reaches a multiple of it
       {
         var x1;
         if image_xscale=1
@@ -122,12 +127,14 @@ if global.gamePaused=false
         newAttack.image_speed=0.6
         if image_xscale=1
         {
-          newAttack.direction=320
+          //newAttack.direction=320
+          newAttack._direction=320 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newAttack.image_angle=320
         }
         else
         {
-          newAttack.direction=220
+          //newAttack.direction=220
+          newAttack._direction=220 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newAttack.image_angle=220
         }
         newAttack.bulletSpeed=8
@@ -140,7 +147,8 @@ if global.gamePaused=false
       }
     }
     //animation
-    frameCount+=1
+    //frameCount+=1
+    frameCount+=gDeltaTime //60fps change: counts 30fps ticks
     if frameCount=6
       image_index=1
     else if frameCount=12
@@ -151,7 +159,8 @@ if global.gamePaused=false
       image_index=2
     else if frameCount=30
       image_index=1
-    else if frameCount=36
+    //else if frameCount=36
+    else if frameCount>=36 //60fps change: >= so it still resets if the frame rate changes mid-count
     {
       image_index=0
       frameCount=0

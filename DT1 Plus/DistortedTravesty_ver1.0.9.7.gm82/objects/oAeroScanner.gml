@@ -76,10 +76,12 @@ if global.gamePaused=false
       }
     }
 
-    if shootTime>=reShootTime-30
+    //if shootTime>=reShootTime-30
+    if shootTime>reShootTime-31 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps; with >= it moved half a tick more each cycle)
       xVel=0
     if shootTime>=reShootTime-15
-      lineW+=0.33
+      //lineW+=0.33
+      lineW+=0.33*gDeltaTime //60fps change: per 30fps tick
 
     if shootTime>=reShootTime
     {
@@ -89,16 +91,20 @@ if global.gamePaused=false
           hitPlayer()
       }
       lineW=1
-      shootTime=0
+      //shootTime=0
+      //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
+      shootTime=gDeltaTime-1
     }
     else
-      shootTime+=1
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: see above
 
     if isCollisionLeft(1)
       xVel=runAcc
     if isCollisionRight(1)
       xVel=-runAcc
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
   }
   enemyStepEvent()
 }

@@ -21,9 +21,12 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  speed=spd
-  breakTime-=1
-  if breakTime<=15 and breakTime mod 2=0 //warning flash
+  //speed=spd
+  _speed=spd //60fps change: moved by correctSpeedDirection (end of the step)
+  //breakTime-=1
+  breakTime-=gDeltaTime //60fps change: counts 30fps ticks
+  //if breakTime<=15 and breakTime mod 2=0 //warning flash
+  if breakTime<=15 and scrModPassDown(breakTime,2) //warning flash //60fps change: each time the count reaches an even number
   {
     if image_blend=c_white
       image_blend=c_red
@@ -41,7 +44,8 @@ if global.gamePaused=false
       iceShard.spiritPower=spiritPower
       iceShard.sprite_index=sCXfrostShieldShard
       iceShard.bulletSpeed=8
-      iceShard.direction=dir
+      //iceShard.direction=dir
+      iceShard._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       iceShard.image_angle=dir
       dir+=45
     }
@@ -49,4 +53,6 @@ if global.gamePaused=false
   }
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above
+correctSpeedDirection(id) //60fps change (added): moves it by _speed in _direction, this frame's share of a 30fps tick

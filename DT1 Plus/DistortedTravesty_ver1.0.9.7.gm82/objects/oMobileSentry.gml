@@ -83,7 +83,8 @@ if global.gamePaused=false
         bTooFar=false
     }
     if multiShot!=5
-      runTime+=1
+      //runTime+=1
+      runTime+=gDeltaTime //60fps change: counts 30fps ticks
     if runTime>=changeTime //start run
     {
       if bReadyToShoot=false
@@ -115,11 +116,14 @@ if global.gamePaused=false
         if instance_exists(idCheck)
         {
           if point_distance(oPlayer1.x,0,idCheck.x,0)<80
-            shootTime+=1
+            //shootTime+=1
+            shootTime+=gDeltaTime //60fps change: counts 30fps ticks
         }
       }
-      shootTime+=1
-      if shootTime=reShootTime-10 //load bullets
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if shootTime=reShootTime-10 //load bullets
+      if scrCountPass(shootTime,reShootTime-10) //load bullets //60fps change: once, when the count reaches it
       {
         if x>oCharacter.x
           offsetShotX=-20
@@ -151,11 +155,13 @@ if global.gamePaused=false
           if bulletDir<175 and bulletDir>1
             bulletDir=175
         }
-        newAttack.direction=bulletDir
+        //newAttack.direction=bulletDir
+        newAttack._direction=bulletDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         if shotAmount>5 //burst fire spray
         {
           burstFire=round(random(14)-7)
-          newAttack.direction+=burstFire
+          //newAttack.direction+=burstFire
+          newAttack._direction+=burstFire //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         }
         //rapid shot
         if multiShot<4
@@ -185,7 +191,8 @@ if global.gamePaused=false
       }
     }
 
-    yVel+=0.2
+    //yVel+=0.2
+    yVel=scrGravAcc(yVel,0.2,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
     if isCollisionLeft(1)
@@ -212,7 +219,8 @@ if global.gamePaused=false
         yVel=-4
       }
     }
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     if isCollisionSolid()
       y-=2
 

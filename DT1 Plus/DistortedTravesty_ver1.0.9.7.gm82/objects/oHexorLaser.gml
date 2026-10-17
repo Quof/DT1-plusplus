@@ -41,16 +41,21 @@ if global.gamePaused=false
   {
     if noEffect=0
     {
-      effectDelay+=1
-      if effectDelay mod 9=0
+      //effectDelay+=1
+      effectDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if effectDelay mod 9=0
+      if scrModPass(effectDelay,9) //60fps change: once each time the count reaches a multiple of 9
         effect_create_above(ef_firework,x,y,0,make_color_rgb(155+random(100),155+random(100),155+random(100)))
     }
-    image_blend=make_color_rgb(155+random(100),155+random(100),155+random(100))
+    if gDeltaDoTicks //60fps change (added): a new colour once per 30fps tick
+      image_blend=make_color_rgb(155+random(100),155+random(100),155+random(100))
   }
   else
   {
-    warnTime-=1
-    if warnTime=0
+    //warnTime-=1
+    warnTime-=gDeltaTime //60fps change: counts 30fps ticks
+    //if warnTime=0
+    if scrCountPassDown(warnTime,0) //60fps change: once, when the count reaches 0
     {
       if bShake=1
       {

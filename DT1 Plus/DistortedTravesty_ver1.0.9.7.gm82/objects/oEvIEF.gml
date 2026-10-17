@@ -62,7 +62,8 @@ if global.gameProgress=-9 //start start combat tutorial
   else if sceneProgress=1
   {
     if oPlayer1.y<256
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
       oPlayer1.sprite_index=sPlayerIdle
@@ -94,7 +95,8 @@ if global.gameProgress=-8 //combat tutorial
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=150
     {
       sceneDelay=0
@@ -111,7 +113,8 @@ if global.gameProgress=-8 //combat tutorial
   }
   else if sceneProgress=2 and enemyCount=0
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -128,7 +131,8 @@ if global.gameProgress=-8 //combat tutorial
   }
   else if sceneProgress=4 and enemyCount=0
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -148,7 +152,8 @@ if global.gameProgress=-8 //combat tutorial
   }
   else if sceneProgress=6 and enemyCount=0
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -195,11 +200,13 @@ if global.gameProgress=3 //start Rave Mode tutorial
   else if sceneProgress=1
   {
     if oPlayer1.y<304
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
       oPlayer1.sprite_index=sPlayerIdle
-      sceneDelay+=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if sceneDelay>=30
       {
         sceneDelay=0
@@ -261,7 +268,8 @@ if global.gameProgress=4 //engage Rave Mode
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=60
     {
       sceneDelay=0
@@ -292,7 +300,8 @@ if global.gameProgress=4 //engage Rave Mode
   }
   else if sceneProgress=5
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=60
     {
       sceneDelay=0
@@ -317,7 +326,8 @@ if global.gameProgress=4 //engage Rave Mode
   }
   else if sceneProgress=7
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=60
     {
       sceneDelay=0
@@ -348,7 +358,8 @@ if global.gameProgress=4 //engage Rave Mode
   }
   else if sceneProgress=9
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=60
     {
       sceneDelay=0
@@ -367,7 +378,8 @@ if global.gameProgress=4 //engage Rave Mode
   }
   else if sceneProgress=11
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=60
     {
       sceneDelay=0
@@ -386,7 +398,8 @@ if global.gameProgress=4 //engage Rave Mode
   }
   else if sceneProgress=13
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=60
     {
       sceneDelay=0
@@ -450,11 +463,13 @@ else if global.gameProgress=8 and room=rIEF6 //boss fight (Displaced Cyborg)
   else if sceneProgress=1
   {
     if oPlayer1.y<304
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
       oPlayer1.sprite_index=sPlayerIdle
-      sceneDelay+=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if sceneDelay>=30
       {
         sceneDelay=0
@@ -488,8 +503,10 @@ else if global.gameProgress=8 and room=rIEF6 //boss fight (Displaced Cyborg)
     msgCreate("Yeah, whatever. Just bring it anyway!",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=14
   {
-    sceneDelay+=1
-    if sceneDelay=10
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
     {
       boss=instance_create(496,304,oDCyborg)
       playSound(global.snd_BreakOut,0,1)
@@ -504,11 +521,15 @@ else if global.gameProgress=8 and room=rIEF6 //boss fight (Displaced Cyborg)
   }
   else if sceneProgress=15
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       boss.sprite_index=sNeteryuIdle
-    if sceneDelay>=25 and sceneDelay<=57
-      boss.y-=2
+    //if sceneDelay>=25 and sceneDelay<=57
+    if sceneDelay>24 and sceneDelay<=57 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //boss.y-=2
+      boss.y-=2*gDeltaTime //60fps change: per 30fps tick
     if sceneDelay>=90
     {
       sceneDelay=0
@@ -519,8 +540,10 @@ else if global.gameProgress=8 and room=rIEF6 //boss fight (Displaced Cyborg)
     msgCreate("This will be enough for someone like you.",1,oMessageCutscene,"Random Engineer")
   else if sceneProgress=17
   {
-    sceneDelay+=1
-    if sceneDelay=10
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_BreakOut,0,1)
       effect_create_above(ef_smoke,npcEngineer.x,npcEngineer.y-24,2,c_gray)
@@ -549,7 +572,8 @@ else if global.gameProgress=8 and room=rIEF6 //boss fight (Displaced Cyborg)
   }
   else if sceneProgress=22
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -564,8 +588,10 @@ else if global.gameProgress=8 and room=rIEF6 //boss fight (Displaced Cyborg)
     msgCreate("That's good because recovery items are locked during duels, aka boss fights.",1,oMessageCutscene,global.mainCharacters[1])
   else if sceneProgress=26
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       barrier1=instance_create(112,240,oBossBarrier)
       barrier2=instance_create(576,240,oBossBarrier)
@@ -596,14 +622,17 @@ else if global.gameProgress=9 //boss fight ends (Displaced Cyborg)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       oPlayer1.x=352
@@ -620,13 +649,15 @@ else if global.gameProgress=9 //boss fight ends (Displaced Cyborg)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -700,7 +731,8 @@ if global.gameProgress=11 and room=rIEF7 //random dialogue
   }
   else if charDialogue[1]=3 and sceneProgress=1
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=45
     {
       sceneDelay=0
@@ -764,11 +796,13 @@ else if global.gameProgress=13 and room=rIEF9 //the darkness comes
   else if sceneProgress=1
   {
     if oPlayer1.y<304
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
       oPlayer1.sprite_index=sPlayerIdle
-      sceneDelay+=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if sceneDelay>=30
       {
         sceneDelay=0
@@ -780,8 +814,10 @@ else if global.gameProgress=13 and room=rIEF9 //the darkness comes
     msgCreate("Time to kick your sorry ass!",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=3
   {
-    sceneDelay+=1
-    if sceneDelay=10
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
       npcCEO.image_xscale=-1
     else if sceneDelay>=30
     {
@@ -807,8 +843,10 @@ else if global.gameProgress=13 and room=rIEF9 //the darkness comes
     msgCreate("Hell yeah, now that's what I'm talking about!#Bring it!",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=12
   {
-    sceneDelay+=1
-    if sceneDelay=10
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
     {
       stopAllMusic()
       var tempMplay;
@@ -819,8 +857,10 @@ else if global.gameProgress=13 and room=rIEF9 //the darkness comes
       view_object[0]=oCutsceneShake
       playSound(global.snd_BreakOut,0,1)
     }
-    else if sceneDelay>=30 and sceneDelay<=41
-      shakeScreen.shakePower-=0.5
+    //else if sceneDelay>=30 and sceneDelay<=41
+    else if sceneDelay>29 and sceneDelay<=41 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //shakeScreen.shakePower-=0.5
+      shakeScreen.shakePower-=0.5*gDeltaTime //60fps change: per 30fps tick
     else if sceneDelay>=50
     {
       sceneDelay=0
@@ -835,8 +875,10 @@ else if global.gameProgress=13 and room=rIEF9 //the darkness comes
     msgCreate("Say what...?",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=16
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       view_object[0]=oPlayer1
       with shakeScreen
@@ -844,7 +886,8 @@ else if global.gameProgress=13 and room=rIEF9 //the darkness comes
       screenFlash=1
       playSound(global.snd_BreakOut,0,1)
     }
-    else if sceneDelay=2
+    //else if sceneDelay=2
+    else if scrCountPass(sceneDelay,2) //60fps change: once, when the count reaches it
     {
       sLordX=320
       sLordY=128
@@ -865,16 +908,20 @@ else if global.gameProgress=13 and room=rIEF9 //the darkness comes
       shroudLordPic[3].image_speed=0.1
       shroudLordPic[3].type=1
     }
-    else if sceneDelay>=3 and screenFlash>0
-      screenFlash-=0.04
+    //else if sceneDelay>=3 and screenFlash>0
+    else if sceneDelay>2 and screenFlash>0 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //screenFlash-=0.04
+      screenFlash-=0.04*gDeltaTime //60fps change: per 30fps tick
     else if sceneDelay>=45
     {
       sceneDelay=0
       sceneProgress+=1
     }
-    if sceneDelay=10
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
       bLMove=true
-    else if sceneDelay=35
+    //else if sceneDelay=35
+    else if scrCountPass(sceneDelay,35) //60fps change: once, when the count reaches it
       oPlayer1.sprite_index=sPlayerLookUp
   }
   else if sceneProgress=17 and bWaitForInput=false
@@ -897,10 +944,13 @@ else if global.gameProgress=13 and room=rIEF9 //the darkness comes
     msgCreate("You will become part of the system.",1,oMessageCutscene,global.mainCharacters[2])
   else if sceneProgress=26
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       bLMove=false
-    else if sceneDelay=16
+    //else if sceneDelay=16
+    else if scrCountPass(sceneDelay,16) //60fps change: once, when the count reaches it
     {
       shroudLordPic[2].sprite_index=sShroudLArmFist
       shroudLordPic[2].image_speed=0.8
@@ -919,17 +969,22 @@ else if global.gameProgress=13 and room=rIEF9 //the darkness comes
     msgCreate("Say what?",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=30
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       bLMove=false
-    else if sceneDelay=16
+    //else if sceneDelay=16
+    else if scrCountPass(sceneDelay,16) //60fps change: once, when the count reaches it
       shroudLordPic[2].sprite_index=sShroudLArmUp
-    else if sceneDelay=40
+    //else if sceneDelay=40
+    else if scrCountPass(sceneDelay,40) //60fps change: once, when the count reaches it
     {
       bPortalOpen=true
       //playSound(global.snd_WorldPortal,1,1,2500)
     }
-    else if sceneDelay=50
+    //else if sceneDelay=50
+    else if scrCountPass(sceneDelay,50) //60fps change: once, when the count reaches it
       oPlayer1.sprite_index=sPlayerChestHit
     else if sceneDelay>=55
     {
@@ -941,8 +996,10 @@ else if global.gameProgress=13 and room=rIEF9 //the darkness comes
     msgCreate("WHOA!! What is this!?",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=32
   {
-    sceneDelay+=1
-    if sceneDelay=5
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=5
+    if scrCountPass(sceneDelay,5) //60fps change: once, when the count reaches it
       portalSize=1
     else if sceneDelay>=30
     {
@@ -954,10 +1011,13 @@ else if global.gameProgress=13 and room=rIEF9 //the darkness comes
     msgCreate("The anomaly will be removed!",1,oMessageCutscene,global.mainCharacters[2])
   else if sceneProgress=34
   {
-    sceneDelay+=1
-    if sceneDelay=5
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=5
+    if scrCountPass(sceneDelay,5) //60fps change: once, when the count reaches it
       portalSize=2
-    else if sceneDelay=15
+    //else if sceneDelay=15
+    else if scrCountPass(sceneDelay,15) //60fps change: once, when the count reaches it
       bPhaseEffect=true
     else if sceneDelay>=65
     {
@@ -971,8 +1031,10 @@ else if global.gameProgress=13 and room=rIEF9 //the darkness comes
   {
     if screenFlash>=1
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       {
         stopAllMusic()
         //SS_StopSound(global.snd_WorldPortal)
@@ -983,13 +1045,16 @@ else if global.gameProgress=13 and room=rIEF9 //the darkness comes
       }
     }
     else
-      screenFlash+=0.02
+      //screenFlash+=0.02
+      screenFlash+=0.02*gDeltaTime //60fps change: per 30fps tick
   }
 
   if bPhaseEffect=true //phase effect (blend mode: add)
   {
-    phaseTime+=1
-    if phaseTime=3
+    //phaseTime+=1
+    phaseTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if phaseTime=3
+    if scrCountPass(phaseTime,3) //60fps change: once, when the count reaches it
     {
       phaseDistort=round(random(10))
       phaseTime=0
@@ -1002,26 +1067,39 @@ else if global.gameProgress=13 and room=rIEF9 //the darkness comes
   if bPortalOpen=true //portal effect
   {
     if portalSize=2
-      effect_create_above(ef_firework,oPlayer1.x,oPlayer1.y-27,0,c_black)
-    effect_create_above(ef_flare,oPlayer1.x,oPlayer1.y-27,portalSize,c_purple)
+      //effect_create_above(ef_firework,oPlayer1.x,oPlayer1.y-27,0,c_black)
+      if gDeltaDoTicks effect_create_above(ef_firework,oPlayer1.x,oPlayer1.y-27,0,c_black) //60fps change: once per 30fps tick
+    //effect_create_above(ef_flare,oPlayer1.x,oPlayer1.y-27,portalSize,c_purple)
+    if gDeltaDoTicks effect_create_above(ef_flare,oPlayer1.x,oPlayer1.y-27,portalSize,c_purple) //60fps change: once per 30fps tick
     if portalSize>=1
-      effect_create_above(ef_flare,oPlayer1.x,oPlayer1.y-27,0,c_aqua)
+      //effect_create_above(ef_flare,oPlayer1.x,oPlayer1.y-27,0,c_aqua)
+      if gDeltaDoTicks effect_create_above(ef_flare,oPlayer1.x,oPlayer1.y-27,0,c_aqua) //60fps change: once per 30fps tick
   }
   if bLMove=true //move Shroud Lord pic
   {
-    sLordMoveTime+=1
-    if sLordMoveTime>=1 and sLordMoveTime<=21
-      sLordMove-=0.04
-    else if sLordMoveTime>=22 and sLordMoveTime<=42
-      sLordMove+=0.04
-    else if sLordMoveTime>=52 and sLordMoveTime<=72
-      sLordMove+=0.04
-    else if sLordMoveTime>=73 and sLordMoveTime<=93
-      sLordMove-=0.04
+    //sLordMoveTime+=1
+    sLordMoveTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sLordMoveTime>=1 and sLordMoveTime<=21
+    if sLordMoveTime>0 and sLordMoveTime<=21 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //sLordMove-=0.04
+      sLordMove-=0.04*gDeltaTime //60fps change: per 30fps tick
+    //else if sLordMoveTime>=22 and sLordMoveTime<=42
+    else if sLordMoveTime>21 and sLordMoveTime<=42 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //sLordMove+=0.04
+      sLordMove+=0.04*gDeltaTime //60fps change: per 30fps tick
+    //else if sLordMoveTime>=52 and sLordMoveTime<=72
+    else if sLordMoveTime>51 and sLordMoveTime<=72 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //sLordMove+=0.04
+      sLordMove+=0.04*gDeltaTime //60fps change: per 30fps tick
+    //else if sLordMoveTime>=73 and sLordMoveTime<=93
+    else if sLordMoveTime>72 and sLordMoveTime<=93 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //sLordMove-=0.04
+      sLordMove-=0.04*gDeltaTime //60fps change: per 30fps tick
     else if sLordMoveTime>=103
       sLordMoveTime=0
     for (i=0;i<4;i+=1)
-      shroudLordPic[i].y+=sLordMove
+      //shroudLordPic[i].y+=sLordMove
+      shroudLordPic[i].y+=sLordMove*gDeltaTime //60fps change: per 30fps tick
   }
 }
 

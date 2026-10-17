@@ -31,7 +31,8 @@ if global.gameProgress=-10
     if discombobulateY>=oPlayer1.y
     {
       discomFrame=1
-      sceneDelay+=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if sceneDelay>=3
       {
         oPlayer1.visible=true
@@ -40,11 +41,13 @@ if global.gameProgress=-10
       }
     }
     else
-      discombobulateY+=16
+      //discombobulateY+=16
+      discombobulateY+=16*gDeltaTime //60fps change: per 30fps tick
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=15
     {
       sceneDelay=0
@@ -101,13 +104,17 @@ draw_set_alpha(sFade)
 if global.gameProgress=-10 and sceneProgress=0
 {
   if fadeDelay<=30
-    fadeDelay+=30 //1
+    //fadeDelay+=30 //1
+    fadeDelay+=30*gDeltaTime //1 //60fps change: per 30fps tick
   else
-    sFade-=1 //0.01
+    //sFade-=1 //0.01
+    sFade-=gDeltaTime //0.01 //60fps change: counts 30fps ticks
 
-  if sFade<=0
+  //if sFade<=0
+  if sFade<1 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=5
     {
       sceneDelay=0

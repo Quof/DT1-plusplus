@@ -39,12 +39,14 @@ if global.gamePaused=false
 {
   if global.gamePaused=false
     makeEnemyActive()
-  yVel+=0.3
+  //yVel+=0.3
+  yVel=scrGravAcc(yVel,0.3,1) //60fps change: gravity per 30fps tick, following the 30fps arc
   if isCollisionBottom(1)
     yVel=0
   if isCollisionSolid()
     y-=2
   if y>room_height+24
     instance_destroy()
-  moveTo(xVel,yVel)
+  //moveTo(xVel,yVel)
+  moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 }

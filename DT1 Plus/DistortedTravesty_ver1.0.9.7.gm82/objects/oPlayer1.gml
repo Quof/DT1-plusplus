@@ -422,8 +422,11 @@ if global.gamePaused=false
   if statusPoison>0
   {
     //statusPoison-=1
-    statusPoison-=gDeltaTime //60fps change: counts 30fps ticks; it still passes every even number once, so the damage is the same
-    if statusPoison mod 2=0
+    statusPoison-=gDeltaTime //60fps change: counts 30fps ticks
+    //if statusPoison mod 2=0
+    //60fps change: -1 life each time it counts down onto (or past) an even number, so the damage per second is the same.
+    //(GM8's mod rounds fractions to whole numbers, so "mod 2=0" also passed at x.5 values above 30fps)
+    if scrModPassDown(statusPoison,2)
       life-=1
     if statusPoison<=0
     {

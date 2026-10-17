@@ -20,8 +20,10 @@ if global.gameProgress=109 //intro to The Hideout
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -74,7 +76,8 @@ else if global.gameProgress=110 and room=rTheHideout4 //enemy trap event
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -103,7 +106,8 @@ else if global.gameProgress=110 and room=rTheHideout4 //enemy trap event
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=300
     {
       sceneDelay=0
@@ -163,7 +167,8 @@ else if global.gameProgress=111 and room=rTheHideout8 //enemy trap event
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -184,7 +189,8 @@ else if global.gameProgress=111 and room=rTheHideout8 //enemy trap event
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=210
     {
       sceneDelay=0
@@ -209,7 +215,8 @@ else if global.gameProgress=111 and room=rTheHideout8 //enemy trap event
   }
   else if sceneProgress=5
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=300
     {
       sceneDelay=0
@@ -258,11 +265,14 @@ else if global.gameProgress=113 and room=rTheHideout9 //Boss Fight (Metallicardi
   else if sceneProgress=1
   {
     if oPlayer1.y<336
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=30
       {
@@ -273,8 +283,10 @@ else if global.gameProgress=113 and room=rTheHideout9 //Boss Fight (Metallicardi
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=15
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=15
+    if scrCountPass(sceneDelay,15) //60fps change: once, when the count reaches it
     {
       boss=instance_create(576,272,oMetallicardian)
       boss.image_xscale=-1
@@ -298,8 +310,10 @@ else if global.gameProgress=113 and room=rTheHideout9 //Boss Fight (Metallicardi
     msgCreate("Ha! Well do your thing, I'll have the scanner ready if you need it.",1,oMessageCutscene,global.mainCharacters[1])
   else if sceneProgress=6
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       newBarrierL1=instance_create(208,272,oBossBarrier)
       newBarrierR1=instance_create(672,272,oBossBarrier)
@@ -326,14 +340,17 @@ else if global.gameProgress=114 //boss fight ends (Metallicardian)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       with oMarioLava
@@ -352,13 +369,15 @@ else if global.gameProgress=114 //boss fight ends (Metallicardian)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -388,8 +407,10 @@ else if global.gameProgress=117 //talk to Megaman X (first time)
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       fadeColor=c_black
@@ -403,7 +424,8 @@ else if global.gameProgress=117 //talk to Megaman X (first time)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.04
+      //bossFinishFadeAlpha+=0.04
+      bossFinishFadeAlpha+=0.04*gDeltaTime //60fps change: per 30fps tick
     else
     {
       stopPlayer()
@@ -416,11 +438,14 @@ else if global.gameProgress=117 //talk to Megaman X (first time)
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay>=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=30
+    if sceneDelay>29 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if bossFinishFadeAlpha>0
-        bossFinishFadeAlpha-=0.04
+        //bossFinishFadeAlpha-=0.04
+        bossFinishFadeAlpha-=0.04*gDeltaTime //60fps change: per 30fps tick
       else
       {
         sceneDelay=0
@@ -454,10 +479,13 @@ else if global.gameProgress=117 //talk to Megaman X (first time)
     msgCreate("What happened to all of you?#I thought you would all go up against anything, regardless of the odds.#Fearless bravery and all that garbage.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=15
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
       oMegamanX.sprite_index=sMegamanXCloseEyes
-    else if sceneDelay=85
+    //else if sceneDelay=85
+    else if scrCountPass(sceneDelay,85) //60fps change: once, when the count reaches it
       oMegamanX.sprite_index=sMegamanXIdle
     else if sceneDelay>=100
     {
@@ -477,10 +505,12 @@ else if global.gameProgress=117 //talk to Megaman X (first time)
     msgCreate("Thank you, give me a moment to get the Seal Decoder ready for you.",1,oMessageCutscene,"X")
   else if sceneProgress=21
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=10
       draw_set_blend_mode(bm_subtract)
-    if sceneDelay=10
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
     {
       shakeScreen=instance_create(oPlayer1.x,oPlayer1.y,oCutsceneShake)
       shakeScreen.shakePower=8
@@ -490,8 +520,10 @@ else if global.gameProgress=117 //talk to Megaman X (first time)
       oPlayer1.sprite_index=sPlayerKneel
       playSound(global.snd_BreakOut,0,1)
     }
-    else if sceneDelay>=30 and sceneDelay<=51
-      shakeScreen.shakePower-=0.25
+    //else if sceneDelay>=30 and sceneDelay<=51
+    else if sceneDelay>29 and sceneDelay<=51 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //shakeScreen.shakePower-=0.25
+      shakeScreen.shakePower-=0.25*gDeltaTime //60fps change: per 30fps tick
     else if sceneDelay>=60
     {
       view_object[0]=oPlayer1
@@ -507,10 +539,13 @@ else if global.gameProgress=117 //talk to Megaman X (first time)
     msgCreate("I don't think so.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=24
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
       oMegamanX.textScan="Muffin#Detected"
-    else if sceneDelay=65
+    //else if sceneDelay=65
+    else if scrCountPass(sceneDelay,65) //60fps change: once, when the count reaches it
       oMegamanX.sprite_index=sMegamanXIdle
     else if sceneDelay>=70
     {
@@ -522,7 +557,8 @@ else if global.gameProgress=117 //talk to Megaman X (first time)
     msgCreate("Wait, you have the Muffins with you?",1,oMessageCutscene,"X")
   else if sceneProgress=26
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=20
     {
       fadeColor=c_white
@@ -541,16 +577,25 @@ else if global.gameProgress=117 //talk to Megaman X (first time)
     msgCreate("We're being sucked into the Distortion itself.",1,oMessageCutscene,"X")
   else if sceneProgress=31
   {
-    pX=oPlayer1.x-13+random(26)
-    pY=oPlayer1.y-52+random(52)
-    effect_create_above(ef_smoke,pX,pY,1,c_black)
-    pX=oMegamanX.x-12+random(24)
-    pY=oMegamanX.y-34+random(34)
-    effect_create_above(ef_smoke,pX,pY,1,c_black)
-    sceneDelay+=1
-    if sceneDelay>=20
+    //pX=oPlayer1.x-13+random(26)
+    if gDeltaDoTicks pX=oPlayer1.x-13+random(26) //60fps change: once per 30fps tick
+    //pY=oPlayer1.y-52+random(52)
+    if gDeltaDoTicks pY=oPlayer1.y-52+random(52) //60fps change: once per 30fps tick
+    //effect_create_above(ef_smoke,pX,pY,1,c_black)
+    if gDeltaDoTicks effect_create_above(ef_smoke,pX,pY,1,c_black) //60fps change: once per 30fps tick
+    //pX=oMegamanX.x-12+random(24)
+    if gDeltaDoTicks pX=oMegamanX.x-12+random(24) //60fps change: once per 30fps tick
+    //pY=oMegamanX.y-34+random(34)
+    if gDeltaDoTicks pY=oMegamanX.y-34+random(34) //60fps change: once per 30fps tick
+    //effect_create_above(ef_smoke,pX,pY,1,c_black)
+    if gDeltaDoTicks effect_create_above(ef_smoke,pX,pY,1,c_black) //60fps change: once per 30fps tick
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=20
+    if sceneDelay>19 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
       if bossFinishFadeAlpha<1
-        bossFinishFadeAlpha+=0.05
+        //bossFinishFadeAlpha+=0.05
+        bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     if sceneDelay>=40
     {
       sceneDelay=0

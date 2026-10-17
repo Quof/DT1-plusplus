@@ -20,8 +20,10 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  laserAtkTime+=1
-  if laserAtkTime>=laserAtkDelay and laserAtkTime<=laserAtkDelay+39
+  //laserAtkTime+=1
+  laserAtkTime+=gDeltaTime //60fps change: counts 30fps ticks
+  //if laserAtkTime>=laserAtkDelay and laserAtkTime<=laserAtkDelay+39
+  if laserAtkTime>=laserAtkDelay and laserAtkTime<=laserAtkDelay+39 and gDeltaDoTicks //60fps change: the effect once per 30fps tick
     effect_create_above(ef_ring,x,y,0,c_maroon)
   else if laserAtkTime>=laserAtkDelay+40
   {
@@ -34,7 +36,8 @@ if global.gamePaused=false
       newBullet.damageType="SPIRIT"
       newBullet.spiritPower=oMitra.spiritPower
       newBullet.bulletSpeed=4
-      newBullet.direction=bulletDir
+      //newBullet.direction=bulletDir
+      newBullet._direction=bulletDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       bulletDir+=360/5
     }
     laserAtkTime=0

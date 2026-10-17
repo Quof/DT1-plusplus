@@ -55,16 +55,19 @@ if exitType=0
     writeToPlayerGlobals()
     if toRoom!=rWorldMap
     {
-      transition_steps=15
+      //transition_steps=15
+      transition_steps=15/gDeltaTime //60fps change: transition_steps counts frames: the same time
       transition_kind=5
       if variable_local_exists("newStep")
-        transition_steps=newStep
+        //transition_steps=newStep
+        transition_steps=(newStep)/gDeltaTime //60fps change: transition_steps counts frames: the same time
       if variable_local_exists("newTrans")
         transition_kind=newTrans
     }
     else
     {
-      transition_steps=30
+      //transition_steps=30
+      transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
       transition_kind=20
     }
     room_goto(toRoom)
@@ -102,19 +105,22 @@ else if exitType=1
   writeToPlayerGlobals()
   if toRoom!=rWorldMap
   {
-    transition_steps=15
+    //transition_steps=15
+    transition_steps=15/gDeltaTime //60fps change: transition_steps counts frames: the same time
     if x<64
       transition_kind=14
     else
       transition_kind=15
     if variable_local_exists("newStep")
-      transition_steps=newStep
+      //transition_steps=newStep
+      transition_steps=(newStep)/gDeltaTime //60fps change: transition_steps counts frames: the same time
     if variable_local_exists("newTrans")
       transition_kind=newTrans
   }
   else
   {
-    transition_steps=30
+    //transition_steps=30
+    transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
     transition_kind=20
   }
   room_goto(toRoom)
@@ -127,10 +133,13 @@ applies_to=self
 */
 if bShowArrow=true
 {
-  pointTime+=1
-  if pointTime=20
+  //pointTime+=1
+  pointTime+=gDeltaTime //60fps change: counts 30fps ticks
+  //if pointTime=20
+  if scrCountPass(pointTime,20) //60fps change: once, when the count reaches it
     arrowY+=1
-  else if pointTime=40
+  //else if pointTime=40
+  else if scrCountPass(pointTime,40) //60fps change: once, when the count reaches it
   {
     arrowY-=1
     pointTime=0
@@ -154,14 +163,19 @@ if sprite_index=sKirbyDoorway
       starY[i]=(y-12)+(i*12)
     init=1
   }
-  starTime+=1
-  if starTime=5
+  //starTime+=1
+  starTime+=gDeltaTime //60fps change: counts 30fps ticks
+  //if starTime=5
+  if scrCountPass(starTime,5) //60fps change: once, when the count reaches it
     starFrame=1
-  else if starTime=10
+  //else if starTime=10
+  else if scrCountPass(starTime,10) //60fps change: once, when the count reaches it
     starFrame=2
-  else if starTime=15
+  //else if starTime=15
+  else if scrCountPass(starTime,15) //60fps change: once, when the count reaches it
     starFrame=3
-  else if starTime=20
+  //else if starTime=20
+  else if scrCountPass(starTime,20) //60fps change: once, when the count reaches it
   {
     starFrame=0
     starTime=0
@@ -170,7 +184,8 @@ if sprite_index=sKirbyDoorway
   {
     draw_sprite(sKirbyDoorStarSmall,starFrame,x+20,starY[i])
     draw_sprite(sKirbyDoorStarSmall,starFrame,x-4,starY[i])
-    starY[i]+=2
+    //starY[i]+=2
+    starY[i]+=2*gDeltaTime //60fps change: per 30fps tick
     if starY[i]>=y+34
       starY[i]=y-12
   }

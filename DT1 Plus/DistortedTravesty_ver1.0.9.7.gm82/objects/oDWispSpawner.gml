@@ -32,9 +32,13 @@ if global.gamePaused=false
     {
       dWisp=instance_create(x,y,oDistortedWisp)
       dWisp.bActive=true
-      spawnDelay=reSpawnTime
+      //spawnDelay=reSpawnTime
+      //60fps change: counts down 30fps ticks; the frame that spawns counts as a whole tick, as at 30fps (it doesn't
+      //count down), so the count starts that much higher (reSpawnTime at 30fps)
+      spawnDelay=reSpawnTime+1-gDeltaTime
     }
     else
-      spawnDelay-=1
+      //spawnDelay-=1
+      spawnDelay-=gDeltaTime //60fps change: see above
   }
 }

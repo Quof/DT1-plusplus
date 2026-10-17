@@ -33,15 +33,19 @@ if global.gamePaused=false
     if text_Pos<string_length(text_Full)
     {
       draw_text_transformed(x,y,text_New,1,1,image_angle)
-      text_Pos+=1
-      text_New+=string_char_at(text_Full,text_Pos)
-      image_xscale=string_width(text_New)
-      image_yscale=string_height(text_New)
+      if gDeltaDoTicks //60fps change (added): one more letter per 30fps tick
+      {
+        text_Pos+=1
+        text_New+=string_char_at(text_Full,text_Pos)
+        image_xscale=string_width(text_New)
+        image_yscale=string_height(text_New)
+      }
     }
     else
     {
       draw_text_transformed(x,y,text_Full,1,1,image_angle)
-      decayTime-=1
+      //decayTime-=1
+      decayTime-=gDeltaTime //60fps change: counts 30fps ticks
       if decayTime<=0
         instance_destroy()
     }

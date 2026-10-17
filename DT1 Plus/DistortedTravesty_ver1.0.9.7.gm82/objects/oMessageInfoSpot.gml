@@ -14,9 +14,12 @@ applies_to=self
 */
 if fadingTime>0
 {
-  fadingTime-=1
-  if fadingTime<=20
-    image_alpha-=0.05
+  //fadingTime-=1
+  fadingTime-=gDeltaTime //60fps change: counts 30fps ticks
+  //if fadingTime<=20
+  if fadingTime<21 //60fps change: the same 30fps ticks (it counts down in gDeltaTime steps before this check, so a tick's first frames sit just above 20)
+    //image_alpha-=0.05
+    image_alpha-=0.05*gDeltaTime //60fps change: per 30fps tick
 }
 else
   instance_destroy()

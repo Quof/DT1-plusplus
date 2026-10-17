@@ -56,7 +56,8 @@ if global.gamePaused=false
       visible=true
       y-=384
     }
-    y+=8
+    //y+=8
+    y+=8*gDeltaTime //60fps change: per 30fps tick
     if y>=flyPicY
     {
       bCanDealDamage=true
@@ -68,7 +69,8 @@ if global.gamePaused=false
     if instance_exists(oCharacter)
     {
       dir=point_direction(x,y,oCharacter.x,oCharacter.y-22)
-      moveTo(runAcc*cos(degtorad(dir)),-runAcc*sin(degtorad(dir)))
+      //moveTo(runAcc*cos(degtorad(dir)),-runAcc*sin(degtorad(dir)))
+      moveTo(runAcc*cos(degtorad(dir))*gDeltaTime,-runAcc*sin(degtorad(dir))*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     }
   }
   enemyStepEvent()

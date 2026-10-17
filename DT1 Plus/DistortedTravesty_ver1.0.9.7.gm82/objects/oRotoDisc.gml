@@ -41,7 +41,8 @@ if init=0
 if global.gamePaused=false
 {
   makeEnemyActive()
-  dir+=swingSpeed
+  //dir+=swingSpeed
+  dir+=swingSpeed*gDeltaTime //60fps change: per 30fps tick
   x=sX+lengthdir_x(spinDist,dir)
   y=sY+lengthdir_y(spinDist,dir)
 }

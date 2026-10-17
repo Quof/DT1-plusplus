@@ -67,8 +67,10 @@ if global.gameProgress=36 //intro to Transylvania
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -111,7 +113,8 @@ if global.gameProgress=40 and room=rDarkDepths4 //Boss Fight (Distorted Torso)
   else if sceneProgress=1
   {
     if oPlayer1.y<304
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
       oPlayer1.sprite_index=sPlayerIdle
@@ -154,20 +157,28 @@ if global.gameProgress=40 and room=rDarkDepths4 //Boss Fight (Distorted Torso)
     msgCreate("He just used my word.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=16
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       npcInformant.sprite_index=sInformantEye
-    else if sceneDelay=8
+    //else if sceneDelay=8
+    else if scrCountPass(sceneDelay,8) //60fps change: once, when the count reaches it
       npcInformant.image_index=1
-    else if sceneDelay=15
+    //else if sceneDelay=15
+    else if scrCountPass(sceneDelay,15) //60fps change: once, when the count reaches it
       npcInformant.image_index=2
-    else if sceneDelay=22
+    //else if sceneDelay=22
+    else if scrCountPass(sceneDelay,22) //60fps change: once, when the count reaches it
       npcInformant.image_index=3
-    else if sceneDelay=29
+    //else if sceneDelay=29
+    else if scrCountPass(sceneDelay,29) //60fps change: once, when the count reaches it
       npcInformant.image_index=4
-    else if sceneDelay=36
+    //else if sceneDelay=36
+    else if scrCountPass(sceneDelay,36) //60fps change: once, when the count reaches it
       npcInformant.image_index=5
-    else if sceneDelay=43
+    //else if sceneDelay=43
+    else if scrCountPass(sceneDelay,43) //60fps change: once, when the count reaches it
       npcInformant.image_index=6
     else if sceneDelay>=55
     {
@@ -181,30 +192,39 @@ if global.gameProgress=40 and room=rDarkDepths4 //Boss Fight (Distorted Torso)
     msgCreate("Lending you some of their power.",1,oMessageCutscene,global.mainCharacters[4])
   else if sceneProgress=19
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>20 and instance_exists(npcTorso)
     {
-      effect_create_above(ef_smoke,(npcTorso.x-(npcTorso.sprite_width/2))+random(npcTorso.sprite_width),(npcTorso.y-(npcTorso.sprite_height))+random(npcTorso.sprite_height),0,c_black)
+      //effect_create_above(ef_smoke,(npcTorso.x-(npcTorso.sprite_width/2))+random(npcTorso.sprite_width),(npcTorso.y-(npcTorso.sprite_height))+random(npcTorso.sprite_height),0,c_black)
+      if gDeltaDoTicks effect_create_above(ef_smoke,(npcTorso.x-(npcTorso.sprite_width/2))+random(npcTorso.sprite_width),(npcTorso.y-(npcTorso.sprite_height))+random(npcTorso.sprite_height),0,c_black) //60fps change: once per 30fps tick
       if npcTorso.image_blend=c_white
         npcTorso.image_blend=c_red
       else
         npcTorso.image_blend=c_white
     }
-    if sceneDelay=20
+    //if sceneDelay=20
+    if scrCountPass(sceneDelay,20) //60fps change: once, when the count reaches it
       npcTorso.sprite_index=sDTorsoNAir
-    if sceneDelay>=40 and sceneDelay<=74
-      npcTorso.y-=2
-    if sceneDelay=100
+    //if sceneDelay>=40 and sceneDelay<=74
+    if sceneDelay>39 and sceneDelay<=74 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //npcTorso.y-=2
+      npcTorso.y-=2*gDeltaTime //60fps change: per 30fps tick
+    //if sceneDelay=100
+    if scrCountPass(sceneDelay,100) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_BreakOut,0,1)
       bossFinishFadeAlpha=1
       with npcTorso
         instance_destroy()
     }
-    if sceneDelay=101
+    //if sceneDelay=101
+    if scrCountPass(sceneDelay,101) //60fps change: once, when the count reaches it
       boss=instance_create(576,224,oDTorso)
-    if sceneDelay>=120 and bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+    //if sceneDelay>=120 and bossFinishFadeAlpha>0
+    if sceneDelay>119 and bossFinishFadeAlpha>0 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     if sceneDelay>=170
     {
       sceneDelay=0
@@ -221,9 +241,11 @@ if global.gameProgress=40 and room=rDarkDepths4 //Boss Fight (Distorted Torso)
   }
   else if sceneProgress=22
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if instance_exists(npcInformant)
-      npcInformant.image_yscale-=0.05
+      //npcInformant.image_yscale-=0.05
+      npcInformant.image_yscale-=0.05*gDeltaTime //60fps change: per 30fps tick
     if sceneDelay>=21
       with npcInformant
         instance_destroy()
@@ -245,8 +267,10 @@ if global.gameProgress=40 and room=rDarkDepths4 //Boss Fight (Distorted Torso)
     msgCreate("Actually yes, I swear I've seen him in our world...#Kinda creepy.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=28
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       barrier1=instance_create(304,192,oBossBarrier)
       barrier2=instance_create(304,240,oBossBarrier)
@@ -278,14 +302,17 @@ else if global.gameProgress=41 //boss fight ends (Distorted Torso)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       oPlayer1.x=408
@@ -302,13 +329,15 @@ else if global.gameProgress=41 //boss fight ends (Distorted Torso)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -348,8 +377,10 @@ if global.gameProgress=44 //fading room
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -379,8 +410,10 @@ if global.gameProgress=46 and room=rDilutedMansion3 //new techs
 {
   if sceneProgress=0 and !instance_exists(oNewTechPickup)
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()

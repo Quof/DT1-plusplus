@@ -96,13 +96,17 @@ if global.gamePaused=false
   if bActive=true and dieFade=0
   {
     //******************** movement ********************
-    moveTime+=1
+    //moveTime+=1
+    moveTime+=gDeltaTime //60fps change: counts 30fps ticks
     if x-(sprite_width/2)>xCenter+roomSpan-12 or x<xCenter+4
-      moveTime+=1
+      //moveTime+=1
+      moveTime+=gDeltaTime //60fps change: counts 30fps ticks
     if moveTime>=moveDelay
     {
-      moveCheck+=1
-      if moveCheck=1 //set
+      //moveCheck+=1
+      moveCheck+=gDeltaTime //60fps change: counts 30fps ticks
+      //if moveCheck=1 //set
+      if scrCountPass(moveCheck,1) //set //60fps change: once, when the count reaches it
       {
         moveSpeed=random_range(-0.75,0.75)
         //minimum speed
@@ -157,14 +161,18 @@ if global.gamePaused=false
         x=xCenter+roomSpan+11+(sprite_width/2)
       }
     }
-    x+=moveSpeed
+    //x+=moveSpeed
+    x+=moveSpeed*gDeltaTime //60fps change: per 30fps tick
     //******************** big bomb attack ********************
-    bigBombTime+=1
+    //bigBombTime+=1
+    bigBombTime+=gDeltaTime //60fps change: counts 30fps ticks
     if bigBombTime>=bigBombDelay and attackType!=2 and attackType!=3
     {
       attackType=1
-      attackTime+=1
-      if attackTime=20
+      //attackTime+=1
+      attackTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if attackTime=20
+      if scrCountPass(attackTime,20) //60fps change: once, when the count reaches it
       {
         playSound(global.snd_GASlaunch,0,1)
         effect=instance_create(x+61,y-76,oEffect)
@@ -184,12 +192,15 @@ if global.gamePaused=false
       }
     }
     //******************** spread bomb attack ********************
-    spreadBombTime+=1
+    //spreadBombTime+=1
+    spreadBombTime+=gDeltaTime //60fps change: counts 30fps ticks
     if spreadBombTime>=spreadBombDelay and attackType!=1 and attackType!=3
     {
       attackType=2
-      attackTime+=1
-      if attackTime=20
+      //attackTime+=1
+      attackTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if attackTime=20
+      if scrCountPass(attackTime,20) //60fps change: once, when the count reaches it
       {
         for(i=0;i<spreadBombAmount;i+=1)
         {
@@ -218,19 +229,23 @@ if global.gamePaused=false
       }
     }
     //******************** bullet storm attack ********************
-    bulletStormTime+=1
+    //bulletStormTime+=1
+    bulletStormTime+=gDeltaTime //60fps change: counts 30fps ticks
     if bulletStormTime>=bulletStormDelay and attackType!=1 and attackType!=2
     {
       attackType=3
-      attackTime+=1
-      if attackTime=1
+      //attackTime+=1
+      attackTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if attackTime=1
+      if scrCountPass(attackTime,1) //60fps change: once, when the count reaches it
       {
         if dropShot>=10
           shotStart=144
         else
           shotStart=240
       }
-      if attackTime mod 3=0 and attackTime<100
+      //if attackTime mod 3=0 and attackTime<100
+      if scrModPass(attackTime,3) and attackTime<100 //60fps change: once each time the count reaches a multiple of it
       {
         effect=instance_create(x-26,y-91,oEffect)
         effect.sprite_index=sGrenadeExplosion
@@ -239,7 +254,8 @@ if global.gamePaused=false
         newBullet=instance_create(x-26,y-91,oCannonBullet)
         newBullet.physicalPower=physicalPower
         newBullet.bulletSpeed=8
-        newBullet.direction=shotStart
+        //newBullet.direction=shotStart
+        newBullet._direction=shotStart //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.image_angle=shotStart
         if dropShot>=10
           shotStart+=6
@@ -279,8 +295,10 @@ if global.gamePaused=false
     }
 
     //tread anim
-    frameCount+=1
-    if frameCount mod 3=0
+    //frameCount+=1
+    frameCount+=gDeltaTime //60fps change: counts 30fps ticks
+    //if frameCount mod 3=0
+    if scrModPass(frameCount,3) //60fps change: once each time the count reaches a multiple of it
     {
       if moveSpeed>0
         treadFrame-=1

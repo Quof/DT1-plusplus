@@ -16,7 +16,8 @@ applies_to=self
 event_inherited()
 if global.gamePaused=false
 {
-  arcStop-=1
+  //arcStop-=1
+  arcStop-=gDeltaTime //60fps change: counts 30fps ticks
   if arcStop<=0
     bulletArc=0
 }

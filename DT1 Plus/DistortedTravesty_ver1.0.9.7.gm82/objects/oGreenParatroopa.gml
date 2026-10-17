@@ -58,12 +58,18 @@ if global.gamePaused=false
         xVel*=-1
       initDir=true
     }
-    yVel+=0.3
+    //yVel+=0.3
+    yVel=scrGravAcc(yVel,0.3,1) //60fps change: gravity per 30fps tick, following the 30fps arc (as in DT3 60FPS)
     if isCollisionBottom(1)
       yVel=-6
-    if isCollisionLeft(1)
+    //if isCollisionLeft(1)
+    //  xVel*=-1
+    //if isCollisionRight(1)
+    //  xVel*=-1
+    //60fps change: only turn around when moving into the wall (it can still touch it on the next frame above 30fps)
+    if isCollisionLeftEdit(1)
       xVel*=-1
-    if isCollisionRight(1)
+    if isCollisionRightEdit(1)
       xVel*=-1
 
     if xVel>runAcc
@@ -74,7 +80,8 @@ if global.gamePaused=false
       image_xscale=1
     else
       image_xscale=-1
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     if isCollisionSolid()
       y-=2
     if y>room_height+24

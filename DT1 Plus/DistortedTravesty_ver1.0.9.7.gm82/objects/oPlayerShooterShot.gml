@@ -16,7 +16,8 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  y-=bulletSpeed
+  //y-=bulletSpeed
+  y-=bulletSpeed*gDeltaTime //60fps change: per 30fps tick
   if y<-32
     instance_destroy()
 }

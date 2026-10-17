@@ -43,22 +43,28 @@ if global.gamePaused=false
 {
   if bCanDealDamage=true
   {
-    effectDelay-=1
+    //effectDelay-=1
+    effectDelay-=gDeltaTime //60fps change: counts 30fps ticks
     if effectDelay<=0
     {
       effect_create_above(ef_firework,x,y,0,make_color_rgb(155+random(100),155+random(100),155+random(100)))
       effectDelay=7
     }
-    image_blend=make_color_rgb(155+random(100),155+random(100),155+random(100))
+    if gDeltaDoTicks //60fps change (added): a new colour once per 30fps tick
+      image_blend=make_color_rgb(155+random(100),155+random(100),155+random(100))
     if decayTime<5000
-      decayTime+=1
-    if decayTime>=idleTime
+      //decayTime+=1
+      decayTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if decayTime>=idleTime
+    if ceil(decayTime)>=idleTime //60fps change: the 30fps tick this frame is part of (the same at 30fps)
       instance_destroy()
   }
   else
   {
-    warnTime-=1
-    if warnTime=0
+    //warnTime-=1
+    warnTime-=gDeltaTime //60fps change: counts 30fps ticks
+    //if warnTime=0
+    if scrCountPassDown(warnTime,0) //60fps change: once, when the count reaches 0
     {
       if bShake=1
       {
@@ -80,8 +86,10 @@ event_inherited()
 if warnTime>0
 {
   draw_sprite_ext(sWarningSymbol,-1,x,warnToPlayer,0.6,0.6,0,c_white,warnAlpha)
-  alphaChange+=1
-  if alphaChange=8
+  //alphaChange+=1
+  alphaChange+=gDeltaTime //60fps change: counts 30fps ticks
+  //if alphaChange=8
+  if alphaChange>=8 //60fps change: counts 30fps ticks; >= so it still flips if the frame rate changes mid-count
   {
     if warnAlpha=1
       warnAlpha=0

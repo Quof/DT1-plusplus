@@ -64,7 +64,8 @@ if global.gamePaused=false
         image_xscale=1
       init=1
     }
-    x+=flySpeed
+    //x+=flySpeed
+    x+=flySpeed*gDeltaTime //60fps change: per 30fps tick
     if bHasEgg=true
     {
       xDist=point_distance(x,0,oPlayer1.x,0)

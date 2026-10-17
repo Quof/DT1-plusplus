@@ -109,14 +109,18 @@ if global.gamePaused=false
     if instance_exists(oCharacter)
     {
       moveDir=point_direction(x,y,oCharacter.x,oCharacter.y-22)
-      moveTo(runAcc*cos(degtorad(moveDir)),-runAcc*sin(degtorad(moveDir)))
+      //moveTo(runAcc*cos(degtorad(moveDir)),-runAcc*sin(degtorad(moveDir)))
+      moveTo(runAcc*cos(degtorad(moveDir))*gDeltaTime,-runAcc*sin(degtorad(moveDir))*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     }
-    image_angle-=3
+    //image_angle-=3
+    image_angle-=3*gDeltaTime //60fps change: per 30fps tick
 
-    shotTime+=1
+    //shotTime+=1
+    shotTime+=gDeltaTime //60fps change: counts 30fps ticks
     if shotTime>=shotWait
     {
-      if shotTime=shotWait
+      //if shotTime=shotWait
+      if scrCountPass(shotTime,shotWait) //60fps change: once, when the count reaches it
       {
         afterImage=instance_create(x,y,oEnemyAfterImage)
         afterImage.image_alpha=1
@@ -126,7 +130,8 @@ if global.gamePaused=false
         afterImage.xScalingSet=0.1
         afterImage.yScalingSet=0.1
       }
-      else if shotTime=shotWait+20
+      //else if shotTime=shotWait+20
+      else if shotTime>=shotWait+20 //60fps change: >= so it still resets if the frame rate changes mid-count
       {
         var dir;
         dir=image_angle
@@ -152,7 +157,8 @@ if global.gamePaused=false
           newBullet.elementType=elementType
           newBullet.bDestroyOnOutside=1
           newBullet.bulletSpeed=3
-          newBullet.direction=dir
+          //newBullet.direction=dir
+          newBullet._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newBullet.arcTime=30
           newBullet.bulletArc=3
           newBullet.image_blend=baseColor

@@ -20,8 +20,10 @@ if init=0
   oPlayer1.awesomePoints+=awesomeValue
   init=1
 }
-awesomeYoffset-=0.2
-awesomeAlpha-=0.03
+//awesomeYoffset-=0.2
+awesomeYoffset-=0.2*gDeltaTime //60fps change: per 30fps tick
+//awesomeAlpha-=0.03
+awesomeAlpha-=0.03*gDeltaTime //60fps change: per 30fps tick
 
 draw_set_font(fnt_Exp)
 draw_set_halign(fa_center)

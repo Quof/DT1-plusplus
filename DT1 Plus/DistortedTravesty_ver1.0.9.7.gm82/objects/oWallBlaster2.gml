@@ -76,11 +76,16 @@ if global.gamePaused=false
       newAttack=instance_create(x+dirOffset,y,oMMeShot1)
       newAttack.physicalPower=physicalPower
       newAttack.bulletSpeed=7
-      newAttack.direction=gunAngle
-      shootTime=0
+      //newAttack.direction=gunAngle
+      newAttack._direction=gunAngle //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
+      //shootTime=0
+      //60fps change: counts 30fps ticks; the frame that shoots counts as a whole tick, as at 30fps (it doesn't count
+      //up), so the count starts that far back (0 at 30fps)
+      shootTime=gDeltaTime-1
     }
     else
-      shootTime+=1
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: see above
   }
   enemyStepEvent()
 }

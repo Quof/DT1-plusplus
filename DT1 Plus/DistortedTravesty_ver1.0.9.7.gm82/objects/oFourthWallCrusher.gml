@@ -98,14 +98,23 @@ if global.gamePaused=false
   }
   if bActive=true and dieFade=0
   {
-    bossFrame+=1
-    if bossFrame>=1 and bossFrame<=8
+    //bossFrame+=1
+    //if bossFrame>=1 and bossFrame<=8
+    //  image_index=0
+    //else if bossFrame>=9 and bossFrame<=16
+    //  image_index=1
+    //else if bossFrame>=17 and bossFrame<=24
+    //  image_index=2
+    //else if bossFrame>=25
+    //60fps change: counts 30fps ticks (the same ticks: >a-1 is >=a in whole ticks)
+    bossFrame+=gDeltaTime
+    if bossFrame>0 and bossFrame<=8
       image_index=0
-    else if bossFrame>=9 and bossFrame<=16
+    else if bossFrame>8 and bossFrame<=16
       image_index=1
-    else if bossFrame>=17 and bossFrame<=24
+    else if bossFrame>16 and bossFrame<=24
       image_index=2
-    else if bossFrame>=25
+    else if bossFrame>24
     {
       image_index=1
       if bossFrame>=32
@@ -113,9 +122,11 @@ if global.gamePaused=false
     }
     //---------- Normal Attack: Spiral Hell ----------
     if specialAttack!=2 and specialAttack!=5
-      spiralHellTime+=1
+      //spiralHellTime+=1
+      spiralHellTime+=gDeltaTime //60fps change: counts 30fps ticks
 
-    if spiralHellTime=spiralHellWait
+    //if spiralHellTime=spiralHellWait
+    if scrCountPass(spiralHellTime,spiralHellWait) and ((specialAttack!=2 and specialAttack!=5) or gDeltaDoTicks) //60fps change: once, when the count reaches it (in the spike wheel it's held there, and this made one every 30fps tick)
     {
       afterImage=instance_create(x,y,oEnemyAfterImage)
       afterImage.image_alpha=0.4
@@ -137,7 +148,8 @@ if global.gamePaused=false
         newBullet.spiritPower=spiritPower
         newBullet.bDestroyOnOutside=0
         newBullet.bulletSpeed=5
-        newBullet.direction=dir
+        //newBullet.direction=dir
+        newBullet._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.arcTime=15+(i*2)
         newBullet.bulletArc=5
 
@@ -150,7 +162,8 @@ if global.gamePaused=false
           newBullet.spiritPower=spiritPower
           newBullet.bDestroyOnOutside=0
           newBullet.bulletSpeed=5
-          newBullet.direction=dir+180
+          //newBullet.direction=dir+180
+          newBullet._direction=dir+180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newBullet.arcTime=15+(i*2)
           newBullet.bulletArc=-5
         }
@@ -166,7 +179,8 @@ if global.gamePaused=false
     }
     //---------- Normal Attack: Screen Attack ----------
     if specialAttack!=2 and specialAttack!=5
-      screenAtkTime+=1
+      //screenAtkTime+=1
+      screenAtkTime+=gDeltaTime //60fps change: counts 30fps ticks
     if screenAtkTime>=screenAtkWait
     {
       var pDir1,pDir2,ySpawn;
@@ -177,12 +191,14 @@ if global.gamePaused=false
       scrAtkR=instance_create(xCenter+512,ySpawn,oScreenAttack)
       scrAtkR.damageType="SPIRIT"
       scrAtkR.spiritPower=spiritPower
-      scrAtkR.direction=pDir1
+      //scrAtkR.direction=pDir1
+      scrAtkR._direction=pDir1 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       scrAtkR.image_angle=pDir1
       scrAtkL=instance_create(xCenter-512,ySpawn,oScreenAttack)
       scrAtkL.damageType="SPIRIT"
       scrAtkL.spiritPower=spiritPower
-      scrAtkL.direction=pDir2
+      //scrAtkL.direction=pDir2
+      scrAtkL._direction=pDir2 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       scrAtkL.image_angle=pDir2
       screenAtkTime=0
     }
@@ -190,7 +206,8 @@ if global.gamePaused=false
     if specialAttack=2 or specialAttack=5
     {
       spiralHellTime=spiralHellWait
-      bigSpikeTime+=1
+      //bigSpikeTime+=1
+      bigSpikeTime+=gDeltaTime //60fps change: counts 30fps ticks
       if bigSpikeTime>=bigSpikeWait
       {
         bigSpikeAtk=instance_create(x,y,oFWSpikeCircle)

@@ -74,7 +74,8 @@ if global.gamePaused=false
   if bActive=true and dieFade=0
   {
     //hand slam attack
-    slamTime+=1
+    //slamTime+=1
+    slamTime+=gDeltaTime //60fps change: counts 30fps ticks
     if slamDelay=0
     {
       if slamTime>=slamWait
@@ -82,14 +83,17 @@ if global.gamePaused=false
     }
     if slamTime>=slamDelay and slamDelay!=0
     {
-      if slamTime=slamDelay+1
+      //if slamTime=slamDelay+1
+      if scrCountPass(slamTime,slamDelay+1) //60fps change: once, when the count reaches it
       {
         image_speed=0.83
         sprite_index=sShroudLArmFist
       }
-      else if slamTime=slamDelay+30
+      //else if slamTime=slamDelay+30
+      else if scrCountPass(slamTime,slamDelay+30) //60fps change: once, when the count reaches it
         sprite_index=sShroudLArmUp
-      else if slamTime=slamDelay+40
+      //else if slamTime=slamDelay+40
+      else if scrCountPass(slamTime,slamDelay+40) //60fps change: once, when the count reaches it
       {
         bCanDealDamage=true
         image_speed=0.1
@@ -105,18 +109,22 @@ if global.gamePaused=false
         else
           xVel=xDist
       }
-      else if slamTime>=slamDelay+60 and slamTime<=slamDelay+79
+      //else if slamTime>=slamDelay+60 and slamTime<=slamDelay+79
+      else if slamTime>slamDelay+59 and slamTime<=slamDelay+79 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
       {
         if effectDelay<=0
         {
           effect_create_above(ef_smoke,x,y,1,c_black)
           effect_create_above(ef_smokeup,x,y,1,c_black)
-          effectDelay=3
+          //effectDelay=3
+          effectDelay=4-gDeltaTime //60fps change: counts down 30fps ticks; the frame that makes the smoke counts as a whole tick, as at 30fps (it doesn't count down), so the count starts that much lower (3 at 30fps)
         }
         else
-          effectDelay-=1
+          //effectDelay-=1
+          effectDelay-=gDeltaTime //60fps change: counts 30fps ticks
       }
-      else if slamTime=slamDelay+80
+      //else if slamTime=slamDelay+80
+      else if slamTime>=slamDelay+80 //60fps change: >= so it still resets if the frame rate changes mid-count
       {
         var handOffset;
         if type=1
@@ -146,7 +154,8 @@ if global.gamePaused=false
         xVel=0
       if isCollisionRight(1)
         xVel=0
-      moveTo(xVel,yVel)
+      //moveTo(xVel,yVel)
+      moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     }
 
     //scale difficulty

@@ -13,10 +13,13 @@ lib_id=1
 action_id=603
 applies_to=self
 */
+if gDeltaDoTicks //60fps change (added): the blink once per 30fps tick
+{ //60fps change (added)
 if image_alpha=0.75
   image_alpha=0.25
 else
   image_alpha=0.75
+} //60fps change (added)
 
 //set in the instance creation code
 switchCount=swAmount

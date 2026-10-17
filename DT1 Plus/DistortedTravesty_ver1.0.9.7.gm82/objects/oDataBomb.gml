@@ -32,13 +32,15 @@ if global.gamePaused=false
   //bomb time
   if bShrink=0
   {
-    bombSize+=4
+    //bombSize+=4
+    bombSize+=4*gDeltaTime //60fps change: per 30fps tick
     if bombSize>=36
       bShrink=1
   }
   else
   {
-    bombSize-=4
+    //bombSize-=4
+    bombSize-=4*gDeltaTime //60fps change: per 30fps tick
     if bombSize<=4
       instance_destroy()
   }

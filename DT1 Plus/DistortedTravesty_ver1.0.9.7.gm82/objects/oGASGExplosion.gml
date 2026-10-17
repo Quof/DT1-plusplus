@@ -26,7 +26,8 @@ if init=0
 }
 if variable_local_exists("decayTime")
 {
-  decayTime-=1
+  //decayTime-=1
+  decayTime-=gDeltaTime //60fps change: counts 30fps ticks
   if decayTime<=0
     instance_destroy()
 }

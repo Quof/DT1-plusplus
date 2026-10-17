@@ -49,7 +49,8 @@ if global.gamePaused=false
     playSound(global.snd_CASdie,0,1)
     instance_destroy()
   }
-  moveTo(throwSpeed*cos(degtorad(dir)),-throwSpeed*sin(degtorad(dir)))
+  //moveTo(throwSpeed*cos(degtorad(dir)),-throwSpeed*sin(degtorad(dir)))
+  moveTo(throwSpeed*cos(degtorad(dir))*gDeltaTime,-throwSpeed*sin(degtorad(dir))*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 }
 #define Other_0
 /*"/*'/**//* YYD ACTION

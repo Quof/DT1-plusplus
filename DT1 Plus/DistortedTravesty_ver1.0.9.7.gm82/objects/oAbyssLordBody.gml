@@ -59,11 +59,13 @@ if global.gamePaused=false
   {
     if oAbyssLord.laserTime<oAbyssLord.laserDelay
     {
-      oAbyssLord.laserTime+=0.25
+      //oAbyssLord.laserTime+=0.25
+      oAbyssLord.laserTime+=0.25*gDeltaTime //60fps change: per 30fps tick
       if oAbyssLord.laserTime>oAbyssLord.laserDelay
         oAbyssLord.laserTime=oAbyssLord.laserDelay
     }
-    lHandRecoveryTime+=1
+    //lHandRecoveryTime+=1
+    lHandRecoveryTime+=gDeltaTime //60fps change: counts 30fps ticks
     if lHandRecoveryTime>=lHandRecoveryDelay
     {
       effect_create_above(ef_smoke,x+128,y+8,2,c_black)
@@ -77,11 +79,13 @@ if global.gamePaused=false
   {
     if oAbyssLord.fireballTime<oAbyssLord.fireballDelay
     {
-      oAbyssLord.fireballTime+=0.25
+      //oAbyssLord.fireballTime+=0.25
+      oAbyssLord.fireballTime+=0.25*gDeltaTime //60fps change: per 30fps tick
       if oAbyssLord.fireballTime>oAbyssLord.fireballDelay
         oAbyssLord.fireballTime=oAbyssLord.fireballDelay
     }
-    rHandRecoveryTime+=1
+    //rHandRecoveryTime+=1
+    rHandRecoveryTime+=gDeltaTime //60fps change: counts 30fps ticks
     if rHandRecoveryTime>=rHandRecoveryDelay
     {
       effect_create_above(ef_smoke,x-128,y+8,2,c_black)

@@ -11,7 +11,8 @@ lib_id=1
 action_id=603
 applies_to=self
 */
-if type=3 //Samus after image
+//if type=3 //Samus after image
+if type=3 and gDeltaDoTicks //Samus after image //60fps change: one per 30fps tick
 {
   afterImage=instance_create(x,y,oEnemyAfterImage)
   afterImage.sprite_index=sprite_index

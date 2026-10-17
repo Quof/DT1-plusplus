@@ -50,8 +50,10 @@ if global.gameProgress=222 //intro to Veiled Detritus
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -106,11 +108,14 @@ else if global.gameProgress=223 //NPC Fight (Link? & Samus?)
   else if sceneProgress=1
   {
     if oPlayer1.y<320
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=20
       {
@@ -124,14 +129,17 @@ else if global.gameProgress=223 //NPC Fight (Link? & Samus?)
   else if sceneProgress=2
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.1
+      //bossFinishFadeAlpha-=0.1
+      bossFinishFadeAlpha-=0.1*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_CASdie,0,1)
       instance_create(0,0,oViewShaker)
@@ -140,7 +148,8 @@ else if global.gameProgress=223 //NPC Fight (Link? & Samus?)
       effect.image_xscale=1.5
       effect.image_yscale=1.5
     }
-    else if sceneDelay=9
+    //else if sceneDelay=9
+    else if scrCountPass(sceneDelay,9) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_CASdie,0,1)
       effect=instance_create(608,288,oEffect)
@@ -148,7 +157,8 @@ else if global.gameProgress=223 //NPC Fight (Link? & Samus?)
       effect.image_xscale=1.4
       effect.image_yscale=1.4
     }
-    else if sceneDelay=17
+    //else if sceneDelay=17
+    else if scrCountPass(sceneDelay,17) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_BreakOut,0,1)
       instance_create(0,0,oViewShaker)
@@ -157,7 +167,8 @@ else if global.gameProgress=223 //NPC Fight (Link? & Samus?)
       effect.image_xscale=1.5
       effect.image_yscale=1.5
     }
-    else if sceneDelay=28
+    //else if sceneDelay=28
+    else if scrCountPass(sceneDelay,28) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_CASdie,0,1)
       effect=instance_create(624,224,oEffect)
@@ -165,7 +176,8 @@ else if global.gameProgress=223 //NPC Fight (Link? & Samus?)
       effect.image_xscale=2
       effect.image_yscale=2
     }
-    else if sceneDelay=39
+    //else if sceneDelay=39
+    else if scrCountPass(sceneDelay,39) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_Shock,0,1)
       effect=instance_create(640,288,oEffect)
@@ -173,7 +185,8 @@ else if global.gameProgress=223 //NPC Fight (Link? & Samus?)
       effect.image_xscale=2
       effect.image_yscale=2
     }
-    else if sceneDelay=48
+    //else if sceneDelay=48
+    else if scrCountPass(sceneDelay,48) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_Shock,0,1)
       instance_create(0,0,oViewShaker)
@@ -190,10 +203,12 @@ else if global.gameProgress=223 //NPC Fight (Link? & Samus?)
   }
   else if sceneProgress=4
   {
-    circleSize+=4
+    //circleSize+=4
+    circleSize+=4*gDeltaTime //60fps change: per 30fps tick
     if circleSize>=208
     {
-      circleAlpha-=0.02
+      //circleAlpha-=0.02
+      circleAlpha-=0.02*gDeltaTime //60fps change: per 30fps tick
       if circleAlpha<=0
         sceneProgress+=1
     }
@@ -204,7 +219,8 @@ else if global.gameProgress=223 //NPC Fight (Link? & Samus?)
   {
     oPlayer1.sprite_index=sPlayerWalk
     oPlayer1.image_speed=0.5
-    oPlayer1.x+=7
+    //oPlayer1.x+=7
+    oPlayer1.x+=7*gDeltaTime //60fps change: per 30fps tick
     if oPlayer1.x>=560
     {
       oPlayer1.sprite_index=sPlayerIdle
@@ -214,15 +230,20 @@ else if global.gameProgress=223 //NPC Fight (Link? & Samus?)
   }
   else if sceneProgress=7
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
     {
       x=oPlayer1.x
       view_object[0]=noone
     }
-    else if sceneDelay>=31 and sceneDelay<=90
-      view_xview[0]+=2
-    else if sceneDelay=110
+    //else if sceneDelay>=31 and sceneDelay<=90
+    else if sceneDelay>30 and sceneDelay<=90 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //view_xview[0]+=2
+      view_xview[0]+=2*gDeltaTime //60fps change: per 30fps tick
+    //else if sceneDelay=110
+    else if scrCountPass(sceneDelay,110) //60fps change: once, when the count reaches it
     {
       circleSize=0
       sceneDelay=0
@@ -235,16 +256,23 @@ else if global.gameProgress=223 //NPC Fight (Link? & Samus?)
     msgCreate("I think Samus, but I can't tell for sure.",1,oMessageCutscene,global.mainCharacters[1])
   else if sceneProgress=10
   {
-    sceneDelay+=1
-    if sceneDelay>=11 and sceneDelay<=26
-      circleSize+=0.5
-    else if sceneDelay=69
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=11 and sceneDelay<=26
+    if sceneDelay>10 and sceneDelay<=26 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //circleSize+=0.5
+      circleSize+=0.5*gDeltaTime //60fps change: per 30fps tick
+    //else if sceneDelay=69
+    else if scrCountPass(sceneDelay,69) //60fps change: once, when the count reaches it
       circleAlpha=0.5
-    else if sceneDelay>=70
+    //else if sceneDelay>=70
+    else if sceneDelay>69 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if circleAlpha<1
-        circleAlpha+=0.01
-      circleSize+=4
+        //circleAlpha+=0.01
+        circleAlpha+=0.01*gDeltaTime //60fps change: per 30fps tick
+      //circleSize+=4
+      circleSize+=4*gDeltaTime //60fps change: per 30fps tick
       if circleSize>=600
       {
         with oMisc
@@ -256,7 +284,8 @@ else if global.gameProgress=223 //NPC Fight (Link? & Samus?)
       }
     }
 
-    if sceneDelay<=68 and sceneDelay mod 2=0
+    //if sceneDelay<=68 and sceneDelay mod 2=0
+    if sceneDelay<=68 and scrModPass(sceneDelay,2) //60fps change: once each time the count reaches a multiple of it
     {
       if circleAlpha=1
         circleAlpha=0.75
@@ -266,16 +295,20 @@ else if global.gameProgress=223 //NPC Fight (Link? & Samus?)
   }
   else if sceneProgress=11
   {
-    circleAlpha-=0.02
+    //circleAlpha-=0.02
+    circleAlpha-=0.02*gDeltaTime //60fps change: per 30fps tick
     if circleAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=12
   {
-    sceneDelay+=1
-    if sceneDelay=20
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=20
+    if scrCountPass(sceneDelay,20) //60fps change: once, when the count reaches it
       oPlayer1.sprite_index=sPlayerIdle
-    else if sceneDelay=40
+    //else if sceneDelay=40
+    else if scrCountPass(sceneDelay,40) //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1
@@ -298,8 +331,10 @@ else if global.gameProgress=225 //map explaination
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -327,8 +362,10 @@ if global.gameProgress=232 //Veiled Detritus under temple
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -367,7 +404,8 @@ else if room=rVDlock5_1 and global.gameProgress=233 //enemy trap event
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -376,8 +414,10 @@ else if room=rVDlock5_1 and global.gameProgress=233 //enemy trap event
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay mod 5=0
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay mod 5=0
+    if scrModPass(sceneDelay,5) //60fps change: once each time the count reaches a multiple of it
     {
       newEnemy=instance_create(4432,80,oZRatHead) //12
       newEnemy.bActive=true
@@ -392,8 +432,10 @@ else if room=rVDlock5_1 and global.gameProgress=233 //enemy trap event
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
-    if sceneDelay mod 5=0
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay mod 5=0
+    if scrModPass(sceneDelay,5) //60fps change: once each time the count reaches a multiple of it
     {
       newEnemy=instance_create(4144,80,oZRatHead) //24
       newEnemy.bActive=true
@@ -408,8 +450,10 @@ else if room=rVDlock5_1 and global.gameProgress=233 //enemy trap event
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
-    if sceneDelay mod 6=0
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay mod 6=0
+    if scrModPass(sceneDelay,6) //60fps change: once each time the count reaches a multiple of it
     {
       newEnemy=instance_create(4432,80,oZRatHead)
       newEnemy.bActive=true
@@ -461,7 +505,8 @@ else if room=rVDlock5_2 and global.gameProgress=235 //enemy trap event
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -470,8 +515,10 @@ else if room=rVDlock5_2 and global.gameProgress=235 //enemy trap event
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay mod 3=0
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay mod 3=0
+    if scrModPass(sceneDelay,3) //60fps change: once each time the count reaches a multiple of it
     {
       newEnemy=instance_create(xSpawn,48,oZRatHead) //39
       newEnemy.bActive=true
@@ -511,11 +558,14 @@ else if global.gameProgress=237 and room=rVDlock5_3 //Boss Fight (Arrghus)
   else if sceneProgress=1
   {
     if oPlayer1.y<320
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=20
       {
@@ -528,27 +578,36 @@ else if global.gameProgress=237 and room=rVDlock5_3 //Boss Fight (Arrghus)
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       oPlayer1.sprite_index=sPlayerLookUp
       rockDist=256
       rockDir=0
     }
-    else if sceneDelay>=31 and sceneDelay<=154
+    //else if sceneDelay>=31 and sceneDelay<=154
+    else if sceneDelay>30 and sceneDelay<=154 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if oVDbossBlocks.leftBlock.x<448
-        oVDbossBlocks.leftBlock.x+=2
+        //oVDbossBlocks.leftBlock.x+=2
+        oVDbossBlocks.leftBlock.x+=2*gDeltaTime //60fps change: per 30fps tick
       if oVDbossBlocks.rightBlock.x>544
-        oVDbossBlocks.rightBlock.x-=2
+        //oVDbossBlocks.rightBlock.x-=2
+        oVDbossBlocks.rightBlock.x-=2*gDeltaTime //60fps change: per 30fps tick
       if oVDbossBlocks.topBlock.y<0
-        oVDbossBlocks.topBlock.y+=1
+        //oVDbossBlocks.topBlock.y+=1
+        oVDbossBlocks.topBlock.y+=gDeltaTime //60fps change: per 30fps tick
       if oVDbossBlocks.bottomShortLeft.y>288
-        oVDbossBlocks.bottomShortLeft.y-=0.5
+        //oVDbossBlocks.bottomShortLeft.y-=0.5
+        oVDbossBlocks.bottomShortLeft.y-=0.5*gDeltaTime //60fps change: per 30fps tick
       if oVDbossBlocks.bottomShortRight.y>288
-        oVDbossBlocks.bottomShortRight.y-=0.5
+        //oVDbossBlocks.bottomShortRight.y-=0.5
+        oVDbossBlocks.bottomShortRight.y-=0.5*gDeltaTime //60fps change: per 30fps tick
     }
-    else if sceneDelay=180
+    //else if sceneDelay=180
+    else if scrCountPass(sceneDelay,180) //60fps change: once, when the count reaches it
     {
       for(i=0;i<8;i+=1)
       {
@@ -557,15 +616,18 @@ else if global.gameProgress=237 and room=rVDlock5_3 //Boss Fight (Arrghus)
         rockFormation[i].type=1
       }
     }
-    else if sceneDelay>=181 and sceneDelay<=244
+    //else if sceneDelay>=181 and sceneDelay<=244
+    else if sceneDelay>180 and sceneDelay<=244 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       for(i=0;i<8;i+=1)
       {
         rockFormation[i].x=boss.x+lengthdir_x(rockDist,rockDir+(i*45))
         rockFormation[i].y=boss.y+lengthdir_y(rockDist,rockDir+(i*45))
       }
-      rockDir-=5
-      rockDist-=4
+      //rockDir-=5
+      rockDir-=5*gDeltaTime //60fps change: per 30fps tick
+      //rockDist-=4
+      rockDist-=4*gDeltaTime //60fps change: per 30fps tick
     }
     else if sceneDelay>=245
     {
@@ -584,8 +646,10 @@ else if global.gameProgress=237 and room=rVDlock5_3 //Boss Fight (Arrghus)
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
-    if sceneDelay=45
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=45
+    if scrCountPass(sceneDelay,45) //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1
@@ -625,8 +689,10 @@ else if global.gameProgress=237 and room=rVDlock5_3 //Boss Fight (Arrghus)
     msgCreate("You are such an ass.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=20
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       newBarrier=instance_create(240,256,oBossBarrier)
       oPlayer1.raveTime=0
@@ -648,7 +714,8 @@ else if global.gameProgress=238 or room=rBR_Arrghus //boss fight ends (Arrghus)
   if sceneProgress=0
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.1
+      //bossFinishFadeAlpha-=0.1
+      bossFinishFadeAlpha-=0.1*gDeltaTime //60fps change: per 30fps tick
   }
 
   if sceneProgress=0 and enemyCount=0
@@ -662,14 +729,17 @@ else if global.gameProgress=238 or room=rBR_Arrghus //boss fight ends (Arrghus)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       with oMisc
@@ -688,13 +758,15 @@ else if global.gameProgress=238 or room=rBR_Arrghus //boss fight ends (Arrghus)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -733,8 +805,10 @@ if global.gameProgress=240 //First encounter with The Artist
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -764,10 +838,13 @@ if global.gameProgress=240 //First encounter with The Artist
     msgCreate("...",1,oMessageCutscene,"Mysterious Voice")
   else if sceneProgress=9
   {
-    sceneDelay+=1
-    if sceneDelay>=25
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=25
+    if sceneDelay>24 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      artistBlend+=2.5
+      //artistBlend+=2.5
+      artistBlend+=2.5*gDeltaTime //60fps change: per 30fps tick
       npcTheArtist.image_blend=make_color_rgb(artistBlend,artistBlend,artistBlend)
       if artistBlend>=255
       {
@@ -794,8 +871,10 @@ if global.gameProgress=240 //First encounter with The Artist
     msgCreate("Yes, I am...",1,oMessageCutscene,"Dr. Light?")
   else if sceneProgress=18
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       var tempMplay;
       tempMplay=global.msc_DireMoment
@@ -895,8 +974,10 @@ if global.gameProgress=240 //First encounter with The Artist
     msgCreate("Perceptive, and before you ask, I do intend to give it to you.#It would be too risky for me to attempt to shut it down myself.",1,oMessageCutscene,"The Artist")
   else if sceneProgress=62
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       bossFinishFadeAlpha=1
       oPlayer1.sprite_index=sPlayerLookUp
@@ -904,8 +985,10 @@ if global.gameProgress=240 //First encounter with The Artist
       muffin.muffinType=4
       playSound(global.snd_BreakOut,0,1)
     }
-    else if sceneDelay>=9 and sceneDelay<=109
-      bossFinishFadeAlpha-=0.01
+    //else if sceneDelay>=9 and sceneDelay<=109
+    else if sceneDelay>8 and sceneDelay<=109 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //bossFinishFadeAlpha-=0.01
+      bossFinishFadeAlpha-=0.01*gDeltaTime //60fps change: per 30fps tick
     else if sceneDelay>=120
     {
       sceneDelay=0
@@ -924,7 +1007,8 @@ if global.gameProgress=240 //First encounter with The Artist
   }
   else if sceneProgress=66
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -977,7 +1061,8 @@ if global.gameProgress=240 //First encounter with The Artist
     msgCreate("Alright, then let's get you two out of this place.",1,oMessageCutscene,global.mainCharacters[1])
   else if sceneProgress=89
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       stopAllMusic()
@@ -991,14 +1076,16 @@ if global.gameProgress=240 //First encounter with The Artist
   else if sceneProgress=90
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.1
+      //bossFinishFadeAlpha-=0.1
+      bossFinishFadeAlpha-=0.1*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=91
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.02
+      //bossFinishFadeAlpha+=0.02
+      bossFinishFadeAlpha+=0.02*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
@@ -1012,7 +1099,8 @@ if global.gameProgress=240 //First encounter with The Artist
   if sceneProgress>=18
   {
     if image_alpha>0
-      image_alpha-=0.0001
+      //image_alpha-=0.0001
+      image_alpha-=0.0001*gDeltaTime //60fps change: per 30fps tick
   }
 }
 

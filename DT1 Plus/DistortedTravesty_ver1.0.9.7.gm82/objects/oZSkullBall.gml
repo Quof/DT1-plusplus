@@ -80,33 +80,41 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true and stunnedTime=0 and dieFade=0
   {
-    if isCollisionBottom(1)
+    //if isCollisionBottom(1)
+    if isCollisionBottom(1) and (gDeltaTime==1 or yVel>0) //60fps change: above 30fps, only bounce off what it's moving into (it can still be touching it on the next frame)
       yVel*=-1
-    if isCollisionLeft(1)
+    //if isCollisionLeft(1)
+    if isCollisionLeft(1) and (gDeltaTime==1 or xVel<0) //60fps change: see above
       xVel*=-1
-    if isCollisionRight(1)
+    //if isCollisionRight(1)
+    if isCollisionRight(1) and (gDeltaTime==1 or xVel>0) //60fps change: see above
       xVel*=-1
-    if isCollisionTop(1)
+    //if isCollisionTop(1)
+    if isCollisionTop(1) and (gDeltaTime==1 or yVel<0) //60fps change: see above
       yVel*=-1
 
     //keep inside room
     bBounced=0
-    if y<0
+    //if y<0
+    if y<0 and (gDeltaTime==1 or yVel<0) //60fps change: above 30fps, only turn back when moving out (it can still be outside on the next frame)
     {
       yVel*=-1
       bBounced=1
     }
-    if y>room_height
+    //if y>room_height
+    if y>room_height and (gDeltaTime==1 or yVel>0) //60fps change: see above
     {
       yVel*=-1
       bBounced=1
     }
-    if x<0
+    //if x<0
+    if x<0 and (gDeltaTime==1 or xVel<0) //60fps change: see above
     {
       xVel*=-1
       bBounced=1
     }
-    if x>room_width
+    //if x>room_width
+    if x>room_width and (gDeltaTime==1 or xVel>0) //60fps change: see above
     {
       xVel*=-1
       bBounced=1
@@ -115,16 +123,21 @@ if global.gamePaused=false
     //attempt to stay on screen
     if bBounced=0
     {
-      if y<view_yview[0]
+      //if y<view_yview[0]
+      if y<view_yview[0] and (gDeltaTime==1 or yVel<0) //60fps change: see above
         yVel*=-1
-      if y>view_yview[0]+view_hview[0]
+      //if y>view_yview[0]+view_hview[0]
+      if y>view_yview[0]+view_hview[0] and (gDeltaTime==1 or yVel>0) //60fps change: see above
         yVel*=-1
-      if x<view_xview[0]
+      //if x<view_xview[0]
+      if x<view_xview[0] and (gDeltaTime==1 or xVel<0) //60fps change: see above
         xVel*=-1
-      if x>view_xview[0]+view_wview[0]
+      //if x>view_xview[0]+view_wview[0]
+      if x>view_xview[0]+view_wview[0] and (gDeltaTime==1 or xVel>0) //60fps change: see above
         xVel*=-1
     }
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
   }
   enemyStepEvent()
 }

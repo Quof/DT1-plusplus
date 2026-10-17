@@ -107,3 +107,8 @@
 |scrGravAccX
 |isCollisionLeftEdit
 |isCollisionRightEdit
+|scrModPass
+|scrModPassDown
+|scrCountPass
+|scrCountPassDown
+|scrWrapAngle

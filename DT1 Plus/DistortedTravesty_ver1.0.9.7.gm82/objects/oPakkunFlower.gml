@@ -37,18 +37,25 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true and stunnedTime=0 and dieFade=0
   {
-    riseTime+=1
-    if riseTime>=1 and riseTime<=8
+    //60fps change: riseTime counts 30fps ticks in fractions; tick n's frames have values above n-1 up to n, so the ranges'
+    //">=n" lower bounds are ">n-1" (each covers the same ticks as at 30fps), and the rise/sink is per 30fps tick
+    //riseTime+=1
+    riseTime+=gDeltaTime
+    //if riseTime>=1 and riseTime<=8
+    if riseTime>0 and riseTime<=8
     {
       if riseTime=1
         bCanTakeDamage=true
-      y-=2
+      //y-=2
+      y-=2*gDeltaTime
     }
-    else if riseTime>=53 and riseTime<=60
+    //else if riseTime>=53 and riseTime<=60
+    else if riseTime>52 and riseTime<=60
     {
       if riseTime=60
         bCanTakeDamage=false
-      y+=2
+      //y+=2
+      y+=2*gDeltaTime
     }
     else if riseTime>=101
     {

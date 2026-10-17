@@ -20,8 +20,10 @@ lib_id=1
 action_id=603
 applies_to=self
 */
-drawTime+=1
-if drawTime=1
+//drawTime+=1
+drawTime+=gDeltaTime //60fps change: counts 30fps ticks (the Draw shows the HUD from 9)
+//if drawTime=1
+if scrCountPass(drawTime,1) //60fps change: once, when the count reaches it
 {
   //**************************************** set HUD surface ****************************************
   if surfaceUsed=1

@@ -37,10 +37,13 @@ if global.gamePaused=false
     powerGain*=-1
   physicalPower=round(powerGain)+pPower
 
-  image_angle+=spinSpd
+  //image_angle+=spinSpd
+  image_angle+=spinSpd*gDeltaTime //60fps change: per 30fps tick
 
-  image_xscale-=0.05
-  image_yscale-=0.05
+  //image_xscale-=0.05
+  image_xscale-=0.05*gDeltaTime //60fps change: per 30fps tick
+  //image_yscale-=0.05
+  image_yscale-=0.05*gDeltaTime //60fps change: per 30fps tick
   if image_xscale<=0
   {
     if bDestroyOnSmallScale=1

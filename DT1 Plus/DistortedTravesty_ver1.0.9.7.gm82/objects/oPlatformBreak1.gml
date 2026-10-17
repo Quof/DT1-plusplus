@@ -52,7 +52,8 @@ if global.gamePaused=false
 {
   if bBreaking
   {
-    timeUntilBreak-=1
+    //timeUntilBreak-=1
+    timeUntilBreak-=gDeltaTime //60fps change: counts 30fps ticks
     if timeUntilBreak<=0
     {
       effect=instance_create(x+(sprite_width/2),y+(sprite_height/2),oEffect)

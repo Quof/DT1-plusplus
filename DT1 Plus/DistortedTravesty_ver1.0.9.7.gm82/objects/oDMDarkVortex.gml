@@ -43,8 +43,10 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  image_angle+=5
-  throwDelay+=1
+  //image_angle+=5
+  image_angle+=5*gDeltaTime //60fps change: per 30fps tick
+  //throwDelay+=1
+  throwDelay+=gDeltaTime //60fps change: counts 30fps ticks
   if throwDelay>=throwDelayMax
   {
     if round(random(4))>=2
@@ -52,15 +54,18 @@ if global.gamePaused=false
       ballAttack[0]=instance_create(x,y,oDMDarkBall)
       ballAttack[0].spiritPower=spiritPower
       ballAttack[0].type=5
-      ballAttack[0].direction=270
+      //ballAttack[0].direction=270
+      ballAttack[0]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       ballAttack[1]=instance_create(x,y,oDMDarkBall)
       ballAttack[1].spiritPower=spiritPower
       ballAttack[1].type=5
-      ballAttack[1].direction=315
+      //ballAttack[1].direction=315
+      ballAttack[1]._direction=315 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       ballAttack[2]=instance_create(x,y,oDMDarkBall)
       ballAttack[2].spiritPower=spiritPower
       ballAttack[2].type=5
-      ballAttack[2].direction=225
+      //ballAttack[2].direction=225
+      ballAttack[2]._direction=225 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
     }
     else
     {
@@ -75,7 +80,8 @@ if global.gamePaused=false
     }
     throwDelay=0
   }
-  decayTime+=1
+  //decayTime+=1
+  decayTime+=gDeltaTime //60fps change: counts 30fps ticks
   if decayTime>=decayTimeMax
     instance_destroy()
 }

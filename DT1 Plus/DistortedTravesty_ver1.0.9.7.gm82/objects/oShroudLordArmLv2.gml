@@ -103,7 +103,8 @@ if global.gamePaused=false
   {
     if currentAttack=0 //*************** Normal Attack: Hand Slam Attack ***************
     {
-      slamTime+=1
+      //slamTime+=1
+      slamTime+=gDeltaTime //60fps change: counts 30fps ticks
       if slamDelay=0
       {
         if slamTime>=slamWait
@@ -111,14 +112,17 @@ if global.gamePaused=false
       }
       if slamTime>=slamDelay and slamDelay!=0
       {
-        if slamTime=slamDelay+1 //start hand shake
+        //if slamTime=slamDelay+1 //start hand shake
+        if scrCountPass(slamTime,slamDelay+1) //start hand shake //60fps change: once, when the count reaches it
         {
           image_speed=0.83
           sprite_index=sShroudLArmFist
         }
-        else if slamTime=slamDelay+30 //stop hand shake
+        //else if slamTime=slamDelay+30 //stop hand shake
+        else if scrCountPass(slamTime,slamDelay+30) //stop hand shake //60fps change: once, when the count reaches it
           sprite_index=sShroudLArmUp
-        else if slamTime=slamDelay+40 //slam hand down
+        //else if slamTime=slamDelay+40 //slam hand down
+        else if scrCountPass(slamTime,slamDelay+40) //slam hand down //60fps change: once, when the count reaches it
         {
           bCanDealDamage=true
           image_speed=0.1
@@ -134,18 +138,22 @@ if global.gamePaused=false
           else
             xVel=xDist
         }
-        else if slamTime>=slamDelay+60 and slamTime<=slamDelay+79 //effect
+        //else if slamTime>=slamDelay+60 and slamTime<=slamDelay+79 //effect
+        else if slamTime>slamDelay+59 and slamTime<=slamDelay+79 //effect //60fps change: the same 30fps ticks, counted in gDeltaTime steps
         {
           if effectDelay<=0
           {
             effect_create_above(ef_smoke,x,y,1,c_black)
             effect_create_above(ef_smokeup,x,y,1,c_black)
-            effectDelay=3
+            //effectDelay=3
+            effectDelay=4-gDeltaTime //60fps change: counts down 30fps ticks; the frame that makes the smoke counts as a whole tick, as at 30fps (it doesn't count down), so the count starts that much lower (3 at 30fps)
           }
           else
-            effectDelay-=1
+            //effectDelay-=1
+            effectDelay-=gDeltaTime //60fps change: see above
         }
-        else if slamTime=slamDelay+80 //end attack
+        //else if slamTime=slamDelay+80 //end attack
+        else if slamTime>=slamDelay+80 //end attack //60fps change: >= so it still happens if the frame rate changes mid-count (it resets)
         {
           if type=1
             handOffset=88
@@ -188,7 +196,8 @@ if global.gamePaused=false
               groundAttack.sprite_index=sZapTrap
               groundAttack.image_xscale=1.5
               groundAttack.bulletSpeed=7
-              groundAttack.direction=dir
+              //groundAttack.direction=dir
+              groundAttack._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
               dir=180
             }
           }
@@ -215,12 +224,14 @@ if global.gamePaused=false
           xVel=0
         if isCollisionRight(1)
           xVel=0
-        moveTo(xVel,yVel)
+        //moveTo(xVel,yVel)
+        moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
       }
     }
     else if currentAttack=1 //*************** Normal Attack: Hand Bullet Storm ***************
     {
-      bulletStormTime+=1
+      //bulletStormTime+=1
+      bulletStormTime+=gDeltaTime //60fps change: counts 30fps ticks
       if bulletStormDelay=0
       {
         if bulletStormTime>=bulletStormWait
@@ -228,7 +239,8 @@ if global.gamePaused=false
       }
       if bulletStormTime>=bulletStormDelay and bulletStormDelay!=0
       {
-        if bulletStormTime=bulletStormDelay+1 //start hand shake
+        //if bulletStormTime=bulletStormDelay+1 //start hand shake
+        if scrCountPass(bulletStormTime,bulletStormDelay+1) //start hand shake //60fps change: once, when the count reaches it
         {
           image_speed=0.83
           sprite_index=sShroudLArmFist
@@ -239,25 +251,32 @@ if global.gamePaused=false
           else
             bulletFreq=7
         }
-        else if bulletStormTime=bulletStormDelay+30 //stop hand shake
+        //else if bulletStormTime=bulletStormDelay+30 //stop hand shake
+        else if scrCountPass(bulletStormTime,bulletStormDelay+30) //stop hand shake //60fps change: once, when the count reaches it
         {
           image_speed=0.1
           sprite_index=sShroudLArmUp
           bulletStormDir=0
         }
-        else if bulletStormTime>=bulletStormDelay+61 and bulletStormTime<=bulletStormDelay+80 //bullet wave
+        //else if bulletStormTime>=bulletStormDelay+61 and bulletStormTime<=bulletStormDelay+80 //bullet wave
+        else if bulletStormTime>bulletStormDelay+60 and bulletStormTime<=bulletStormDelay+80 //bullet wave //60fps change: the same 30fps ticks, counted in gDeltaTime steps
         {
           if type=1
-            bulletStormDir+=1.5
+            //bulletStormDir+=1.5
+            bulletStormDir+=1.5*gDeltaTime //60fps change: per 30fps tick
           else if type=2
-            bulletStormDir-=1.5
+            //bulletStormDir-=1.5
+            bulletStormDir-=1.5*gDeltaTime //60fps change: per 30fps tick
         }
-        else if bulletStormTime>=bulletStormDelay+81 and bulletStormTime<=bulletStormDelay+100 //bullet wave
+        //else if bulletStormTime>=bulletStormDelay+81 and bulletStormTime<=bulletStormDelay+100 //bullet wave
+        else if bulletStormTime>bulletStormDelay+80 and bulletStormTime<=bulletStormDelay+100 //bullet wave //60fps change: the same 30fps ticks, counted in gDeltaTime steps
         {
           if type=1
-            bulletStormDir-=1.5
+            //bulletStormDir-=1.5
+            bulletStormDir-=1.5*gDeltaTime //60fps change: per 30fps tick
           else if type=2
-            bulletStormDir+=1.5
+            //bulletStormDir+=1.5
+            bulletStormDir+=1.5*gDeltaTime //60fps change: per 30fps tick
         }
         else if bulletStormTime>=bulletStormDelay+101 //end attack
         {
@@ -270,7 +289,8 @@ if global.gamePaused=false
             currentAttack=0
         }
 
-        if bulletStormTime>=bulletStormDelay+60 and bulletStormTime mod bulletFreq=0 //create bullets
+        //if bulletStormTime>=bulletStormDelay+60 and bulletStormTime mod bulletFreq=0 //create bullets
+        if bulletStormTime>=bulletStormDelay+60 and scrModPass(bulletStormTime,bulletFreq) //create bullets //60fps change: once each time the count reaches a multiple of it
         {
           if type=1
           {
@@ -289,7 +309,8 @@ if global.gamePaused=false
             newBullet.damageType="SPIRIT"
             newBullet.spiritPower=spiritPower
             newBullet.bulletSpeed=6
-            newBullet.direction=shotDir+bulletStormDir
+            //newBullet.direction=shotDir+bulletStormDir
+            newBullet._direction=shotDir+bulletStormDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             newBullet.image_angle=shotDir+bulletStormDir
             shotDir+=5
           }
@@ -298,7 +319,8 @@ if global.gamePaused=false
     }
     else if currentAttack=2 //*************** Normal Attack: Hand Laser ***************
     {
-      handLaserTime+=1
+      //handLaserTime+=1
+      handLaserTime+=gDeltaTime //60fps change: counts 30fps ticks
       if handLaserDelay=0
       {
         if handLaserTime>=handLaserWait
@@ -306,7 +328,8 @@ if global.gamePaused=false
       }
       if handLaserTime>=handLaserDelay and handLaserDelay!=0
       {
-        if handLaserTime=handLaserDelay+1 //start hand shake
+        //if handLaserTime=handLaserDelay+1 //start hand shake
+        if scrCountPass(handLaserTime,handLaserDelay+1) //start hand shake //60fps change: once, when the count reaches it
         {
           afterImage=instance_create(x,y,oEnemyAfterImage)
           afterImage.sprite_index=sprite_index
@@ -321,22 +344,26 @@ if global.gamePaused=false
           else if type=2
             laserOffsetX=-10
         }
-        else if handLaserTime=handLaserDelay+30 //stop hand shake
+        //else if handLaserTime=handLaserDelay+30 //stop hand shake
+        else if scrCountPass(handLaserTime,handLaserDelay+30) //stop hand shake //60fps change: once, when the count reaches it
         {
           image_speed=0.1
           sprite_index=sShroudLArmUp
         }
-        else if handLaserTime=handLaserDelay+40 //create laser
+        //else if handLaserTime=handLaserDelay+40 //create laser
+        else if scrCountPass(handLaserTime,handLaserDelay+40) //create laser //60fps change: once, when the count reaches it
         {
           handLaser=instance_create(x+laserOffsetX,y-31,oSLHeadLaser)
           handLaser.spiritPower=spiritPower
           handLaser.image_angle=270
         }
-        else if handLaserTime>=handLaserDelay+41 and handLaserTime<=handLaserDelay+200 //laser effect
+        //else if handLaserTime>=handLaserDelay+41 and handLaserTime<=handLaserDelay+200 //laser effect
+        else if handLaserTime>handLaserDelay+40 and handLaserTime<=handLaserDelay+200 //laser effect //60fps change: the same 30fps ticks, counted in gDeltaTime steps
         {
           handLaser.x=x+laserOffsetX
           handLaser.y=y-31
-          effectDelay-=1
+          //effectDelay-=1
+          effectDelay-=gDeltaTime //60fps change: counts 30fps ticks
           if effectDelay<=0
           {
             effect_create_above(ef_firework,x+laserOffsetX,y-31,0,make_color_rgb(155+random(100),155+random(100),155+random(100)))

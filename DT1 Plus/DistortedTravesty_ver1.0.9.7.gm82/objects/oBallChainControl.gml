@@ -54,7 +54,8 @@ if global.gamePaused=false
   if endNoRotate=0
     ball.image_angle=dir*1.5
 
-  e+=swingSpeed
+  //e+=swingSpeed
+  e+=swingSpeed*gDeltaTime //60fps change: per 30fps tick
   dir=lengthdir_x(maxSwing,e)
   g=lengthdir_x(1,e)
 }

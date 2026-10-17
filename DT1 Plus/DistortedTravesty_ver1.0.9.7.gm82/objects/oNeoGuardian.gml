@@ -122,15 +122,20 @@ if global.gamePaused=false
 
     //****************************** ELEMENT CHANGE ******************************
     if elementChangeTime<elementChangeWait
-      elementChangeTime+=1
+      //elementChangeTime+=1
+      elementChangeTime+=gDeltaTime //60fps change: counts 30fps ticks
     if elementChangeTime>=elementChangeWait and currentAttack!=2 and currentAttack!=3
     {
-      elementChangeTime+=1
+      //elementChangeTime+=1
+      elementChangeTime+=gDeltaTime //60fps change: counts 30fps ticks
       currentAttack=1
       if elementChangeTime<=elementChangeWait+27 //rotate arm up
-        armAngle-=5
-      else if elementChangeTime>=elementChangeWait+41 and elementChangeTime<=elementChangeWait+49 //rotate arm back down
-        armAngle+=15
+        //armAngle-=5
+        armAngle-=5*gDeltaTime //60fps change: per 30fps tick
+      //else if elementChangeTime>=elementChangeWait+41 and elementChangeTime<=elementChangeWait+49 //rotate arm back down
+      else if elementChangeTime>elementChangeWait+40 and elementChangeTime<=elementChangeWait+49 //rotate arm back down //60fps change: the same 30fps ticks, counted in gDeltaTime steps
+        //armAngle+=15
+        armAngle+=15*gDeltaTime //60fps change: per 30fps tick
       else if elementChangeTime>=elementChangeWait+50 //end orb throw
       {
         armAngle=90
@@ -138,7 +143,8 @@ if global.gamePaused=false
         currentAttack=0
       }
 
-      if elementChangeTime=elementChangeWait+43 //throw orb
+      //if elementChangeTime=elementChangeWait+43 //throw orb
+      if scrCountPass(elementChangeTime,elementChangeWait+43) //throw orb //60fps change: once, when the count reaches it
       {
         var prevElem;
         prevElem=currentElement
@@ -180,10 +186,12 @@ if global.gamePaused=false
     }
 
     //****************************** WALK ******************************
-    timeTillWalk+=1
+    //timeTillWalk+=1
+    timeTillWalk+=gDeltaTime //60fps change: counts 30fps ticks
     if timeTillWalk>=300
     {
-      if timeTillWalk=300
+      //if timeTillWalk=300
+      if scrCountPass(timeTillWalk,300) //60fps change: once, when the count reaches it
       {
         bWalking=true
         armFrame=1
@@ -196,14 +204,18 @@ if global.gamePaused=false
       }
       if bWalking=true
       {
-        moveTime+=1
-        if moveTime=1
+        //moveTime+=1
+        moveTime+=gDeltaTime //60fps change: counts 30fps ticks
+        //if moveTime=1
+        if scrCountPass(moveTime,1) //60fps change: once, when the count reaches it
           xVel=moveSpeed
-        if moveTime=8
+        //if moveTime=8
+        if scrCountPass(moveTime,8) //60fps change: once, when the count reaches it
           xVel=0
       }
 
-      if timeTillWalk=380
+      //if timeTillWalk=380
+      if timeTillWalk>=380 //60fps change: >= so it still happens if the frame rate changes mid-count (it resets)
       {
         timeTillWalk=0
         armFrame=0
@@ -215,12 +227,15 @@ if global.gamePaused=false
 
     //****************************** ARM WAVE ATTACK ******************************
     if armWaveTime<armWaveWait
-      armWaveTime+=1
+      //armWaveTime+=1
+      armWaveTime+=gDeltaTime //60fps change: counts 30fps ticks
     if armWaveTime>=armWaveWait and currentAttack!=1 and currentAttack!=3
     {
-      armWaveTime+=1
+      //armWaveTime+=1
+      armWaveTime+=gDeltaTime //60fps change: counts 30fps ticks
       currentAttack=2
-      if armWaveTime=armWaveWait+1
+      //if armWaveTime=armWaveWait+1
+      if scrCountPass(armWaveTime,armWaveWait+1) //60fps change: once, when the count reaches it
       {
         afterImage=instance_create(x,y,oEnemyAfterImage)
         afterImage.image_alpha=1
@@ -233,9 +248,12 @@ if global.gamePaused=false
       }
 
       if armWaveTime<=armWaveWait+27 //rotate arm up
-        armAngle-=5
-      else if armWaveTime>=armWaveWait+41 and armWaveTime<=armWaveWait+49 //rotate arm back down
-        armAngle+=15
+        //armAngle-=5
+        armAngle-=5*gDeltaTime //60fps change: per 30fps tick
+      //else if armWaveTime>=armWaveWait+41 and armWaveTime<=armWaveWait+49 //rotate arm back down
+      else if armWaveTime>armWaveWait+40 and armWaveTime<=armWaveWait+49 //rotate arm back down //60fps change: the same 30fps ticks, counted in gDeltaTime steps
+        //armAngle+=15
+        armAngle+=15*gDeltaTime //60fps change: per 30fps tick
       else if armWaveTime>=armWaveWait+50 //end attack
       {
         armAngle=90
@@ -243,7 +261,8 @@ if global.gamePaused=false
         currentAttack=0
       }
 
-      if armWaveTime=armWaveWait+43 //wave attack
+      //if armWaveTime=armWaveWait+43 //wave attack
+      if scrCountPass(armWaveTime,armWaveWait+43) //wave attack //60fps change: once, when the count reaches it
       {
         waveAttack=instance_create(x-armX-16,y-armY,oMMeShot1)
         waveAttack.damageType="SPIRIT"
@@ -252,13 +271,15 @@ if global.gamePaused=false
         waveAttack.sprite_index=sNeoGuardianWave
         waveAttack.image_xscale=-1
         waveAttack.bulletSpeed=10
-        waveAttack.direction=180
+        //waveAttack.direction=180
+        waveAttack._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       }
     }
 
     //****************************** SPIKE RAIN ATTACK ******************************
     if currentAttack!=3
-      spikeRainTime+=1
+      //spikeRainTime+=1
+      spikeRainTime+=gDeltaTime //60fps change: counts 30fps ticks
     if spikeRainTime>=spikeRainWait
     {
       var xSpikeSpawn;
@@ -274,15 +295,20 @@ if global.gamePaused=false
 
     //****************************** WAVE SPAM ATTACK ******************************
     if waveSpamTime<waveSpamWait
-      waveSpamTime+=1
+      //waveSpamTime+=1
+      waveSpamTime+=gDeltaTime //60fps change: counts 30fps ticks
     if waveSpamTime>=waveSpamWait and currentAttack!=1 and currentAttack!=2
     {
-      waveSpamTime+=1
+      //waveSpamTime+=1
+      waveSpamTime+=gDeltaTime //60fps change: counts 30fps ticks
       currentAttack=3
       if waveSpamTime<=waveSpamWait+36 //rotate arm up
-        armAngle-=5
-      else if waveSpamTime>=waveSpamWait+161 and waveSpamTime<=waveSpamWait+172 //rotate arm back down
-        armAngle+=15
+        //armAngle-=5
+        armAngle-=5*gDeltaTime //60fps change: per 30fps tick
+      //else if waveSpamTime>=waveSpamWait+161 and waveSpamTime<=waveSpamWait+172 //rotate arm back down
+      else if waveSpamTime>waveSpamWait+160 and waveSpamTime<=waveSpamWait+172 //rotate arm back down //60fps change: the same 30fps ticks, counted in gDeltaTime steps
+        //armAngle+=15
+        armAngle+=15*gDeltaTime //60fps change: per 30fps tick
       else if waveSpamTime>=waveSpamWait+173 //end attack
       {
         armAngle=90
@@ -290,7 +316,8 @@ if global.gamePaused=false
         currentAttack=0
       }
 
-      if waveSpamTime>=waveSpamWait+50 and waveSpamTime<=waveSpamWait+150 and waveSpamTime mod waveSpamFreq=0 //wave spam attack
+      //if waveSpamTime>=waveSpamWait+50 and waveSpamTime<=waveSpamWait+150 and waveSpamTime mod waveSpamFreq=0 //wave spam attack
+      if waveSpamTime>=waveSpamWait+50 and waveSpamTime<=waveSpamWait+150 and scrModPass(waveSpamTime,waveSpamFreq) //wave spam attack //60fps change: once each time the count reaches a multiple of it
       {
         var xSpamWave,ySpamWave,spamAngle;
         xSpamWave=waveSpamXspawn+random(24)
@@ -306,7 +333,8 @@ if global.gamePaused=false
         waveAttack.elementType=2
         waveAttack.sprite_index=sNeoGuardianWave
         waveAttack.bulletSpeed=10
-        waveAttack.direction=spamAngle
+        //waveAttack.direction=spamAngle
+        waveAttack._direction=spamAngle //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         waveAttack.image_angle=spamAngle
       }
     }
@@ -407,17 +435,24 @@ if global.gamePaused=false
       bossProgress+=1
     }
   }
-  yVel+=0.3
+  //yVel+=0.3
+  yVel=scrGravAcc(yVel,0.3,1) //60fps change: gravity per 30fps tick, following the 30fps arc
   if isCollisionBottom(1)
     yVel=0
-  if isCollisionLeft(1)
+  //if isCollisionLeft(1)
+  //  xVel*=-1
+  //if isCollisionRight(1)
+  //  xVel*=-1
+  //60fps change: only turn around when moving into the wall (it can still touch it on the next frame above 30fps)
+  if isCollisionLeftEdit(1)
     xVel*=-1
-  if isCollisionRight(1)
+  if isCollisionRightEdit(1)
     xVel*=-1
   if isCollisionSolid()
     y-=2
 
-  moveTo(xVel,yVel)
+  //moveTo(xVel,yVel)
+  moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
   enemyStepEvent()
 }
 #define Collision_oPartSlashes
@@ -488,8 +523,10 @@ if global.gamePaused=false
 {
   if bWalking=true
   {
-    frameCount+=1
-    if frameCount=20
+    //frameCount+=1
+    frameCount+=gDeltaTime //60fps change: counts 30fps ticks
+    //if frameCount=20
+    if frameCount>=20 //60fps change: >= so it still happens if the frame rate changes mid-count (it resets)
     {
       frameProg+=1
       if frameProg=1
@@ -524,7 +561,8 @@ if global.gamePaused=false
   }
 
   //arm angle after image
-  if armAnglePrev!=armAngle
+  //if armAnglePrev!=armAngle
+  if armAnglePrev!=armAngle and gDeltaDoTicks //60fps change: the arm afterimage once per 30fps tick (the arm moves every frame)
   {
     armMoveEffect=instance_create(x-armX,y-armY,oEnemyAfterImage)
     armMoveEffect.image_alpha=0.8
@@ -553,7 +591,8 @@ if global.gamePaused=false
         groundAttack.sprite_index=sZapTrap
         groundAttack.image_xscale=groundWaveLengthMod
         groundAttack.bulletSpeed=7
-        groundAttack.direction=dir
+        //groundAttack.direction=dir
+        groundAttack._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         dir=180
       }
     }

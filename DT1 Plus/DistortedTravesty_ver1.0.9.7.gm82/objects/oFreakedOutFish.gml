@@ -83,12 +83,15 @@ if global.gamePaused=false
       image_xscale=1
     else
       image_xscale=-1
-    x+=xVel
+    //x+=xVel
+    x+=xVel*gDeltaTime //60fps change: per 30fps tick
     //turn delay around if player is behind it
     if image_xscale=1 and x>oPlayer1.x //right
-      turnAroundTime+=1
+      //turnAroundTime+=1
+      turnAroundTime+=gDeltaTime //60fps change: counts 30fps ticks
     else if image_xscale=-1 and x<oPlayer1.x //left
-      turnAroundTime+=1
+      //turnAroundTime+=1
+      turnAroundTime+=gDeltaTime //60fps change: counts 30fps ticks
     else if (image_xscale=1 and x<oPlayer1.x) or (image_xscale=-1 and x>oPlayer1.x)
       turnAroundTime=0
     if turnAroundTime>=turnAroundTimeMax
@@ -100,10 +103,12 @@ if global.gamePaused=false
       multiShot=multiShotMax
     }
     //shoot
-    shootTime+=1
+    //shootTime+=1
+    shootTime+=gDeltaTime //60fps change: counts 30fps ticks
     if shootTime>=reShootTime
     {
-      if multiShot>0 and shootTime mod 3=0
+      //if multiShot>0 and shootTime mod 3=0
+      if multiShot>0 and scrModPass(shootTime,3) //60fps change: once each time the count reaches a multiple of it
       {
         var x1;
         if image_xscale=1
@@ -114,12 +119,14 @@ if global.gamePaused=false
         newAttack.physicalPower=physicalPower
         if image_xscale=1
         {
-          newAttack.direction=340
+          //newAttack.direction=340
+          newAttack._direction=340 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newAttack.image_angle=340
         }
         else
         {
-          newAttack.direction=200
+          //newAttack.direction=200
+          newAttack._direction=200 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newAttack.image_angle=200
         }
         newAttack.bulletSpeed=8
@@ -127,12 +134,14 @@ if global.gamePaused=false
         newAttack.physicalPower=physicalPower
         if image_xscale=1
         {
-          newAttack.direction=310
+          //newAttack.direction=310
+          newAttack._direction=310 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newAttack.image_angle=310
         }
         else
         {
-          newAttack.direction=230
+          //newAttack.direction=230
+          newAttack._direction=230 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newAttack.image_angle=230
         }
         newAttack.bulletSpeed=8

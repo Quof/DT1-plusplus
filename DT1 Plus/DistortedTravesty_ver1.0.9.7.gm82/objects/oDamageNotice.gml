@@ -12,8 +12,10 @@ lib_id=1
 action_id=603
 applies_to=self
 */
-damageYoffset-=2
-damageAlpha-=0.05
+//damageYoffset-=2
+//damageAlpha-=0.05
+damageYoffset-=2*gDeltaTime //60fps change: rises and fades per 30fps tick
+damageAlpha-=0.05*gDeltaTime //60fps change: see above
 
 draw_set_font(fnt_ScreenMessage)
 draw_set_halign(fa_center)

@@ -51,12 +51,16 @@ if global.gameProgress=250 //intro to Distortion Reckoning
 {
   if sceneProgress=0
   {
-    if sceneDelay mod 15=0 and sceneDelay<50
+    //if sceneDelay mod 15=0 and sceneDelay<50
+    if scrModPass(sceneDelay,15) and sceneDelay<50 //60fps change: once each time the count reaches a multiple of it
       playSound(global.snd_Static,0,1)
-    sceneDelay+=1
-    staticAlpha-=0.02
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //staticAlpha-=0.02
+    staticAlpha-=0.02*gDeltaTime //60fps change: per 30fps tick
     background_alpha[6]=staticAlpha
-    if sceneDelay=1
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       oPlayer1.image_speed=0.1
     if sceneDelay>=70
     {
@@ -109,8 +113,10 @@ else if global.gameProgress=252 and room=rDistortionW4_2 //chat with Hexor
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       global.gamePaused=true
     else if sceneDelay>=30
     {
@@ -141,8 +147,10 @@ else if global.gameProgress=255 and room=rDistortionW4_4 //chat with Hexor
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       global.gamePaused=true
     else if sceneDelay>=30
     {
@@ -169,8 +177,10 @@ else if global.gameProgress=257 and room=rDistortionW4_5 //chat with Hexor
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       global.gamePaused=true
     else if sceneDelay>=30
     {
@@ -209,11 +219,14 @@ else if global.gameProgress=259 and room=rDistortionW4_6 //Boss Fight (Fourth Wa
   else if sceneProgress=1
   {
     if oPlayer1.y<320
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=30
       {
@@ -224,8 +237,10 @@ else if global.gameProgress=259 and room=rDistortionW4_6 //Boss Fight (Fourth Wa
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       boss=instance_create(512,160,oFourthWallCrusher)
     else if sceneDelay>=30
     {
@@ -253,8 +268,10 @@ else if global.gameProgress=259 and room=rDistortionW4_6 //Boss Fight (Fourth Wa
     msgCreate("I'm so glad " +string(global.mainCharacters[1]) +string(" can't respond right now.#I know he would make fun of that cheesy reference."),1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=12
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       barrier1=instance_create(304,256,oBossBarrier)
       barrier2=instance_create(704,256,oBossBarrier)
@@ -287,14 +304,17 @@ else if global.gameProgress=260 //boss fight ends (Fourth Wall Crusher)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       oPlayer1.x=512
@@ -311,13 +331,15 @@ else if global.gameProgress=260 //boss fight ends (Fourth Wall Crusher)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -401,8 +423,10 @@ else if global.gameProgress=262 and room=rDistortionW4_7 //don't touch the red
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       global.gamePaused=true
     else if sceneDelay>=30
     {
@@ -437,7 +461,8 @@ else if global.gameProgress=263 and room=rDistortionW4_7 and global.gamePaused=f
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -458,7 +483,8 @@ else if global.gameProgress=263 and room=rDistortionW4_7 and global.gamePaused=f
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=180
     {
       sceneDelay=0
@@ -479,7 +505,8 @@ else if global.gameProgress=263 and room=rDistortionW4_7 and global.gamePaused=f
   }
   else if sceneProgress=5
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=210
     {
       sceneDelay=0
@@ -508,7 +535,8 @@ else if global.gameProgress=263 and room=rDistortionW4_7 and global.gamePaused=f
   }
   else if sceneProgress=7
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=240
     {
       sceneDelay=0
@@ -517,57 +545,66 @@ else if global.gameProgress=263 and room=rDistortionW4_7 and global.gamePaused=f
   }
   else if sceneProgress=8
   {
-    sceneDelay+=1
-    if sceneDelay=10
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
     {
       newEnemy=instance_create(2736,48,oDistortedWisp) //9
       newEnemy.bActive=true
       newEnemy.questType=1
       effect_create_above(ef_ring,newEnemy.x,newEnemy.y,0,c_black)
     }
-    else if sceneDelay=20
+    //else if sceneDelay=20
+    else if scrCountPass(sceneDelay,20) //60fps change: once, when the count reaches it
     {
       newEnemy=instance_create(3072,48,oDistortedWisp) //10
       newEnemy.bActive=true
       newEnemy.questType=1
       effect_create_above(ef_ring,newEnemy.x,newEnemy.y,0,c_black)
     }
-    else if sceneDelay=30
+    //else if sceneDelay=30
+    else if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
     {
       newEnemy=instance_create(2736,320,oDistortedWisp) //11
       newEnemy.bActive=true
       newEnemy.questType=1
       effect_create_above(ef_ring,newEnemy.x,newEnemy.y,0,c_black)
     }
-    else if sceneDelay=40
+    //else if sceneDelay=40
+    else if scrCountPass(sceneDelay,40) //60fps change: once, when the count reaches it
     {
       newEnemy=instance_create(3072,320,oDistortedWisp) //12
       newEnemy.bActive=true
       newEnemy.questType=1
       effect_create_above(ef_ring,newEnemy.x,newEnemy.y,0,c_black)
     }
-    else if sceneDelay=160
+    //else if sceneDelay=160
+    else if scrCountPass(sceneDelay,160) //60fps change: once, when the count reaches it
     {
       newEnemy=instance_create(2736,48,oDistortedWisp) //13
       newEnemy.bActive=true
       newEnemy.questType=1
       effect_create_above(ef_ring,newEnemy.x,newEnemy.y,0,c_black)
     }
-    else if sceneDelay=170
+    //else if sceneDelay=170
+    else if scrCountPass(sceneDelay,170) //60fps change: once, when the count reaches it
     {
       newEnemy=instance_create(3072,48,oDistortedWisp) //14
       newEnemy.bActive=true
       newEnemy.questType=1
       effect_create_above(ef_ring,newEnemy.x,newEnemy.y,0,c_black)
     }
-    else if sceneDelay=180
+    //else if sceneDelay=180
+    else if scrCountPass(sceneDelay,180) //60fps change: once, when the count reaches it
     {
       newEnemy=instance_create(2736,320,oDistortedWisp) //15
       newEnemy.bActive=true
       newEnemy.questType=1
       effect_create_above(ef_ring,newEnemy.x,newEnemy.y,0,c_black)
     }
-    else if sceneDelay=190
+    //else if sceneDelay=190
+    else if scrCountPass(sceneDelay,190) //60fps change: once, when the count reaches it
     {
       newEnemy=instance_create(3072,320,oDistortedWisp) //16
       newEnemy.bActive=true
@@ -589,8 +626,10 @@ else if global.gameProgress=265 and room=rDistortionW4_8 //exit found
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       global.gamePaused=true
     else if sceneDelay>=30
     {
@@ -626,8 +665,10 @@ else
 //---------- blur effect ----------
 if room=rDistortionW4_2
 {
-  blurShift+=1
-  if blurShift mod 3=0
+  //blurShift+=1
+  blurShift+=gDeltaTime //60fps change: counts 30fps ticks
+  //if blurShift mod 3=0
+  if scrModPass(blurShift,3) //60fps change: once each time the count reaches a multiple of it
     if instance_exists(oPlayerAfterImage)
       instance_create(0,0,oScreenEffect)
 }

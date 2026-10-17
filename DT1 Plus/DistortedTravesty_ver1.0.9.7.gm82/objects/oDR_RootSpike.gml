@@ -25,7 +25,8 @@ if global.gamePaused=false
 {
   if bRiseUp=false
   {
-    imageDelay+=1
+    //imageDelay+=1
+    imageDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if imageDelay>=2
     {
       image_index+=1
@@ -36,7 +37,8 @@ if global.gamePaused=false
   }
   else
   {
-    imageDelay+=1
+    //imageDelay+=1
+    imageDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if imageDelay>=2
     {
       if image_index=0

@@ -235,13 +235,16 @@ if global.gameProgress=129 //intro to Metropolis
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
     }
-    if sceneDelay=30
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
     {
       readyText=instance_create(256,192,oMisc)
       readyText.type=0
@@ -249,7 +252,8 @@ if global.gameProgress=129 //intro to Metropolis
       readyText.readyWidth=0
       readyText.progress=0
     }
-    else if sceneDelay=121
+    //else if sceneDelay=121
+    else if scrCountPass(sceneDelay,121) //60fps change: once, when the count reaches it
     {
       with readyText
         instance_destroy()
@@ -265,7 +269,8 @@ if global.gameProgress=129 //intro to Metropolis
     if discombobulateY>=oPlayer1.y
     {
       discomFrame=1
-      sceneDelay+=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if sceneDelay>=3
       {
         oPlayer1.visible=true
@@ -274,11 +279,13 @@ if global.gameProgress=129 //intro to Metropolis
       }
     }
     else
-      discombobulateY+=16
+      //discombobulateY+=16
+      discombobulateY+=16*gDeltaTime //60fps change: per 30fps tick
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=15
     {
       sceneDelay=0
@@ -311,7 +318,8 @@ if global.gameProgress=129 //intro to Metropolis
 else if room=rMetropolisM4 and global.gamePaused=false //autoscroll up
 {
   if autoScroll.y>192
-    autoScroll.y-=1
+    //autoScroll.y-=1
+    autoScroll.y-=gDeltaTime //60fps change: per 30fps tick
   if autoScroll.y+(view_hview[0]/2)+48<oPlayer1.y
     oPlayer1.life-=oPlayer1.maxLife
 }
@@ -319,15 +327,19 @@ else if room=rCutscene1 //cutscene - Syrus and The Informant
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
     }
-    else if sceneDelay>=45
+    //else if sceneDelay>=45
+    else if sceneDelay>44 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      bossFinishFadeAlpha-=0.01
+      //bossFinishFadeAlpha-=0.01
+      bossFinishFadeAlpha-=0.01*gDeltaTime //60fps change: per 30fps tick
       if bossFinishFadeAlpha<=0
       {
         sceneDelay=0
@@ -337,7 +349,8 @@ else if room=rCutscene1 //cutscene - Syrus and The Informant
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=60
     {
       sceneDelay=0
@@ -376,34 +389,49 @@ else if room=rCutscene1 //cutscene - Syrus and The Informant
     msgCreate("The Darkness...",1,oMessageCutscene,global.mainCharacters[4])
   else if sceneProgress=17
   {
-    sceneDelay+=1
-    if sceneDelay=71
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=71
+    if scrCountPass(sceneDelay,71) //60fps change: once, when the count reaches it
       npcInformant.sprite_index=sInformantEye
-    else if sceneDelay=78
+    //else if sceneDelay=78
+    else if scrCountPass(sceneDelay,78) //60fps change: once, when the count reaches it
       npcInformant.image_index=1
-    else if sceneDelay=85
+    //else if sceneDelay=85
+    else if scrCountPass(sceneDelay,85) //60fps change: once, when the count reaches it
       npcInformant.image_index=2
-    else if sceneDelay=92
+    //else if sceneDelay=92
+    else if scrCountPass(sceneDelay,92) //60fps change: once, when the count reaches it
       npcInformant.image_index=3
-    else if sceneDelay=99
+    //else if sceneDelay=99
+    else if scrCountPass(sceneDelay,99) //60fps change: once, when the count reaches it
       npcInformant.image_index=4
-    else if sceneDelay=120
+    //else if sceneDelay=120
+    else if scrCountPass(sceneDelay,120) //60fps change: once, when the count reaches it
       npcInformant.image_index=3
-    else if sceneDelay=130
+    //else if sceneDelay=130
+    else if scrCountPass(sceneDelay,130) //60fps change: once, when the count reaches it
       npcInformant.image_index=4
-    else if sceneDelay=140
+    //else if sceneDelay=140
+    else if scrCountPass(sceneDelay,140) //60fps change: once, when the count reaches it
       npcInformant.image_index=3
-    else if sceneDelay=150
+    //else if sceneDelay=150
+    else if scrCountPass(sceneDelay,150) //60fps change: once, when the count reaches it
       npcInformant.image_index=4
-    else if sceneDelay=160
+    //else if sceneDelay=160
+    else if scrCountPass(sceneDelay,160) //60fps change: once, when the count reaches it
       npcInformant.image_index=3
-    else if sceneDelay=167
+    //else if sceneDelay=167
+    else if scrCountPass(sceneDelay,167) //60fps change: once, when the count reaches it
       npcInformant.image_index=2
-    else if sceneDelay=174
+    //else if sceneDelay=174
+    else if scrCountPass(sceneDelay,174) //60fps change: once, when the count reaches it
       npcInformant.image_index=1
-    else if sceneDelay=181
+    //else if sceneDelay=181
+    else if scrCountPass(sceneDelay,181) //60fps change: once, when the count reaches it
       npcInformant.image_index=0
-    else if sceneDelay=188
+    //else if sceneDelay=188
+    else if scrCountPass(sceneDelay,188) //60fps change: once, when the count reaches it
       npcInformant.sprite_index=sInformantIdle
     else if sceneDelay>=240
     {
@@ -449,10 +477,13 @@ else if room=rCutscene1 //cutscene - Syrus and The Informant
     msgCreate("We WILL find a way to stop it!",1,oMessageCutscene,global.mainCharacters[5])
   else if sceneProgress=36
   {
-    sceneDelay+=1
-    if sceneDelay>=45
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=45
+    if sceneDelay>44 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      bossFinishFadeAlpha+=0.01
+      //bossFinishFadeAlpha+=0.01
+      bossFinishFadeAlpha+=0.01*gDeltaTime //60fps change: per 30fps tick
       if bossFinishFadeAlpha>=0.4
       {
         sceneDelay=0
@@ -462,12 +493,16 @@ else if room=rCutscene1 //cutscene - Syrus and The Informant
   }
   else if sceneProgress=37
   {
-    sceneDelay+=1
-    if sceneDelay=20
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=20
+    if scrCountPass(sceneDelay,20) //60fps change: once, when the count reaches it
       npcInformant.sprite_index=sInformantHoldHat
-    else if sceneDelay>=80
+    //else if sceneDelay>=80
+    else if sceneDelay>79 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      bossFinishFadeAlpha-=0.01
+      //bossFinishFadeAlpha-=0.01
+      bossFinishFadeAlpha-=0.01*gDeltaTime //60fps change: per 30fps tick
       if bossFinishFadeAlpha<=0
       {
         sceneDelay=0
@@ -477,8 +512,10 @@ else if room=rCutscene1 //cutscene - Syrus and The Informant
   }
   else if sceneProgress=38
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
       npcInformant.sprite_index=sInformantIdle
     else if sceneDelay>=60
     {
@@ -500,10 +537,13 @@ else if room=rCutscene1 //cutscene - Syrus and The Informant
     msgCreate("Shut it! You're in no position to mock me.#Exciting times are ahead of us!",1,oMessageCutscene,global.mainCharacters[4])
   else if sceneProgress=45
   {
-    sceneDelay+=1
-    if sceneDelay>=45
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=45
+    if sceneDelay>44 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      bossFinishFadeAlpha+=0.01
+      //bossFinishFadeAlpha+=0.01
+      bossFinishFadeAlpha+=0.01*gDeltaTime //60fps change: per 30fps tick
       if bossFinishFadeAlpha>=1
       {
         sceneDelay=0
@@ -513,11 +553,13 @@ else if room=rCutscene1 //cutscene - Syrus and The Informant
   }
   else if sceneProgress=46
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       global.gamePaused=false
-      transition_steps=30
+      //transition_steps=30
+      transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
       transition_kind=21
       room_goto(rMetropolisT1)
     }
@@ -527,8 +569,10 @@ else if global.gameProgress=132 and room=rMetropolisStageSelect //stage select
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -578,7 +622,8 @@ if room=rNapalmL3 and global.MMnapalmProg=2 //enemy trap event
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -603,7 +648,8 @@ if room=rNapalmL3 and global.MMnapalmProg=2 //enemy trap event
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=120
     {
       sceneDelay=0
@@ -628,7 +674,8 @@ if room=rNapalmL3 and global.MMnapalmProg=2 //enemy trap event
   }
   else if sceneProgress=5
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=120
     {
       sceneDelay=0
@@ -663,7 +710,8 @@ if room=rNapalmL3 and global.MMnapalmProg=2 //enemy trap event
 else if room=rGyroL3 and global.gamePaused=false //autoscroll right
 {
   if autoScroll.x<4880
-    autoScroll.x+=2.25
+    //autoScroll.x+=2.25
+    autoScroll.x+=2.25*gDeltaTime //60fps change: per 30fps tick
   if autoScroll.x-(view_wview[0]/2)-20>oPlayer1.x
     oPlayer1.life-=oPlayer1.maxLife
 }
@@ -671,10 +719,13 @@ else if room=rCutscene2 //cutscene - X escapes
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay>=45
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=45
+    if sceneDelay>44 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      bossFinishFadeAlpha-=0.01
+      //bossFinishFadeAlpha-=0.01
+      bossFinishFadeAlpha-=0.01*gDeltaTime //60fps change: per 30fps tick
       if bossFinishFadeAlpha<=0
       {
         sceneDelay=0
@@ -684,7 +735,8 @@ else if room=rCutscene2 //cutscene - X escapes
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=60
     {
       sceneDelay=0
@@ -693,15 +745,18 @@ else if room=rCutscene2 //cutscene - X escapes
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay mod 4=0 and sceneDelay<=46
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay mod 4=0 and sceneDelay<=46
+    if scrModPass(sceneDelay,4) and sceneDelay<=46 //60fps change: once each time the count reaches a multiple of it
     {
       playSound(global.snd_CASdie,0,1)
       explosion=instance_create(448+random(64),240+random(64),oEffect)
       explosion.sprite_index=sBomberExplosion
       explosion.image_speed=0.5
     }
-    if sceneDelay=43
+    //if sceneDelay=43
+    if scrCountPass(sceneDelay,43) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_CASdie,0,1)
       explosion=instance_create(480,272,oEffect)
@@ -710,16 +765,19 @@ else if room=rCutscene2 //cutscene - X escapes
       explosion.image_xscale=2
       explosion.image_yscale=2
     }
-    if sceneDelay=46
+    //if sceneDelay=46
+    if scrCountPass(sceneDelay,46) //60fps change: once, when the count reaches it
     {
       for(i=0;i<4;i+=1)
       {
         tile_delete(block[i])
       }
     }
-    if sceneDelay>=105
+    //if sceneDelay>=105
+    if sceneDelay>104 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      npcX.x-=12
+      //npcX.x-=12
+      npcX.x-=12*gDeltaTime //60fps change: per 30fps tick
       if npcX.x<400
       {
         npcX.sprite_index=sMegamanXIdle
@@ -727,7 +785,8 @@ else if room=rCutscene2 //cutscene - X escapes
         sceneProgress+=1
       }
     }
-    if sceneDelay=108
+    //if sceneDelay=108
+    if scrCountPass(sceneDelay,108) //60fps change: once, when the count reaches it
     {
       var tempMplay;
       tempMplay=global.msc_MMxTheme
@@ -736,7 +795,8 @@ else if room=rCutscene2 //cutscene - X escapes
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=20
     {
       sceneDelay=0
@@ -749,7 +809,8 @@ else if room=rCutscene2 //cutscene - X escapes
     msgCreate("It doesn't really matter, I know what needs to be done now.#I'll take care of him before he becomes a further problem.",1,oMessageCutscene,"X")
   else if sceneProgress=6
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=20
     {
       npcX.sprite_index=sMegamanXDash
@@ -759,7 +820,8 @@ else if room=rCutscene2 //cutscene - X escapes
   }
   else if sceneProgress=7
   {
-    bossFinishFadeAlpha+=0.01
+    //bossFinishFadeAlpha+=0.01
+    bossFinishFadeAlpha+=0.01*gDeltaTime //60fps change: per 30fps tick
     if bossFinishFadeAlpha>=1
     {
       sceneDelay=0
@@ -768,7 +830,8 @@ else if room=rCutscene2 //cutscene - X escapes
   }
   else if sceneProgress=8
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -782,20 +845,24 @@ else if room=rCutscene2 //cutscene - X escapes
     global.gameProgress=134
     sceneProgress=0
     global.gamePaused=false
-    transition_steps=30
+    //transition_steps=30
+    transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
     transition_kind=21
     room_goto(rMetropolisStageSelect)
   }
 
   if sceneProgress>=7
-    npcX.x-=12
+    //npcX.x-=12
+    npcX.x-=12*gDeltaTime //60fps change: per 30fps tick
 }
 else if global.gameProgress=135 and room=rFortL1_1 //intro to fortress level
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -869,11 +936,14 @@ else if global.gameProgress=141 and room=rFortL1_6 //Boss Fight (King Mech)
   else if sceneProgress=1
   {
     if oPlayer1.y<304
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=30
       {
@@ -884,17 +954,21 @@ else if global.gameProgress=141 and room=rFortL1_6 //Boss Fight (King Mech)
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=15
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=15
+    if scrCountPass(sceneDelay,15) //60fps change: once, when the count reaches it
     {
       boss=instance_create(416,304,oKingMech)
       boss.image_xscale=-1
       boss.image_blend=make_color_rgb(blendColor,blendColor,blendColor)
     }
-    else if sceneDelay>=16
+    //else if sceneDelay>=16
+    else if sceneDelay>15 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if blendColor<255
-        blendColor+=2.5
+        //blendColor+=2.5
+        blendColor+=2.5*gDeltaTime //60fps change: per 30fps tick
       else
       {
         global.currentBoss="King Mech"
@@ -915,8 +989,10 @@ else if global.gameProgress=141 and room=rFortL1_6 //Boss Fight (King Mech)
     msgCreate("That's easy for you to say!",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=6
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       instance_activate_object(oObjectDispenser)
       newBarrierL1=instance_create(112,208,oBossBarrier)
@@ -946,8 +1022,10 @@ else if global.gameProgress=142 //boss fight ends (King Mech)
   else if sceneProgress=1
   {
     var ranX,ranY;
-    sceneDelay+=1
-    if sceneDelay mod 3=0 and sceneDelay<75
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay mod 3=0 and sceneDelay<75
+    if scrModPass(sceneDelay,3) and sceneDelay<=74 //60fps change: once each time the count reaches a multiple of it; the same 30fps ticks (it counts in gDeltaTime steps)
     {
       playSound(global.snd_CASdie,0,1)
       ranX=(oKingMech.x-(oKingMech.sprite_width/2))+random(oKingMech.sprite_width)
@@ -955,12 +1033,15 @@ else if global.gameProgress=142 //boss fight ends (King Mech)
       effect=instance_create(ranX,ranY,oEffect)
       effect.sprite_index=sBomberExplosion
     }
-    if sceneDelay=75
+    //if sceneDelay=75
+    if scrCountPass(sceneDelay,75) //60fps change: once, when the count reaches it
       playSound(global.snd_EnemyDie,0,1)
-    if sceneDelay>=75
+    //if sceneDelay>=75
+    if sceneDelay>74 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if bossFinishFadeAlpha<1
-        bossFinishFadeAlpha+=0.05
+        //bossFinishFadeAlpha+=0.05
+        bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
       else if bossFinishFadeAlpha>=1
       {
         sceneDelay=0
@@ -970,8 +1051,10 @@ else if global.gameProgress=142 //boss fight ends (King Mech)
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       with oPlatformTouch
@@ -990,13 +1073,15 @@ else if global.gameProgress=142 //boss fight ends (King Mech)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -1029,8 +1114,10 @@ else if global.gameProgress=144 and room=rFortL2_1 //oh no, there's more
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -1060,8 +1147,10 @@ else if global.gameProgress=148 and room=rFortL2_4 //X is close
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -1102,11 +1191,14 @@ else if global.gameProgress=149 and room=rFortL2_4 //Boss Fight (Copy X)
   else if sceneProgress=1
   {
     if oPlayer1.y<320
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=30
       {
@@ -1119,10 +1211,13 @@ else if global.gameProgress=149 and room=rFortL2_4 //Boss Fight (Copy X)
     msgCreate("Dude X, you did get out!#Well that makes things easier.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=3
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
       npcCopyX.image_xscale=-1
-    else if sceneDelay=50
+    //else if sceneDelay=50
+    else if scrCountPass(sceneDelay,50) //60fps change: once, when the count reaches it
     {
       npcCopyX.sprite_index=sMegamanXAim
       stopAllMusic()
@@ -1141,8 +1236,10 @@ else if global.gameProgress=149 and room=rFortL2_4 //Boss Fight (Copy X)
     msgCreate("What are you talking about?",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=7
   {
-    sceneDelay+=1
-    if sceneDelay=10
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
     {
       chargeEffect=instance_create(npcCopyX.x,npcCopyX.y-17,oMisc)
       chargeEffect.sprite_index=sMMcharging
@@ -1158,8 +1255,10 @@ else if global.gameProgress=149 and room=rFortL2_4 //Boss Fight (Copy X)
     msgCreate("What the hell X?!",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=9
   {
-    sceneDelay+=1
-    if sceneDelay=10
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
     {
       npcX=instance_create(96,320,oMisc)
       npcX.sprite_index=sMegamanXDash
@@ -1173,10 +1272,13 @@ else if global.gameProgress=149 and room=rFortL2_4 //Boss Fight (Copy X)
       with chargeEffect
         instance_destroy()
     }
-    else if sceneDelay>=10
+    //else if sceneDelay>=10
+    else if sceneDelay>9 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      npcX.x+=17.5
-      xBlast.x-=9
+      //npcX.x+=17.5
+      npcX.x+=17.5*gDeltaTime //60fps change: per 30fps tick
+      //xBlast.x-=9
+      xBlast.x-=9*gDeltaTime //60fps change: per 30fps tick
       if npcX.x>=416
       {
         oPlayer1.sprite_index=sPlayerGuard
@@ -1192,8 +1294,10 @@ else if global.gameProgress=149 and room=rFortL2_4 //Boss Fight (Copy X)
   }
   else if sceneProgress=10
   {
-    sceneDelay+=1
-    if sceneDelay=20
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=20
+    if scrCountPass(sceneDelay,20) //60fps change: once, when the count reaches it
     {
       npcCopyX.sprite_index=sMegamanXIdle
       var tempMplay;
@@ -1217,8 +1321,10 @@ else if global.gameProgress=149 and room=rFortL2_4 //Boss Fight (Copy X)
     msgCreate("It's the Dark...",1,oMessageCutscene,"X")
   else if sceneProgress=15
   {
-    sceneDelay+=1
-    if sceneDelay=5
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=5
+    if scrCountPass(sceneDelay,5) //60fps change: once, when the count reaches it
       npcX.sprite_index=sMegamanXKneel
     if sceneDelay>=30
     {
@@ -1233,8 +1339,10 @@ else if global.gameProgress=149 and room=rFortL2_4 //Boss Fight (Copy X)
     msgCreate("I'll be fine, but it put something into that blast#that is crippling me.",1,oMessageCutscene,"X")
   else if sceneProgress=18
   {
-    sceneDelay+=1
-    if sceneDelay=20
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=20
+    if scrCountPass(sceneDelay,20) //60fps change: once, when the count reaches it
       oPlayer1.sprite_index=sPlayerIdle
     if sceneDelay>=35
     {
@@ -1252,10 +1360,12 @@ else if global.gameProgress=149 and room=rFortL2_4 //Boss Fight (Copy X)
     msgCreate("As for you, your ass is going down!",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=23
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=1 and sceneDelay<=60
       fadeVolume(global.msc_MMxTheme,150)
-    if sceneDelay=65
+    //if sceneDelay=65
+    if scrCountPass(sceneDelay,65) //60fps change: once, when the count reaches it
     {
       with npcCopyX
         instance_destroy()
@@ -1291,14 +1401,17 @@ else if global.gameProgress=150 //boss fight ends (Copy X)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       oPlayer1.x=432
@@ -1322,13 +1435,15 @@ else if global.gameProgress=150 //boss fight ends (Copy X)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       fadeColor=c_black
@@ -1371,13 +1486,15 @@ else if global.gameProgress=150 //boss fight ends (Copy X)
   else if sceneProgress=21
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.02
+      //bossFinishFadeAlpha+=0.02
+      bossFinishFadeAlpha+=0.02*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=22
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=45
     {
       sceneDelay=0
@@ -1391,13 +1508,15 @@ else if global.gameProgress=150 //boss fight ends (Copy X)
   else if sceneProgress=25
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.02
+      //bossFinishFadeAlpha-=0.02
+      bossFinishFadeAlpha-=0.02*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=26
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -1435,28 +1554,34 @@ else if global.gameProgress=150 //boss fight ends (Copy X)
     msgCreate("I know what you are talking about.",1,oMessageCutscene,"X")
   else if sceneProgress=40
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
     {
       var tempMplay;
       tempMplay=global.msc_MMvictory
       playMusic(tempMplay,0,1)
     }
-    else if sceneDelay=200
+    //else if sceneDelay=200
+    else if scrCountPass(sceneDelay,200) //60fps change: once, when the count reaches it
     {
       npcX.sprite_index=sMegamanXWin
       chargeEffect=instance_create(npcX.x-2,npcX.y-35,oEffect)
       chargeEffect.sprite_index=sMMwin
       chargeEffect.image_speed=0.5
     }
-    else if sceneDelay=225
+    //else if sceneDelay=225
+    else if scrCountPass(sceneDelay,225) //60fps change: once, when the count reaches it
     {
       npcX.sprite_index=sPlayerDiscombobulate
       npcX.image_speed=0
     }
-    else if sceneDelay>=226
+    //else if sceneDelay>=226
+    else if sceneDelay>225 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      npcX.y-=16
+      //npcX.y-=16
+      npcX.y-=16*gDeltaTime //60fps change: per 30fps tick
       if npcX.y<=-16
       {
         sceneDelay=0
@@ -1466,7 +1591,8 @@ else if global.gameProgress=150 //boss fight ends (Copy X)
   }
   else if sceneProgress=41
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -1514,11 +1640,14 @@ else if global.MMnapalmProg=7 and room=rMaverickFactory3 //Boss Fight (Wild Skul
   else if sceneProgress=1
   {
     if oPlayer1.y<320
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=30
       {
@@ -1535,17 +1664,22 @@ else if global.MMnapalmProg=7 and room=rMaverickFactory3 //Boss Fight (Wild Skul
     msgCreate("I just don't want to fight Zero.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=5
   {
-    sceneDelay+=1
-    if sceneDelay=15
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=15
+    if scrCountPass(sceneDelay,15) //60fps change: once, when the count reaches it
     {
       boss=instance_create(416,-240,oWildSkullMachine)
       boss.image_xscale=-1
     }
-    else if sceneDelay>=16 and sceneDelay<=35
+    //else if sceneDelay>=16 and sceneDelay<=35
+    else if sceneDelay>15 and sceneDelay<=35 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      boss.y+=24
+      //boss.y+=24
+      boss.y+=24*gDeltaTime //60fps change: per 30fps tick
     }
-    else if sceneDelay=36
+    //else if sceneDelay=36
+    else if scrCountPass(sceneDelay,36) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_CASdie,0,1)
       effect=instance_create(npcZero.x,npcZero.y-16,oEffect)
@@ -1565,8 +1699,10 @@ else if global.MMnapalmProg=7 and room=rMaverickFactory3 //Boss Fight (Wild Skul
     msgCreate("That is so not funny.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=8
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       newBarrierL1=instance_create(112,256,oBossBarrier)
       newBarrierR1=instance_create(512,256,oBossBarrier)
@@ -1597,14 +1733,17 @@ else if global.MMnapalmProg=8 //boss fight ends (Wild Skull Machine)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       oPlayer1.x=336
@@ -1621,13 +1760,15 @@ else if global.MMnapalmProg=8 //boss fight ends (Wild Skull Machine)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       fadeColor=c_black
@@ -1673,7 +1814,8 @@ if global.gameProgress=129
     with readyText
     {
       draw_sprite_part(sText_Ready,-1,0,0,readyWidth,14,x,y)
-      if progress=0
+      //if progress=0
+      if scrCountPass(progress,0) //60fps change: once, when the count reaches it
       {
         if readyWidth<39
           readyWidth+=1
@@ -1682,8 +1824,10 @@ if global.gameProgress=129
       }
       else if progress>=1
       {
-        progress+=1
-        if progress mod 10=0
+        //progress+=1
+        progress+=gDeltaTime //60fps change: counts 30fps ticks
+        //if progress mod 10=0
+        if scrModPass(progress,10) //60fps change: once each time the count reaches a multiple of it
           if readyWidth=39
             readyWidth=0
           else
@@ -1702,8 +1846,10 @@ if room=rCutscene1
 }
 if room=rFortL2_3 or room=rFortL2_4
 {
-  lightFlash+=1
-  if lightFlash mod 10=0
+  //lightFlash+=1
+  lightFlash+=gDeltaTime //60fps change: counts 30fps ticks
+  //if lightFlash mod 10=0
+  if scrModPass(lightFlash,10) //60fps change: once each time the count reaches a multiple of it
   {
     if bLightOn=false
       bLightOn=true

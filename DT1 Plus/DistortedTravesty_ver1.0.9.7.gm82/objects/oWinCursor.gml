@@ -49,36 +49,39 @@ if global.gamePaused=false
       maxSpeed=myDist
       timeAlter=15-myDist
 
+      //60fps change: _hspeed/_vspeed stand in for the built-in hspeed/vspeed (see correctHSpeedVSpeed at the end), and
+      //it speeds up per 30fps tick (was: hspeed/vspeed, +-0.2)
       if x>oPlayer1.x
       {
-        if hspeed>-maxSpeed
-          hspeed-=0.2
+        if _hspeed>-maxSpeed
+          _hspeed-=0.2*gDeltaTime
         else
-          hspeed=-maxSpeed
+          _hspeed=-maxSpeed
       }
       else if x<oPlayer1.x
       {
-        if hspeed<maxSpeed
-          hspeed+=0.2
+        if _hspeed<maxSpeed
+          _hspeed+=0.2*gDeltaTime
         else
-          hspeed=maxSpeed
+          _hspeed=maxSpeed
       }
       if y>oPlayer1.y-26
       {
-        if vspeed>-maxSpeed
-          vspeed-=0.2
+        if _vspeed>-maxSpeed
+          _vspeed-=0.2*gDeltaTime
         else
-          vspeed=-maxSpeed
+          _vspeed=-maxSpeed
       }
       else if y<oPlayer1.y-26
       {
-        if vspeed<maxSpeed
-          vspeed+=0.2
+        if _vspeed<maxSpeed
+          _vspeed+=0.2*gDeltaTime
         else
-          vspeed=maxSpeed
+          _vspeed=maxSpeed
       }
 
-      pickupDelay+=timeAlter
+      //pickupDelay+=timeAlter
+      pickupDelay+=timeAlter*gDeltaTime //60fps change: per 30fps tick
       if pickupDelay>=pickupTime-130 and signalUsed=false
       {
         effect_create_above(ef_ring,x,y,0,c_green)
@@ -86,8 +89,10 @@ if global.gamePaused=false
       }
       if pickupDelay>=pickupTime
       {
-        hspeed=0
-        vspeed=0
+        //hspeed=0
+        //vspeed=0
+        _hspeed=0 //60fps change: see above
+        _vspeed=0 //60fps change: see above
         pickupDelay=0
         signalUsed=false
         sprite_index=sWinCursorBusy
@@ -96,7 +101,8 @@ if global.gamePaused=false
     }
     else if findObject=1 //searching for object (visual purpose only, and for click time)
     {
-      pickupDelay+=1
+      //pickupDelay+=1
+      pickupDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if pickupDelay>=60
       {
         sprite_index=sWinCursorDefault
@@ -113,9 +119,13 @@ if global.gamePaused=false
     }
     else if findObject=2 //go to nearest platform object (only AppWin)
     {
-      speed=4
+      //speed=4
       checkSolid=instance_nearest(x,y,oAppWinSolid)
-      direction=point_direction(x,y,checkSolid.x,checkSolid.y)
+      //direction=point_direction(x,y,checkSolid.x,checkSolid.y)
+      //60fps change: _hspeed/_vspeed stand in for the built-in motion (see correctHSpeedVSpeed at the end): speed 4 this way
+      _direction=point_direction(x,y,checkSolid.x,checkSolid.y)
+      _hspeed=lengthdir_x(4,_direction)
+      _vspeed=lengthdir_y(4,_direction)
       myDist=point_distance(x,y,checkSolid.x,checkSolid.y)
       if myDist<5
       {
@@ -129,16 +139,25 @@ if global.gamePaused=false
     }
     else if findObject=3 //find direction
     {
+      var tCurSpd; tCurSpd=point_distance(0,0,_hspeed,_vspeed) //60fps change (added): GM keeps the speed when the direction changes
       if clicked=false
-        direction=round(random(360))
+        //direction=round(random(360))
+        _direction=round(random(360)) //60fps change: see below
       else
-        direction=point_direction(x,y,pointX,pointY)
+        //direction=point_direction(x,y,pointX,pointY)
+        _direction=point_direction(x,y,pointX,pointY) //60fps change: see below
+      //60fps change (added): _hspeed/_vspeed stand in for the built-in motion (see correctHSpeedVSpeed); the same speed this way
+      _hspeed=lengthdir_x(tCurSpd,_direction)
+      _vspeed=lengthdir_y(tCurSpd,_direction)
       dragSpeed=random(1.25)+2.5
       findObject=4
     }
     else if findObject=4 //drag object
     {
-      speed=dragSpeed
+      //speed=dragSpeed
+      //60fps change: _hspeed/_vspeed stand in for the built-in motion (see correctHSpeedVSpeed at the end)
+      _hspeed=lengthdir_x(dragSpeed,_direction)
+      _vspeed=lengthdir_y(dragSpeed,_direction)
       checkSolid.x=x
       checkSolid.y=y
       if clicked=true //if object reaches the clicked position, stop dragging
@@ -147,7 +166,8 @@ if global.gamePaused=false
         if myDist<5
           pickupDelay=30
       }
-      pickupDelay+=1
+      //pickupDelay+=1
+      pickupDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if pickupDelay>=30
       {
         checkSolid.image_alpha=1
@@ -163,7 +183,10 @@ if global.gamePaused=false
 }
 else
 {
-  hspeed=0
-  vspeed=0
-  speed=0
+  //hspeed=0
+  //vspeed=0
+  //speed=0
+  _hspeed=0 //60fps change: see above
+  _vspeed=0 //60fps change: see above
 }
+correctHSpeedVSpeed(id) //60fps change (added): moves it by _hspeed/_vspeed, this frame's share of a 30fps tick

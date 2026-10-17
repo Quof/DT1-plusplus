@@ -215,7 +215,8 @@ if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up))
   global.p1WaterEnergy=global.p1MaxWaterEnergy
   global.p1WindEnergy=global.p1MaxWindEnergy
   global.p1EarthEnergy=global.p1MaxEarthEnergy
-  transition_steps=15
+  //transition_steps=15
+  transition_steps=15/gDeltaTime //60fps change: transition_steps counts frames: the same time
   transition_kind=5
   room_goto(toRoom)
 }

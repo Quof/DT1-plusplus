@@ -50,7 +50,8 @@ if activate=1
     global.newMapX=0
     global.newMapY=0
     writeToPlayerGlobals()
-    transition_steps=15
+    //transition_steps=15
+    transition_steps=15/gDeltaTime //60fps change: transition_steps counts frames: the same time
     transition_kind=5
     if floorChoice=1
       toRoom=rSoFS_Floor1

@@ -128,7 +128,8 @@ if global.gamePaused=false
     }
 
     if diamondTime<diamondWait and doubleTeam!=1
-      changeTime+=1
+      //changeTime+=1
+      changeTime+=gDeltaTime //60fps change: counts 30fps ticks
     if changeTime>=changeWait //change
     {
       if attackMode=TYPE_GROUND and lungeTime<lungeWait-2 and lungeTime>4 and doubleTeam!=1
@@ -146,7 +147,8 @@ if global.gamePaused=false
 
     if attackMode=TYPE_FORM_AIR //********** CHANGE INTO AIR FORM **********
     {
-      transformTime+=1
+      //transformTime+=1
+      transformTime+=gDeltaTime //60fps change: counts 30fps ticks
       if transformTime=1
       {
         bCanTakeDamage=false
@@ -156,31 +158,44 @@ if global.gamePaused=false
         image_speed=0
         image_index=0
       }
-      else if transformTime=3
+      //else if transformTime=3
+      else if scrCountPass(transformTime,3) //60fps change: once, when the count reaches it
         image_index=1
-      else if transformTime=5
+      //else if transformTime=5
+      else if scrCountPass(transformTime,5) //60fps change: once, when the count reaches it
         image_index=2
-      else if transformTime=7
+      //else if transformTime=7
+      else if scrCountPass(transformTime,7) //60fps change: once, when the count reaches it
         image_index=3
-      else if transformTime=9
+      //else if transformTime=9
+      else if scrCountPass(transformTime,9) //60fps change: once, when the count reaches it
         image_index=4
-      else if transformTime=11
+      //else if transformTime=11
+      else if scrCountPass(transformTime,11) //60fps change: once, when the count reaches it
         image_index=5
-      else if transformTime=13
+      //else if transformTime=13
+      else if scrCountPass(transformTime,13) //60fps change: once, when the count reaches it
         image_index=6
-      else if transformTime=15
+      //else if transformTime=15
+      else if scrCountPass(transformTime,15) //60fps change: once, when the count reaches it
         image_index=5
-      else if transformTime=17
+      //else if transformTime=17
+      else if scrCountPass(transformTime,17) //60fps change: once, when the count reaches it
         image_index=4
-      else if transformTime=19
+      //else if transformTime=19
+      else if scrCountPass(transformTime,19) //60fps change: once, when the count reaches it
         image_index=3
-      else if transformTime=21
+      //else if transformTime=21
+      else if scrCountPass(transformTime,21) //60fps change: once, when the count reaches it
         image_index=2
-      else if transformTime=23
+      //else if transformTime=23
+      else if scrCountPass(transformTime,23) //60fps change: once, when the count reaches it
         image_index=7
-      else if transformTime=25
+      //else if transformTime=25
+      else if scrCountPass(transformTime,25) //60fps change: once, when the count reaches it
         image_index=8
-      else if transformTime=27
+      //else if transformTime=27
+      else if scrCountPass(transformTime,27) //60fps change: once, when the count reaches it
       {
         image_index=0
         image_speed=animSpeed
@@ -193,7 +208,8 @@ if global.gamePaused=false
     }
     else if attackMode=TYPE_FORM_GROUND //********** CHANGE INTO GROUND FORM **********
     {
-      transformTime+=1
+      //transformTime+=1
+      transformTime+=gDeltaTime //60fps change: counts 30fps ticks
       if transformTime=1
       {
         bCanTakeDamage=false
@@ -202,19 +218,26 @@ if global.gamePaused=false
         image_speed=0
         image_index=0
       }
-      else if transformTime=3
+      //else if transformTime=3
+      else if scrCountPass(transformTime,3) //60fps change: once, when the count reaches it
         image_index=1
-      else if transformTime=5
+      //else if transformTime=5
+      else if scrCountPass(transformTime,5) //60fps change: once, when the count reaches it
         image_index=2
-      else if transformTime=7
+      //else if transformTime=7
+      else if scrCountPass(transformTime,7) //60fps change: once, when the count reaches it
         image_index=3
-      else if transformTime=9
+      //else if transformTime=9
+      else if scrCountPass(transformTime,9) //60fps change: once, when the count reaches it
         image_index=4
-      else if transformTime=11
+      //else if transformTime=11
+      else if scrCountPass(transformTime,11) //60fps change: once, when the count reaches it
         image_index=5
-      else if transformTime=13
+      //else if transformTime=13
+      else if scrCountPass(transformTime,13) //60fps change: once, when the count reaches it
         image_index=6
-      else if transformTime=15
+      //else if transformTime=15
+      else if scrCountPass(transformTime,15) //60fps change: once, when the count reaches it
       {
         transformTime=0
         attackMode=TYPE_DIVE
@@ -223,7 +246,8 @@ if global.gamePaused=false
     else if attackMode=TYPE_DIVE //********** DIVE FORM **********
     {
       if transformTime>=2
-        transformTime+=1
+        //transformTime+=1
+        transformTime+=gDeltaTime //60fps change: counts 30fps ticks
       if transformTime=0
       {
         if image_xscale=1 //go right
@@ -233,40 +257,54 @@ if global.gamePaused=false
         yVel=9
         transformTime=1
       }
-      else if transformTime=3
+      //else if transformTime=3
+      else if scrCountPass(transformTime,3) //60fps change: once, when the count reaches it
       {
         xVel=0
         sprite_index=sShroudDive2
         image_index=0
       }
-      else if transformTime=5
+      //else if transformTime=5
+      else if scrCountPass(transformTime,5) //60fps change: once, when the count reaches it
         image_index=1
-      else if transformTime=7
+      //else if transformTime=7
+      else if scrCountPass(transformTime,7) //60fps change: once, when the count reaches it
         image_index=2
-      else if transformTime=9
+      //else if transformTime=9
+      else if scrCountPass(transformTime,9) //60fps change: once, when the count reaches it
         image_index=3
-      else if transformTime=11
+      //else if transformTime=11
+      else if scrCountPass(transformTime,11) //60fps change: once, when the count reaches it
         image_index=4
-      else if transformTime=13
+      //else if transformTime=13
+      else if scrCountPass(transformTime,13) //60fps change: once, when the count reaches it
         image_index=5
-      else if transformTime=15
+      //else if transformTime=15
+      else if scrCountPass(transformTime,15) //60fps change: once, when the count reaches it
       {
         sprite_index=sShroudTransform
         image_index=6
       }
-      else if transformTime=17
+      //else if transformTime=17
+      else if scrCountPass(transformTime,17) //60fps change: once, when the count reaches it
         image_index=5
-      else if transformTime=19
+      //else if transformTime=19
+      else if scrCountPass(transformTime,19) //60fps change: once, when the count reaches it
         image_index=4
-      else if transformTime=21
+      //else if transformTime=21
+      else if scrCountPass(transformTime,21) //60fps change: once, when the count reaches it
         image_index=3
-      else if transformTime=23
+      //else if transformTime=23
+      else if scrCountPass(transformTime,23) //60fps change: once, when the count reaches it
         image_index=2
-      else if transformTime=25
+      //else if transformTime=25
+      else if scrCountPass(transformTime,25) //60fps change: once, when the count reaches it
         image_index=1
-      else if transformTime=27
+      //else if transformTime=27
+      else if scrCountPass(transformTime,27) //60fps change: once, when the count reaches it
         image_index=0
-      else if transformTime=29
+      //else if transformTime=29
+      else if scrCountPass(transformTime,29) //60fps change: once, when the count reaches it
       {
         image_index=0
         image_speed=animSpeed
@@ -278,17 +316,20 @@ if global.gamePaused=false
     }
     else if attackMode=TYPE_GROUND //********** GROUND FORM **********
     {
-      lungeTime+=1
+      //lungeTime+=1
+      lungeTime+=gDeltaTime //60fps change: counts 30fps ticks
       if lungeTime>=lungeWait
       {
-        if lungeTime=lungeWait
+        //if lungeTime=lungeWait
+        if scrCountPass(lungeTime,lungeWait) //60fps change: once, when the count reaches it
         {
           xVel=0
           sprite_index=sShroudCrawlerIdle
           image_speed=0
           image_index=0
         }
-        else if lungeTime=lungeWait+15 //start lunge
+        //else if lungeTime=lungeWait+15 //start lunge
+        else if scrCountPass(lungeTime,lungeWait+15) //start lunge //60fps change: once, when the count reaches it
         {
           bInflictSpiritDrain=true
           sprite_index=sShroudCrawlerAttack
@@ -299,7 +340,8 @@ if global.gamePaused=false
           else //go left
             xVel=-runAcc*3
         }
-        else if lungeTime=lungeWait+30 //stop lunge
+        //else if lungeTime=lungeWait+30 //stop lunge
+        else if lungeTime>=lungeWait+30 //stop lunge //60fps change: >= so it still happens if the frame rate changes mid-count (it resets)
         {
           bInflictSpiritDrain=false
           xVel=0
@@ -324,7 +366,8 @@ if global.gamePaused=false
           if instance_exists(sBuddy[0])
           {
             if sBuddy[0].attackMode=TYPE_GROUND
-              changeTime+=1
+              //changeTime+=1
+              changeTime+=gDeltaTime //60fps change: counts 30fps ticks
             maxProximity=8
           }
         }
@@ -354,16 +397,19 @@ if global.gamePaused=false
     else if attackMode=TYPE_AIR //********** AIR FORM **********
     {
       if doubleTeam!=1
-        diamondTime+=1
+        //diamondTime+=1
+        diamondTime+=gDeltaTime //60fps change: counts 30fps ticks
       if diamondTime>=diamondWait
       {
-        if diamondTime=diamondWait
+        //if diamondTime=diamondWait
+        if scrCountPass(diamondTime,diamondWait) //60fps change: once, when the count reaches it
         {
           xVel=0
           image_speed=0
           image_index=3
         }
-        else if diamondTime=diamondWait+15 //shoot diamond
+        //else if diamondTime=diamondWait+15 //shoot diamond
+        else if scrCountPass(diamondTime,diamondWait+15) //shoot diamond //60fps change: once, when the count reaches it
         {
           image_index=2
           sDiamond=instance_create(x,y-32,oShroudDiamond)
@@ -371,9 +417,11 @@ if global.gamePaused=false
           sDiamond.spiritPower=spiritPower
           sDiamond.cSize=2
           sDiamond.bulletSpeed=1
-          sDiamond.direction=point_direction(x,y-32,oPlayer1.x,oPlayer1.y-26)
+          //sDiamond.direction=point_direction(x,y-32,oPlayer1.x,oPlayer1.y-26)
+          sDiamond._direction=point_direction(x,y-32,oPlayer1.x,oPlayer1.y-26) //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         }
-        else if diamondTime=diamondWait+25 //revert to normal fly
+        //else if diamondTime=diamondWait+25 //revert to normal fly
+        else if diamondTime>=diamondWait+25 //revert to normal fly //60fps change: >= so it still happens if the frame rate changes mid-count (it resets)
         {
           diamondTime=irandom(10)
           image_speed=animSpeed
@@ -411,15 +459,18 @@ if global.gamePaused=false
         }
         else if doubleTeam=1
         {
-          dtTime+=1
-          if dtTime=1
+          //dtTime+=1
+          dtTime+=gDeltaTime //60fps change: counts 30fps ticks
+          //if dtTime=1
+          if scrCountPass(dtTime,1) //60fps change: once, when the count reaches it
           {
             bCanTakeDamage=false
             sprite_index=sShroudTransform
             image_speed=0
             image_index=0
           }
-          else if dtTime=20
+          //else if dtTime=20
+          else if scrCountPass(dtTime,20) //60fps change: once, when the count reaches it
           {
             if dtTele=true
             {
@@ -427,7 +478,8 @@ if global.gamePaused=false
               y=dtYpointSelf
             }
           }
-          else if dtTime=30
+          //else if dtTime=30
+          else if scrCountPass(dtTime,30) //60fps change: once, when the count reaches it
           {
             var dirTemp;
             dirTemp=0
@@ -438,11 +490,13 @@ if global.gamePaused=false
               sDiamond.spiritPower=spiritPower
               sDiamond.cSize=2
               sDiamond.bulletSpeed=1
-              sDiamond.direction=dirTemp
+              //sDiamond.direction=dirTemp
+              sDiamond._direction=dirTemp //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
               dirTemp+=20
             }
           }
-          else if dtTime=40
+          //else if dtTime=40
+          else if scrCountPass(dtTime,40) //60fps change: once, when the count reaches it
           {
             image_index=0
             image_speed=animSpeed
@@ -451,7 +505,8 @@ if global.gamePaused=false
             bCanTakeDamage=true
             doubleTeam=2
           }
-          image_index=irandom_range(3,6)
+          if gDeltaDoTicks //60fps change (added): a new frame once per 30fps tick
+            image_index=irandom_range(3,6)
         }
 
         if doubleTeam!=1 //no doing double team
@@ -466,7 +521,8 @@ if global.gamePaused=false
             if instance_exists(sBuddy[0])
             {
               if sBuddy[0].attackMode=TYPE_AIR
-                diamondTime+=1
+                //diamondTime+=1
+                diamondTime+=gDeltaTime //60fps change: counts 30fps ticks
               maxProximity=128
             }
           }
@@ -499,7 +555,8 @@ if global.gamePaused=false
     }
 
     if attackMode=TYPE_GROUND or attackMode=TYPE_DIVE
-      yVel+=0.4
+      //yVel+=0.4
+      yVel=scrGravAcc(yVel,0.4,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionTop(1)
     {
       if attackMode!=TYPE_DIVE
@@ -543,7 +600,8 @@ if global.gamePaused=false
             sDiamond.spiritPower=spiritPower
             sDiamond.cSize=2
             sDiamond.bulletSpeed=1
-            sDiamond.direction=dirTemp
+            //sDiamond.direction=dirTemp
+            sDiamond._direction=dirTemp //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             dirTemp+=20
           }
         }
@@ -555,7 +613,8 @@ if global.gamePaused=false
       xVel=runAcc
     if isCollisionRight(1)
       xVel=-runAcc
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     if isCollisionSolid()
       y+=2
 
@@ -622,11 +681,15 @@ applies_to=self
 if instance_number(oShroud)=1
 {
   draw_sprite_ext(sprite_index,image_index,x,y-1,image_xscale*1.025,yScaleGlow,0,c_white,0.2)
-  scaleGlowTime+=1
+  //scaleGlowTime+=1
+  scaleGlowTime+=gDeltaTime //60fps change: counts 30fps ticks
   if scaleGlowTime>=0 and scaleGlowTime<=20
-    yScaleGlow+=0.005
-  else if scaleGlowTime>=21 and scaleGlowTime<=40
-    yScaleGlow-=0.005
+    //yScaleGlow+=0.005
+    yScaleGlow+=0.005*gDeltaTime //60fps change: per 30fps tick
+  //else if scaleGlowTime>=21 and scaleGlowTime<=40
+  else if scaleGlowTime>20 and scaleGlowTime<=40 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
+    //yScaleGlow-=0.005
+    yScaleGlow-=0.005*gDeltaTime //60fps change: per 30fps tick
   else if scaleGlowTime>=41
     scaleGlowTime=0
 }

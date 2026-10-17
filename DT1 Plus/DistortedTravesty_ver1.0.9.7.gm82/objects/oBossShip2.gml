@@ -145,7 +145,8 @@ if global.gamePaused=false
   if patProg=0
   {
     if y<144
-      y+=8
+      //y+=8
+      y+=8*gDeltaTime //60fps change: per 30fps tick
     else
       patProg=1
   }
@@ -153,8 +154,10 @@ if global.gamePaused=false
   //---------- bullet pattern ----------
   if bossLives=5 and patProg=1 //**********************************************************************
   {
-    bullet_Time+=1
-    if bullet_Time>=pat1_bullet_Delay and bullet_Time mod pat1_freq=0
+    //bullet_Time+=1
+    bullet_Time+=gDeltaTime //60fps change: counts 30fps ticks
+    //if bullet_Time>=pat1_bullet_Delay and bullet_Time mod pat1_freq=0
+    if bullet_Time>=pat1_bullet_Delay and scrModPass(bullet_Time,pat1_freq) //60fps change: once each time the count reaches a multiple of it
     {
       tempDir=0
       for(i=0;i<pat1_cirAmt;i+=1)
@@ -162,7 +165,8 @@ if global.gamePaused=false
         newBullet=instance_create(x,y,oEnemyShipBulletNormal)
         newBullet.bDestroyIfOffScreen=true
         newBullet.bulletSpeed=6
-        newBullet.direction=bulDir+tempDir
+        //newBullet.direction=bulDir+tempDir
+        newBullet._direction=bulDir+tempDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         if bullet_Time-pat1_bullet_Delay<pat1_length/2
           newBullet.image_blend=make_color_rgb(255,150,150)
         else
@@ -182,8 +186,10 @@ if global.gamePaused=false
   }
   else if bossLives=4 //**********************************************************************
   {
-    bullet_Time+=1
-    if bullet_Time=pat2_homingBullet_Delay
+    //bullet_Time+=1
+    bullet_Time+=gDeltaTime //60fps change: counts 30fps ticks
+    //if bullet_Time=pat2_homingBullet_Delay
+    if scrCountPass(bullet_Time,pat2_homingBullet_Delay) //60fps change: once, when the count reaches it
     {
       bulDir=0
       if bulletPattern=0
@@ -195,12 +201,14 @@ if global.gamePaused=false
         newBullet.sprite_index=sEbulletLarge
         newBullet.bDestroyIfOffScreen=true
         newBullet.bulletSpeed=2
-        newBullet.direction=bullet_Time
+        //newBullet.direction=bullet_Time
+        newBullet._direction=bullet_Time //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         bullet_Time-=360/(pat2_homingBullet_Amt)
       }
       bullet_Time=pat2_homingBullet_Delay
     }
-    if bullet_Time>=pat2_homingBullet_Delay and bullet_Time mod pat2_homingBullet_freq=0
+    //if bullet_Time>=pat2_homingBullet_Delay and bullet_Time mod pat2_homingBullet_freq=0
+    if bullet_Time>=pat2_homingBullet_Delay and scrModPass(bullet_Time,pat2_homingBullet_freq) //60fps change: once each time the count reaches a multiple of it
     {
       bulDir+=5
       tempDir=bulletPattern
@@ -209,7 +217,8 @@ if global.gamePaused=false
         newBullet=instance_create(x,y,oBoss2HomingBullet)
         newBullet.bDestroyIfOffScreen=true
         newBullet.bulletSpeed=8
-        newBullet.direction=tempDir
+        //newBullet.direction=tempDir
+        newBullet._direction=tempDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.stopTime=45+bulDir+(i*3)
         tempDir-=90/pat2_homingBullet_Amt
       }
@@ -225,7 +234,8 @@ if global.gamePaused=false
         newBullet.sprite_index=sEbulletLarge
         newBullet.bDestroyIfOffScreen=true
         newBullet.bulletSpeed=3
-        newBullet.direction=bullet_Time
+        //newBullet.direction=bullet_Time
+        newBullet._direction=bullet_Time //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         bullet_Time-=360/(pat2_homingBullet_Amt*2)
       }
       if life<maxLife/2 and bulletSequence=0
@@ -236,10 +246,13 @@ if global.gamePaused=false
   }
   else if bossLives=3 //**********************************************************************
   {
-    bullet_Time+=1
-    if bullet_Time=pat3_bullet_Delay
+    //bullet_Time+=1
+    bullet_Time+=gDeltaTime //60fps change: counts 30fps ticks
+    //if bullet_Time=pat3_bullet_Delay
+    if scrCountPass(bullet_Time,pat3_bullet_Delay) //60fps change: once, when the count reaches it
       bulDir=random(360)
-    if bullet_Time>=pat3_bullet_Delay and bullet_Time mod pat3_freq=0
+    //if bullet_Time>=pat3_bullet_Delay and bullet_Time mod pat3_freq=0
+    if bullet_Time>=pat3_bullet_Delay and scrModPass(bullet_Time,pat3_freq) //60fps change: once each time the count reaches a multiple of it
     {
       tempDir=0
       for(i=0;i<pat3_cirAmt;i+=1)
@@ -247,7 +260,8 @@ if global.gamePaused=false
         newBullet=instance_create(x,y,oBoss2BulletLongArc)
         newBullet.bDestroyIfOffScreen=true
         newBullet.bulletSpeed=8
-        newBullet.direction=bulDir+tempDir
+        //newBullet.direction=bulDir+tempDir
+        newBullet._direction=bulDir+tempDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.changeDir=9.25
         newBullet.stopArc=35
         if bullet_Time-pat3_bullet_Delay<pat3_length/2+(pat3_length/10)
@@ -258,7 +272,8 @@ if global.gamePaused=false
         newBullet=instance_create(x,y,oBoss2BulletLongArc)
         newBullet.bDestroyIfOffScreen=true
         newBullet.bulletSpeed=8
-        newBullet.direction=bulDir+tempDir
+        //newBullet.direction=bulDir+tempDir
+        newBullet._direction=bulDir+tempDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.changeDir=-9.25
         newBullet.stopArc=35
         if bullet_Time-pat3_bullet_Delay<pat3_length/2+(pat3_length/4)
@@ -279,7 +294,8 @@ if global.gamePaused=false
           newBullet=instance_create(x,y,oEnemyShipBulletNormal)
           newBullet.bDestroyIfOffScreen=true
           newBullet.bulletSpeed=3.5
-          newBullet.direction=bullet_Time
+          //newBullet.direction=bullet_Time
+          newBullet._direction=bullet_Time //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newBullet.image_blend=make_color_rgb(255,150,150)
           bullet_Time-=360/(pat3_cirAmt*2)
         }
@@ -289,8 +305,10 @@ if global.gamePaused=false
   }
   else if bossLives=2 //**********************************************************************
   {
-    bullet_Time+=1
-    if bullet_Time>=pat4_bullet_Delay and bullet_Time mod pat4_freq=0
+    //bullet_Time+=1
+    bullet_Time+=gDeltaTime //60fps change: counts 30fps ticks
+    //if bullet_Time>=pat4_bullet_Delay and bullet_Time mod pat4_freq=0
+    if bullet_Time>=pat4_bullet_Delay and scrModPass(bullet_Time,pat4_freq) //60fps change: once each time the count reaches a multiple of it
     {
       tempDir=random(360)
       for(i=0;i<pat4_cirAmt;i+=1)
@@ -298,13 +316,15 @@ if global.gamePaused=false
         newBullet=instance_create(x,y,oBoss1SmallBullet)
         newBullet.bDestroyIfOffScreen=true
         newBullet.bulletSpeed=2
-        newBullet.direction=tempDir
+        //newBullet.direction=tempDir
+        newBullet._direction=tempDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.bulletArc=1.5
 
         newBullet=instance_create(x,y,oBoss1SmallBullet)
         newBullet.bDestroyIfOffScreen=true
         newBullet.bulletSpeed=2
-        newBullet.direction=tempDir
+        //newBullet.direction=tempDir
+        newBullet._direction=tempDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.bulletArc=-1.5
 
         tempDir+=360/pat4_cirAmt
@@ -320,8 +340,10 @@ if global.gamePaused=false
   }
   else if bossLives=1 //**********************************************************************
   {
-    bullet_Time+=1
-    if bullet_Time mod pat5_freq=0
+    //bullet_Time+=1
+    bullet_Time+=gDeltaTime //60fps change: counts 30fps ticks
+    //if bullet_Time mod pat5_freq=0
+    if scrModPass(bullet_Time,pat5_freq) //60fps change: once each time the count reaches a multiple of it
     {
       tempDir=0
       bulletSequence+=1
@@ -344,7 +366,8 @@ if global.gamePaused=false
         newBullet.x=x+lengthdir_x(320,bulDir+tempDir)
         newBullet.y=y+lengthdir_y(320,bulDir+tempDir)
         newBullet.bulletSpeed=2
-        newBullet.direction=bulDir+tempDir-180
+        //newBullet.direction=bulDir+tempDir-180
+        newBullet._direction=bulDir+tempDir-180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.image_blend=make_color_rgb(255,150,150)
         if bulletPattern=3
         {
@@ -352,7 +375,8 @@ if global.gamePaused=false
           newBullet.x=x+lengthdir_x(320,bulDir+tempDir)
           newBullet.y=y+lengthdir_y(320,bulDir+tempDir)
           newBullet.bulletSpeed=3
-          newBullet.direction=bulDir+tempDir-180
+          //newBullet.direction=bulDir+tempDir-180
+          newBullet._direction=bulDir+tempDir-180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newBullet.image_blend=make_color_rgb(255,150,150)
         }
         tempDir+=360/pat5_cirAmt

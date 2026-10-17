@@ -68,10 +68,12 @@ if global.gamePaused=false
     else
       image_xscale=-1
     //shoot
-    shootTime+=1
+    //shootTime+=1
+    shootTime+=gDeltaTime //60fps change: counts 30fps ticks
     if shootTime>=reShootTime
     {
-      if multiShot>0 and shootTime mod 5=0
+      //if multiShot>0 and shootTime mod 5=0
+      if multiShot>0 and scrModPass(shootTime,5) //60fps change: once each time the count reaches a multiple of it
       {
         var xx;
         if image_xscale=1

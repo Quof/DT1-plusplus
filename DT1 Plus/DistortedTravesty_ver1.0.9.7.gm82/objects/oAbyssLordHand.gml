@@ -79,8 +79,10 @@ if global.gamePaused=false
   {
     if currentAttack=0
     {
-      darkballTime+=1
-      crushTime+=1
+      //darkballTime+=1
+      //crushTime+=1
+      darkballTime+=gDeltaTime //60fps change: counts 30fps ticks
+      crushTime+=gDeltaTime //60fps change: counts 30fps ticks
     }
 
     if darkballTime>=darkballDelay and currentAttack!=2 //dark ball attack
@@ -91,8 +93,10 @@ if global.gamePaused=false
         darkballTime=1000
         sprite_index=sAbyssLordHand_Open
       }
-      darkballTime+=1
-      if darkballTime=1045
+      //darkballTime+=1
+      darkballTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if darkballTime=1045
+      if scrCountPass(darkballTime,1045) //60fps change: once, when the count reaches it
       {
         var xx;
         if image_xscale=1
@@ -119,29 +123,41 @@ if global.gamePaused=false
         crushType=round(random(1))
         sprite_index=sAbyssLordHand_Crush
       }
-      crushTime+=1
-      if crushTime>=1021 and crushTime<=1070 //crush type
+      //crushTime+=1
+      crushTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if crushTime>=1021 and crushTime<=1070 //crush type
+      if crushTime>1020 and crushTime<=1070 //crush type //60fps change: the same 30fps ticks, counted in gDeltaTime steps
       {
         if crushType=0 //center crush
         {
           if x>=xCenter
-            x-=1
+            //x-=1
+            x-=1*gDeltaTime //60fps change: per 30fps tick
           else
-            x+=1
+            //x+=1
+            x+=1*gDeltaTime //60fps change: per 30fps tick
         }
         else //seek crush
         {
           if x>oPlayer1.x and x>xCenter-roomSpan
-            x-=2
+            //x-=2
+            x-=2*gDeltaTime //60fps change: per 30fps tick
           if x<oPlayer1.x and x<xCenter+roomSpan
-            x+=2
+            //x+=2
+            x+=2*gDeltaTime //60fps change: per 30fps tick
         }
       }
-      if crushTime>=1021 and crushTime<=1050
-        y-=4
-      else if crushTime>=1080 and crushTime<=1999
+      //if crushTime>=1021 and crushTime<=1050
+      //  y-=4
+      //else if crushTime>=1080 and crushTime<=1999
+      //{
+      //  y+=14
+      //60fps change: the same 30fps ticks, counted in gDeltaTime steps; it moves per 30fps tick
+      if crushTime>1020 and crushTime<=1050
+        y-=4*gDeltaTime
+      else if crushTime>1079 and crushTime<=1999
       {
-        y+=14
+        y+=14*gDeltaTime
         bCanDealDamage=true
         if y>=yGround-73 //hit the ground
         {
@@ -172,15 +188,25 @@ if global.gamePaused=false
           bCanDealDamage=false
         }
       }
-      else if crushTime>=2030
+      //else if crushTime>=2030
+      //{
+      //  if crushTime=2030
+      //    sprite_index=sAbyssLordHand_Close
+      //  if x>=xCenter
+      //    x-=2
+      //  else
+      //    x+=2
+      //  y-=4
+      //60fps change: the same 30fps ticks, counted in gDeltaTime steps (and the sprite once, when it reaches 2030); it moves per 30fps tick
+      else if crushTime>2029
       {
-        if crushTime=2030
+        if scrCountPass(crushTime,2030)
           sprite_index=sAbyssLordHand_Close
         if x>=xCenter
-          x-=2
+          x-=2*gDeltaTime
         else
-          x+=2
-        y-=4
+          x+=2*gDeltaTime
+        y-=4*gDeltaTime
         if y<=yNeutral
         {
           crushTime=0
@@ -265,7 +291,8 @@ applies_to=self
 */
 if instance_exists(explosion)
 {
-  oEvDistortionAmbience1.dRx-=2
+  //oEvDistortionAmbience1.dRx-=2
+  oEvDistortionAmbience1.dRx-=2*gDeltaTime //60fps change: per 30fps tick
   var xx1, xx2;
   if type=1
     xh=16

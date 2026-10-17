@@ -88,8 +88,10 @@ if global.gamePaused=false
   {
     if currentAttack=0
     {
-      laserTime+=1
-      fireballTime+=1
+      //laserTime+=1
+      //fireballTime+=1
+      laserTime+=gDeltaTime //60fps change: counts 30fps ticks
+      fireballTime+=gDeltaTime //60fps change: counts 30fps ticks
     }
     image_index=currentAttack
     if laserTime>=laserDelay and currentAttack!=2 //laser attack
@@ -99,18 +101,21 @@ if global.gamePaused=false
         laserTime=1000
         currentAttack=1
       }
-      laserTime+=1
+      //laserTime+=1
+      laserTime+=gDeltaTime //60fps change: counts 30fps ticks
       if laserTime>=1030
       {
         laserAttackR=instance_create(x+9,y+10,oLaserB)
         laserAttackR.spiritPower=spiritPower
         laserAttackR.damageType="SPIRIT"
-        laserAttackR.direction=point_direction(x+9,y+10,oPlayer1.x,oPlayer1.y-22)
+        //laserAttackR.direction=point_direction(x+9,y+10,oPlayer1.x,oPlayer1.y-22)
+        laserAttackR._direction=point_direction(x+9,y+10,oPlayer1.x,oPlayer1.y-22) //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         laserAttackR.bulletSpeed=6
         laserAttackL=instance_create(x-9,y+10,oLaserB)
         laserAttackL.spiritPower=spiritPower
         laserAttackL.damageType="SPIRIT"
-        laserAttackL.direction=point_direction(x-9,y+10,oPlayer1.x,oPlayer1.y-22)
+        //laserAttackL.direction=point_direction(x-9,y+10,oPlayer1.x,oPlayer1.y-22)
+        laserAttackL._direction=point_direction(x-9,y+10,oPlayer1.x,oPlayer1.y-22) //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         laserAttackL.bulletSpeed=6
         laserTime=0
         currentAttack=0
@@ -123,10 +128,12 @@ if global.gamePaused=false
         fireballTime=1000
         currentAttack=2
       }
-      fireballTime+=1
+      //fireballTime+=1
+      fireballTime+=gDeltaTime //60fps change: counts 30fps ticks
       if fireballTime>=1030
       {
-        if fireballTime mod fireFreq=0
+        //if fireballTime mod fireFreq=0
+        if scrModPass(fireballTime,fireFreq) //60fps change: once each time the count reaches a multiple of it
         {
           fireAttack=instance_create(x,y-7,oALfireball)
           fireAttack.spiritPower=spiritPower

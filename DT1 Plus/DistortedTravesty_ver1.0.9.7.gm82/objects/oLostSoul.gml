@@ -80,16 +80,20 @@ if global.gamePaused=false
   {
     if appearance=1
     {
-      if instance_exists(oCharacter) and shotTime<=shotWait+2
+      //if instance_exists(oCharacter) and shotTime<=shotWait+2
+      if instance_exists(oCharacter) and shotTime<shotWait+3 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps; the same as <=shotWait+2 in whole ticks)
       {
         dir=point_direction(x,y,oCharacter.x,oCharacter.y-22)
-        moveTo(runAcc*cos(degtorad(dir)),-runAcc*sin(degtorad(dir)))
+        //moveTo(runAcc*cos(degtorad(dir)),-runAcc*sin(degtorad(dir)))
+        moveTo(runAcc*cos(degtorad(dir))*gDeltaTime,-runAcc*sin(degtorad(dir))*gDeltaTime) //60fps change: this frame's share of a 30fps tick
       }
 
-      shotTime+=1
+      //shotTime+=1
+      shotTime+=gDeltaTime //60fps change: counts 30fps ticks
       if shotTime>=shotWait
       {
-        if shotTime=shotWait
+        //if shotTime=shotWait
+        if scrCountPass(shotTime,shotWait) //60fps change: once, when the count reaches it
         {
           afterImage=instance_create(x,y,oEnemyAfterImage)
           afterImage.image_alpha=1
@@ -99,7 +103,8 @@ if global.gamePaused=false
           afterImage.xScalingSet=0.1
           afterImage.yScalingSet=0.1
         }
-        else if shotTime=shotWait+20
+        //else if shotTime=shotWait+20
+        else if scrCountPass(shotTime,shotWait+20) //60fps change: once, when the count reaches it
         {
           var dir;
           dir=point_direction(x,y,oPlayer1.x,oPlayer1.y-22)
@@ -126,7 +131,8 @@ if global.gamePaused=false
             dir+=360/fireAmount
           }
         }
-        else if shotTime=shotWait+45
+        //else if shotTime=shotWait+45
+        else if shotTime>=shotWait+45 //60fps change: >= so it still resets if the frame rate changes mid-count
           shotTime=0
       }
     }
@@ -168,8 +174,10 @@ if bActive=true and appearance=0 and global.gamePaused=false
     iy[i]=y+lengthdir_y(appearDist,appearDir+(i*45))
     draw_sprite_ext(sprite_index,image_index,ix[i],iy[i],0.6,0.6,0,image_blend,0.75)
   }
-  appearDir+=5
-  appearDist-=2
+  //appearDir+=5
+  appearDir+=5*gDeltaTime //60fps change: per 30fps tick
+  //appearDist-=2
+  appearDist-=2*gDeltaTime //60fps change: per 30fps tick
   if appearDist<=0
   {
     detectDistX=280

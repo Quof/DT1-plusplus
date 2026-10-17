@@ -23,8 +23,10 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  speed=fireSpeed
-  spiritPower-=1
+  //speed=fireSpeed
+  _speed=fireSpeed //60fps change: moved by correctSpeedDirection (end of the step)
+  //spiritPower-=1
+  spiritPower-=gDeltaTime //60fps change: per 30fps tick
 
   if isCollisionLeft(1)
     instance_destroy()
@@ -32,7 +34,9 @@ if global.gamePaused=false
     instance_destroy()
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above
+correctSpeedDirection(id) //60fps change (added): moves it by _speed in _direction, this frame's share of a 30fps tick
 #define Other_7
 /*"/*'/**//* YYD ACTION
 lib_id=1

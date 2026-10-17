@@ -33,11 +33,13 @@ if (keyboard_check(ord(global.ctrlUp)) or keyboard_check(vk_up)) and global.game
     global.worldMapY=newMapY
     writeToPlayerGlobals()
     transition_kind=20
-    transition_steps=30
+    //transition_steps=30
+    transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
     room_goto(toRoom)
   }
   else
-    holdTime+=1
+    //holdTime+=1
+    holdTime+=gDeltaTime //60fps change: counts 30fps ticks
 }
 else
   holdTime=0

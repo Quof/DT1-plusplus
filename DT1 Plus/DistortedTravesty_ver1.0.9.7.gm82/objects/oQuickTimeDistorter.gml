@@ -129,7 +129,9 @@ if global.gamePaused=false
     //movement
     if moveTime>=moveChange
     {
-      moveTime=0
+      //moveTime=0
+      //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
+      moveTime=gDeltaTime-1
       xVel=0
       currentMovement=choose(0,1)
       if x>xCenter+roomSpan-96
@@ -138,23 +140,27 @@ if global.gamePaused=false
         currentMovement=0
     }
     else
-      moveTime+=1
+      //moveTime+=1
+      moveTime+=gDeltaTime //60fps change: see above
     if currentMovement=0 or currentMovement=1 //move left or right
     {
       if currentMovement=1 //left
       {
-        xVel-=0.01
+        //xVel-=0.01
+        xVel-=0.01*gDeltaTime //60fps change: per 30fps tick
         if xVel<-0.25
           xVel=-0.25
       }
       else if currentMovement=0 //right
       {
-        xVel+=0.01
+        //xVel+=0.01
+        xVel+=0.01*gDeltaTime //60fps change: per 30fps tick
         if xVel>0.25
           xVel=0.25
       }
     }
-    elemChangeTime+=1
+    //elemChangeTime+=1
+    elemChangeTime+=gDeltaTime //60fps change: counts 30fps ticks
     if elemChangeTime>=elemChangeTimeMax
     {
       if elementsActive<maxElements
@@ -198,18 +204,21 @@ if global.gamePaused=false
     //attacks
     if bFireActive=true
     {
-      fireAttackDelay+=1
+      //fireAttackDelay+=1
+      fireAttackDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if fireAttackDelay>=fireWaitTime
       {
         if fireAttackDelay<1000
           fireAttackDelay=1001
-        if fireAttackDelay mod fireFreq=0
+        //if fireAttackDelay mod fireFreq=0
+        if scrModPass(fireAttackDelay,fireFreq) //60fps change: once each time the count reaches a multiple of it
         {
           playSound(global.snd_SpellFireball,0,1)
           fireBall=instance_create((xCenter-roomSpan)+random(roomSpan*2),-32,oKreFire)
           fireBall.spiritPower=spiritPower
           fireBall.type=1
-          fireBall.direction=270
+          //fireBall.direction=270
+          fireBall._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         }
         if fireAttackDelay>=1095
         {
@@ -224,7 +233,8 @@ if global.gamePaused=false
     }
     if bWaterActive=true
     {
-      waterAttackDelay+=1
+      //waterAttackDelay+=1
+      waterAttackDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if waterAttackDelay>=waterWaitTime
       {
         if waterAttackDelay<1000
@@ -237,7 +247,8 @@ if global.gamePaused=false
     }
     if bWindActive=true
     {
-      windAttackDelay+=1
+      //windAttackDelay+=1
+      windAttackDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if windAttackDelay>=waterWaitTime
       {
         if windAttackDelay<1000
@@ -246,10 +257,12 @@ if global.gamePaused=false
           playSound(global.snd_SpellWindStorm,0,1)
           tornado=instance_create(oPlayer1.x+160,yGround,oQTD_Tornado)
           tornado.spiritPower=spiritPower
-          tornado.direction=180
+          //tornado.direction=180
+          tornado._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           tornado=instance_create(oPlayer1.x-160,yGround,oQTD_Tornado)
           tornado.spiritPower=spiritPower
-          tornado.direction=0
+          //tornado.direction=0
+          tornado._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         }
         if windAttackDelay>=1010
         {
@@ -264,7 +277,8 @@ if global.gamePaused=false
     }
     if bEarthActive=true
     {
-      earthAttackDelay+=1
+      //earthAttackDelay+=1
+      earthAttackDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if earthAttackDelay>=earthWaitTime
       {
         if earthAttackDelay<1000
@@ -276,12 +290,14 @@ if global.gamePaused=false
           else if xDir=1
             xCheck=xCenter+roomSpan
         }
-        if earthAttackDelay mod 5=0 and earthAttackDelay<=1080
+        //if earthAttackDelay mod 5=0 and earthAttackDelay<=1080
+        if scrModPass(earthAttackDelay,5) and earthAttackDelay<=1080 //60fps change: once each time the count reaches a multiple of it
         {
           rockstorm=instance_create(xCheck,room_height+16,oQTD_RockStorm)
           rockstorm.spiritPower=spiritPower
           rockstorm.type=1
-          rockstorm.direction=90
+          //rockstorm.direction=90
+          rockstorm._direction=90 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           if xDir=0
             xCheck+=32
           else if xDir=1
@@ -360,15 +376,20 @@ if global.gamePaused=false
       bossProgress+=1
     }
   }
-  if isCollisionTop(1)
+  //if isCollisionTop(1)
+  if isCollisionTop(1) and (gDeltaTime==1 or yVel<0) //60fps change: above 30fps, only bounce off what it's moving into (it can still be touching it on the next frame)
     yVel*=-1
-  if isCollisionBottom(1)
+  //if isCollisionBottom(1)
+  if isCollisionBottom(1) and (gDeltaTime==1 or yVel>0) //60fps change: see above
     yVel*=-1
-  if isCollisionLeft(1)
+  //if isCollisionLeft(1)
+  if isCollisionLeft(1) and (gDeltaTime==1 or xVel<0) //60fps change: see above
     xVel*=-1
-  if isCollisionRight(1)
+  //if isCollisionRight(1)
+  if isCollisionRight(1) and (gDeltaTime==1 or xVel>0) //60fps change: see above
     xVel*=-1
-  moveTo(xVel,yVel)
+  //moveTo(xVel,yVel)
+  moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
   enemyStepEvent()
 }
 #define Collision_oAttackBase

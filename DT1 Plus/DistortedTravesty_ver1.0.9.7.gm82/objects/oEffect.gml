@@ -4,13 +4,17 @@ lib_id=1
 action_id=603
 applies_to=self
 */
+//60fps change: moves and counts down per 30fps tick (*gDeltaTime)
 if variable_local_exists("xSpd")
-  x+=xSpd
+  //x+=xSpd
+  x+=xSpd*gDeltaTime
 if variable_local_exists("ySpd")
-  y+=ySpd
+  //y+=ySpd
+  y+=ySpd*gDeltaTime
 if variable_local_exists("decay")
 {
-  decay-=1
+  //decay-=1
+  decay-=gDeltaTime
   if decay<=0
     instance_destroy()
 }

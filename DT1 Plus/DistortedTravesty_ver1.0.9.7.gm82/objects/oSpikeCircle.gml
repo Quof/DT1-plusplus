@@ -36,7 +36,8 @@ applies_to=self
 if global.gamePaused=false
 {
   makeEnemyActive()
-  image_angle+=spinSpd
+  //image_angle+=spinSpd
+  image_angle+=spinSpd*gDeltaTime //60fps change: per 30fps tick
 }
 #define Collision_oPlayer1
 /*"/*'/**//* YYD ACTION

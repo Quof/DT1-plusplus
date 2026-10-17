@@ -71,8 +71,10 @@ if global.gamePaused=false
         xVel=runAcc
       initDir=true
     }
-    throwTime+=1
-    if throwTime>=throwDelay
+    //throwTime+=1
+    throwTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if throwTime>=throwDelay
+    if throwTime>throwDelay-1 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps; with >= it walked half a tick more each cycle)
     {
       xVel=0
       if throwTime>=throwDelay+(throwDelay/5)
@@ -85,27 +87,36 @@ if global.gamePaused=false
         newAttack.physicalPower=physicalPower
         newAttack.bulletSpeed=3
         if image_xscale=1
-          newAttack.direction=0
+          //newAttack.direction=0
+          newAttack._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         else
-          newAttack.direction=180
+          //newAttack.direction=180
+          newAttack._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         throwTime=0
         initDir=false
       }
     }
     else
-    yVel+=0.2
+    //yVel+=0.2
+    yVel=scrGravAcc(yVel,0.2,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
-    if isCollisionLeft(1)
+    //if isCollisionLeft(1)
+    //  xVel*=-1
+    //if isCollisionRight(1)
+    //  xVel*=-1
+    //60fps change: only turn around when moving into the wall (it can still touch it on the next frame above 30fps)
+    if isCollisionLeftEdit(1)
       xVel*=-1
-    if isCollisionRight(1)
+    if isCollisionRightEdit(1)
       xVel*=-1
 
     if xVel>0
       image_xscale=1
     else if xVel<0
       image_xscale=-1
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     if isCollisionSolid()
       y-=2
     if y>room_height+24

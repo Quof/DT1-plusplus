@@ -75,10 +75,13 @@ if global.gamePaused=false
       dir=point_direction(x,y,oCharacter.x,oCharacter.y-22)
       dir1=dir+ran1
       dir2=dir+ran2
-      moveTo(runAcc*cos(degtorad(dir1)),-runAcc*sin(degtorad(dir2)))
+      //moveTo(runAcc*cos(degtorad(dir1)),-runAcc*sin(degtorad(dir2)))
+      moveTo(runAcc*cos(degtorad(dir1))*gDeltaTime,-runAcc*sin(degtorad(dir2))*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     }
-    shootTime+=1
-    if shootTime>=reShootTime and shootTime mod 3=0
+    //shootTime+=1
+    shootTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if shootTime>=reShootTime and shootTime mod 3=0
+    if shootTime>=reShootTime and scrModPass(shootTime,3) //60fps change: once each time the count reaches a multiple of it
     {
       newAttack=instance_create(x,y,oShotzoBullet)
       newAttack.sprite_index=sDrMarioVirusRed

@@ -20,7 +20,8 @@ action_id=603
 applies_to=self
 */
 //-------------------- Explosion Effect --------------------
-explosionDelay-=1
+//explosionDelay-=1
+explosionDelay-=gDeltaTime //60fps change: counts 30fps ticks
 if explosionDelay<=0
 {
   explosionX=(view_xview[0]-8)+random(view_wview[0]+16)
@@ -46,13 +47,19 @@ if explosionDelay<=0
   }
 }
 //-------------------- Red Fade Effect --------------------
-redFadeTime+=1
-if redFadeTime>=1 and redFadeTime<=50
-  redFadeAlpha+=0.002
-else if redFadeTime>=51 and redFadeTime<=100
+//redFadeTime+=1
+redFadeTime+=gDeltaTime //60fps change: counts 30fps ticks
+//if redFadeTime>=1 and redFadeTime<=50
+if redFadeTime>0 and redFadeTime<=50 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+  //redFadeAlpha+=0.002
+  redFadeAlpha+=0.002*gDeltaTime //60fps change: per 30fps tick
+//else if redFadeTime>=51 and redFadeTime<=100
+else if redFadeTime>50 and redFadeTime<=100 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
 {
-  redFadeAlpha-=0.002
-  if redFadeTime=100
+  //redFadeAlpha-=0.002
+  redFadeAlpha-=0.002*gDeltaTime //60fps change: per 30fps tick
+  //if redFadeTime=100
+  if scrCountPass(redFadeTime,100) //60fps change: once, when the count reaches it
     redFadeTime=0
 }
 #define Draw_0

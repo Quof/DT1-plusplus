@@ -4,6 +4,8 @@ lib_id=1
 action_id=603
 applies_to=self
 */
+_speed=0 //60fps change (added): _speed/_direction stand in for the built-in speed/direction, which start at 0
+_direction=0 //60fps change (added): (they must exist before the Step reads them; a spawner sets them after this)
 maxLife=100
 life=maxLife
 pointValue=1000
@@ -137,7 +139,8 @@ action_id=603
 applies_to=self
 */
 image_blend=c_red
-life-=120
+//life-=120
+life-=120*gDeltaTime //60fps change: damage per 30fps tick while the bomb overlaps it (this runs every frame)
 if bHitWithBomb=0
 {
   if pointItemAmt>1

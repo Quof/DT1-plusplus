@@ -138,8 +138,10 @@ if global.gamePaused=false
     activateBoss=2
   }
 
-  alphaChange+=1
-  if alphaChange mod 10=0
+  //alphaChange+=1
+  alphaChange+=gDeltaTime //60fps change: counts 30fps ticks
+  //if alphaChange mod 10=0
+  if scrModPass(alphaChange,10) //60fps change: once each time the count reaches a multiple of it
     armAlpha=random(0.15)+0.05
 
   if bActive=true and dieFade=0
@@ -154,42 +156,46 @@ if global.gamePaused=false
         myDist=minSpd
       maxSpeed=myDist
 
+      //60fps change: _hspeed/_vspeed stand in for the built-in hspeed/vspeed (see correctHSpeedVSpeed at the end), and it speeds up per 30fps tick (was: hspeed/vspeed, +-0.2)
       if x>oPlayer1.x
       {
-        if hspeed>-maxSpeed
-          hspeed-=0.2
+        if _hspeed>-maxSpeed
+          _hspeed-=0.2*gDeltaTime
         else
-          hspeed=-maxSpeed
+          _hspeed=-maxSpeed
       }
       else if x<oPlayer1.x
       {
-        if hspeed<maxSpeed
-          hspeed+=0.2
+        if _hspeed<maxSpeed
+          _hspeed+=0.2*gDeltaTime
         else
-          hspeed=maxSpeed
+          _hspeed=maxSpeed
       }
       if y>oPlayer1.y-26
       {
-        if vspeed>-maxSpeed
-          vspeed-=0.2
+        if _vspeed>-maxSpeed
+          _vspeed-=0.2*gDeltaTime
         else
-          vspeed=-maxSpeed
+          _vspeed=-maxSpeed
       }
       else if y<oPlayer1.y-26
       {
-        if vspeed<maxSpeed
-          vspeed+=0.2
+        if _vspeed<maxSpeed
+          _vspeed+=0.2*gDeltaTime
         else
-          vspeed=maxSpeed
+          _vspeed=maxSpeed
       }
     }
-    attackDelay+=1
+    //attackDelay+=1
+    attackDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if attackDelay>=waitTime
     {
       if menuPopup=false and currentAttack=0 //choose attack
       {
-        hspeed=0
-        vspeed=0
+        //hspeed=0
+        //vspeed=0
+        _hspeed=0 //60fps change: _hspeed/_vspeed stand in for the built-in hspeed/vspeed (see correctHSpeedVSpeed at the end)
+        _vspeed=0 //60fps change: see above
         mPosX=x
         mPosY=y
         menuPopup=true
@@ -234,8 +240,10 @@ if global.gamePaused=false
       {
         if chooseAttack>0
         {
-          mouseDownTime-=1
-          if mouseDownTime<=0
+          //mouseDownTime-=1
+          mouseDownTime-=gDeltaTime //60fps change: counts 30fps ticks
+          //if mouseDownTime<=0
+          if mouseDownTime<1 //60fps change: the same 30fps ticks (it counts down in gDeltaTime steps; the same as <=0 in whole ticks), so it moves as far
           {
             if mouseDownTime<=-holdTime
             {
@@ -246,8 +254,10 @@ if global.gamePaused=false
           }
           else
           {
-            x+=1.5
-            y+=3
+            //x+=1.5
+            x+=1.5*gDeltaTime //60fps change: per 30fps tick
+            //y+=3
+            y+=3*gDeltaTime //60fps change: per 30fps tick
           }
         }
       }
@@ -274,12 +284,18 @@ if global.gamePaused=false
         }
         if bDragCreate=true
         {
-          xDragTime-=1
-          yDragTime-=1
-          if xDragTime>0
-            x+=xDragSpd
-          if yDragTime>0
-            y+=yDragSpd
+          //xDragTime-=1
+          xDragTime-=gDeltaTime //60fps change: counts 30fps ticks
+          //yDragTime-=1
+          yDragTime-=gDeltaTime //60fps change: counts 30fps ticks
+          //if xDragTime>0
+          if xDragTime>=1 //60fps change: the same 30fps ticks (the same as >0 in whole ticks)
+            //x+=xDragSpd
+            x+=xDragSpd*gDeltaTime //60fps change: per 30fps tick
+          //if yDragTime>0
+          if yDragTime>=1 //60fps change: see above
+            //y+=yDragSpd
+            y+=yDragSpd*gDeltaTime //60fps change: per 30fps tick
 
           if xDragTime<=0 and yDragTime<=0
           {
@@ -328,7 +344,8 @@ if global.gamePaused=false
         currentAttack=1
       else if currentAttack=3 //toss icons
       {
-        attackTime+=1
+        //attackTime+=1
+        attackTime+=gDeltaTime //60fps change: counts 30fps ticks
         if attackProgress=0
         {
           xAtkStart=x
@@ -339,7 +356,8 @@ if global.gamePaused=false
           attackType=choose(0,1,2)
           attackProgress=1
         }
-        if attackTime mod 3=0 and attackTime<=appCreate*3
+        //if attackTime mod 3=0 and attackTime<=appCreate*3
+        if scrModPass(attackTime,3) and attackTime<=appCreate*3 //60fps change: once each time the count reaches a multiple of it
         {
           appAttack=instance_create(xAtkStart+xOffset,yAtkStart+yOffset,oDCApp)
           appAttack.spiritPower=spiritPower
@@ -364,7 +382,8 @@ if global.gamePaused=false
       }
       else if currentAttack=4 //type a taunt
       {
-        attackTime+=1
+        //attackTime+=1
+        attackTime+=gDeltaTime //60fps change: counts 30fps ticks
         if attackProgress=0
         {
           textAttack=instance_create(x,y,oTextAttack)
@@ -389,8 +408,10 @@ if global.gamePaused=false
           with oTextAttack
             instance_destroy()
           currentMovement=0
-          hspeed=0
-          vspeed=0
+          //hspeed=0
+          //vspeed=0
+          _hspeed=0 //60fps change: _hspeed/_vspeed stand in for the built-in hspeed/vspeed (see correctHSpeedVSpeed at the end)
+          _vspeed=0 //60fps change: see above
           physicalDefense*=5
           spiritDefense*=5
           atkDir=0
@@ -400,13 +421,17 @@ if global.gamePaused=false
         else if attackProgress=1
         {
           if x>xCenter-16
-            x-=4
+            //x-=4
+            x-=4*gDeltaTime //60fps change: per 30fps tick
           else
-            x+=4
+            //x+=4
+            x+=4*gDeltaTime //60fps change: per 30fps tick
           if y>yGround-128
-            y-=4
+            //y-=4
+            y-=4*gDeltaTime //60fps change: per 30fps tick
           else
-            y+=4
+            //y+=4
+            y+=4*gDeltaTime //60fps change: per 30fps tick
           if point_distance(x,y,xCenter-16,yGround-128)<8
           {
             x=xCenter-16
@@ -416,8 +441,10 @@ if global.gamePaused=false
         }
         else if attackProgress=2
         {
-          attackTime+=1
-          if attackTime mod 2=0
+          //attackTime+=1
+          attackTime+=gDeltaTime //60fps change: counts 30fps ticks
+          //if attackTime mod 2=0
+          if scrModPass(attackTime,2) //60fps change: once each time the count reaches a multiple of it
           {
             for(i=0;i<4;i+=1)
             {
@@ -425,28 +452,35 @@ if global.gamePaused=false
               appAttack.spiritPower=spiritPower
               appAttack.throwDelay=0
               appAttack.type=1
-              appAttack.direction=atkDir+(90*i)
+              //appAttack.direction=atkDir+(90*i)
+              appAttack._direction=atkDir+(90*i) //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             }
             atkDir+=changeSpd
           }
 
-          if attackTime=165
+          //if attackTime=165
+          if scrCountPass(attackTime,165) //60fps change: once, when the count reaches it
           {
             msgCreate("Watch out! Direction change!",0,oMessagePerson,global.mainCharacters[1],1,1)
             newMessage.fadingTime=50
           }
-          else if attackTime=195
+          //else if attackTime=195
+          else if scrCountPass(attackTime,195) //60fps change: once, when the count reaches it
             changeSpd=-3
-          else if attackTime=390
+          //else if attackTime=390
+          else if scrCountPass(attackTime,390) //60fps change: once, when the count reaches it
             changeSpd=-4
-          else if attackTime=555
+          //else if attackTime=555
+          else if scrCountPass(attackTime,555) //60fps change: once, when the count reaches it
           {
             msgCreate("Watch out! Direction change!",0,oMessagePerson,global.mainCharacters[1],1,1)
             newMessage.fadingTime=50
           }
-          else if attackTime=585
+          //else if attackTime=585
+          else if scrCountPass(attackTime,585) //60fps change: once, when the count reaches it
             changeSpd=4
-          else if attackTime=780
+          //else if attackTime=780
+          else if scrCountPass(attackTime,780) //60fps change: once, when the count reaches it
           {
             physicalDefense/=5
             spiritDefense/=5
@@ -609,9 +643,12 @@ if global.gamePaused=false
 }
 else
 {
-  hspeed=0
-  vspeed=0
+  //hspeed=0
+  //vspeed=0
+  _hspeed=0 //60fps change: see above
+  _vspeed=0 //60fps change: see above
 }
+correctHSpeedVSpeed(id) //60fps change (added): moves it by _hspeed/_vspeed, this frame's share of a 30fps tick
 #define Collision_oTechClose
 /*"/*'/**//* YYD ACTION
 lib_id=1
@@ -724,7 +761,8 @@ if currentAttack=5
   draw_set_halign(fa_center)
   draw_set_alpha(1)
   if warnScale>1
-    warnScale-=0.2
+    //warnScale-=0.2
+    warnScale-=0.2*gDeltaTime //60fps change: per 30fps tick
   draw_text_transformed(xCenter,yGround-256,"DASH DISABLED!!",warnScale,warnScale,0)
 }
 

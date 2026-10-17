@@ -32,12 +32,20 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true and stunnedTime=0 and dieFade=0
   {
-    riseTime+=1
-    if riseTime>=1 and riseTime<=8
-      y-=2
-    else if riseTime>=9 and riseTime<=999
+    //60fps change: riseTime and shootTime count 30fps ticks in fractions; tick n's frames have values above n-1 up to n,
+    //so ">=n" lower bounds of the ranges are ">n-1" (each range covers the same ticks as at 30fps), and the rise/sink
+    //is per 30fps tick
+    //riseTime+=1
+    riseTime+=gDeltaTime
+    //if riseTime>=1 and riseTime<=8
+    //  y-=2
+    //else if riseTime>=9 and riseTime<=999
+    if riseTime>0 and riseTime<=8
+      y-=2*gDeltaTime
+    else if riseTime>8 and riseTime<=999
     {
-      shootTime+=1
+      //shootTime+=1
+      shootTime+=gDeltaTime
       if shootTime>=shootWait
       {
         playSound(global.snd_BulletBillShot,0,0.9)
@@ -52,8 +60,10 @@ if global.gamePaused=false
         riseTime=1000
       }
     }
-    else if riseTime>=1031 and riseTime<=1038
-      y+=2
+    //else if riseTime>=1031 and riseTime<=1038
+    //  y+=2
+    else if riseTime>1030 and riseTime<=1038 //60fps change: see above
+      y+=2*gDeltaTime
     else if riseTime>=1078
     {
       riseTime=0

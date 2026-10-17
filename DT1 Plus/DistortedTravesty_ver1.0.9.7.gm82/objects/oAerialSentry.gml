@@ -103,7 +103,8 @@ if global.gamePaused=false
         offsetShotX=11
       else
         offsetShotX=-11
-      effect_create_above(ef_smoke,x+offsetShotX,y-10,0,c_gray)
+      if gDeltaDoTicks //60fps change (added): the smoke once per 30fps tick
+        effect_create_above(ef_smoke,x+offsetShotX,y-10,0,c_gray)
     }
     else if point_distance(x,0,oPlayer1.x,0)>maxProximity and point_distance(x,0,oPlayer1.x,0)<maxProximity*1.4
     {
@@ -139,11 +140,14 @@ if global.gamePaused=false
       if instance_exists(idCheck)
       {
         if point_distance(oPlayer1.x,0,idCheck.x,0)<80
-          shootTime+=1
+          //shootTime+=1
+          shootTime+=gDeltaTime //60fps change: counts 30fps ticks
       }
     }
-    shootTime+=1
-    if shootTime=reShootTime-10 //ready bullets
+    //shootTime+=1
+    shootTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if shootTime=reShootTime-10 //ready bullets
+    if scrCountPass(shootTime,reShootTime-10) //ready bullets //60fps change: once, when the count reaches it
     {
       if x>oCharacter.x
         offsetShotX=-14
@@ -161,7 +165,8 @@ if global.gamePaused=false
       newAttack=instance_create(x+offsetShotX,y-4,oCASBullet)
       newAttack.physicalPower=physicalPower
       newAttack.bulletSpeed=8
-      newAttack.direction=bulletDir
+      //newAttack.direction=bulletDir
+      newAttack._direction=bulletDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       var idCheck;
       idCheck=instance_nearest(x,y,oDataBombLauncher)
       if instance_exists(idCheck)
@@ -171,20 +176,24 @@ if global.gamePaused=false
           newAttack=instance_create(x+offsetShotX,y-4,oCASBullet)
           newAttack.physicalPower=physicalPower
           newAttack.bulletSpeed=7.5
-          newAttack.direction=bulletDir+6
+          //newAttack.direction=bulletDir+6
+          newAttack._direction=bulletDir+6 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           if shotAmount>5 //burst fire spray
           {
             burstFire=round(random(16)-8)
-            newAttack.direction+=burstFire
+            //newAttack.direction+=burstFire
+            newAttack._direction+=burstFire //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           }
           newAttack=instance_create(x+offsetShotX,y-4,oCASBullet)
           newAttack.physicalPower=physicalPower
           newAttack.bulletSpeed=7.5
-          newAttack.direction=bulletDir-6
+          //newAttack.direction=bulletDir-6
+          newAttack._direction=bulletDir-6 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           if shotAmount>5 //burst fire spray
           {
             burstFire=round(random(16)-8)
-            newAttack.direction+=burstFire
+            //newAttack.direction+=burstFire
+            newAttack._direction+=burstFire //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           }
         }
       }
@@ -192,7 +201,8 @@ if global.gamePaused=false
       if shotAmount>5 //burst fire spray
       {
         burstFire=round(random(16)-8)
-        newAttack.direction+=burstFire
+        //newAttack.direction+=burstFire
+        newAttack._direction+=burstFire //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       }
       //rapid shot
       if multiShot<4
@@ -221,27 +231,29 @@ if global.gamePaused=false
       shootTime=0
     }
     //----- missile attack -----
-    missileTime+=1
+    //60fps change: counts 30fps ticks (each +=1 is +=gDeltaTime)
+    missileTime+=gDeltaTime
     dblCheck=instance_nearest(x,y,oDataBombLauncher)
     if instance_exists(dblCheck)
     {
       if point_distance(x,0,dblCheck.x,0)>512
-        missileTime+=1
+        missileTime+=gDeltaTime
     }
     else
-      missileTime+=1
+      missileTime+=gDeltaTime
     if missileTime<=missileWait-12
     {
       ssCheck=instance_nearest(x,y,oStaticSentry)
       if instance_exists(ssCheck)
       {
         if point_distance(x,0,ssCheck.x,0)>512
-          missileTime+=1
+          missileTime+=gDeltaTime
       }
       else
-        missileTime+=1
+        missileTime+=gDeltaTime
     }
-    if missileTime>=missileWait-12 and missileTime<=missileWait //ready missile
+    //if missileTime>=missileWait-12 and missileTime<=missileWait //ready missile
+    if missileTime>=missileWait-12 and missileTime<=missileWait and gDeltaDoTicks //ready missile //60fps change: the effect once per 30fps tick
       effect_create_above(ef_ring,x,y,0,c_aqua)
     if missileTime>=missileWait //fire missile
     {
@@ -256,7 +268,8 @@ if global.gamePaused=false
       newAttack.physicalPower=physicalPower
       newAttack.sprite_index=sSubMissile
       newAttack.bulletSpeed=10
-      newAttack.direction=missileDir
+      //newAttack.direction=missileDir
+      newAttack._direction=missileDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       newAttack.image_angle=missileDir
       missileTime=0
     }
@@ -267,7 +280,8 @@ if global.gamePaused=false
       xVel=0
     if isCollisionRight(1)
       xVel=0
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     if isCollisionSolid()
       y-=2
 

@@ -8,7 +8,8 @@ for(i=0;i<argument1;i+=1)
 {
   newBullet=instance_create(x,y,oBoss1SmallBullet)
   newBullet.bulletSpeed=2.2
-  newBullet.direction=dir
+  //newBullet.direction=dir
+  newBullet._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
   if argument0=0
     newBullet.bulletArc=1.5
   else if argument0=1

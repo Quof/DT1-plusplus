@@ -31,7 +31,8 @@ applies_to=self
 if global.gamePaused=false
 {
   makeEnemyActive()
-  switchTime+=1
+  //switchTime+=1
+  switchTime+=gDeltaTime //60fps change: counts 30fps ticks
   if switchTime>=switchDelay
   {
     if bOut=0

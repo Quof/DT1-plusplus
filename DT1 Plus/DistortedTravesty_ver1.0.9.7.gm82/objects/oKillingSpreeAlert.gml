@@ -18,12 +18,14 @@ applies_to=self
 */
 if killingSpreeFadeTime<=0
 {
-  killingSpreeAlpha-=0.04
+  //killingSpreeAlpha-=0.04
+  killingSpreeAlpha-=0.04*gDeltaTime //60fps change: per 30fps tick
   if killingSpreeAlpha<=0
     instance_destroy()
 }
 else
-  killingSpreeFadeTime-=1
+  //killingSpreeFadeTime-=1
+  killingSpreeFadeTime-=gDeltaTime //60fps change: counts 30fps ticks
 killingSpreeIndX=view_xview[0]+256
 killingSpreeIndY=view_yview[0]+72
 comboCl=make_color_rgb(168,64,80)

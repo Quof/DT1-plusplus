@@ -69,8 +69,10 @@ if global.gamePaused=false
     else
       xVel=0.1
     //shoot
-    shootTime+=1
-    if shootTime>=reShootTime and shootTime mod 4=0
+    //shootTime+=1
+    shootTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if shootTime>=reShootTime and shootTime mod 4=0
+    if shootTime>=reShootTime and scrModPass(shootTime,4) //60fps change: once each time the count reaches a multiple of it
     {
       newAttack=instance_create(x,y-14,oShotzoBullet)
       newAttack.sprite_index=sALfireball
@@ -90,22 +92,31 @@ if global.gamePaused=false
     }
 
     //animation
-    frameCount+=1
-    if frameCount mod 6=0
+    //frameCount+=1
+    frameCount+=gDeltaTime //60fps change: counts 30fps ticks
+    //if frameCount mod 6=0
+    if scrModPass(frameCount,6) //60fps change: once each time the count reaches a multiple of it
     {
       image_index+=1
       if image_index=3
         image_index=0
     }
 
-    yVel+=0.3
+    //yVel+=0.3
+    yVel=scrGravAcc(yVel,0.3,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
-    if isCollisionLeft(1)
+    //if isCollisionLeft(1)
+    //  xVel*=-1
+    //if isCollisionRight(1)
+    //  xVel*=-1
+    //60fps change: only turn around when moving into the wall (it can still touch it on the next frame above 30fps)
+    if isCollisionLeftEdit(1)
       xVel*=-1
-    if isCollisionRight(1)
+    if isCollisionRightEdit(1)
       xVel*=-1
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 
     if y>room_height+30
     {

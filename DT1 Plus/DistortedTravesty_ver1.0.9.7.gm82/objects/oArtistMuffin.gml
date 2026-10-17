@@ -262,8 +262,10 @@ if global.gamePaused=false
       }
       changeMuffin=2
     }
-    attack1Time+=1
-    if attack1Time=attack1Wait //attack warn
+    //attack1Time+=1
+    attack1Time+=gDeltaTime //60fps change: counts 30fps ticks
+    //if attack1Time=attack1Wait //attack warn
+    if scrCountPass(attack1Time,attack1Wait) //attack warn //60fps change: once, when the count reaches it
     {
       afterImage=instance_create(x,y,oEnemyAfterImage)
       afterImage.sprite_index=sprite_index
@@ -272,7 +274,8 @@ if global.gamePaused=false
       afterImage.xScalingSet=0.2
       afterImage.yScalingSet=0.2
     }
-    else if attack1Time=attack1Wait+30 //attack execute
+    //else if attack1Time=attack1Wait+30 //attack execute
+    else if scrCountPass(attack1Time,attack1Wait+30) //attack execute //60fps change: once, when the count reaches it
     {
       if muffinType=0 or muffinType=1 //Strawberry Muffin, Blueberry Muffin
       {
@@ -284,7 +287,8 @@ if global.gamePaused=false
           newBullet.sprite_index=sEbulletSmall
           newBullet.physicalPower=physicalPower
           newBullet.bulletSpeed=3
-          newBullet.direction=bulletDir
+          //newBullet.direction=bulletDir
+          newBullet._direction=bulletDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           bulletDir+=360/50
         }
       }
@@ -298,7 +302,8 @@ if global.gamePaused=false
           newBullet.sprite_index=sEbulletSmall
           newBullet.physicalPower=physicalPower
           newBullet.bulletSpeed=6-(i/9)
-          newBullet.direction=bulletDir
+          //newBullet.direction=bulletDir
+          newBullet._direction=bulletDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         }
       }
       else if muffinType=4 or muffinType=5 //Almond Muffin, Refried Muffin
@@ -313,7 +318,8 @@ if global.gamePaused=false
           newBullet.bDestroyOnOutside=1
           newBullet.timeToDestroy=1000
           newBullet.bulletSpeed=4
-          newBullet.direction=bulletDir
+          //newBullet.direction=bulletDir
+          newBullet._direction=bulletDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newBullet.arcTime=40+i
           if i mod 2=0
           {
@@ -342,13 +348,15 @@ if global.gamePaused=false
           newBullet.sprite_index=sLaserB
           newBullet.physicalPower=physicalPower
           newBullet.bulletSpeed=5
-          newBullet.direction=bulletDir
+          //newBullet.direction=bulletDir
+          newBullet._direction=bulletDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newBullet.image_angle=bulletDir+90
           bulletDir+=360/42
         }
       }
     }
-    else if attack1Time=attack1Wait+50 //attack end
+    //else if attack1Time=attack1Wait+50 //attack end
+    else if attack1Time>=attack1Wait+50 //attack end //60fps change: >= so it still happens if the frame rate changes mid-count (it resets)
     {
       var muffinCount,timeAdd;
       timeAdd=0
@@ -369,7 +377,8 @@ if global.gamePaused=false
     }
     if life<maxLife //auto-regen life
     {
-      restoreDelay-=1
+      //restoreDelay-=1
+      restoreDelay-=gDeltaTime //60fps change: counts 30fps ticks
       if restoreDelay<=0
       {
         life+=1
@@ -391,8 +400,10 @@ for (i=0;i<3;i+=1)
 {
   if effectSize[i]<1.75
   {
-    effectSize[i]+=0.01
-    effectAlpha[i]-=0.01
+    //effectSize[i]+=0.01
+    effectSize[i]+=0.01*gDeltaTime //60fps change: per 30fps tick
+    //effectAlpha[i]-=0.01
+    effectAlpha[i]-=0.01*gDeltaTime //60fps change: per 30fps tick
   }
   else
   {
@@ -411,11 +422,16 @@ draw_sprite_ext(sprite_index,muffinType,x,y,1,1,0,image_blend,1)
 
 if bCanTakeDamage=false //draw barrier
 {
-  barrierSizeTime+=1
-  if barrierSizeTime>=1 and barrierSizeTime<=60
-    barrierSizeMod+=0.1
-  else if barrierSizeTime>=61 and barrierSizeTime<=120
-    barrierSizeMod-=0.1
+  //barrierSizeTime+=1
+  barrierSizeTime+=gDeltaTime //60fps change: counts 30fps ticks
+  //if barrierSizeTime>=1 and barrierSizeTime<=60
+  if barrierSizeTime>0 and barrierSizeTime<=60 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
+    //barrierSizeMod+=0.1
+    barrierSizeMod+=0.1*gDeltaTime //60fps change: per 30fps tick
+  //else if barrierSizeTime>=61 and barrierSizeTime<=120
+  else if barrierSizeTime>60 and barrierSizeTime<=120 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
+    //barrierSizeMod-=0.1
+    barrierSizeMod-=0.1*gDeltaTime //60fps change: per 30fps tick
   else if barrierSizeTime>=121
     barrierSizeTime=0
   draw_set_alpha(0.3)

@@ -4,6 +4,8 @@ lib_id=1
 action_id=603
 applies_to=self
 */
+_speed=0 //60fps change (added): _speed/_direction stand in for the built-in speed/direction, which start at 0
+_direction=0 //60fps change (added): (they must exist before the Step reads them; a spawner sets them after this)
 bDestroyIfOffScreen=0
 bulletSpeed=1
 bulletArc=0
@@ -18,13 +20,22 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  if moveDelay=0
+  //if moveDelay=0
+  //{
+  //  speed=bulletSpeed
+  //  direction+=bulletArc
+  //}
+  //else
+  //  moveDelay-=1
+  //60fps change: _speed/_direction stand in for speed/direction (see correctSpeedDirection at the end); it turns and counts per 30fps tick (<= so the wait still ends if the frame rate
+  //changes mid-count)
+  if moveDelay<=0
   {
-    speed=bulletSpeed
-    direction+=bulletArc
+    _speed=bulletSpeed
+    _direction+=bulletArc*gDeltaTime
   }
   else
-    moveDelay-=1
+    moveDelay-=gDeltaTime
 
   if bDestroyIfOffScreen=1 //delete if off screen
   {
@@ -39,13 +50,20 @@ if global.gamePaused=false
   }
   if decay>0
   {
-    decay-=1
-    if decay=0
+    //decay-=1
+    //if decay=0
+    decay-=gDeltaTime //60fps change: counts 30fps ticks
+    if decay<=0 //60fps change: <= so it still ends if the frame rate changes mid-count
       instance_destroy()
   }
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above
+//60fps change (added): moves it by _speed in _direction, this frame's share of a 30fps tick. A child whose own Step
+//changes them (or uses x/y) after event_inherited() sets csdLater first and moves at the end of its own Step instead,
+//as GM's built-in motion came after the whole Step event
+if !variable_local_exists("csdLater") correctSpeedDirection(id)
 #define Collision_oPlayerShip
 /*"/*'/**//* YYD ACTION
 lib_id=1

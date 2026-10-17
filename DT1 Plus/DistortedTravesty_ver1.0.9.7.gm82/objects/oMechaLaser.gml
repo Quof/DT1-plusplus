@@ -19,7 +19,8 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  speed=bulletSpeed
+  //speed=bulletSpeed
+  _speed=bulletSpeed //60fps change: moved by correctSpeedDirection (end of the step)
   if x<oPlayer1.x
   {
     effect=instance_create(x,y,oEffect)
@@ -30,7 +31,8 @@ if global.gamePaused=false
     newLaser=instance_create(x,y,oLaserB)
     newLaser.physicalPower=physicalPower
     newLaser.bulletSpeed=13
-    newLaser.direction=270
+    //newLaser.direction=270
+    newLaser._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
     instance_destroy()
   }
 
@@ -45,7 +47,9 @@ if global.gamePaused=false
   }
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above
+correctSpeedDirection(id) //60fps change (added): moves it by _speed in _direction, this frame's share of a 30fps tick
 #define Other_0
 /*"/*'/**//* YYD ACTION
 lib_id=1

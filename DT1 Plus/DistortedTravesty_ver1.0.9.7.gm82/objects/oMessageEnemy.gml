@@ -137,10 +137,12 @@ draw_rectangle(view_xview[0],view_yview[0],view_xview[0]+view_wview[0],view_yvie
 //target effect
 for(i=0;i<3;i+=1)
 {
-  circleAlpha[i]+=0.04
+  //circleAlpha[i]+=0.04
+  circleAlpha[i]+=0.04*gDeltaTime //60fps change: per 30fps tick
   draw_set_alpha(circleAlpha[i])
   draw_circle(effectX,effectY,circleRad[i],true)
-  circleRad[i]-=1
+  //circleRad[i]-=1
+  circleRad[i]-=gDeltaTime //60fps change: per 30fps tick
   if circleRad[i]<=0
   {
     circleRad[i]=36
@@ -158,15 +160,20 @@ draw_text(effectX-36,effectY+42,round(random(8999999)+1000000))
 draw_text(effectX-36,effectY+48,round(random(8999999)+1000000))
 //statistical data window
 if statWindowHeight<78
-  statWindowHeight+=6
+  //statWindowHeight+=6
+  statWindowHeight+=6*gDeltaTime //60fps change: per 30fps tick
 if combatWindowHeight<144
-  combatWindowHeight+=6
+  //combatWindowHeight+=6
+  combatWindowHeight+=6*gDeltaTime //60fps change: per 30fps tick
 if controlWindowHeight<39
-  controlWindowHeight+=3
+  //controlWindowHeight+=3
+  controlWindowHeight+=3*gDeltaTime //60fps change: per 30fps tick
 if crippleWindowHeight<51
-  crippleWindowHeight+=3
+  //crippleWindowHeight+=3
+  crippleWindowHeight+=3*gDeltaTime //60fps change: per 30fps tick
 if resistWindowHeight<48
-  resistWindowHeight+=4
+  //resistWindowHeight+=4
+  resistWindowHeight+=4*gDeltaTime //60fps change: per 30fps tick
 draw_set_alpha(1)
 draw_set_color(fillColor)
 draw_rectangle(statsWindowX,statsWindowY,statsWindowX+234,statsWindowY+statWindowHeight,false)
@@ -226,11 +233,15 @@ if statWindowHeight>=78
     if scanStep>=12
     {
       scanProgress+=1
-      scanStep=0
+      //scanStep=0
+      //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
+      scanStep=gDeltaTime-1
     }
     else
-      scanStep+=1
+      //scanStep+=1
+      scanStep+=gDeltaTime //60fps change: see above
 
+    if gDeltaDoTicks //60fps change (added): new random numbers once per 30fps tick
     for(i=0;i<5;i+=1)
       scanData[i]=round(random(8999)+1000)
   }
@@ -358,7 +369,8 @@ draw_set_halign(fa_left)
 draw_text(threatLevelX+80,threatLevelY,"%")
 
 //scatter data
-scatterIncTime+=1
+//scatterIncTime+=1
+scatterIncTime+=gDeltaTime //60fps change: counts 30fps ticks
 for(i=0;i<19;i+=1)
 {
   draw_text(scatterDataX,scatterDataY[i],">")
@@ -399,10 +411,13 @@ else //SCANNING DATA
       scanDots="SCANNING....."
     else if scanDots="SCANNING....."
       scanDots="SCANNING"
-    scanDotsTime=0
+    //scanDotsTime=0
+    //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
+    scanDotsTime=gDeltaTime-1
   }
   else
-    scanDotsTime+=1
+    //scanDotsTime+=1
+    scanDotsTime+=gDeltaTime //60fps change: see above
   draw_text(barX+1,barY,scanDots)
   if progressBar>=200
   {
@@ -412,7 +427,8 @@ else //SCANNING DATA
       playSound(global.snd_ScanComplete,0,1)
       scanDots="SCAN COMPLETE"
     }
-    scanConvertTime+=1
+    //scanConvertTime+=1
+    scanConvertTime+=gDeltaTime //60fps change: counts 30fps ticks
     if scanConvertTime>=30
     {
       playSound(global.snd_MenuOpen,0,1)
@@ -420,10 +436,12 @@ else //SCANNING DATA
     }
   }
   else
-    progressBar+=5
+    //progressBar+=5
+    progressBar+=5*gDeltaTime //60fps change: per 30fps tick
   //loading data
   draw_set_font(fnt_ScanData)
-  loadingIncTime+=1
+  //loadingIncTime+=1
+  loadingIncTime+=gDeltaTime //60fps change: counts 30fps ticks
   for(i=0;i<25;i+=1)
   {
     draw_text(loadingDataX,loadingDataY[i],">")

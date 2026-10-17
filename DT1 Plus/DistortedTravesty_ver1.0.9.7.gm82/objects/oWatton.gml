@@ -68,20 +68,25 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true and dieFade=0
   {
-    x-=flySpeed
-    frameCount+=1
+    //60fps change: moves and counts per 30fps tick
+    //x-=flySpeed
+    //frameCount+=1
+    x-=flySpeed*gDeltaTime
+    frameCount+=gDeltaTime
     if frameCount=2
       image_index=1
     else if frameCount=4
       image_index=2
     else if frameCount=6
       image_index=1
-    else if frameCount=8
+    //else if frameCount=8
+    else if frameCount>=8 //60fps change: (it counts in fractions)
     {
       image_index=0
       frameCount=0
     }
-    shootTime+=1
+    //shootTime+=1
+    shootTime+=gDeltaTime
     if shootTime>=reShootTime
     {
       newBullet=instance_create(x,y,oWattonBomb)

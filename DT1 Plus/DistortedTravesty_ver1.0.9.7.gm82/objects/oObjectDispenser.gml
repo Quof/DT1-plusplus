@@ -29,7 +29,8 @@ if global.gamePaused=false
   pDist=point_distance(x,y,oPlayer1.x,oPlayer1.y-22)
   if pDist<effectDist
   {
-    spawnTime+=1
+    //spawnTime+=1
+    spawnTime+=gDeltaTime //60fps change: counts 30fps ticks
     if spawnTime>=reSpawnTime
     {
       newObject=instance_create(x+offsetX,y+54+offsetY,objCreate)

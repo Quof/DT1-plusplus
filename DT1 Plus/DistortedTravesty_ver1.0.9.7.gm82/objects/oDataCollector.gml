@@ -92,9 +92,11 @@ if global.gamePaused=false
   {
     //---------- Normal Attack: Spiral Hell ----------
     if specialAttack!=2 and specialAttack!=5
-      spiralHellTime+=1
+      //spiralHellTime+=1
+      spiralHellTime+=gDeltaTime //60fps change: counts 30fps ticks
 
-    if spiralHellTime=spiralHellWait
+    //if spiralHellTime=spiralHellWait
+    if scrCountPass(spiralHellTime,spiralHellWait) //60fps change: once, when the count reaches it
     {
       afterImage=instance_create(x,y,oEnemyAfterImage)
       afterImage.image_alpha=0.8
@@ -118,7 +120,8 @@ if global.gamePaused=false
         newBullet.spiritPower=spiritPower
         newBullet.bDestroyOnOutside=0
         newBullet.bulletSpeed=5
-        newBullet.direction=shotDir
+        //newBullet.direction=shotDir
+        newBullet._direction=shotDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.arcTime=bulArcTime-(i*3)
         newBullet.bulletArc=5
         shotDir+=360/spiralHellAmt
@@ -133,7 +136,8 @@ if global.gamePaused=false
         newBullet.spiritPower=spiritPower
         newBullet.bDestroyOnOutside=0
         newBullet.bulletSpeed=5
-        newBullet.direction=shotDir
+        //newBullet.direction=shotDir
+        newBullet._direction=shotDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.arcTime=bulArcTime-(i*3)
         newBullet.bulletArc=5
         shotDir+=360/spiralHellAmt
@@ -148,7 +152,8 @@ if global.gamePaused=false
         newBullet.spiritPower=spiritPower
         newBullet.bDestroyOnOutside=0
         newBullet.bulletSpeed=5
-        newBullet.direction=shotDir
+        //newBullet.direction=shotDir
+        newBullet._direction=shotDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.arcTime=bulArcTime-(i*3)
         newBullet.bulletArc=5
         shotDir+=360/spiralHellAmt
@@ -163,7 +168,8 @@ if global.gamePaused=false
         newBullet.spiritPower=spiritPower
         newBullet.bDestroyOnOutside=0
         newBullet.bulletSpeed=5
-        newBullet.direction=shotDir
+        //newBullet.direction=shotDir
+        newBullet._direction=shotDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.arcTime=bulArcTime-(i*3)
         newBullet.bulletArc=5
         shotDir+=360/spiralHellAmt
@@ -179,7 +185,8 @@ if global.gamePaused=false
         newBullet.spiritPower=spiritPower
         newBullet.bDestroyOnOutside=0
         newBullet.bulletSpeed=5
-        newBullet.direction=shotDir
+        //newBullet.direction=shotDir
+        newBullet._direction=shotDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.arcTime=bulArcTime-(i*3)
         newBullet.bulletArc=5
         shotDir+=360/spiralHellAmt
@@ -194,7 +201,8 @@ if global.gamePaused=false
         newBullet.spiritPower=spiritPower
         newBullet.bDestroyOnOutside=0
         newBullet.bulletSpeed=5
-        newBullet.direction=shotDir
+        //newBullet.direction=shotDir
+        newBullet._direction=shotDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.arcTime=bulArcTime-(i*3)
         newBullet.bulletArc=5
         shotDir+=360/spiralHellAmt
@@ -209,7 +217,8 @@ if global.gamePaused=false
         newBullet.spiritPower=spiritPower
         newBullet.bDestroyOnOutside=0
         newBullet.bulletSpeed=5
-        newBullet.direction=shotDir
+        //newBullet.direction=shotDir
+        newBullet._direction=shotDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.arcTime=bulArcTime-(i*3)
         newBullet.bulletArc=5
         shotDir+=360/spiralHellAmt
@@ -224,7 +233,8 @@ if global.gamePaused=false
         newBullet.spiritPower=spiritPower
         newBullet.bDestroyOnOutside=0
         newBullet.bulletSpeed=5
-        newBullet.direction=shotDir
+        //newBullet.direction=shotDir
+        newBullet._direction=shotDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.arcTime=bulArcTime-(i*3)
         newBullet.bulletArc=5
         shotDir+=360/spiralHellAmt
@@ -232,7 +242,8 @@ if global.gamePaused=false
       spiralHellTime=0
     }
     //---------- Normal Attack: Lightning Crush ----------
-    lightningCrushTime+=1
+    //lightningCrushTime+=1
+    lightningCrushTime+=gDeltaTime //60fps change: counts 30fps ticks
     if lightningCrushTime>=lightningCrushWait
     {
       for(i=0;i<3;i+=1)
@@ -253,7 +264,8 @@ if global.gamePaused=false
       lightningCrushTime=0
     }
 
-    colorChangeTime+=1
+    //colorChangeTime+=1
+    colorChangeTime+=gDeltaTime //60fps change: counts 30fps ticks
     if colorChangeTime>=colorChangeDelay
     {
       currentColor+=1
@@ -302,8 +314,10 @@ if global.gamePaused=false
     //fire start
     if instance_exists(fireCreate)
     {
-      fireCreate.image_angle+=15
-      fireCreate.y+=7
+      //fireCreate.image_angle+=15
+      fireCreate.image_angle+=15*gDeltaTime //60fps change: per 30fps tick
+      //fireCreate.y+=7
+      fireCreate.y+=7*gDeltaTime //60fps change: per 30fps tick
       if fireCreate.y>=yGround
       {
         var xPos;

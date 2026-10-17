@@ -260,7 +260,8 @@ if global.gameProgress=16 //intro to World Map
   }
   else if charDialogue[0]=1
   {
-    convo[0]+=1
+    //convo[0]+=1
+    convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
     if convo[0]>=120
       charDialogue[0]+=1
   }
@@ -277,7 +278,8 @@ if global.gameProgress=16 //intro to World Map
   }
   else if charDialogue[0]=3
   {
-    convo[0]+=1
+    //convo[0]+=1
+    convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
     if convo[0]>=90
       charDialogue[0]+=1
   }
@@ -294,7 +296,8 @@ if global.gameProgress=16 //intro to World Map
   }
   else if charDialogue[0]=5
   {
-    convo[0]+=1
+    //convo[0]+=1
+    convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
     if convo[0]>=120
       charDialogue[0]+=1
   }
@@ -311,7 +314,8 @@ if global.gameProgress=16 //intro to World Map
   }
   else if charDialogue[0]=7
   {
-    convo[0]+=1
+    //convo[0]+=1
+    convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
     if convo[0]>=90
       charDialogue[0]+=1
   }
@@ -328,7 +332,8 @@ if global.gameProgress=16 //intro to World Map
   }
   else if charDialogue[0]=9
   {
-    convo[0]+=1
+    //convo[0]+=1
+    convo[0]+=gDeltaTime //60fps change: counts 30fps ticks
     if convo[0]>=120
       charDialogue[0]+=1
   }
@@ -362,11 +367,16 @@ applies_to=self
 */
 //grid effect
 draw_set_color(c_black)
-gridFadeTime+=1
-if gridFadeTime>=1 and gridFadeTime<=100
-  gridAlpha+=0.001
-else if gridFadeTime>=131 and gridFadeTime<=230
-  gridAlpha-=0.001
+//gridFadeTime+=1
+gridFadeTime+=gDeltaTime //60fps change: counts 30fps ticks
+//if gridFadeTime>=1 and gridFadeTime<=100
+if gridFadeTime>0 and gridFadeTime<=100 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+  //gridAlpha+=0.001
+  gridAlpha+=0.001*gDeltaTime //60fps change: per 30fps tick
+//else if gridFadeTime>=131 and gridFadeTime<=230
+else if gridFadeTime>130 and gridFadeTime<=230 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+  //gridAlpha-=0.001
+  gridAlpha-=0.001*gDeltaTime //60fps change: per 30fps tick
 else if gridFadeTime>=310
   gridFadeTime=0
 draw_set_alpha(gridAlpha)
@@ -432,7 +442,8 @@ if global.gameProgress>=324
 //current position
 /*locSizeChange+=1
 if locSizeChange>=1 and locSizeChange<=20
-  locCircleSize-=0.6
+  //locCircleSize-=0.6
+  locCircleSize-=0.6*gDeltaTime //60fps change: per 30fps tick
 else if locSizeChange>=21
 {
   locCircleSize=16

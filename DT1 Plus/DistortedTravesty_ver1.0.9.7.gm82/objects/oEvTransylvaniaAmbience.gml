@@ -69,11 +69,16 @@ if global.gamePaused=false
 {
   if room=rDilutedMansion2
   {
-    tileFadeTime+=1
-    if tileFadeTime>=11 and tileFadeTime<=30
-      tileAlpha-=0.05
-    else if tileFadeTime>=31 and tileFadeTime<=50
-      tileAlpha+=0.05
+    //tileFadeTime+=1
+    tileFadeTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if tileFadeTime>=11 and tileFadeTime<=30
+    if tileFadeTime>10 and tileFadeTime<=30 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //tileAlpha-=0.05
+      tileAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
+    //else if tileFadeTime>=31 and tileFadeTime<=50
+    else if tileFadeTime>30 and tileFadeTime<=50 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //tileAlpha+=0.05
+      tileAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if tileFadeTime>=131
       tileFadeTime=0
     for (i=0;i<=39;i+=1)

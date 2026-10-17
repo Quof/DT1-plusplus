@@ -32,8 +32,10 @@ if global.gameProgress=82 //intro to Abstracity
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -71,8 +73,10 @@ else if global.gameProgress=85 //talk to Syrus (first time)
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       fadeColor=c_black
@@ -86,7 +90,8 @@ else if global.gameProgress=85 //talk to Syrus (first time)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.04
+      //bossFinishFadeAlpha+=0.04
+      bossFinishFadeAlpha+=0.04*gDeltaTime //60fps change: per 30fps tick
     else
     {
       stopPlayer()
@@ -99,11 +104,14 @@ else if global.gameProgress=85 //talk to Syrus (first time)
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay>=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=30
+    if sceneDelay>29 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if bossFinishFadeAlpha>0
-        bossFinishFadeAlpha-=0.04
+        //bossFinishFadeAlpha-=0.04
+        bossFinishFadeAlpha-=0.04*gDeltaTime //60fps change: per 30fps tick
       else
       {
         sceneDelay=0
@@ -227,8 +235,10 @@ else if global.gameProgress=85 //talk to Syrus (first time)
     msgCreate("What are you waiting for? Show us the power of Kudeku!",1,oMessageCutscene,global.mainCharacters[1])
   else if sceneProgress=60
   {
-    sceneDelay+=1
-    if sceneDelay=20
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=20
+    if scrCountPass(sceneDelay,20) //60fps change: once, when the count reaches it
       oPlayer1.sprite_index=sPlayerKneel
     else if sceneDelay>=50
     {
@@ -238,8 +248,10 @@ else if global.gameProgress=85 //talk to Syrus (first time)
   }
   else if sceneProgress=61
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       for (i=0;i<10;i+=1) //create images
       {
@@ -250,16 +262,21 @@ else if global.gameProgress=85 //talk to Syrus (first time)
         newImage[i].depth=0
       }
     }
-    if sceneDelay>=2 and sceneDelay<=200
+    //if sceneDelay>=2 and sceneDelay<=200
+    if sceneDelay>1 and sceneDelay<=200 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       for (i=0;i<10;i+=1) //move images
       {
-        newImage[i].delay-=1
+        //newImage[i].delay-=1
+        newImage[i].delay-=gDeltaTime //60fps change: per 30fps tick
         if newImage[i].delay<=0
         {
-          newImage[i].image_alpha-=0.09
-          newImage[i].image_xscale+=0.1
-          newImage[i].image_yscale+=0.1
+          //newImage[i].image_alpha-=0.09
+          newImage[i].image_alpha-=0.09*gDeltaTime //60fps change: per 30fps tick
+          //newImage[i].image_xscale+=0.1
+          newImage[i].image_xscale+=0.1*gDeltaTime //60fps change: per 30fps tick
+          //newImage[i].image_yscale+=0.1
+          newImage[i].image_yscale+=0.1*gDeltaTime //60fps change: per 30fps tick
           if newImage[i].image_alpha<0.1
           {
             newImage[i].image_alpha=1
@@ -269,7 +286,8 @@ else if global.gameProgress=85 //talk to Syrus (first time)
         }
       }
     }
-    if sceneDelay>=60 and sceneDelay mod 5=0 //side effects
+    //if sceneDelay>=60 and sceneDelay mod 5=0 //side effects
+    if sceneDelay>=60 and scrModPass(sceneDelay,5) //side effects //60fps change: once each time the count reaches a multiple of it
     {
       newEffect=instance_create(oPlayer1.x-26,oPlayer1.y,oEffect)
       newEffect.sprite_index=sAirDashWave
@@ -277,11 +295,13 @@ else if global.gameProgress=85 //talk to Syrus (first time)
       newEffect.sprite_index=sAirDashWave
       newEffect.image_xscale=-1
     }
-    if sceneDelay>=140 //fade to white
+    //if sceneDelay>=140 //fade to white
+    if sceneDelay>139 //fade to white //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       fadeColor=c_white
       if bossFinishFadeAlpha<1
-        bossFinishFadeAlpha+=0.04
+        //bossFinishFadeAlpha+=0.04
+        bossFinishFadeAlpha+=0.04*gDeltaTime //60fps change: per 30fps tick
       else if bossFinishFadeAlpha>=1
       {
         sceneDelay=0
@@ -291,7 +311,8 @@ else if global.gameProgress=85 //talk to Syrus (first time)
   }
   else if sceneProgress=62
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=40
     {
       sceneDelay=0
@@ -304,13 +325,15 @@ else if global.gameProgress=85 //talk to Syrus (first time)
   else if sceneProgress=63
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.04
+      //bossFinishFadeAlpha-=0.04
+      bossFinishFadeAlpha-=0.04*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=64
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -348,8 +371,10 @@ else if global.gameProgress=181 //teleported to Abstracity Top Apt - from Black 
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       global.gamePaused=true
     if sceneDelay>=3
     {
@@ -360,7 +385,8 @@ else if global.gameProgress=181 //teleported to Abstracity Top Apt - from Black 
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.04
+      //bossFinishFadeAlpha+=0.04
+      bossFinishFadeAlpha+=0.04*gDeltaTime //60fps change: per 30fps tick
     else
     {
       stopPlayer()
@@ -372,11 +398,14 @@ else if global.gameProgress=181 //teleported to Abstracity Top Apt - from Black 
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay>=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=30
+    if sceneDelay>29 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if bossFinishFadeAlpha>0
-        bossFinishFadeAlpha-=0.02
+        //bossFinishFadeAlpha-=0.02
+        bossFinishFadeAlpha-=0.02*gDeltaTime //60fps change: per 30fps tick
       else
       {
         global.location="Abstracity"
@@ -437,8 +466,10 @@ else if global.gameProgress=241 //teleported to Abstracity Top Apt - from Veiled
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       global.gamePaused=true
     if sceneDelay>=3
     {
@@ -449,7 +480,8 @@ else if global.gameProgress=241 //teleported to Abstracity Top Apt - from Veiled
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.04
+      //bossFinishFadeAlpha+=0.04
+      bossFinishFadeAlpha+=0.04*gDeltaTime //60fps change: per 30fps tick
     else
     {
       stopPlayer()
@@ -462,7 +494,8 @@ else if global.gameProgress=241 //teleported to Abstracity Top Apt - from Veiled
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -473,7 +506,8 @@ else if global.gameProgress=241 //teleported to Abstracity Top Apt - from Veiled
     msgCreate("For your convenience, the situation was explained to " +string(global.mainCharacters[5]) +string(".#I mean really, would you want to sit through that exposition again?"),1,oMessageCutscene,"")
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -482,11 +516,14 @@ else if global.gameProgress=241 //teleported to Abstracity Top Apt - from Veiled
   }
   else if sceneProgress=5
   {
-    sceneDelay+=1
-    if sceneDelay>=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=30
+    if sceneDelay>29 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if bossFinishFadeAlpha>0
-        bossFinishFadeAlpha-=0.02
+        //bossFinishFadeAlpha-=0.02
+        bossFinishFadeAlpha-=0.02*gDeltaTime //60fps change: per 30fps tick
       else
       {
         global.location="Abstracity"
@@ -551,8 +588,10 @@ else if global.gameProgress=276 //what happened to Abstracity
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -578,8 +617,10 @@ else if global.gameProgress=278 //chat with Flame Instigator
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       global.gamePaused=true
     if sceneDelay>=15
     {
@@ -590,7 +631,8 @@ else if global.gameProgress=278 //chat with Flame Instigator
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.04
+      //bossFinishFadeAlpha+=0.04
+      bossFinishFadeAlpha+=0.04*gDeltaTime //60fps change: per 30fps tick
     else
     {
       stopPlayer()
@@ -602,11 +644,14 @@ else if global.gameProgress=278 //chat with Flame Instigator
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay>=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=30
+    if sceneDelay>29 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if bossFinishFadeAlpha>0
-        bossFinishFadeAlpha-=0.02
+        //bossFinishFadeAlpha-=0.02
+        bossFinishFadeAlpha-=0.02*gDeltaTime //60fps change: per 30fps tick
       else
       {
         fadeColor=c_white
@@ -717,8 +762,10 @@ else if global.gameProgress=278 //chat with Flame Instigator
     msgCreate("Take this last Muffin. It will give you some help in there.#There's no point in me holding onto it now.#I will trust that you won't do anything stupid with it.",1,oMessageCutscene,"Flame Instigator")
   else if sceneProgress=53
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       bossFinishFadeAlpha=1
       oPlayer1.sprite_index=sPlayerLookUp
@@ -726,8 +773,10 @@ else if global.gameProgress=278 //chat with Flame Instigator
       muffin.muffinType=6
       playSound(global.snd_BreakOut,0,1)
     }
-    else if sceneDelay>=9 and sceneDelay<=109
-      bossFinishFadeAlpha-=0.01
+    //else if sceneDelay>=9 and sceneDelay<=109
+    else if sceneDelay>8 and sceneDelay<=109 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //bossFinishFadeAlpha-=0.01
+      bossFinishFadeAlpha-=0.01*gDeltaTime //60fps change: per 30fps tick
     else if sceneDelay>=120
     {
       sceneDelay=0
@@ -746,7 +795,8 @@ else if global.gameProgress=278 //chat with Flame Instigator
   }
   else if sceneProgress=57
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0

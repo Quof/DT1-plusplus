@@ -25,9 +25,12 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  speed=bulletSpeed
-  spawnNewBallTime-=1
-  if spawnNewBallTime=0 and instance_number(oBreakoutBall)<oBreakoutPaddle.maxBalls
+  //speed=bulletSpeed
+  speed=bulletSpeed*gDeltaTime //60fps change: this frame's share of a 30fps tick (it keeps GM's built-in motion: move_bounce_all bounces it off what it hits)
+  //spawnNewBallTime-=1
+  spawnNewBallTime-=gDeltaTime //60fps change: counts 30fps ticks
+  //if spawnNewBallTime=0 and instance_number(oBreakoutBall)<oBreakoutPaddle.maxBalls
+  if scrCountPassDown(spawnNewBallTime,0) and instance_number(oBreakoutBall)<oBreakoutPaddle.maxBalls //60fps change: once, when the count reaches 0
   {
     followBallEx=instance_create(random_range(592,816),80,oBreakoutBall)
     followBallEx.direction=135
@@ -75,7 +78,8 @@ with other
     newAttack=instance_create(x,y,oLaserB)
     newAttack.spiritPower=oBreakoutBall.spiritPower
     newAttack.damageType="SPIRIT"
-    newAttack.direction=270
+    //newAttack.direction=270
+    newAttack._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
     newAttack.image_angle=270
     newAttack.bulletSpeed=5
   }

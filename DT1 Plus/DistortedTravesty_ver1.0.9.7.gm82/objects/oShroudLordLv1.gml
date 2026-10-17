@@ -114,33 +114,39 @@ if global.gamePaused=false
       {
         if currSpd>=0
         {
-          currSpd-=pDist/5
+          //currSpd-=pDist/5
+          currSpd-=pDist/5*gDeltaTime //60fps change: per 30fps tick
           if pDistOrig<16 and currSpd<3
             currSpd=0
         }
         else
-          currSpd-=pDist/10
+          //currSpd-=pDist/10
+          currSpd-=pDist/10*gDeltaTime //60fps change: per 30fps tick
       }
       else //go right
       {
         if currSpd<=0
         {
-          currSpd+=pDist/5
+          //currSpd+=pDist/5
+          currSpd+=pDist/5*gDeltaTime //60fps change: per 30fps tick
           if pDistOrig<16 and currSpd>-3
             currSpd=0
         }
         else
-          currSpd+=pDist/10
+          //currSpd+=pDist/10
+          currSpd+=pDist/10*gDeltaTime //60fps change: per 30fps tick
       }
 
       if currSpd>maxSpd
         currSpd=maxSpd
       else if currSpd<-maxSpd
         currSpd=-maxSpd
-      x+=currSpd
+      //x+=currSpd
+      x+=currSpd*gDeltaTime //60fps change: per 30fps tick
     }
     //attacks **************************************************
-    darkEnergyTime+=1
+    //darkEnergyTime+=1
+    darkEnergyTime+=gDeltaTime //60fps change: counts 30fps ticks
     if darkEnergyDelay=0
     {
       if darkEnergyTime>=darkEnergyWait
@@ -151,9 +157,11 @@ if global.gamePaused=false
     }
     if darkEnergyTime>=darkEnergyDelay and darkEnergyDelay!=0
     {
-      if darkEnergyTime=darkEnergyDelay+1
+      //if darkEnergyTime=darkEnergyDelay+1
+      if scrCountPass(darkEnergyTime,darkEnergyDelay+1) //60fps change: once, when the count reaches it
         sprite_index=sShroudLHeadM
-      else if darkEnergyTime=darkEnergyDelay+40
+      //else if darkEnergyTime=darkEnergyDelay+40
+      else if darkEnergyTime>=darkEnergyDelay+40 //60fps change: >= so it still resets if the frame rate changes mid-count
       {
         darkBall=instance_create(x,y-19,oShroudLFire)
         darkBall.throwSpeed=6
@@ -168,11 +176,13 @@ if global.gamePaused=false
     {
       if darkEnergyTime<darkEnergyWait
       {
-        darkEnergyTime+=0.25
+        //darkEnergyTime+=0.25
+        darkEnergyTime+=0.25*gDeltaTime //60fps change: per 30fps tick
         if darkEnergyTime>darkEnergyWait
           darkEnergyTime=darkEnergyWait
       }
-      lHandRecoveryTime+=1
+      //lHandRecoveryTime+=1
+      lHandRecoveryTime+=gDeltaTime //60fps change: counts 30fps ticks
       if lHandRecoveryTime>=lHandRecoveryDelay
       {
         effect_create_above(ef_smoke,x-88,y-18,2,c_black)
@@ -187,11 +197,13 @@ if global.gamePaused=false
     {
       if darkEnergyTime<darkEnergyWait
       {
-        darkEnergyTime+=0.25
+        //darkEnergyTime+=0.25
+        darkEnergyTime+=0.25*gDeltaTime //60fps change: per 30fps tick
         if darkEnergyTime>darkEnergyWait
           darkEnergyTime=darkEnergyWait
       }
-      rHandRecoveryTime+=1
+      //rHandRecoveryTime+=1
+      rHandRecoveryTime+=gDeltaTime //60fps change: counts 30fps ticks
       if rHandRecoveryTime>=rHandRecoveryDelay
       {
         effect_create_above(ef_smoke,x+88,y-18,2,c_black)
@@ -221,18 +233,32 @@ if global.gamePaused=false
       bossProgress+=1
     }
   }
-  sLordMoveTime+=1
-  if sLordMoveTime>=1 and sLordMoveTime<=21
-    sLordMove+=0.04
-  else if sLordMoveTime>=22 and sLordMoveTime<=42
-    sLordMove-=0.04
-  else if sLordMoveTime>=52 and sLordMoveTime<=72
-    sLordMove-=0.04
-  else if sLordMoveTime>=73 and sLordMoveTime<=93
-    sLordMove+=0.04
+  //sLordMoveTime+=1
+  //if sLordMoveTime>=1 and sLordMoveTime<=21
+  //  sLordMove+=0.04
+  //else if sLordMoveTime>=22 and sLordMoveTime<=42
+  //  sLordMove-=0.04
+  //else if sLordMoveTime>=52 and sLordMoveTime<=72
+  //  sLordMove-=0.04
+  //else if sLordMoveTime>=73 and sLordMoveTime<=93
+  //  sLordMove+=0.04
+  //else if sLordMoveTime>=103
+  //  sLordMoveTime=0
+  //y+=sLordMove
+  //60fps change: the float counts 30fps ticks (the same ticks: >a-1 is >=a in whole ticks), and its speed changes
+  //and moves it per 30fps tick
+  sLordMoveTime+=gDeltaTime
+  if sLordMoveTime>0 and sLordMoveTime<=21
+    sLordMove+=0.04*gDeltaTime
+  else if sLordMoveTime>21 and sLordMoveTime<=42
+    sLordMove-=0.04*gDeltaTime
+  else if sLordMoveTime>51 and sLordMoveTime<=72
+    sLordMove-=0.04*gDeltaTime
+  else if sLordMoveTime>72 and sLordMoveTime<=93
+    sLordMove+=0.04*gDeltaTime
   else if sLordMoveTime>=103
     sLordMoveTime=0
-  y+=sLordMove
+  y+=sLordMove*gDeltaTime
   enemyStepEvent()
 }
 #define Collision_oAttackBase

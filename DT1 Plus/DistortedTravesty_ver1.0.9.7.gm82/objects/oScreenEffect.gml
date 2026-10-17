@@ -34,12 +34,18 @@ applies_to=self
 */
 if global.optGameDetail=1
 {
-  sX-=12
-  sY-=12
-  sW+=24
-  sH+=24
-  image_alpha-=0.01
-  cR-=12
+  //sX-=12
+  sX-=12*gDeltaTime //60fps change: per 30fps tick
+  //sY-=12
+  sY-=12*gDeltaTime //60fps change: per 30fps tick
+  //sW+=24
+  sW+=24*gDeltaTime //60fps change: per 30fps tick
+  //sH+=24
+  sH+=24*gDeltaTime //60fps change: per 30fps tick
+  //image_alpha-=0.01
+  image_alpha-=0.01*gDeltaTime //60fps change: per 30fps tick
+  //cR-=12
+  cR-=12*gDeltaTime //60fps change: per 30fps tick
   cG-=0
   cB-=0
   if image_alpha<=0

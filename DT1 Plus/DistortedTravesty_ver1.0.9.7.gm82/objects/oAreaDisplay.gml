@@ -25,16 +25,19 @@ if fadeIn=true
 {
   if displayTime<=0
   {
-    image_alpha-=0.05
+    //image_alpha-=0.05
+    image_alpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     if image_alpha<=0
       instance_destroy()
   }
   else
-    displayTime-=1
+    //displayTime-=1
+    displayTime-=gDeltaTime //60fps change: counts 30fps ticks
 }
 else
 {
-  image_alpha+=0.05
+  //image_alpha+=0.05
+  image_alpha+=0.05*gDeltaTime //60fps change: per 30fps tick
   if image_alpha>=1
     fadeIn=true
 }

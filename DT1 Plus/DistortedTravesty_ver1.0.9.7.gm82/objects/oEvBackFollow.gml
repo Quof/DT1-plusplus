@@ -6,7 +6,8 @@ applies_to=self
 */
 if actorType=0 //rotate type
 {
-  image_angle+=rotateSpeed
+  //image_angle+=rotateSpeed
+  image_angle+=rotateSpeed*gDeltaTime //60fps change: per 30fps tick
 }
 #define Draw_0
 /*"/*'/**//* YYD ACTION

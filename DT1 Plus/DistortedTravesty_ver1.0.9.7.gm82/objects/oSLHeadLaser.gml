@@ -20,5 +20,6 @@ lib_id=1
 action_id=603
 applies_to=self
 */
-if global.gamePaused=false
+//if global.gamePaused=false
+if global.gamePaused=false and gDeltaDoTicks //60fps change: a new colour once per 30fps tick
   image_blend=make_color_rgb(155+random(100),155+random(100),155+random(100))

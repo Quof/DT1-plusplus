@@ -74,9 +74,12 @@ if findTargetX<drawRangeX and findTargetY<drawRangeY
     draw_set_alpha(1)
     draw_set_color(c_black)
     draw_rectangle(x,y,x+64,y+7,false)
-    cR+=3
-    cG+=6
-    cB+=9
+    //cR+=3
+    cR+=3*gDeltaTime //60fps change: per 30fps tick
+    //cG+=6
+    cG+=6*gDeltaTime //60fps change: per 30fps tick
+    //cB+=9
+    cB+=9*gDeltaTime //60fps change: per 30fps tick
     for (i=0;i<64;i+=8)
     {
       draw_set_color(make_color_rgb(36,24,140))

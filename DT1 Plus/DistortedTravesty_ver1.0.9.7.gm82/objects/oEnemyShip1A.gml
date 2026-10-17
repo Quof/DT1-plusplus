@@ -42,17 +42,21 @@ event_inherited()
 if global.gamePaused=false
 {
   //---------- move pattern ----------
-  speed=moveSpeed
-  arcTime-=1
+  //speed=moveSpeed
+  _speed=moveSpeed //60fps change: _speed/_direction stand in for speed/direction (see correctSpeedDirection at the end)
+  //arcTime-=1
+  arcTime-=gDeltaTime //60fps change: counts 30fps ticks
   if arcTime<=0
   {
     bDestroyIfOffScreen=1
     if bArc=1
-      direction+=arcChange
+      //direction+=arcChange
+      _direction+=arcChange*gDeltaTime //60fps change: turns per 30fps tick; see above
   }
 
   //---------- bullet pattern ----------
-  bullet_Time+=1
+  //bullet_Time+=1
+  bullet_Time+=gDeltaTime //60fps change: counts 30fps ticks
   if bullet_Time>=bullet_Delay
   {
     var dir;
@@ -60,9 +64,12 @@ if global.gamePaused=false
     newBullet=instance_create(x,y,oEnemyShipBulletNormal)
     newBullet.bDestroyIfOffScreen=true
     newBullet.bulletSpeed=bullet_Speed
-    newBullet.direction=dir
+    //newBullet.direction=dir
+    newBullet._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
     bullet_Time=0
   }
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above
+correctSpeedDirection(id) //60fps change (added): moves it by _speed in _direction, this frame's share of a 30fps tick

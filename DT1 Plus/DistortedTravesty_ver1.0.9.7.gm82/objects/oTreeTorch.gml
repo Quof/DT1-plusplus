@@ -80,14 +80,17 @@ if global.gamePaused=false
       }
     }
 
-    shootTime+=1
-    if shootTime>=reShootTime-15 and shootTime<reShootTime
+    //shootTime+=1
+    shootTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if shootTime>=reShootTime-15 and shootTime<reShootTime
+    if shootTime>reShootTime-16 and shootTime<reShootTime //60fps change: the same 30fps ticks (it counts in gDeltaTime steps; with >= it walked half a tick more each cycle)
     {
       xVel=0
       sprite_index=sTreeTorchReady
     }
 
-    if shootTime>=reShootTime and shootTime mod fireFrequency=0
+    //if shootTime>=reShootTime and shootTime mod fireFrequency=0
+    if shootTime>=reShootTime and scrModPass(shootTime,fireFrequency) //60fps change: once each time the count reaches a multiple of it
     {
       sprite_index=sTreeTorchFire
       if image_xscale=1
@@ -101,9 +104,11 @@ if global.gamePaused=false
       newAttack.sprite_index=sTTfire
       newAttack.bulletSpeed=6
       if image_xscale=1
-        newAttack.direction=random(20)+350
+        //newAttack.direction=random(20)+350
+        newAttack._direction=random(20)+350 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       else
-        newAttack.direction=random(20)+170
+        //newAttack.direction=random(20)+170
+        newAttack._direction=random(20)+170 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
     }
     if shootTime>=reShootTime+30
     {
@@ -111,14 +116,16 @@ if global.gamePaused=false
       shootTime=0
     }
 
-    yVel+=0.2
+    //yVel+=0.2
+    yVel=scrGravAcc(yVel,0.2,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
     if isCollisionLeft(1)
       xVel=runAcc
     if isCollisionRight(1)
       xVel=-runAcc
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     if isCollisionSolid()
       y-=2
 

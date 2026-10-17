@@ -12,8 +12,10 @@ lib_id=1
 action_id=603
 applies_to=self
 */
-expYoffset-=0.2
-expAlpha-=0.03
+//expYoffset-=0.2
+expYoffset-=0.2*gDeltaTime //60fps change: per 30fps tick
+//expAlpha-=0.03
+expAlpha-=0.03*gDeltaTime //60fps change: per 30fps tick
 
 draw_set_font(fnt_Exp)
 draw_set_halign(fa_center)

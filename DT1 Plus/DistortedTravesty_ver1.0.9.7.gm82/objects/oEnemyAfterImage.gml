@@ -31,11 +31,17 @@ if global.gamePaused=false
       yScaling=yScalingSet
     init=1
   }
-  x+=xShift
-  y+=yShift
-  image_xscale+=xScaling
-  image_yscale+=yScaling
-  image_alpha-=imageFade
+  //60fps change: moves, scales and fades per 30fps tick (*gDeltaTime)
+  //x+=xShift
+  //y+=yShift
+  //image_xscale+=xScaling
+  //image_yscale+=yScaling
+  //image_alpha-=imageFade
+  x+=xShift*gDeltaTime
+  y+=yShift*gDeltaTime
+  image_xscale+=xScaling*gDeltaTime
+  image_yscale+=yScaling*gDeltaTime
+  image_alpha-=imageFade*gDeltaTime
   if image_alpha<=0
     instance_destroy()
 }

@@ -56,7 +56,8 @@ if global.gamePaused=false
       dir=point_direction(x,y,oCharacter.x,oCharacter.y-22)
       dir1=dir+ran1
       dir2=dir+ran2
-      moveTo(runAcc*cos(degtorad(dir1)),-runAcc*sin(degtorad(dir2)))
+      //moveTo(runAcc*cos(degtorad(dir1)),-runAcc*sin(degtorad(dir2)))
+      moveTo(runAcc*cos(degtorad(dir1))*gDeltaTime,-runAcc*sin(degtorad(dir2))*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     }
   }
   enemyStepEvent()

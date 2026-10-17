@@ -21,8 +21,10 @@ for (i=0;i<3;i+=1)
 {
   if effectSize[i]<0.75
   {
-    effectSize[i]+=0.01
-    effectAlpha[i]-=0.01
+    //effectSize[i]+=0.01
+    effectSize[i]+=0.01*gDeltaTime //60fps change: per 30fps tick
+    //effectAlpha[i]-=0.01
+    effectAlpha[i]-=0.01*gDeltaTime //60fps change: per 30fps tick
   }
   else
   {

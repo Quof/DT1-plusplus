@@ -78,14 +78,19 @@ if global.gamePaused=false
       }
       initDir=true
     }
-    x+=xVel
+    //x+=xVel
+    x+=xVel*gDeltaTime //60fps change: per 30fps tick
     //----- shoot -----
-    shootTime+=1
-    if shootTime>=shootWait
+    //shootTime+=1
+    shootTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if shootTime>=shootWait
+    if shootTime>shootWait-1 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps; with >= it rose half a tick more each cycle)
     {
-      y+=1
+      //y+=1
+      y+=1*gDeltaTime //60fps change: per 30fps tick
       sprite_index=sFlyingDemonGlide
-      if multiShot>0 and shootTime mod shotFreq=0
+      //if multiShot>0 and shootTime mod shotFreq=0
+      if multiShot>0 and scrModPass(shootTime,shotFreq) //60fps change: once each time the count reaches a multiple of it
       {
         var x1;
         if image_xscale=1
@@ -97,7 +102,8 @@ if global.gamePaused=false
         newAttack.sprite_index=sFlyingDemonPoop
         newAttack.damageType="SPIRIT"
         newAttack.spiritPower=spiritPower
-        newAttack.direction=270
+        //newAttack.direction=270
+        newAttack._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newAttack.bulletSpeed=8
         multiShot-=1
         if multiShot=0
@@ -109,7 +115,8 @@ if global.gamePaused=false
       }
     }
     else
-      y-=1
+      //y-=1
+      y-=1*gDeltaTime //60fps change: per 30fps tick
 
     if findTargetX>inactiveDist/2 //destroy if it gets too far off screen
     {

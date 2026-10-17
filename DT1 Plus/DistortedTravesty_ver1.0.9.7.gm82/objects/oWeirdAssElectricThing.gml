@@ -77,9 +77,11 @@ if global.gamePaused=false
       image_xscale=1
     else
       image_xscale=-1
-    x+=xVel
+    //x+=xVel
+    x+=xVel*gDeltaTime //60fps change: per 30fps tick
 
-    dirChangeTime+=1
+    //dirChangeTime+=1
+    dirChangeTime+=gDeltaTime //60fps change: counts 30fps ticks
     if dirChangeTime>=dirChangeTimeMax
     {
       xVel*=-1
@@ -88,10 +90,12 @@ if global.gamePaused=false
 
     if shootTime>=reShootTime-20
     {
-      colorChangeTime+=1
+      //colorChangeTime+=1
+      colorChangeTime+=gDeltaTime //60fps change: counts 30fps ticks
       if colorChangeTime=1
         image_blend=c_silver
-      else if colorChangeTime=4
+      //else if colorChangeTime=4
+      else if colorChangeTime>=4 //60fps change: >= so the cycle still ends if the frame rate changes mid-count
       {
         image_blend=c_white
         colorChangeTime=0
@@ -104,12 +108,16 @@ if global.gamePaused=false
       newAttack=instance_create(x,y,oLaserB)
       newAttack.spiritPower=spiritPower
       newAttack.damageType="SPIRIT"
-      newAttack.direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-22)
+      //newAttack.direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-22)
+      newAttack._direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-22) //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       newAttack.bulletSpeed=5
-      shootTime=0
+      //shootTime=0
+      //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
+      shootTime=gDeltaTime-1
     }
     else
-      shootTime+=1
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: see above
   }
   enemyStepEvent()
 }

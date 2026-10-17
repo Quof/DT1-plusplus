@@ -44,36 +44,54 @@ if global.gamePaused=false
 {
   if room=rDistortionW4_3
   {
-    moveProg+=1
-    if moveProg>=1 and moveProg<=90
+    //moveProg+=1
+    moveProg+=gDeltaTime //60fps change: counts 30fps ticks
+    //if moveProg>=1 and moveProg<=90
+    if moveProg>0 and moveProg<=90 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      circleTrap1.x+=2
-      circleTrap2.x-=2
+      //circleTrap1.x+=2
+      circleTrap1.x+=2*gDeltaTime //60fps change: per 30fps tick
+      //circleTrap2.x-=2
+      circleTrap2.x-=2*gDeltaTime //60fps change: per 30fps tick
     }
-    else if moveProg>=91 and moveProg<=180
+    //else if moveProg>=91 and moveProg<=180
+    else if moveProg>90 and moveProg<=180 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      circleTrap1.x-=2
-      circleTrap2.x+=2
+      //circleTrap1.x-=2
+      circleTrap1.x-=2*gDeltaTime //60fps change: per 30fps tick
+      //circleTrap2.x+=2
+      circleTrap2.x+=2*gDeltaTime //60fps change: per 30fps tick
       if moveProg>=180
         moveProg=0
     }
   }
   else if room=rDistortionW4_4
   {
-    moveProg+=1
-    if moveProg>=1 and moveProg<=90
+    //moveProg+=1
+    moveProg+=gDeltaTime //60fps change: counts 30fps ticks
+    //if moveProg>=1 and moveProg<=90
+    if moveProg>0 and moveProg<=90 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      circleTrap1.y+=2
-      circleTrap2A.y-=1.5
-      circleTrap2B.y+=1.5
-      circleTrap2C.y-=1.5
+      //circleTrap1.y+=2
+      circleTrap1.y+=2*gDeltaTime //60fps change: per 30fps tick
+      //circleTrap2A.y-=1.5
+      circleTrap2A.y-=1.5*gDeltaTime //60fps change: per 30fps tick
+      //circleTrap2B.y+=1.5
+      circleTrap2B.y+=1.5*gDeltaTime //60fps change: per 30fps tick
+      //circleTrap2C.y-=1.5
+      circleTrap2C.y-=1.5*gDeltaTime //60fps change: per 30fps tick
     }
-    else if moveProg>=91 and moveProg<=180
+    //else if moveProg>=91 and moveProg<=180
+    else if moveProg>90 and moveProg<=180 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      circleTrap1.y-=2
-      circleTrap2A.y+=1.5
-      circleTrap2B.y-=1.5
-      circleTrap2C.y+=1.5
+      //circleTrap1.y-=2
+      circleTrap1.y-=2*gDeltaTime //60fps change: per 30fps tick
+      //circleTrap2A.y+=1.5
+      circleTrap2A.y+=1.5*gDeltaTime //60fps change: per 30fps tick
+      //circleTrap2B.y-=1.5
+      circleTrap2B.y-=1.5*gDeltaTime //60fps change: per 30fps tick
+      //circleTrap2C.y+=1.5
+      circleTrap2C.y+=1.5*gDeltaTime //60fps change: per 30fps tick
       if moveProg>=180
         moveProg=0
     }
@@ -81,15 +99,21 @@ if global.gamePaused=false
     /*moveProg2+=1
     if moveProg2>=1 and moveProg2<=90
     {
-      circleTrap2A.y-=1.5
-      circleTrap2B.y+=1.5
-      circleTrap2C.y-=1.5
+      //circleTrap2A.y-=1.5
+      circleTrap2A.y-=1.5*gDeltaTime //60fps change: per 30fps tick
+      //circleTrap2B.y+=1.5
+      circleTrap2B.y+=1.5*gDeltaTime //60fps change: per 30fps tick
+      //circleTrap2C.y-=1.5
+      circleTrap2C.y-=1.5*gDeltaTime //60fps change: per 30fps tick
     }
     else if moveProg2>=90 and moveProg2<=180
     {
-      circleTrap2A.y+=1.5
-      circleTrap2B.y-=1.5
-      circleTrap2C.y+=1.5
+      //circleTrap2A.y+=1.5
+      circleTrap2A.y+=1.5*gDeltaTime //60fps change: per 30fps tick
+      //circleTrap2B.y-=1.5
+      circleTrap2B.y-=1.5*gDeltaTime //60fps change: per 30fps tick
+      //circleTrap2C.y+=1.5
+      circleTrap2C.y+=1.5*gDeltaTime //60fps change: per 30fps tick
       if moveProg2>=180
         moveProg2=0
     }*/

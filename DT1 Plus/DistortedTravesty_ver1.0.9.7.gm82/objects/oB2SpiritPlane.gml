@@ -71,22 +71,27 @@ if global.gamePaused=false
       image_xscale=1
     else
       image_xscale=-1
-    x+=xVel
+    //x+=xVel
+    x+=xVel*gDeltaTime //60fps change: per 30fps tick
     //shoot
-    bombTime+=1
+    //bombTime+=1
+    bombTime+=gDeltaTime //60fps change: counts 30fps ticks
     if bombTime>=bombWait
     {
       newAttack=instance_create(x,y+8,oB2Bomb)
       newAttack.damageType="SPIRIT"
       newAttack.spiritPower=spiritPower
+      //60fps change: _direction instead of GM's direction (oB2Bomb)
       if image_xscale=1
       {
-        newAttack.direction=350
+        //newAttack.direction=350
+        newAttack._direction=350
         newAttack.image_angle=350
       }
       else
       {
-        newAttack.direction=190
+        //newAttack.direction=190
+        newAttack._direction=190
         newAttack.image_angle=190
       }
       newAttack.bulletSpeed=4

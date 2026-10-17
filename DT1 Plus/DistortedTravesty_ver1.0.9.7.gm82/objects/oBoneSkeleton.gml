@@ -66,7 +66,8 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true and stunnedTime=0 and dieFade=0
   {
-    walkTime+=1
+    //walkTime+=1
+    walkTime+=gDeltaTime //60fps change: counts 30fps ticks
     if walkTime>=walkChange
     {
       runAcc*=-1
@@ -74,14 +75,17 @@ if global.gamePaused=false
       walkTime=0
       walkChange=round(random(25)+40)
     }
-    shootTime+=1
-    if shootTime=reShootTime-22
+    //shootTime+=1
+    shootTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if shootTime=reShootTime-22
+    if scrCountPass(shootTime,reShootTime-22) //60fps change: once, when the count reaches it
     {
       xVel=0
       sprite_index=sBoneSkeletonThrow
       image_index=0
     }
-    if shootTime=reShootTime
+    //if shootTime=reShootTime
+    if scrCountPass(shootTime,reShootTime) //60fps change: once, when the count reaches it
     {
       newAttack=instance_create(x,y-40,oCBone)
       newAttack.spiritPower=spiritPower
@@ -91,7 +95,8 @@ if global.gamePaused=false
       else
         newAttack.dir=0
     }
-    if shootTime=reShootTime+5
+    //if shootTime=reShootTime+5
+    if shootTime>=reShootTime+5 //60fps change: >= so it still happens if the frame rate changes mid-count (it resets)
     {
       xVel=runAcc
       if round(random(10))>=5
@@ -103,7 +108,8 @@ if global.gamePaused=false
       image_xscale=-1
     else
       image_xscale=1
-    yVel+=0.2
+    //yVel+=0.2
+    yVel=scrGravAcc(yVel,0.2,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
     if isCollisionLeft(1)
@@ -112,7 +118,8 @@ if global.gamePaused=false
       xVel=-runAcc
     if isCollisionSolid()
       y-=2
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 
     if y>room_height+24
     {

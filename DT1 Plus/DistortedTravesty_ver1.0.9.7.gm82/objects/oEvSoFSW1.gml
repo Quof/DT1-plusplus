@@ -94,7 +94,8 @@ if global.gamePaused=false
   }
   else if room=rSoFS_Floor14
   {
-    rockDropTime+=1
+    //rockDropTime+=1
+    rockDropTime+=gDeltaTime //60fps change: counts 30fps ticks
     if rockDropTime>=70
     {
       newRock=instance_create(416,160,oBigBoulder)
@@ -106,7 +107,8 @@ if global.gamePaused=false
   }
   else if room=rSoFS_Floor15
   {
-    rockDropTime+=1
+    //rockDropTime+=1
+    rockDropTime+=gDeltaTime //60fps change: counts 30fps ticks
     if rockDropTime>=95
     {
       newRock=instance_create(32,32,oBigBoulder)
@@ -122,14 +124,16 @@ if global.gamePaused=false
   }
   else if room=rSoFS_Floor36
   {
-    rockDropTime1+=1
+    //rockDropTime1+=1
+    rockDropTime1+=gDeltaTime //60fps change: counts 30fps ticks
     if rockDropTime1>=95
     {
       newRock=instance_create(432,32,oBigBoulder)
       newRock.bActive=1
       rockDropTime1=0
     }
-    rockDropTime2+=1
+    //rockDropTime2+=1
+    rockDropTime2+=gDeltaTime //60fps change: counts 30fps ticks
     if rockDropTime2>=115
     {
       newRock=instance_create(80,-32,oBigBoulder)
@@ -144,12 +148,14 @@ if global.gamePaused=false
   }
   else if room=rSoFS_Floor41 //Going up the tower elevator
   {
-    musicFreq+=1
+    //musicFreq+=1
+    musicFreq+=gDeltaTime //60fps change: counts 30fps ticks
     var tempFplay;
     tempFplay=findMusic(0)
     SS_SetSoundFreq(tempFplay,findFreq()+(musicFreq*40))
 
-    floorTime+=1
+    //floorTime+=1
+    floorTime+=gDeltaTime //60fps change: counts 30fps ticks
     if currentFloor<98
     {
       if floorTime>=floorDelay
@@ -165,7 +171,8 @@ if global.gamePaused=false
       {
         if global.sofsMax=8
           global.sofsMax=9
-        transition_steps=15
+        //transition_steps=15
+        transition_steps=15/gDeltaTime //60fps change: transition_steps counts frames: the same time
         transition_kind=5
         room_goto(rSoFS_Floor99)
       }
@@ -190,11 +197,14 @@ if global.sofsMax=10 and room=rSoFS_Floor100 //Boss Fight (Spire Guardian)
   else if sceneProgress=1
   {
     if oPlayer1.y<320
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=30
       {
@@ -205,16 +215,20 @@ if global.sofsMax=10 and room=rSoFS_Floor100 //Boss Fight (Spire Guardian)
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       boss=instance_create(368,192,oSpireGuardian)
       boss.image_alpha=0
       boss.image_xscale=-1
     }
-    else if sceneDelay>=2
+    //else if sceneDelay>=2
+    else if sceneDelay>1 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      boss.image_alpha+=0.02
+      //boss.image_alpha+=0.02
+      boss.image_alpha+=0.02*gDeltaTime //60fps change: per 30fps tick
       if boss.image_alpha>=1
       {
         sceneDelay=0
@@ -230,8 +244,10 @@ if global.sofsMax=10 and room=rSoFS_Floor100 //Boss Fight (Spire Guardian)
     msgCreate("I wouldn't expect it to.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=6
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       barrier=instance_create(80,256,oBossBarrier)
       oPlayer1.raveTime=0
@@ -257,14 +273,17 @@ if global.sofsMax=10 and room=rSoFS_Floor100 //Boss Fight (Spire Guardian)
   else if sceneProgress=11
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=12
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       with oSpireGuardRed
@@ -287,13 +306,15 @@ if global.sofsMax=10 and room=rSoFS_Floor100 //Boss Fight (Spire Guardian)
   else if sceneProgress=13
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=14
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0

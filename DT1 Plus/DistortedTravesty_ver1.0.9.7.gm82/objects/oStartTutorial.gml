@@ -28,7 +28,8 @@ if global.gamePaused=false
   {
     if sceneProgress=0
     {
-      sceneDelay+=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if sceneDelay>=30
       {
         sceneDelay=0
@@ -37,16 +38,19 @@ if global.gamePaused=false
     }
     else if sceneProgress=1
     {
-      if otherTime=25
+      //if otherTime=25
+      if scrCountPass(otherTime,25) //60fps change: once, when the count reaches it
       {
         msgCreate("Geez, I was TRYING to read that location indicator.",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=120
         otherTime=200
       }
       else
-        otherTime+=1
+        //otherTime+=1
+        otherTime+=gDeltaTime //60fps change: counts 30fps ticks
       if tutAlpha<1
-        tutAlpha+=fadeSpeed
+        //tutAlpha+=fadeSpeed
+        tutAlpha+=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       if oPlayer1.x>=544
         sceneProgress+=1
       currentTut="<<Movement Info>>#[" +string(global.ctrlLeft) +string("] Move left    [") +string(global.ctrlRight) +string("] Move right    [") +string(global.ctrlDown) +string("] Crouch")
@@ -54,7 +58,8 @@ if global.gamePaused=false
     else if sceneProgress=2
     {
       if tutAlpha>0
-        tutAlpha-=fadeSpeed
+        //tutAlpha-=fadeSpeed
+        tutAlpha-=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       else
       {
         otherTime=0
@@ -64,7 +69,8 @@ if global.gamePaused=false
     else if sceneProgress=3
     {
       if tutAlpha<1
-        tutAlpha+=fadeSpeed
+        //tutAlpha+=fadeSpeed
+        tutAlpha+=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       if oPlayer1.x>=1216
         sceneProgress+=1
       currentTut="<<Movement Info>>#[" +string(global.ctrlJump) +string("] Jump#The longer jump is held down, the higher you will jump.")
@@ -72,7 +78,8 @@ if global.gamePaused=false
     else if sceneProgress=4
     {
       if tutAlpha>0
-        tutAlpha-=fadeSpeed
+        //tutAlpha-=fadeSpeed
+        tutAlpha-=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       else
       {
         tutY=296
@@ -83,7 +90,8 @@ if global.gamePaused=false
     else if sceneProgress=5
     {
       if tutAlpha<1
-        tutAlpha+=fadeSpeed
+        //tutAlpha+=fadeSpeed
+        tutAlpha+=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       if oPlayer1.x>=2208
         sceneProgress+=1
       currentTut="<<Movement Info>>#If [" +string(global.ctrlDown) +string("] is held before jumping, ") +string(global.mainCharacters[0]) +string(" will quickly dash back#If [") +string(global.ctrlUp) +string("] is held before jumping, ") +string(global.mainCharacters[0]) +string(" will quickly dash forward#Try it to get across this gap.")
@@ -91,7 +99,8 @@ if global.gamePaused=false
     else if sceneProgress=6
     {
       if tutAlpha>0
-        tutAlpha-=fadeSpeed
+        //tutAlpha-=fadeSpeed
+        tutAlpha-=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       else
       {
         tutY=56
@@ -101,7 +110,8 @@ if global.gamePaused=false
     else if sceneProgress=7
     {
       if tutAlpha<1
-        tutAlpha+=fadeSpeed
+        //tutAlpha+=fadeSpeed
+        tutAlpha+=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       if oPlayer1.x>=2672
         sceneProgress+=1
       currentTut="<<Scanning Info>>#You can use the mouse to left-click on hostile targets.#This will bring up some general statistics and info on the target.#Useful if you come across a tough opponent, just want some info, or are bored."
@@ -109,14 +119,16 @@ if global.gamePaused=false
     else if sceneProgress=8
     {
       if tutAlpha>0
-        tutAlpha-=fadeSpeed
+        //tutAlpha-=fadeSpeed
+        tutAlpha-=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       else
         sceneProgress+=1
     }
     else if sceneProgress=9
     {
       if tutAlpha<1
-        tutAlpha+=fadeSpeed
+        //tutAlpha+=fadeSpeed
+        tutAlpha+=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       if oPlayer1.x>=2960
         sceneProgress+=1
       currentTut="<<General Info>>#[" +string(global.ctrlUp) +string("] Interact with objects#The chest here can be opened by standing over it and pressing up.#The Binary Index contains information, you can decode it's contents#by pressing up near it.")
@@ -124,7 +136,8 @@ if global.gamePaused=false
     else if sceneProgress=10
     {
       if tutAlpha>0
-        tutAlpha-=fadeSpeed
+        //tutAlpha-=fadeSpeed
+        tutAlpha-=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       else
       {
         tutY=296
@@ -135,9 +148,11 @@ if global.gamePaused=false
   if global.gameProgress=-8 //combat tutorial
   {
     if oPlayer1.life<oPlayer1.maxLife
-      oPlayer1.life+=7
+      //oPlayer1.life+=7
+      oPlayer1.life+=7*gDeltaTime //60fps change: per 30fps tick
     if tutAlpha<1
-      tutAlpha+=fadeSpeed
+      //tutAlpha+=fadeSpeed
+      tutAlpha+=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
     currentTut="<<Combat Info>>#[" +string(global.ctrlAttack) +string("] Use Physical Attacks#Holding different directions with the attack will make you perform different strikes.#[") +string(global.ctrlAttack) +string("] Full Swing     [") +string(global.ctrlUp) +string("]+[") +string(global.ctrlAttack) +string("] Upward Attack     [") +string(global.ctrlLeft) +string("]or[") +string(global.ctrlRight) +string("]+[") +string(global.ctrlAttack) +string("] Thrusting Attack#[") +string(global.ctrlDown) +string("]+[") +string(global.ctrlAttack) +string("] Downward Attack(On the ground)     [") +string(global.ctrlDown) +string("]+[") +string(global.ctrlAttack) +string("] Jump Attack(In mid-air)")
   }
   else if global.gameProgress=1 //first room
@@ -153,7 +168,8 @@ if global.gamePaused=false
     if sceneProgress=1
     {
       if tutAlpha<1
-        tutAlpha+=fadeSpeed
+        //tutAlpha+=fadeSpeed
+        tutAlpha+=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       if oPlayer1.x>=512
         sceneProgress+=1
       currentTut="<<General Info>>#The pillar will fully restore Health and Spirit Energy#if you interact with it using Up - [" +string(global.ctrlUp) +string("]")
@@ -161,7 +177,8 @@ if global.gamePaused=false
     else if sceneProgress=2
     {
       if tutAlpha>0
-        tutAlpha-=fadeSpeed
+        //tutAlpha-=fadeSpeed
+        tutAlpha-=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       else
         sceneProgress+=1
     }
@@ -173,14 +190,18 @@ if global.gamePaused=false
     else if sceneProgress=4
     {
       if tutAlpha<1
-        tutAlpha+=fadeSpeed
-      otherTime+=1
-      if otherTime=60
+        //tutAlpha+=fadeSpeed
+        tutAlpha+=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
+      //otherTime+=1
+      otherTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if otherTime=60
+      if scrCountPass(otherTime,60) //60fps change: once, when the count reaches it
       {
         msgCreate("I kinda want to see the screen where that text box is.",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=120
       }
-      else if otherTime=200
+      //else if otherTime=200
+      else if scrCountPass(otherTime,200) //60fps change: once, when the count reaches it
       {
         msgCreate("Don't you just love tutorial boxes that get in the way?",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=120
@@ -201,38 +222,47 @@ if global.gamePaused=false
     else if sceneProgress=1
     {
       if oPlayer1.spiritEnergy<oPlayer1.maxSpiritEnergy
-        oPlayer1.spiritEnergy+=5
+        //oPlayer1.spiritEnergy+=5
+        oPlayer1.spiritEnergy+=5*gDeltaTime //60fps change: per 30fps tick
       if oPlayer1.fireEnergy<oPlayer1.maxFireEnergy
-        oPlayer1.fireEnergy+=5
+        //oPlayer1.fireEnergy+=5
+        oPlayer1.fireEnergy+=5*gDeltaTime //60fps change: per 30fps tick
       if oPlayer1.waterEnergy<oPlayer1.maxWaterEnergy
-        oPlayer1.waterEnergy+=5
+        //oPlayer1.waterEnergy+=5
+        oPlayer1.waterEnergy+=5*gDeltaTime //60fps change: per 30fps tick
       if oPlayer1.windEnergy<oPlayer1.maxWindEnergy
-        oPlayer1.windEnergy+=5
+        //oPlayer1.windEnergy+=5
+        oPlayer1.windEnergy+=5*gDeltaTime //60fps change: per 30fps tick
       if oPlayer1.earthEnergy<oPlayer1.maxEarthEnergy
-        oPlayer1.earthEnergy+=5
+        //oPlayer1.earthEnergy+=5
+        oPlayer1.earthEnergy+=5*gDeltaTime //60fps change: per 30fps tick
       draw_set_halign(fa_left)
       draw_set_font(fnt_showMessage)
       draw_set_color(make_color_rgb(248,248,216))
       draw_set_alpha(1)
       draw_text(view_xview[0]+452,view_yview[0]+68,"BOOSTED")
       if tutAlpha<1
-        tutAlpha+=fadeSpeed
+        //tutAlpha+=fadeSpeed
+        tutAlpha+=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       if global.switchTrigger[1]=1
         sceneProgress+=1
-      if otherTime=30
+      //if otherTime=30
+      if scrCountPass(otherTime,30) //60fps change: once, when the count reaches it
       {
         msgCreate("Great, it covers the entire bottom of the screen.",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=120
         otherTime=200
       }
       else
-        otherTime+=1
+        //otherTime+=1
+        otherTime+=gDeltaTime //60fps change: counts 30fps ticks
       currentTut="<<Spirit Info>>#" +string(global.mainCharacters[0]) +string(" has the ability to cast spells from the four elements.#[") +string(global.ctrlSpell) +string("] Cast a spell from the current active element.#[") +string(global.ctrlCycleBack) +string(",") +string(global.ctrlCycleForward) +string("] Swap between the elements. Each spell uses a bit of Spirit Energy as well as energy#from the called element. Try using a fire spell to hit the switch on the top ledge.")
     }
     else if sceneProgress=2
     {
       if tutAlpha>0
-        tutAlpha-=fadeSpeed
+        //tutAlpha-=fadeSpeed
+        tutAlpha-=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       else
       {
         tutY=64
@@ -243,17 +273,20 @@ if global.gamePaused=false
     else if sceneProgress=3
     {
       if tutAlpha<1
-        tutAlpha+=fadeSpeed
+        //tutAlpha+=fadeSpeed
+        tutAlpha+=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       if oPlayer1.x>=1392
         sceneProgress+=1
-      if otherTime=30
+      //if otherTime=30
+      if scrCountPass(otherTime,30) //60fps change: once, when the count reaches it
       {
         msgCreate("Look at that, new info on the screen.#That should be useful info.",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=120
         otherTime=200
       }
       else
-        otherTime+=1
+        //otherTime+=1
+        otherTime+=gDeltaTime //60fps change: counts 30fps ticks
       currentTut="<<Combat Info>>#Additionally while an element is active it is also fused onto your weapon.#Attacks made with an element fused will have properties of that element.#Enemies are weak and resistant to different elements, take advantage#of these during combat. Try using the Earth element here."
     }
   }
@@ -261,7 +294,8 @@ if global.gamePaused=false
   {
     if sceneProgress=0
     {
-      sceneDelay+=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if sceneDelay>=30
       {
         sceneDelay=0
@@ -273,13 +307,15 @@ if global.gamePaused=false
       if oPlayer1.x>=432
         sceneProgress+=1
       if tutAlpha<1
-        tutAlpha+=fadeSpeed
+        //tutAlpha+=fadeSpeed
+        tutAlpha+=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       currentTut="<<General Info>>#On the ledge above is a Skill Capsule. Each is worth 1 Skill Point.#In the Skill submenu, Skill Points can be used to boost various attributes.#Open the menu [P] and learn skills with the confirm key [J] in the skills menu."
     }
     else if sceneProgress=2
     {
       if tutAlpha>0
-        tutAlpha-=fadeSpeed
+        //tutAlpha-=fadeSpeed
+        tutAlpha-=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       else
         sceneProgress+=1
     }
@@ -288,7 +324,8 @@ if global.gamePaused=false
   {
     if sceneProgress=0
     {
-      sceneDelay+=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if sceneDelay>=15
       {
         sceneDelay=0
@@ -300,13 +337,15 @@ if global.gamePaused=false
       if oPlayer1.x>=480
         sceneProgress+=1
       if tutAlpha<1
-        tutAlpha+=fadeSpeed
+        //tutAlpha+=fadeSpeed
+        tutAlpha+=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       currentTut=string("<<Saving Info>>#You can save by going into the doors marked SAVE.#Press Up [") +string(global.ctrlUp) +string("] to go into them.")
     }
     else if sceneProgress=2
     {
       if tutAlpha>0
-        tutAlpha-=fadeSpeed
+        //tutAlpha-=fadeSpeed
+        tutAlpha-=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       else
         sceneProgress+=1
     }
@@ -320,13 +359,15 @@ if global.gamePaused=false
       if global.switchTrigger[2]=1
         sceneProgress+=1
       if tutAlpha<1
-        tutAlpha+=fadeSpeed
+        //tutAlpha+=fadeSpeed
+        tutAlpha+=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       currentTut="<<General Info>>#The color of the crystal above the switch indicates which element is#needed to unlock it. Which element is green associated with?"
     }
     else if sceneProgress=5
     {
       if tutAlpha>0
-        tutAlpha-=fadeSpeed
+        //tutAlpha-=fadeSpeed
+        tutAlpha-=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       else
         sceneProgress+=1
     }
@@ -335,7 +376,8 @@ if global.gamePaused=false
   {
     if sceneProgress=0
     {
-      sceneDelay+=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
       if sceneDelay>=30
       {
         sceneDelay=0
@@ -347,13 +389,15 @@ if global.gamePaused=false
       if oPlayer1.x>=480
         sceneProgress+=1
       if tutAlpha<1
-        tutAlpha+=fadeSpeed
+        //tutAlpha+=fadeSpeed
+        tutAlpha+=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       currentTut="<<Death Info>>#Bottomless pits are bottomless.#If you lose all your health, you will be brought to the Game Over screen.#You can choose to retry the current map, if you do, any money#obtained from enemies as well as Awesome Points will be lost.#Money from chests and Exp/Lv will be maintained."
     }
     else if sceneProgress=2
     {
       if tutAlpha>0
-        tutAlpha-=fadeSpeed
+        //tutAlpha-=fadeSpeed
+        tutAlpha-=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
       else
         sceneProgress+=1
     }
@@ -367,7 +411,8 @@ if global.gamePaused=false
         tutX=176
         tutY=314
         if tutAlpha<1
-          tutAlpha+=fadeSpeed
+          //tutAlpha+=fadeSpeed
+          tutAlpha+=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
         else
           sceneProgress+=1
         currentTut="Help Info#" +string(global.mainCharacters[0]) +string(" can dash through the Cyborg's rock attack.#Try dashing just before they reach you.#Dash reminder: Hold up or down while pressing jump.")
@@ -375,11 +420,14 @@ if global.gamePaused=false
     }
     else if sceneProgress=1
     {
-      sceneDelay+=1
-      if sceneDelay>=210
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay>=210
+      if sceneDelay>209 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
       {
         if tutAlpha>0
-          tutAlpha-=fadeSpeed
+          //tutAlpha-=fadeSpeed
+          tutAlpha-=fadeSpeed*gDeltaTime //60fps change: per 30fps tick
         else
           sceneProgress+=1
       }
@@ -396,7 +444,8 @@ if global.gamePaused=false
     }
     else if cyborgTextHax=1
     {
-      otherTime+=1
+      //otherTime+=1
+      otherTime+=gDeltaTime //60fps change: counts 30fps ticks
       if otherTime>=90
         cyborgTextHax+=1
     }

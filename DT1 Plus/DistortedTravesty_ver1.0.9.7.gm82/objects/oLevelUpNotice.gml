@@ -13,8 +13,10 @@ lib_id=1
 action_id=603
 applies_to=self
 */
-levelUpYoffset-=1
-levelUpAlpha-=0.03
+//levelUpYoffset-=1
+levelUpYoffset-=gDeltaTime //60fps change: per 30fps tick
+//levelUpAlpha-=0.03
+levelUpAlpha-=0.03*gDeltaTime //60fps change: per 30fps tick
 
 draw_set_font(fnt_AreaName)
 draw_set_halign(fa_center)

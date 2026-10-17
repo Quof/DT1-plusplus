@@ -24,12 +24,16 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  yVel+=grav
+  //yVel+=grav
+  yVel=scrGravAcc(yVel,grav,1) //60fps change: gravity per 30fps tick, following the 30fps arc
   if xVel>0
-    image_angle+=15
+    //image_angle+=15
+    image_angle+=15*gDeltaTime //60fps change: per 30fps tick
   else if xVel<0
-    image_angle-=15
-  explodeTime-=1
+    //image_angle-=15
+    image_angle-=15*gDeltaTime //60fps change: per 30fps tick
+  //explodeTime-=1
+  explodeTime-=gDeltaTime //60fps change: counts 30fps ticks
   if explodeTime<=0
   {
     for(i=0;i<3;i+=1)
@@ -48,5 +52,6 @@ if global.gamePaused=false
     effect.sprite_index=sGrenadeExplosion
     instance_destroy()
   }
-  moveTo(xVel,yVel)
+  //moveTo(xVel,yVel)
+  moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 }

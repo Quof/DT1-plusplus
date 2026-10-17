@@ -56,7 +56,8 @@ if global.gamePaused=false
       instance_destroy()
     }
 
-    x+=runAcc
+    //x+=runAcc
+    x+=runAcc*gDeltaTime //60fps change: per 30fps tick
   }
   enemyStepEvent()
 }

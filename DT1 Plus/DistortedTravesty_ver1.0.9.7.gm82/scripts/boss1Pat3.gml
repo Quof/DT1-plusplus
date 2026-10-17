@@ -10,11 +10,13 @@ for(i=0;i<argument1;i+=1)
   newBullet=instance_create(x,y,oEnemyShipBulletNormal)
   newBullet.bDestroyIfOffScreen=true
   newBullet.bulletSpeed=1
-  newBullet.direction=dir
+  //newBullet.direction=dir
+  newBullet._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
   newBullet=instance_create(x,y,oEnemyShipBulletDiamond)
   newBullet.bDestroyIfOffScreen=true
   newBullet.bulletSpeed=2
-  newBullet.direction=dir+5
+  //newBullet.direction=dir+5
+  newBullet._direction=dir+5 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
   if argument0=0
     newBullet.bulletArc=0.25
   else if argument0=1

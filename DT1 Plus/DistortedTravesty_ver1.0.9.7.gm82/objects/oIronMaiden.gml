@@ -50,7 +50,8 @@ if global.gamePaused=false
   }
   if awardTime>0 and bTargetFound=true
   {
-    awardTime-=1
+    //awardTime-=1
+    awardTime-=gDeltaTime //60fps change: counts 30fps ticks
     award=0
     for (i=0;i<=snakeAmount;i+=1)
     {

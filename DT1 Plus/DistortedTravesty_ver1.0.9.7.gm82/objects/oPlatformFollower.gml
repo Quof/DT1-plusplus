@@ -50,78 +50,82 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true
   {
+    //60fps change (added): below, tStep (this frame's share of runAcc, its move per 30fps tick) replaces runAcc,
+    //in the moves and in the wall checks ahead of them
+    var tStep;
+    tStep=runAcc*gDeltaTime
     if bClockWise=false //******************** COUNTER-CLOCK-WISE ********************
     {
       if currentDir=UP
       {
-        if !place_meeting(x,y-runAcc,oSolid) //check up first
+        if !place_meeting(x,y-tStep,oSolid) //check up first
         {
-          if place_meeting(x-runAcc,y,oSolid) //check left
-            y-=runAcc //continue up
+          if place_meeting(x-tStep,y,oSolid) //check left
+            y-=tStep //continue up
           else
           {
             currentDir=LEFT
-            x-=runAcc //move left once
+            x-=tStep //move left once
           }
         }
         else
         {
           currentDir=RIGHT
-          x+=runAcc
+          x+=tStep
         }
       }
       else if currentDir=DOWN
       {
-        if !place_meeting(x,y+runAcc,oSolid) //check down first
+        if !place_meeting(x,y+tStep,oSolid) //check down first
         {
-          if place_meeting(x+runAcc,y,oSolid) //check right
-            y+=runAcc //continue down
+          if place_meeting(x+tStep,y,oSolid) //check right
+            y+=tStep //continue down
           else
           {
             currentDir=RIGHT
-            x+=runAcc //move right once
+            x+=tStep //move right once
           }
         }
         else
         {
           currentDir=LEFT
-          x-=runAcc
+          x-=tStep
         }
       }
       else if currentDir=LEFT
       {
-        if !place_meeting(x-runAcc,y,oSolid) //check left first
+        if !place_meeting(x-tStep,y,oSolid) //check left first
         {
-          if place_meeting(x,y+runAcc,oSolid) //check down
-            x-=runAcc //continue left
+          if place_meeting(x,y+tStep,oSolid) //check down
+            x-=tStep //continue left
           else
           {
             currentDir=DOWN
-            y+=runAcc //move down once
+            y+=tStep //move down once
           }
         }
         else
         {
           currentDir=UP
-          y-=runAcc
+          y-=tStep
         }
       }
       else if currentDir=RIGHT
       {
-        if !place_meeting(x+runAcc,y,oSolid) //check right first
+        if !place_meeting(x+tStep,y,oSolid) //check right first
         {
-          if place_meeting(x,y-runAcc,oSolid) //check up
-            x+=runAcc //continue right
+          if place_meeting(x,y-tStep,oSolid) //check up
+            x+=tStep //continue right
           else
           {
             currentDir=UP
-            y-=runAcc //move up once
+            y-=tStep //move up once
           }
         }
         else
         {
           currentDir=DOWN
-          y+=runAcc
+          y+=tStep
         }
       }
     }
@@ -129,74 +133,74 @@ if global.gamePaused=false
     {
       if currentDir=UP
       {
-        if !place_meeting(x,y-runAcc,oSolid) //check up first
+        if !place_meeting(x,y-tStep,oSolid) //check up first
         {
-          if place_meeting(x+runAcc,y,oSolid) //check right
-            y-=runAcc //continue up
+          if place_meeting(x+tStep,y,oSolid) //check right
+            y-=tStep //continue up
           else
           {
             currentDir=RIGHT
-            x+=runAcc //move right once
+            x+=tStep //move right once
           }
         }
         else
         {
           currentDir=LEFT
-          x-=runAcc
+          x-=tStep
         }
       }
       else if currentDir=DOWN
       {
-        if !place_meeting(x,y+runAcc,oSolid) //check down first
+        if !place_meeting(x,y+tStep,oSolid) //check down first
         {
-          if place_meeting(x-runAcc,y,oSolid) //check left
-            y+=runAcc //continue down
+          if place_meeting(x-tStep,y,oSolid) //check left
+            y+=tStep //continue down
           else
           {
             currentDir=LEFT
-            x-=runAcc //move left once
+            x-=tStep //move left once
           }
         }
         else
         {
           currentDir=RIGHT
-          x+=runAcc
+          x+=tStep
         }
       }
       else if currentDir=LEFT
       {
-        if !place_meeting(x-runAcc,y,oSolid) //check left first
+        if !place_meeting(x-tStep,y,oSolid) //check left first
         {
-          if place_meeting(x,y-runAcc,oSolid) //check up
-            x-=runAcc //continue left
+          if place_meeting(x,y-tStep,oSolid) //check up
+            x-=tStep //continue left
           else
           {
             currentDir=UP
-            y-=runAcc //move up once
+            y-=tStep //move up once
           }
         }
         else
         {
           currentDir=DOWN
-          y+=runAcc
+          y+=tStep
         }
       }
       else if currentDir=RIGHT
       {
-        if !place_meeting(x+runAcc,y,oSolid) //check right first
+        if !place_meeting(x+tStep,y,oSolid) //check right first
         {
-          if place_meeting(x,y+runAcc,oSolid) //check down
-            x+=runAcc //continue right
+          if place_meeting(x,y+tStep,oSolid) //check down
+            x+=tStep //continue right
           else
           {
             currentDir=DOWN
-            y+=runAcc //move down once
+            y+=tStep //move down once
           }
         }
         else
         {
           currentDir=UP
-          y-=runAcc
+          y-=tStep
         }
       }
     }

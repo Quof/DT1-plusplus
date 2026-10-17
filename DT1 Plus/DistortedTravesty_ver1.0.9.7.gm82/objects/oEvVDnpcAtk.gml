@@ -4,6 +4,8 @@ lib_id=1
 action_id=603
 applies_to=self
 */
+_speed=0 //60fps change (added): _speed/_direction stand in for the built-in speed/direction, which start at 0
+_direction=0 //60fps change (added): (they must exist before anything reads them)
 event_inherited()
 setCollisionBounds(-12,-13,12,13)
 image_speed=0.35
@@ -27,8 +29,10 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  image_angle=direction
-  speed=fireSpeed
+  //image_angle=direction
+  image_angle=_direction //60fps change: _speed/_direction stand in for speed/direction (see correctSpeedDirection at the end of the Step)
+  //speed=fireSpeed
+  _speed=fireSpeed //60fps change: see above
   if type=2 //left
   {
     if bSetArc=false
@@ -40,13 +44,19 @@ if global.gamePaused=false
     else
     {
       if arcStart>0
-        arcStart-=1
+        //arcStart-=1
+        arcStart-=gDeltaTime //60fps change: counts 30fps ticks
       else
       {
-        if direction>270
-          direction=270
+        //if direction>270
+        //  direction=270
+        //else
+        //  direction+=arcAmount
+        //60fps change: turns per 30fps tick; scrWrapAngle keeps it in 0..360 as GM kept direction
+        if _direction>270
+          _direction=270
         else
-          direction+=arcAmount
+          _direction=scrWrapAngle(_direction+arcAmount*gDeltaTime)
       }
     }
   }
@@ -61,18 +71,30 @@ if global.gamePaused=false
     else
     {
       if arcStart>0
-        arcStart-=1
+        //arcStart-=1
+        arcStart-=gDeltaTime //60fps change: counts 30fps ticks
       else
       {
-        if direction>180 and direction<360
+        //if direction>180 and direction<360
+        //{
+        //  if direction<270
+        //    direction=270
+        //  else
+        //    direction-=arcAmount
+        //}
+        //else
+        //  direction-=arcAmount
+        //60fps change: turns per 30fps tick; scrWrapAngle keeps it in 0..360 as GM kept direction (it turns down
+        //through 0 to 350 and on to 270)
+        if _direction>180 and _direction<360
         {
-          if direction<270
-            direction=270
+          if _direction<270
+            _direction=270
           else
-            direction-=arcAmount
+            _direction=scrWrapAngle(_direction-arcAmount*gDeltaTime)
         }
         else
-          direction-=arcAmount
+          _direction=scrWrapAngle(_direction-arcAmount*gDeltaTime)
       }
     }
   }
@@ -85,12 +107,15 @@ if global.gamePaused=false
     instance_destroy()
   if isCollisionRight(1)
     instance_destroy()
-  decayTime-=1
+  //decayTime-=1
+  decayTime-=gDeltaTime //60fps change: counts 30fps ticks
   if decayTime<=0
     instance_destroy()
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above
+correctSpeedDirection(id) //60fps change (added): moves it by _speed in _direction, this frame's share of a 30fps tick
 #define Draw_0
 /*"/*'/**//* YYD ACTION
 lib_id=1

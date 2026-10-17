@@ -51,23 +51,29 @@ if global.gamePaused=false
   if activateBoss=1
   {
     //guard with arms
-    guardTime+=1
+    //guardTime+=1
+    guardTime+=gDeltaTime //60fps change: counts 30fps ticks
     if guardTime>=guardWait
     {
-      if guardTime=guardWait
+      //if guardTime=guardWait
+      if scrCountPass(guardTime,guardWait) //60fps change: once, when the count reaches it
         sprite_index=sPhalLarmsBlock
-      else if guardTime=guardWait+5
+      //else if guardTime=guardWait+5
+      else if scrCountPass(guardTime,guardWait+5) //60fps change: once, when the count reaches it
         image_index=1
-      else if guardTime=guardWait+shieldWait
+      //else if guardTime=guardWait+shieldWait
+      else if scrCountPass(guardTime,guardWait+shieldWait) //60fps change: once, when the count reaches it
         image_index=0
-      else if guardTime=guardWait+shieldWait+5
+      //else if guardTime=guardWait+shieldWait+5
+      else if guardTime>=guardWait+shieldWait+5 //60fps change: >= so it still happens if the frame rate changes mid-count (it resets)
       {
         sprite_index=sPhalLarmsIdle
         guardTime=0
       }
     }
     //energy ball
-    energyBallTime+=1
+    //energyBallTime+=1
+    energyBallTime+=gDeltaTime //60fps change: counts 30fps ticks
     if energyBallDelay=0
     {
       if energyBallTime>=energyBallWait
@@ -76,7 +82,8 @@ if global.gamePaused=false
         energyBallTime=energyBallWait
       }
     }
-    if energyBallTime=energyBallDelay and energyBallDelay!=0
+    //if energyBallTime=energyBallDelay and energyBallDelay!=0
+    if scrCountPass(energyBallTime,energyBallDelay) and energyBallDelay!=0 //60fps change: once, when the count reaches it
     {
       var x1,y1;
       if sprite_index=sPhalLarmsIdle

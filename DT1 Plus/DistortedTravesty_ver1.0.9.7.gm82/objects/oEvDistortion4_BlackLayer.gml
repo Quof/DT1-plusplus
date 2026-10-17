@@ -13,11 +13,16 @@ lib_id=1
 action_id=603
 applies_to=self
 */
-pulseTime+=1
-if pulseTime>=1 and pulseTime<=300
-  image_alpha-=0.0001
-else if pulseTime>=301 and pulseTime<=600
-  image_alpha+=0.0001
+//pulseTime+=1
+pulseTime+=gDeltaTime //60fps change: counts 30fps ticks
+//if pulseTime>=1 and pulseTime<=300
+if pulseTime>0 and pulseTime<=300 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+  //image_alpha-=0.0001
+  image_alpha-=0.0001*gDeltaTime //60fps change: per 30fps tick
+//else if pulseTime>=301 and pulseTime<=600
+else if pulseTime>300 and pulseTime<=600 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+  //image_alpha+=0.0001
+  image_alpha+=0.0001*gDeltaTime //60fps change: per 30fps tick
 else if pulseTime>=601
   pulseTime=0
 #define Draw_0

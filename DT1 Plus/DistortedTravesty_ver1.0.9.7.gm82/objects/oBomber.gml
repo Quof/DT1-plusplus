@@ -69,8 +69,10 @@ if global.gamePaused=false
         xVel*=-1
       initDir=true
     }
-    explodeCheck+=1
-    if explodeCheck>=explodeTime
+    //explodeCheck+=1
+    explodeCheck+=gDeltaTime //60fps change: counts 30fps ticks
+    //if explodeCheck>=explodeTime
+    if explodeCheck>explodeTime-1 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps; with >= it walked half a tick more)
     {
       if image_speed>0
       {
@@ -80,7 +82,8 @@ if global.gamePaused=false
         baseColor=c_maroon
         image_blend=baseColor
       }
-      if explodeCheck>=explodeTime+(explodeTime/4)
+      //if explodeCheck>=explodeTime+(explodeTime/4)
+      if explodeCheck>=ceil(explodeTime+(explodeTime/4)) //60fps change: the 30fps tick it reaches it (it counts in gDeltaTime steps)
       {
         explosion=instance_create(x,y-9,oGASGExplosion)
         explosion.spiritPower=spiritPower
@@ -93,14 +96,20 @@ if global.gamePaused=false
         instance_destroy()
       }
     }
-    yVel+=0.2
+    //yVel+=0.2
+    yVel=scrGravAcc(yVel,0.2,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
     if isCollisionTop(1)
       yVel=0
-    if isCollisionLeft(1)
+    //if isCollisionLeft(1)
+    //  xVel*=-1
+    //if isCollisionRight(1)
+    //  xVel*=-1
+    //60fps change: only turn around when moving into the wall (it can still touch it on the next frame above 30fps)
+    if isCollisionLeftEdit(1)
       xVel*=-1
-    if isCollisionRight(1)
+    if isCollisionRightEdit(1)
       xVel*=-1
     if isCollisionSolid()
       y-=2
@@ -108,7 +117,8 @@ if global.gamePaused=false
       image_xscale=1
     else
       image_xscale=-1
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     if y>room_height+24
     {
       if questType>0

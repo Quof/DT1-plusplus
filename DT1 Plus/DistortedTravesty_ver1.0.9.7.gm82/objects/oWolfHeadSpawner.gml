@@ -37,7 +37,8 @@ if global.gamePaused=false
     init=1
   }
 
-  spawnTime+=1
+  //spawnTime+=1
+  spawnTime+=gDeltaTime //60fps change: counts 30fps ticks
   if spawnTime>=reSpawnSpeed
   {
     if oPlayer1.image_xscale=1 //spawn from right

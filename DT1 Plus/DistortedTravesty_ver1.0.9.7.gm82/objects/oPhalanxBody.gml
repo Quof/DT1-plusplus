@@ -82,7 +82,8 @@ if global.gamePaused=false
   }
   else if activateBoss=2 //normal action
   {
-    platformCreateTime+=1
+    //platformCreateTime+=1
+    platformCreateTime+=gDeltaTime //60fps change: counts 30fps ticks
     if platformCreateTime>=platformCreateWait
     {
       platformProg+=1

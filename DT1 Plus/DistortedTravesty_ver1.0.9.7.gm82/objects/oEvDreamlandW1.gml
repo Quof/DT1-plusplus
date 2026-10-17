@@ -27,8 +27,10 @@ if global.gameProgress=51 //intro to Dreamland
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -69,7 +71,8 @@ if global.gameProgress=55 and room=rVegetableGarden4 //Boss Fight (Meta-Knight)
   else if sceneProgress=1
   {
     if oPlayer1.y<320
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
       oPlayer1.sprite_index=sPlayerIdle
@@ -78,8 +81,10 @@ if global.gameProgress=55 and room=rVegetableGarden4 //Boss Fight (Meta-Knight)
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       oMisc.image_speed=0.3
     }
@@ -119,8 +124,10 @@ if global.gameProgress=55 and room=rVegetableGarden4 //Boss Fight (Meta-Knight)
     msgCreate("Wow, that really was good.#Now can the fight start?",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=16
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       barrier1=instance_create(160,0,oBossBarrier)
       barrier2=instance_create(160,64,oBossBarrier)
@@ -161,14 +168,17 @@ else if global.gameProgress=56 //boss fight ends (Meta-Knight)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       oPlayer1.x=352
@@ -185,13 +195,15 @@ else if global.gameProgress=56 //boss fight ends (Meta-Knight)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -206,8 +218,10 @@ else if global.gameProgress=56 //boss fight ends (Meta-Knight)
     msgCreate("I'll get ready for it.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=8
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       bossFinishFadeAlpha=1
       oPlayer1.sprite_index=sPlayerLookUp
@@ -215,8 +229,10 @@ else if global.gameProgress=56 //boss fight ends (Meta-Knight)
       muffin.muffinType=1
       playSound(global.snd_BreakOut,0,1)
     }
-    else if sceneDelay>=9 and sceneDelay<=109
-      bossFinishFadeAlpha-=0.01
+    //else if sceneDelay>=9 and sceneDelay<=109
+    else if sceneDelay>8 and sceneDelay<=109 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //bossFinishFadeAlpha-=0.01
+      bossFinishFadeAlpha-=0.01*gDeltaTime //60fps change: per 30fps tick
     else if sceneDelay>=120
     {
       sceneDelay=0
@@ -280,7 +296,8 @@ if global.gameProgress=57 and room=rVegetableGarden4 //Sucked in Distortion
   else if sceneProgress=1
   {
     if oPlayer1.y<288
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
       oPlayer1.sprite_index=sPlayerChestHit
@@ -289,13 +306,19 @@ if global.gameProgress=57 and room=rVegetableGarden4 //Sucked in Distortion
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    pX=oPlayer1.x-13+random(26)
-    pY=oPlayer1.y-52+random(52)
-    effect_create_above(ef_smoke,pX,pY,1,c_black)
-    if sceneDelay>=20
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //pX=oPlayer1.x-13+random(26)
+    if gDeltaDoTicks pX=oPlayer1.x-13+random(26) //60fps change: once per 30fps tick
+    //pY=oPlayer1.y-52+random(52)
+    if gDeltaDoTicks pY=oPlayer1.y-52+random(52) //60fps change: once per 30fps tick
+    //effect_create_above(ef_smoke,pX,pY,1,c_black)
+    if gDeltaDoTicks effect_create_above(ef_smoke,pX,pY,1,c_black) //60fps change: once per 30fps tick
+    //if sceneDelay>=20
+    if sceneDelay>19 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
       if bossFinishFadeAlpha<1
-        bossFinishFadeAlpha+=0.05
+        //bossFinishFadeAlpha+=0.05
+        bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     if sceneDelay>=40
     {
       sceneDelay=0

@@ -68,7 +68,8 @@ if global.gamePaused=false
   {
     if sprayTime<sprayWait-11
     {
-      shootTime+=1
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: counts 30fps ticks
       if shootTime<shootWait-10 and shootTime>6
       {
         sprite_index=sAnemoneIdle
@@ -78,13 +79,15 @@ if global.gamePaused=false
         else
           image_xscale=1
       }
-      if shootTime=shootWait-10
+      //if shootTime=shootWait-10
+      if scrCountPass(shootTime,shootWait-10) //60fps change: once, when the count reaches it
       {
         sprite_index=sAnemoneSide
         image_speed=0
         image_index=0
       }
-      else if shootTime=shootWait-5
+      //else if shootTime=shootWait-5
+      else if scrCountPass(shootTime,shootWait-5) //60fps change: once, when the count reaches it
         image_index=1
       else if shootTime>=shootWait
       {
@@ -107,16 +110,20 @@ if global.gamePaused=false
     //spew maggots
     if shootTime<shootWait-11
     {
-      sprayTime+=1
-      if sprayTime=sprayWait-10
+      //sprayTime+=1
+      sprayTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sprayTime=sprayWait-10
+      if scrCountPass(sprayTime,sprayWait-10) //60fps change: once, when the count reaches it
       {
         sprite_index=sAnemoneTop
         image_speed=0
         image_index=0
       }
-      else if sprayTime=sprayWait-5
+      //else if sprayTime=sprayWait-5
+      else if scrCountPass(sprayTime,sprayWait-5) //60fps change: once, when the count reaches it
           image_index=1
-      else if sprayTime=sprayWait
+      //else if sprayTime=sprayWait
+      else if scrCountPass(sprayTime,sprayWait) //60fps change: once, when the count reaches it
       {
         for(i=0;i<sprayAmt;i+=1)
         {
@@ -139,7 +146,8 @@ if global.gamePaused=false
       }
     }
 
-    yVel+=0.2
+    //yVel+=0.2
+    yVel=scrGravAcc(yVel,0.2,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
     if isCollisionLeft(1)
@@ -148,7 +156,8 @@ if global.gamePaused=false
       xVel=0
     if isCollisionSolid()
       y-=2
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 
     if y>room_height+30
       instance_destroy()

@@ -129,7 +129,8 @@ if keyboard_check_pressed(ord(global.ctrlJump))
 {
   if cursorPos=1
   {
-    transition_steps=5
+    //transition_steps=5
+    transition_steps=5/gDeltaTime //60fps change: transition_steps counts frames: the same time
     transition_kind=20
     if missionCursorPos=1
       room_goto(rWindyMountains)
@@ -143,7 +144,8 @@ if keyboard_check_pressed(ord(global.ctrlJump))
   }
   else if cursorPos=4
   {
-    transition_steps=30
+    //transition_steps=30
+    transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
     transition_kind=20
     if global.location="Windy Slopes"
     {

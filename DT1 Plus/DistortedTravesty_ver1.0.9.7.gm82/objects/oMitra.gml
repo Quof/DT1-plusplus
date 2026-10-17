@@ -136,11 +136,13 @@ if global.gamePaused=false
         artOption[i].x=x+lengthdir_x(optionDist,optionDir+(i*90))
         artOption[i].y=y+lengthdir_y(optionDist,optionDir+(i*90))
       }
-      optionDir+=2
+      //optionDir+=2
+      optionDir+=2*gDeltaTime //60fps change: per 30fps tick
     }
     if bRestoreLife=0 //-------------------- NORMAL ACTIONS --------------------
     {
-      teleportTime+=1
+      //teleportTime+=1
+      teleportTime+=gDeltaTime //60fps change: counts 30fps ticks
       if teleportProg=0
       {
         if teleportTime>teleportDelay //teleport check
@@ -158,10 +160,12 @@ if global.gamePaused=false
         }
         //-------------------- Normal Attack 1: Forgery Laser --------------------
         if atkNormal2Time<atkNormal2Delay and atkNormal3Time<atkNormal3Delay and atkNormal4Time<atkNormal4Delay
-          atkNormal1Time+=1
+          //atkNormal1Time+=1
+          atkNormal1Time+=gDeltaTime //60fps change: counts 30fps ticks
         if atkNormal1Time>=atkNormal1Delay
         {
-          if atkNormal1Time=atkNormal1Delay //announce attack
+          //if atkNormal1Time=atkNormal1Delay //announce attack
+          if scrCountPass(atkNormal1Time,atkNormal1Delay) //announce attack //60fps change: once, when the count reaches it
           {
             enemyAttack=instance_create(0,0,oEnemyAttackAnnounce)
             enemyAttack.attackString="Forgery Laser"
@@ -169,7 +173,8 @@ if global.gamePaused=false
             image_index=0
             image_speed=0
           }
-          else if atkNormal1Time=atkNormal1Delay+55 //execute attack
+          //else if atkNormal1Time=atkNormal1Delay+55 //execute attack
+          else if scrCountPass(atkNormal1Time,atkNormal1Delay+55) //execute attack //60fps change: once, when the count reaches it
           {
             image_index=1
             var laserOffsetX;
@@ -192,16 +197,22 @@ if global.gamePaused=false
               mitraLaser.image_angle=220
             blastedSpeed=6
           }
-          else if atkNormal1Time>=atkNormal1Delay+56 and atkNormal1Time<=atkNormal1Delay+90 //push back
+          //else if atkNormal1Time>=atkNormal1Delay+56 and atkNormal1Time<=atkNormal1Delay+90 //push back
+          else if atkNormal1Time>atkNormal1Delay+55 and atkNormal1Time<=atkNormal1Delay+90 //push back //60fps change: the same 30fps ticks, counted in gDeltaTime steps
           {
-            blastedSpeed-=0.15
+            //blastedSpeed-=0.15
+            blastedSpeed-=0.15*gDeltaTime //60fps change: per 30fps tick
             if image_xscale=1
-              x-=blastedSpeed
+              //x-=blastedSpeed
+              x-=blastedSpeed*gDeltaTime //60fps change: per 30fps tick
             else
-              x+=blastedSpeed
-            y-=blastedSpeed
+              //x+=blastedSpeed
+              x+=blastedSpeed*gDeltaTime //60fps change: per 30fps tick
+            //y-=blastedSpeed
+            y-=blastedSpeed*gDeltaTime //60fps change: per 30fps tick
           }
-          else if atkNormal1Time=atkNormal1Delay+91 //end attack
+          //else if atkNormal1Time=atkNormal1Delay+91 //end attack
+          else if scrCountPass(atkNormal1Time,atkNormal1Delay+91) //end attack //60fps change: once, when the count reaches it
           {
             sprite_index=sMitraIdle
             image_index=0
@@ -209,7 +220,8 @@ if global.gamePaused=false
             atkNormal1Time=0
           }
           //laser start effect
-          if atkNormal1Time>=atkNormal1Delay+5 and atkNormal1Time<=atkNormal1Delay+51 and atkNormal1Time mod 6=0
+          //if atkNormal1Time>=atkNormal1Delay+5 and atkNormal1Time<=atkNormal1Delay+51 and atkNormal1Time mod 6=0
+          if atkNormal1Time>=atkNormal1Delay+5 and atkNormal1Time<=atkNormal1Delay+51 and scrModPass(atkNormal1Time,6) //60fps change: once each time the count reaches a multiple of it
           {
             var laserEffectX;
             if image_xscale=1
@@ -223,7 +235,8 @@ if global.gamePaused=false
         if maxAttacks>=2
         {
           if atkNormal1Time<atkNormal1Delay and atkNormal3Time<atkNormal3Delay and atkNormal4Time<atkNormal4Delay
-            atkNormal2Time+=1
+            //atkNormal2Time+=1
+            atkNormal2Time+=gDeltaTime //60fps change: counts 30fps ticks
           if atkNormal2Time>=atkNormal2Delay
           {
             if sprite_index=sMitraSpell //stop animation
@@ -232,7 +245,8 @@ if global.gamePaused=false
                 image_speed=0
             }
 
-            if atkNormal2Time=atkNormal2Delay //announce attack
+            //if atkNormal2Time=atkNormal2Delay //announce attack
+            if scrCountPass(atkNormal2Time,atkNormal2Delay) //announce attack //60fps change: once, when the count reaches it
             {
               enemyAttack=instance_create(0,0,oEnemyAttackAnnounce)
               enemyAttack.attackString="Corporate Takeover"
@@ -245,7 +259,8 @@ if global.gamePaused=false
               effect.image_xscale=image_xscale
               corporateLaserDir=0
             }
-            else if atkNormal2Time=atkNormal2Delay+240 //end attack
+            //else if atkNormal2Time=atkNormal2Delay+240 //end attack
+            else if scrCountPass(atkNormal2Time,atkNormal2Delay+240) //end attack //60fps change: once, when the count reaches it
             {
               sprite_index=sMitraIdle
               image_index=0
@@ -253,7 +268,8 @@ if global.gamePaused=false
               atkNormal2Time=0
             }
 
-            if atkNormal2Time>=atkNormal2Delay+85 and atkNormal2Time mod 8=0 //create attack
+            //if atkNormal2Time>=atkNormal2Delay+85 and atkNormal2Time mod 8=0 //create attack
+            if atkNormal2Time>=atkNormal2Delay+85 and scrModPass(atkNormal2Time,8) //create attack //60fps change: once each time the count reaches a multiple of it
             {
               var bulletDir;
               bulletDir=0
@@ -265,7 +281,8 @@ if global.gamePaused=false
                 newBullet.bDestroyOnOutside=1
                 newBullet.timeToDestroy=1000
                 newBullet.bulletSpeed=5
-                newBullet.direction=corporateLaserDir+bulletDir
+                //newBullet.direction=corporateLaserDir+bulletDir
+                newBullet._direction=corporateLaserDir+bulletDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
                 newBullet.arcTime=40+i
                 if i mod 2=0
                   newBullet.bulletArc=4
@@ -281,7 +298,8 @@ if global.gamePaused=false
         if maxAttacks>=3 and atkOptions<4
         {
           if atkNormal1Time<atkNormal1Delay and atkNormal2Time<atkNormal2Delay and atkNormal4Time<atkNormal4Delay
-            atkNormal3Time+=1
+            //atkNormal3Time+=1
+            atkNormal3Time+=gDeltaTime //60fps change: counts 30fps ticks
           if atkNormal3Time>=atkNormal3Delay
           {
             if sprite_index=sMitraSpell //stop animation
@@ -290,7 +308,8 @@ if global.gamePaused=false
                 image_speed=0
             }
 
-            if atkNormal3Time=atkNormal3Delay //announce attack
+            //if atkNormal3Time=atkNormal3Delay //announce attack
+            if scrCountPass(atkNormal3Time,atkNormal3Delay) //announce attack //60fps change: once, when the count reaches it
             {
               enemyAttack=instance_create(0,0,oEnemyAttackAnnounce)
               enemyAttack.attackString="Company Stock Options"
@@ -302,7 +321,8 @@ if global.gamePaused=false
               effect.image_speed=0.25
               effect.image_xscale=image_xscale
             }
-            else if atkNormal3Time=atkNormal3Delay+81 //execute and end attack
+            //else if atkNormal3Time=atkNormal3Delay+81 //execute and end attack
+            else if scrCountPass(atkNormal3Time,atkNormal3Delay+81) //execute and end attack //60fps change: once, when the count reaches it
             {
               artOption[atkOptions]=instance_create(x,y,oMitraOption)
               atkOptions+=1
@@ -321,7 +341,8 @@ if global.gamePaused=false
         if maxAttacks>=4
         {
           if atkNormal1Time<atkNormal1Delay and atkNormal2Time<atkNormal2Delay and atkNormal3Time<atkNormal3Delay
-            atkNormal4Time+=1
+            //atkNormal4Time+=1
+            atkNormal4Time+=gDeltaTime //60fps change: counts 30fps ticks
           if atkNormal4Time>=atkNormal4Delay
           {
             if sprite_index=sMitraSpell //stop animation
@@ -330,7 +351,8 @@ if global.gamePaused=false
                 image_speed=0
             }
 
-            if atkNormal4Time=atkNormal4Delay //announce attack
+            //if atkNormal4Time=atkNormal4Delay //announce attack
+            if scrCountPass(atkNormal4Time,atkNormal4Delay) //announce attack //60fps change: once, when the count reaches it
             {
               enemyAttack=instance_create(0,0,oEnemyAttackAnnounce)
               enemyAttack.attackString="Legal Personality"
@@ -343,7 +365,8 @@ if global.gamePaused=false
               effect.image_xscale=image_xscale
               corporateLaserDir=0
             }
-            else if atkNormal4Time=atkNormal4Delay+81 //execute attack
+            //else if atkNormal4Time=atkNormal4Delay+81 //execute attack
+            else if scrCountPass(atkNormal4Time,atkNormal4Delay+81) //execute attack //60fps change: once, when the count reaches it
             {
               for(i=0;i<8;i+=1)
               {
@@ -351,13 +374,15 @@ if global.gamePaused=false
                 {
                   mitraBombs=instance_create(x,y,oMitraBomb)
                   mitraBombs.physicalPower=physicalPower
-                  mitraBombs.direction=45+(ii*90)
+                  //mitraBombs.direction=45+(ii*90)
+                  mitraBombs._direction=45+(ii*90) //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
                   mitraBombs.waitTime=80+(i*8)
                   mitraBombs.bulletSpeed=6+i
                 }
               }
             }
-            else if atkNormal4Time=atkNormal4Delay+95 //end attack
+            //else if atkNormal4Time=atkNormal4Delay+95 //end attack
+            else if scrCountPass(atkNormal4Time,atkNormal4Delay+95) //end attack //60fps change: once, when the count reaches it
             {
               sprite_index=sMitraIdle
               image_index=0
@@ -379,7 +404,8 @@ if global.gamePaused=false
         }
         else if teleportProg=2 //fade out
         {
-          image_alpha-=0.05
+          //image_alpha-=0.05
+          image_alpha-=0.05*gDeltaTime //60fps change: per 30fps tick
           if image_alpha<=0
             teleportProg+=1
         }
@@ -399,11 +425,15 @@ if global.gamePaused=false
         }
         else if teleportProg=4 //fade in
         {
-          if teleportTime>=1030
+          //if teleportTime>=1030
+          if teleportTime>1029 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
           {
-            image_xscale-=0.4
-            image_yscale-=0.4
-            image_alpha+=0.05
+            //image_xscale-=0.4
+            image_xscale-=0.4*gDeltaTime //60fps change: per 30fps tick
+            //image_yscale-=0.4
+            image_yscale-=0.4*gDeltaTime //60fps change: per 30fps tick
+            //image_alpha+=0.05
+            image_alpha+=0.05*gDeltaTime //60fps change: per 30fps tick
             if image_alpha>=1
             {
               bCanTakeDamage=true
@@ -422,7 +452,8 @@ if global.gamePaused=false
     }
     else if bRestoreLife=1 //-------------------- RESTORE LIFE --------------------
     {
-      life+=restoreAmt
+      //life+=restoreAmt
+      life+=restoreAmt*gDeltaTime //60fps change: per 30fps tick
       if life>=maxLife
       {
         flashScreen=instance_create(0,0,oScreenFlash)
@@ -453,87 +484,112 @@ if global.gamePaused=false
     //------------------------------ JEREMY & HEXOR AREA CONTROL ------------------------------
     if muffinCount<=6 and hexHackProg=0 //==================================================
     {
-      hexHackTime+=1
-      if hexHackTime=15
+      //hexHackTime+=1
+      hexHackTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if hexHackTime=15
+      if scrCountPass(hexHackTime,15) //60fps change: once, when the count reaches it
       {
         msgCreate("Let's change this.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=85
+      //else if hexHackTime=85
+      else if scrCountPass(hexHackTime,85) //60fps change: once, when the count reaches it
       {
         msgCreate("What?",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=50
       }
-      else if hexHackTime=135
+      //else if hexHackTime=135
+      else if scrCountPass(hexHackTime,135) //60fps change: once, when the count reaches it
       {
         msgCreate("Middle platform, gone.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=80
       }
-      else if hexHackTime=160
+      //else if hexHackTime=160
+      else if scrCountPass(hexHackTime,160) //60fps change: once, when the count reaches it
         oEvPrimaryMemoryW1.bossPlat[5].image_blend=c_green
-      else if hexHackTime>=161 and hexHackTime<=180
-        oEvPrimaryMemoryW1.bossPlat[5].image_alpha-=0.05
-      else if hexHackTime=181
+      //else if hexHackTime>=161 and hexHackTime<=180
+      else if hexHackTime>160 and hexHackTime<=180 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
+        //oEvPrimaryMemoryW1.bossPlat[5].image_alpha-=0.05
+        oEvPrimaryMemoryW1.bossPlat[5].image_alpha-=0.05*gDeltaTime //60fps change: per 30fps tick
+      //else if hexHackTime=181
+      else if scrCountPass(hexHackTime,181) //60fps change: once, when the count reaches it
         oEvPrimaryMemoryW1.bossPlat[5].y-=room_height
-      else if hexHackTime=215
+      //else if hexHackTime=215
+      else if scrCountPass(hexHackTime,215) //60fps change: once, when the count reaches it
       {
         msgCreate("Sucks, but I can get by without that.",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=100
       }
-      else if hexHackTime=315
+      //else if hexHackTime=315
+      else if scrCountPass(hexHackTime,315) //60fps change: once, when the count reaches it
       {
         msgCreate("How about this then?",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=330
+      //else if hexHackTime=330
+      else if scrCountPass(hexHackTime,330) //60fps change: once, when the count reaches it
       {
         oEvPrimaryMemoryW1.bossPlat[2].image_blend=c_green
         oEvPrimaryMemoryW1.bossPlat[7].image_blend=c_green
       }
-      else if hexHackTime>=351 and hexHackTime<=370
+      //else if hexHackTime>=351 and hexHackTime<=370
+      else if hexHackTime>350 and hexHackTime<=370 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
       {
-        oEvPrimaryMemoryW1.bossPlat[2].image_alpha-=0.05
-        oEvPrimaryMemoryW1.bossPlat[7].image_alpha-=0.05
+        //oEvPrimaryMemoryW1.bossPlat[2].image_alpha-=0.05
+        oEvPrimaryMemoryW1.bossPlat[2].image_alpha-=0.05*gDeltaTime //60fps change: per 30fps tick
+        //oEvPrimaryMemoryW1.bossPlat[7].image_alpha-=0.05
+        oEvPrimaryMemoryW1.bossPlat[7].image_alpha-=0.05*gDeltaTime //60fps change: per 30fps tick
       }
-      else if hexHackTime=371
+      //else if hexHackTime=371
+      else if scrCountPass(hexHackTime,371) //60fps change: once, when the count reaches it
       {
         oEvPrimaryMemoryW1.bossPlat[2].y-=room_height
         oEvPrimaryMemoryW1.bossPlat[7].y-=room_height
       }
-      else if hexHackTime=400
+      //else if hexHackTime=400
+      else if scrCountPass(hexHackTime,400) //60fps change: once, when the count reaches it
       {
         msgCreate("Okay, that sucks a bit more, can you do something " +string(global.mainCharacters[1]) +string("?"),0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=110
       }
-      else if hexHackTime=560
+      //else if hexHackTime=560
+      else if scrCountPass(hexHackTime,560) //60fps change: once, when the count reaches it
       {
         msgCreate("Yeah, hold on.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=50
       }
-      else if hexHackTime=1040
+      //else if hexHackTime=1040
+      else if scrCountPass(hexHackTime,1040) //60fps change: once, when the count reaches it
       {
         msgCreate("There we go, got them back.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=50
       }
-      else if hexHackTime=1050
+      //else if hexHackTime=1050
+      else if scrCountPass(hexHackTime,1050) //60fps change: once, when the count reaches it
       {
         oEvPrimaryMemoryW1.bossPlat[2].y+=room_height
         oEvPrimaryMemoryW1.bossPlat[5].y+=room_height
         oEvPrimaryMemoryW1.bossPlat[7].y+=room_height
       }
-      else if hexHackTime>=1051 and hexHackTime<=1070
+      //else if hexHackTime>=1051 and hexHackTime<=1070
+      else if hexHackTime>1050 and hexHackTime<=1070 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
       {
-        oEvPrimaryMemoryW1.bossPlat[2].image_alpha+=0.05
-        oEvPrimaryMemoryW1.bossPlat[5].image_alpha+=0.05
-        oEvPrimaryMemoryW1.bossPlat[7].image_alpha+=0.05
+        //oEvPrimaryMemoryW1.bossPlat[2].image_alpha+=0.05
+        oEvPrimaryMemoryW1.bossPlat[2].image_alpha+=0.05*gDeltaTime //60fps change: per 30fps tick
+        //oEvPrimaryMemoryW1.bossPlat[5].image_alpha+=0.05
+        oEvPrimaryMemoryW1.bossPlat[5].image_alpha+=0.05*gDeltaTime //60fps change: per 30fps tick
+        //oEvPrimaryMemoryW1.bossPlat[7].image_alpha+=0.05
+        oEvPrimaryMemoryW1.bossPlat[7].image_alpha+=0.05*gDeltaTime //60fps change: per 30fps tick
       }
-      else if hexHackTime=1071
+      //else if hexHackTime=1071
+      else if scrCountPass(hexHackTime,1071) //60fps change: once, when the count reaches it
       {
         oEvPrimaryMemoryW1.bossPlat[2].image_blend=c_white
         oEvPrimaryMemoryW1.bossPlat[5].image_blend=c_white
         oEvPrimaryMemoryW1.bossPlat[7].image_blend=c_white
       }
-      else if hexHackTime=1150
+      //else if hexHackTime=1150
+      else if scrCountPass(hexHackTime,1150) //60fps change: once, when the count reaches it
       {
         hexHackTime=0
         hexHackProg+=1
@@ -541,13 +597,16 @@ if global.gamePaused=false
     }
     else if muffinCount<=5 and hexHackProg=1 //==================================================
     {
-      hexHackTime+=1
-      if hexHackTime=1
+      //hexHackTime+=1
+      hexHackTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if hexHackTime=1
+      if scrCountPass(hexHackTime,1) //60fps change: once, when the count reaches it
       {
         msgCreate("How about a laser right in the middle...",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=30
+      //else if hexHackTime=30
+      else if scrCountPass(hexHackTime,30) //60fps change: once, when the count reaches it
       {
         newLaser=instance_create(xCenter,yGround,oSLLaser)
         newLaser.spiritPower=spiritPower
@@ -555,22 +614,26 @@ if global.gamePaused=false
         newLaser.onPlayer=1
         newLaser.bShake=1
       }
-      else if hexHackTime=150
+      //else if hexHackTime=150
+      else if scrCountPass(hexHackTime,150) //60fps change: once, when the count reaches it
       {
         msgCreate("Just going to remove that laser.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=80
       }
-      else if hexHackTime=230
+      //else if hexHackTime=230
+      else if scrCountPass(hexHackTime,230) //60fps change: once, when the count reaches it
       {
         msgCreate("Then I'll add more.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=290
+      //else if hexHackTime=290
+      else if scrCountPass(hexHackTime,290) //60fps change: once, when the count reaches it
       {
         msgCreate("I'll just keep removing them.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=350
+      //else if hexHackTime=350
+      else if scrCountPass(hexHackTime,350) //60fps change: once, when the count reaches it
       {
         newLaser=instance_create(64,yGround,oSLLaser)
         newLaser.spiritPower=spiritPower
@@ -595,7 +658,8 @@ if global.gamePaused=false
       }
       else if hexHackTime>=450 and hexHackTime<=1200
       {
-        if hexHackTime mod laserSpawnSpd=0
+        //if hexHackTime mod laserSpawnSpd=0
+        if scrModPass(hexHackTime,laserSpawnSpd) //60fps change: once each time the count reaches a multiple of it
         {
           newLaser=instance_create(oPlayer1.x,yGround,oSLLaser)
           newLaser.spiritPower=spiritPower
@@ -611,7 +675,8 @@ if global.gamePaused=false
             teleportTime=50
         }
       }
-      else if hexHackTime=1250
+      //else if hexHackTime=1250
+      else if scrCountPass(hexHackTime,1250) //60fps change: once, when the count reaches it
       {
         newLaser=instance_create(x,yGround,oSLLaser)
         newLaser.spiritPower=spiritPower
@@ -619,7 +684,8 @@ if global.gamePaused=false
         newLaser.onPlayer=1
         newLaser.bShake=1
       }
-      else if hexHackTime=1295
+      //else if hexHackTime=1295
+      else if scrCountPass(hexHackTime,1295) //60fps change: once, when the count reaches it
       {
         flashScreen=instance_create(0,0,oScreenFlash)
         flashScreen.image_alpha=1
@@ -629,17 +695,20 @@ if global.gamePaused=false
         msgCreate("Ugh, what are you doing, that hit ME?!",0,oMessagePerson,"The Artist",0,1)
         newMessage.fadingTime=80
       }
-      else if hexHackTime=1380
+      //else if hexHackTime=1380
+      else if scrCountPass(hexHackTime,1380) //60fps change: once, when the count reaches it
       {
         msgCreate("That wasn't me.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=1440
+      //else if hexHackTime=1440
+      else if scrCountPass(hexHackTime,1440) //60fps change: once, when the count reaches it
       {
         msgCreate("I don't care, no more lasers!",0,oMessagePerson,"The Artist",0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=1510
+      //else if hexHackTime=1510
+      else if scrCountPass(hexHackTime,1510) //60fps change: once, when the count reaches it
       {
         msgCreate("Damn straight.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=60
@@ -649,20 +718,24 @@ if global.gamePaused=false
     }
     else if muffinCount<=4 and hexHackProg=2 //==================================================
     {
-      hexHackTime+=1
-      if hexHackTime=30
+      //hexHackTime+=1
+      hexHackTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if hexHackTime=30
+      if scrCountPass(hexHackTime,30) //60fps change: once, when the count reaches it
       {
         msgCreate("Hmm...",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=50
       }
-      else if hexHackTime=80
+      //else if hexHackTime=80
+      else if scrCountPass(hexHackTime,80) //60fps change: once, when the count reaches it
       {
         msgCreate("Go away.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=60
       }
       else if hexHackTime>=160 and hexHackTime<=200
       {
-        if hexHackTime=190
+        //if hexHackTime=190
+        if scrCountPass(hexHackTime,190) //60fps change: once, when the count reaches it
           hexHackTime=170
         for(i=0;i<11;i+=1)
         {
@@ -738,66 +811,77 @@ if global.gamePaused=false
         if platformCheck=11
           hexHackTime=300
       }
-      else if hexHackTime=340
+      //else if hexHackTime=340
+      else if scrCountPass(hexHackTime,340) //60fps change: once, when the count reaches it
       {
         maxAttacks=2
         yTeleMax=224
         msgCreate("Not cool.",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=50
       }
-      else if hexHackTime=390
+      //else if hexHackTime=390
+      else if scrCountPass(hexHackTime,390) //60fps change: once, when the count reaches it
       {
         msgCreate("I'll get this fixed in just a sec.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=90
       }
-      else if hexHackTime=480
+      //else if hexHackTime=480
+      else if scrCountPass(hexHackTime,480) //60fps change: once, when the count reaches it
       {
         msgCreate("No offense, but you're being unusually slow.",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=100
       }
-      else if hexHackTime=580
+      //else if hexHackTime=580
+      else if scrCountPass(hexHackTime,580) //60fps change: once, when the count reaches it
       {
         msgCreate("It's kinda hard to try keeping the battlefield under control while both#The Artist and Hex are attempting to block me out.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=180
       }
-      else if hexHackTime=760
+      //else if hexHackTime=760
+      else if scrCountPass(hexHackTime,760) //60fps change: once, when the count reaches it
       {
         msgCreate("How about this, I've hacked your jump height.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=100
         oPlayer1.initialJumpAcc=-9.4
         oPlayer1.jumpTimeTotal=37
       }
-      else if hexHackTime=860
+      //else if hexHackTime=860
+      else if scrCountPass(hexHackTime,860) //60fps change: once, when the count reaches it
       {
         msgCreate("I like this.",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=50
       }
-      else if hexHackTime=1320
+      //else if hexHackTime=1320
+      else if scrCountPass(hexHackTime,1320) //60fps change: once, when the count reaches it
       {
         yTeleMax=384
         msgCreate("There we go, I got it.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=1331
+      //else if hexHackTime=1331
+      else if scrCountPass(hexHackTime,1331) //60fps change: once, when the count reaches it
       {
         for(i=0;i<11;i+=1)
         {
           oEvPrimaryMemoryW1.bossPlat[i].yVel=-4
         }
       }
-      else if hexHackTime=1366
+      //else if hexHackTime=1366
+      else if scrCountPass(hexHackTime,1366) //60fps change: once, when the count reaches it
       {
         for(i=0;i<11;i+=1)
         {
           oEvPrimaryMemoryW1.bossPlat[i].yVel=0
         }
       }
-      else if hexHackTime=1390
+      //else if hexHackTime=1390
+      else if scrCountPass(hexHackTime,1390) //60fps change: once, when the count reaches it
       {
         msgCreate("I like that instead.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=1470
+      //else if hexHackTime=1470
+      else if scrCountPass(hexHackTime,1470) //60fps change: once, when the count reaches it
       {
         msgCreate("Ass.",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=60
@@ -807,14 +891,17 @@ if global.gamePaused=false
     }
     else if muffinCount<=3 and hexHackProg=3 //==================================================
     {
-      hexHackTime+=1
-      if hexHackTime=30
+      //hexHackTime+=1
+      hexHackTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if hexHackTime=30
+      if scrCountPass(hexHackTime,30) //60fps change: once, when the count reaches it
       {
         maxAttacks=3
         msgCreate("Alright, there we go.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=90
+      //else if hexHackTime=90
+      else if scrCountPass(hexHackTime,90) //60fps change: once, when the count reaches it
       {
         flashScreen=instance_create(0,0,oScreenFlash)
         flashScreen.image_alpha=1
@@ -832,22 +919,26 @@ if global.gamePaused=false
         oEvPrimaryMemoryW1.bossPlat[9].y=176
         oEvPrimaryMemoryW1.bossPlat[10].y=304
       }
-      else if hexHackTime=130
+      //else if hexHackTime=130
+      else if scrCountPass(hexHackTime,130) //60fps change: once, when the count reaches it
       {
         msgCreate("Whoa, warn me before you do that!",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=200
+      //else if hexHackTime=200
+      else if scrCountPass(hexHackTime,200) //60fps change: once, when the count reaches it
       {
         msgCreate("I did.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=40
       }
-      else if hexHackTime=240
+      //else if hexHackTime=240
+      else if scrCountPass(hexHackTime,240) //60fps change: once, when the count reaches it
       {
         msgCreate("A better and less vague warning next time.",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=310
+      //else if hexHackTime=310
+      else if scrCountPass(hexHackTime,310) //60fps change: once, when the count reaches it
       {
         msgCreate("Fair enough.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=40
@@ -857,39 +948,47 @@ if global.gamePaused=false
     }
     else if muffinCount<=2 and hexHackProg=4 //==================================================
     {
-      hexHackTime+=1
-      if hexHackTime=30
+      //hexHackTime+=1
+      hexHackTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if hexHackTime=30
+      if scrCountPass(hexHackTime,30) //60fps change: once, when the count reaches it
       {
         msgCreate("Here's something.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=50
       }
-      else if hexHackTime=80
+      //else if hexHackTime=80
+      else if scrCountPass(hexHackTime,80) //60fps change: once, when the count reaches it
       {
         for(i=0;i<11;i+=1)
         {
           oEvPrimaryMemoryW1.bossPlat[i].image_blend=c_green
         }
       }
-      else if hexHackTime>=81 and hexHackTime<=100
+      //else if hexHackTime>=81 and hexHackTime<=100
+      else if hexHackTime>80 and hexHackTime<=100 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
       {
         for(i=0;i<11;i+=1)
         {
-          oEvPrimaryMemoryW1.bossPlat[i].image_alpha-=0.05
+          //oEvPrimaryMemoryW1.bossPlat[i].image_alpha-=0.05
+          oEvPrimaryMemoryW1.bossPlat[i].image_alpha-=0.05*gDeltaTime //60fps change: per 30fps tick
         }
       }
-      else if hexHackTime=101
+      //else if hexHackTime=101
+      else if scrCountPass(hexHackTime,101) //60fps change: once, when the count reaches it
       {
         for(i=0;i<11;i+=1)
         {
           oEvPrimaryMemoryW1.bossPlat[i].y-=room_height
         }
       }
-      else if hexHackTime=130
+      //else if hexHackTime=130
+      else if scrCountPass(hexHackTime,130) //60fps change: once, when the count reaches it
       {
         msgCreate("Don't you mean, here's nothing?",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=200
+      //else if hexHackTime=200
+      else if scrCountPass(hexHackTime,200) //60fps change: once, when the count reaches it
       {
         oEvPrimaryMemoryW1.boostedRecovery=0
         oEvPrimaryMemoryW1.lifeRecovery=0
@@ -902,104 +1001,123 @@ if global.gamePaused=false
         msgCreate("Precisely.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=40
       }
-      else if hexHackTime=240
+      //else if hexHackTime=240
+      else if scrCountPass(hexHackTime,240) //60fps change: once, when the count reaches it
       {
         msgCreate("Oh what the hell?!",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=50
       }
-      else if hexHackTime=290
+      //else if hexHackTime=290
+      else if scrCountPass(hexHackTime,290) //60fps change: once, when the count reaches it
       {
         msgCreate("I'll try to get your boosted recovery back.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=360
+      //else if hexHackTime=360
+      else if scrCountPass(hexHackTime,360) //60fps change: once, when the count reaches it
       {
         msgCreate("Would be awesome.",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=50
       }
-      else if hexHackTime=450
+      //else if hexHackTime=450
+      else if scrCountPass(hexHackTime,450) //60fps change: once, when the count reaches it
       {
         msgCreate("Got those back.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=50
       }
-      else if hexHackTime=460
+      //else if hexHackTime=460
+      else if scrCountPass(hexHackTime,460) //60fps change: once, when the count reaches it
       {
         for(i=0;i<11;i+=1)
         {
           oEvPrimaryMemoryW1.bossPlat[i].y+=room_height
         }
       }
-      else if hexHackTime>=461 and hexHackTime<=480
+      //else if hexHackTime>=461 and hexHackTime<=480
+      else if hexHackTime>460 and hexHackTime<=480 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
       {
         for(i=0;i<11;i+=1)
         {
-          oEvPrimaryMemoryW1.bossPlat[i].image_alpha+=0.05
+          //oEvPrimaryMemoryW1.bossPlat[i].image_alpha+=0.05
+          oEvPrimaryMemoryW1.bossPlat[i].image_alpha+=0.05*gDeltaTime //60fps change: per 30fps tick
         }
       }
-      else if hexHackTime=481
+      //else if hexHackTime=481
+      else if scrCountPass(hexHackTime,481) //60fps change: once, when the count reaches it
       {
         for(i=0;i<11;i+=1)
         {
           oEvPrimaryMemoryW1.bossPlat[i].image_blend=c_white
         }
       }
-      else if hexHackTime=590
+      //else if hexHackTime=590
+      else if scrCountPass(hexHackTime,590) //60fps change: once, when the count reaches it
       {
         yTeleMax=224
         yTeleMin=96
         msgCreate("That's what you think.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=600
+      //else if hexHackTime=600
+      else if scrCountPass(hexHackTime,600) //60fps change: once, when the count reaches it
       {
         for(i=0;i<11;i+=1)
         {
           oEvPrimaryMemoryW1.bossPlat[i].image_blend=c_green
         }
       }
-      else if hexHackTime>=601 and hexHackTime<=620
+      //else if hexHackTime>=601 and hexHackTime<=620
+      else if hexHackTime>600 and hexHackTime<=620 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
       {
         for(i=0;i<11;i+=1)
         {
-          oEvPrimaryMemoryW1.bossPlat[i].image_alpha-=0.05
+          //oEvPrimaryMemoryW1.bossPlat[i].image_alpha-=0.05
+          oEvPrimaryMemoryW1.bossPlat[i].image_alpha-=0.05*gDeltaTime //60fps change: per 30fps tick
         }
       }
-      else if hexHackTime=621
+      //else if hexHackTime=621
+      else if scrCountPass(hexHackTime,621) //60fps change: once, when the count reaches it
       {
         for(i=0;i<11;i+=1)
         {
           oEvPrimaryMemoryW1.bossPlat[i].y-=room_height
         }
       }
-      else if hexHackTime=690
+      //else if hexHackTime=690
+      else if scrCountPass(hexHackTime,690) //60fps change: once, when the count reaches it
       {
         oEvPrimaryMemoryW1.lifeRecovery=1
         oEvPrimaryMemoryW1.boostedRecovery=2.5
         msgCreate("Okay, got your recovery back and it's locked in.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=80
       }
-      else if hexHackTime=770
+      //else if hexHackTime=770
+      else if scrCountPass(hexHackTime,770) //60fps change: once, when the count reaches it
       {
         oPlayer1.runAcc=3.5
         msgCreate("It's all good, I'll just take this away.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=80
       }
-      else if hexHackTime=850
+      //else if hexHackTime=850
+      else if scrCountPass(hexHackTime,850) //60fps change: once, when the count reaches it
       {
         msgCreate("Oh wow, this sucks, fix this!!",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=920
+      //else if hexHackTime=920
+      else if scrCountPass(hexHackTime,920) //60fps change: once, when the count reaches it
       {
         msgCreate("I'm trying, but he's messing with other parameters too,#I need to keep him from messing with those.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=120
       }
-      else if hexHackTime=1040
+      //else if hexHackTime=1040
+      else if scrCountPass(hexHackTime,1040) //60fps change: once, when the count reaches it
       {
         msgCreate("Let's see...",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=1100
+      //else if hexHackTime=1100
+      else if scrCountPass(hexHackTime,1100) //60fps change: once, when the count reaches it
       {
         oPlayer1.initialJumpAcc=-6
         oPlayer1.jumpTimeTotal=20
@@ -1008,83 +1126,99 @@ if global.gamePaused=false
         msgCreate("Oh here we go!#Gravity increase, dash speed way down.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=80
       }
-      else if hexHackTime=1180
+      //else if hexHackTime=1180
+      else if scrCountPass(hexHackTime,1180) //60fps change: once, when the count reaches it
       {
         msgCreate("Still got my air dash.",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=1240
+      //else if hexHackTime=1240
+      else if scrCountPass(hexHackTime,1240) //60fps change: once, when the count reaches it
       {
         msgCreate("Not anymore.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=1300
+      //else if hexHackTime=1300
+      else if scrCountPass(hexHackTime,1300) //60fps change: once, when the count reaches it
       {
         msgCreate("He can't take that or your dash.#I've got that locked down.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=100
       }
-      else if hexHackTime=1400
+      //else if hexHackTime=1400
+      else if scrCountPass(hexHackTime,1400) //60fps change: once, when the count reaches it
       {
         msgCreate("Yeah, but what good is it now?",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=1600
+      //else if hexHackTime=1600
+      else if scrCountPass(hexHackTime,1600) //60fps change: once, when the count reaches it
       {
         msgCreate("So... going to fix this?",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=1670
+      //else if hexHackTime=1670
+      else if scrCountPass(hexHackTime,1670) //60fps change: once, when the count reaches it
       {
         oPlayer1.runAcc=7.05
         msgCreate("Fixed the run speed.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=1730
+      //else if hexHackTime=1730
+      else if scrCountPass(hexHackTime,1730) //60fps change: once, when the count reaches it
       {
         msgCreate("You're really troublesome.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=1790
+      //else if hexHackTime=1790
+      else if scrCountPass(hexHackTime,1790) //60fps change: once, when the count reaches it
       {
         msgCreate("I'm going to delete you soon.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=80
       }
-      else if hexHackTime=1770
+      //else if hexHackTime=1770
+      else if scrCountPass(hexHackTime,1770) //60fps change: once, when the count reaches it
       {
         msgCreate("That's a bit extreme.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=1830
+      //else if hexHackTime=1830
+      else if scrCountPass(hexHackTime,1830) //60fps change: once, when the count reaches it
       {
         msgCreate("It is a hazardous piece of code,#deleting it would be beneficial to the system.",0,oMessagePerson,global.mainCharacters[2],0,1)
         newMessage.fadingTime=120
       }
-      else if hexHackTime=1950
+      //else if hexHackTime=1950
+      else if scrCountPass(hexHackTime,1950) //60fps change: once, when the count reaches it
       {
         msgCreate("Did it ever occur to you that The Darkness could be using you?",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=110
       }
-      else if hexHackTime=2060
+      //else if hexHackTime=2060
+      else if scrCountPass(hexHackTime,2060) //60fps change: once, when the count reaches it
       {
         msgCreate("Of course, it was the first thing that came to mind, however...",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=110
       }
-      else if hexHackTime=2170
+      //else if hexHackTime=2170
+      else if scrCountPass(hexHackTime,2170) //60fps change: once, when the count reaches it
       {
         msgCreate("It seems very logical due to the circumstances that#we are favored by it.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=110
       }
-      else if hexHackTime=2280
+      //else if hexHackTime=2280
+      else if scrCountPass(hexHackTime,2280) //60fps change: once, when the count reaches it
       {
         msgCreate("How so?",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=2340
+      //else if hexHackTime=2340
+      else if scrCountPass(hexHackTime,2340) //60fps change: once, when the count reaches it
       {
         msgCreate("Who cares?! Fix my problem!!",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=2410
+      //else if hexHackTime=2410
+      else if scrCountPass(hexHackTime,2410) //60fps change: once, when the count reaches it
       {
         oPlayer1.initialJumpAcc=-9.4
         oPlayer1.jumpTimeTotal=37
@@ -1093,50 +1227,59 @@ if global.gamePaused=false
         msgCreate("Oh right, it's done.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=2480
+      //else if hexHackTime=2480
+      else if scrCountPass(hexHackTime,2480) //60fps change: once, when the count reaches it
       {
         yTeleMax=384
         yTeleMin=48
         msgCreate("Finally!",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=50
       }
-      else if hexHackTime=2530
+      //else if hexHackTime=2530
+      else if scrCountPass(hexHackTime,2530) //60fps change: once, when the count reaches it
       {
         msgCreate("Here's the platforms back as well.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=2540
+      //else if hexHackTime=2540
+      else if scrCountPass(hexHackTime,2540) //60fps change: once, when the count reaches it
       {
         for(i=0;i<11;i+=1)
         {
           oEvPrimaryMemoryW1.bossPlat[i].y+=room_height
         }
       }
-      else if hexHackTime>=2541 and hexHackTime<=2560
+      //else if hexHackTime>=2541 and hexHackTime<=2560
+      else if hexHackTime>2540 and hexHackTime<=2560 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
       {
         for(i=0;i<11;i+=1)
         {
-          oEvPrimaryMemoryW1.bossPlat[i].image_alpha+=0.05
+          //oEvPrimaryMemoryW1.bossPlat[i].image_alpha+=0.05
+          oEvPrimaryMemoryW1.bossPlat[i].image_alpha+=0.05*gDeltaTime //60fps change: per 30fps tick
         }
       }
-      else if hexHackTime=2561
+      //else if hexHackTime=2561
+      else if scrCountPass(hexHackTime,2561) //60fps change: once, when the count reaches it
       {
         for(i=0;i<11;i+=1)
         {
           oEvPrimaryMemoryW1.bossPlat[i].image_blend=c_white
         }
       }
-      else if hexHackTime=2600
+      //else if hexHackTime=2600
+      else if scrCountPass(hexHackTime,2600) //60fps change: once, when the count reaches it
       {
         msgCreate("Damn it!",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=2660
+      //else if hexHackTime=2660
+      else if scrCountPass(hexHackTime,2660) //60fps change: once, when the count reaches it
       {
         msgCreate("Hey look, we're winning... again!",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=2700
+      //else if hexHackTime=2700
+      else if scrCountPass(hexHackTime,2700) //60fps change: once, when the count reaches it
       {
         hexHackTime=0
         hexHackProg+=1
@@ -1144,7 +1287,8 @@ if global.gamePaused=false
 
       if hexHackTime>=1200 and hexHackTime<=2500 //create lasers
       {
-        if hexHackTime mod 70=0
+        //if hexHackTime mod 70=0
+        if scrModPass(hexHackTime,70) //60fps change: once each time the count reaches a multiple of it
         {
           newLaser=instance_create(oPlayer1.x,yGround,oSLLaser)
           newLaser.spiritPower=spiritPower
@@ -1155,45 +1299,54 @@ if global.gamePaused=false
     }
     else if muffinCount<=1 and hexHackProg=5 //==================================================
     {
-      hexHackTime+=1
-      if hexHackTime=30
+      //hexHackTime+=1
+      hexHackTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if hexHackTime=30
+      if scrCountPass(hexHackTime,30) //60fps change: once, when the count reaches it
       {
         msgCreate("You've somehow blocked me out of...",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=100
+      //else if hexHackTime=100
+      else if scrCountPass(hexHackTime,100) //60fps change: once, when the count reaches it
       {
         msgCreate("Everything? Yeah I know, I'm awesome.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=80
       }
-      else if hexHackTime=180
+      //else if hexHackTime=180
+      else if scrCountPass(hexHackTime,180) //60fps change: once, when the count reaches it
       {
         msgCreate("You really like antagonizing him don't you?",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=80
       }
-      else if hexHackTime=260
+      //else if hexHackTime=260
+      else if scrCountPass(hexHackTime,260) //60fps change: once, when the count reaches it
       {
         msgCreate("He pissed me off.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=60
       }
-      if hexHackTime=320
+      //if hexHackTime=320
+      if scrCountPass(hexHackTime,320) //60fps change: once, when the count reaches it
       {
         msgCreate("Luckily I do have one more thing I can do.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=100
       }
-      else if hexHackTime=420
+      //else if hexHackTime=420
+      else if scrCountPass(hexHackTime,420) //60fps change: once, when the count reaches it
       {
         oEvPrimaryMemoryW1.lifeRecovery=3
         oEvPrimaryMemoryW1.boostedRecovery=3
         msgCreate("Bring it!#Oh by the way, you have better life recovery now.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=110
       }
-      else if hexHackTime=530
+      //else if hexHackTime=530
+      else if scrCountPass(hexHackTime,530) //60fps change: once, when the count reaches it
       {
         msgCreate("As you wish.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=50
       }
-      else if hexHackTime=580
+      //else if hexHackTime=580
+      else if scrCountPass(hexHackTime,580) //60fps change: once, when the count reaches it
       {
         var hexLaserDir;
         hexLaserDir=90
@@ -1209,42 +1362,50 @@ if global.gamePaused=false
           hexLaserDir+=360/5
         }
       }
-      else if hexHackTime=650
+      //else if hexHackTime=650
+      else if scrCountPass(hexHackTime,650) //60fps change: once, when the count reaches it
       {
         msgCreate("That it?",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=50
       }
-      else if hexHackTime=700
+      //else if hexHackTime=700
+      else if scrCountPass(hexHackTime,700) //60fps change: once, when the count reaches it
       {
         msgCreate("Not yet, oh and you can't dash through these.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=90
       }
-      else if hexHackTime=790
+      //else if hexHackTime=790
+      else if scrCountPass(hexHackTime,790) //60fps change: once, when the count reaches it
       {
         msgCreate("Lame...",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=50
       }
-      else if hexHackTime=1290
+      //else if hexHackTime=1290
+      else if scrCountPass(hexHackTime,1290) //60fps change: once, when the count reaches it
       {
         msgCreate("Okay, I know it's awesome that there are spinning lasers,#but DO SOMETHING ABOUT THEM!!",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=120
       }
-      else if hexHackTime=1410
+      //else if hexHackTime=1410
+      else if scrCountPass(hexHackTime,1410) //60fps change: once, when the count reaches it
       {
         msgCreate("Trying. See if you can get a few hits in while I delete them.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=90
       }
-      else if hexHackTime=1500
+      //else if hexHackTime=1500
+      else if scrCountPass(hexHackTime,1500) //60fps change: once, when the count reaches it
       {
         msgCreate("That's really funny...#No wait it's not!",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=1570
+      //else if hexHackTime=1570
+      else if scrCountPass(hexHackTime,1570) //60fps change: once, when the count reaches it
       {
         msgCreate("Ah, I knew I was forgetting something.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=1580
+      //else if hexHackTime=1580
+      else if scrCountPass(hexHackTime,1580) //60fps change: once, when the count reaches it
       {
         for(i=0;i<5;i+=1)
         {
@@ -1252,18 +1413,21 @@ if global.gamePaused=false
             instance_destroy()
         }
       }
-      else if hexHackTime=1640
+      //else if hexHackTime=1640
+      else if scrCountPass(hexHackTime,1640) //60fps change: once, when the count reaches it
       {
         msgCreate(". . .",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=50
       }
-      else if hexHackTime=1690
+      //else if hexHackTime=1690
+      else if scrCountPass(hexHackTime,1690) //60fps change: once, when the count reaches it
       {
         oEvPrimaryMemoryW1.lifeRecovery=2
         msgCreate("Knocked that recovery back down.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=1760
+      //else if hexHackTime=1760
+      else if scrCountPass(hexHackTime,1760) //60fps change: once, when the count reaches it
       {
         hexHackTime=0
         hexHackProg+=1
@@ -1271,23 +1435,28 @@ if global.gamePaused=false
         newMessage.fadingTime=70
       }
 
-      if hexHackTime>=800 and hexHackTime<=1579 //rotate Hexor lasers
+      //if hexHackTime>=800 and hexHackTime<=1579 //rotate Hexor lasers
+      if hexHackTime>799 and hexHackTime<=1579 //rotate Hexor lasers //60fps change: the same 30fps ticks, counted in gDeltaTime steps
       {
         for(i=0;i<5;i+=1)
-          hexorLaser[i].image_angle+=0.75
+          //hexorLaser[i].image_angle+=0.75
+          hexorLaser[i].image_angle+=0.75*gDeltaTime //60fps change: per 30fps tick
       }
     }
     else if muffinCount=0 and hexHackProg=6 //==================================================
     {
-      hexHackTime+=1
-      if hexHackTime=30
+      //hexHackTime+=1
+      hexHackTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if hexHackTime=30
+      if scrCountPass(hexHackTime,30) //60fps change: once, when the count reaches it
       {
         skillResist=0
         oEvPrimaryMemoryW1.lifeRecovery=3
         msgCreate("Now that the Muffins are gone,#I've taken his physical technique resist down.#They will work on him now.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=130
       }
-      else if hexHackTime=160
+      //else if hexHackTime=160
+      else if scrCountPass(hexHackTime,160) //60fps change: once, when the count reaches it
       {
         xTeleMax=320
         msgCreate("Alright, this has to change.",0,oMessagePerson,global.mainCharacters[3],0,1)
@@ -1315,18 +1484,21 @@ if global.gamePaused=false
         if platformCheck=2
           hexHackTime=300
       }
-      else if hexHackTime=330
+      //else if hexHackTime=330
+      else if scrCountPass(hexHackTime,330) //60fps change: once, when the count reaches it
       {
         msgCreate("You're not fixing that one.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=400
+      //else if hexHackTime=400
+      else if scrCountPass(hexHackTime,400) //60fps change: once, when the count reaches it
       {
         yTeleMin=96
         msgCreate("Get off the ground!",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=100
       }
-      else if hexHackTime=500
+      //else if hexHackTime=500
+      else if scrCountPass(hexHackTime,500) //60fps change: once, when the count reaches it
       {
         var fireX;
         fireX=272
@@ -1341,13 +1513,16 @@ if global.gamePaused=false
     }
     else if hexHackProg=7 //==================== 66% ====================
     {
-      hexHackTime+=1
-      if hexHackTime=20
+      //hexHackTime+=1
+      hexHackTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if hexHackTime=20
+      if scrCountPass(hexHackTime,20) //60fps change: once, when the count reaches it
       {
         msgCreate("You won't win.",0,oMessagePerson,global.mainCharacters[3],0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=80
+      //else if hexHackTime=80
+      else if scrCountPass(hexHackTime,80) //60fps change: once, when the count reaches it
       {
         msgCreate("For once, I don't have a lame comeback.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=80
@@ -1355,19 +1530,23 @@ if global.gamePaused=false
     }
     else if hexHackProg=8 //==================== 50% ====================
     {
-      hexHackTime+=1
-      if hexHackTime=20
+      //hexHackTime+=1
+      hexHackTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if hexHackTime=20
+      if scrCountPass(hexHackTime,20) //60fps change: once, when the count reaches it
       {
         msgCreate("You've heavily distorted the data in this area.",0,oMessagePerson,"The Artist",0,1)
         newMessage.fadingTime=100
       }
-      else if hexHackTime=120
+      //else if hexHackTime=120
+      else if scrCountPass(hexHackTime,120) //60fps change: once, when the count reaches it
       {
         maxAttacks=4
         msgCreate("Any major consequences of that?",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=190
+      //else if hexHackTime=190
+      else if scrCountPass(hexHackTime,190) //60fps change: once, when the count reaches it
       {
         msgCreate("You will see in a moment.",0,oMessagePerson,"The Artist",0,1)
         newMessage.fadingTime=60
@@ -1375,58 +1554,70 @@ if global.gamePaused=false
     }
     else if hexHackProg=9 //==================== 15% ====================
     {
-      hexHackTime+=1
-      if hexHackTime=20
+      //hexHackTime+=1
+      hexHackTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if hexHackTime=20
+      if scrCountPass(hexHackTime,20) //60fps change: once, when the count reaches it
       {
         msgCreate("Try damaging me now.",0,oMessagePerson,"The Artist",0,1)
         newMessage.fadingTime=60
       }
-      else if hexHackTime=90
+      //else if hexHackTime=90
+      else if scrCountPass(hexHackTime,90) //60fps change: once, when the count reaches it
       {
         msgCreate("He's made himself completely invulnerable.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=90
       }
-      else if hexHackTime=190
+      //else if hexHackTime=190
+      else if scrCountPass(hexHackTime,190) //60fps change: once, when the count reaches it
       {
         msgCreate("I told you, you can't win.",0,oMessagePerson,"The Artist",0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=270
+      //else if hexHackTime=270
+      else if scrCountPass(hexHackTime,270) //60fps change: once, when the count reaches it
       {
         msgCreate("We're gonna have to try something we've never done before.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=140
       }
-      else if hexHackTime=420
+      //else if hexHackTime=420
+      else if scrCountPass(hexHackTime,420) //60fps change: once, when the count reaches it
       {
         msgCreate("Like what?",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=50
       }
-      else if hexHackTime=480
+      //else if hexHackTime=480
+      else if scrCountPass(hexHackTime,480) //60fps change: once, when the count reaches it
       {
         msgCreate("I know I've said not to during duels, but it's our only chance...",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=120
       }
-      else if hexHackTime=610
+      //else if hexHackTime=610
+      else if scrCountPass(hexHackTime,610) //60fps change: once, when the count reaches it
       {
         msgCreate("Are you talking about Rave Mode?",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=70
       }
-      else if hexHackTime=690
+      //else if hexHackTime=690
+      else if scrCountPass(hexHackTime,690) //60fps change: once, when the count reaches it
       {
         msgCreate("Yes, I'm going to give you access to it.#You should be able to take him down with just a few shots.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=170
       }
-      else if hexHackTime=870
+      //else if hexHackTime=870
+      else if scrCountPass(hexHackTime,870) //60fps change: once, when the count reaches it
       {
         msgCreate("I have to warn you though, you only get one chance at this.#If you screw up, it's Game Over.",0,oMessagePerson,global.mainCharacters[1],0,1)
         newMessage.fadingTime=160
       }
-      else if hexHackTime=1040
+      //else if hexHackTime=1040
+      else if scrCountPass(hexHackTime,1040) //60fps change: once, when the count reaches it
       {
         msgCreate("Alright, give me access, I'm going to do this!",0,oMessagePerson,global.mainCharacters[0],0,1)
         newMessage.fadingTime=100
       }
-      else if hexHackTime=1150
+      //else if hexHackTime=1150
+      else if scrCountPass(hexHackTime,1150) //60fps change: once, when the count reaches it
       {
         global.p1RaveEnergy=oPlayer1.raveMax
         hexHackTime=0

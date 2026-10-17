@@ -52,22 +52,31 @@ if global.gamePaused=false
     if x>oCharacter.x
     {
       if xVel>-topSpeed
-        xVel-=runAcc
+        //xVel-=runAcc
+        xVel-=runAcc*gDeltaTime //60fps change: per 30fps tick
     }
     else
     {
       if xVel<topSpeed
-        xVel+=runAcc
+        //xVel+=runAcc
+        xVel+=runAcc*gDeltaTime //60fps change: per 30fps tick
     }
 
-    yVel+=0.2
+    //yVel+=0.2
+    yVel=scrGravAcc(yVel,0.2,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
-    if isCollisionLeft(1)
+    //if isCollisionLeft(1)
+    //  xVel*=-1
+    //if isCollisionRight(1)
+    //  xVel*=-1
+    //60fps change: only bounce off a wall when moving into it (it can still touch it on the next frame above 30fps)
+    if isCollisionLeftEdit(1)
       xVel*=-1
-    if isCollisionRight(1)
+    if isCollisionRightEdit(1)
       xVel*=-1
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     if isCollisionSolid()
       y-=2
 

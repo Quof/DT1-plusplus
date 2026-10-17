@@ -15,7 +15,8 @@ applies_to=self
 */
 if hitTime>0
 {
-  hitTime+=1
+  //hitTime+=1
+  hitTime+=gDeltaTime //60fps change: counts 30fps ticks
   if hitTime>=3
     instance_destroy()
 }

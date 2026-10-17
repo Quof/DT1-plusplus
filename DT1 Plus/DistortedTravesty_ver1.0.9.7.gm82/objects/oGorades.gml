@@ -88,10 +88,12 @@ if global.gamePaused=false
 
     //jump
     if jumpTime<reJumpTime+5
-      jumpTime+=1
+      //jumpTime+=1
+      jumpTime+=gDeltaTime //60fps change: counts 30fps ticks
     if jumpTime>=reJumpTime
     {
-      if jumpTime=reJumpTime
+      //if jumpTime=reJumpTime
+      if scrCountPass(jumpTime,reJumpTime) //60fps change: once, when the count reaches it
       {
         sprite_index=sGoradesJump
         y-=4
@@ -104,7 +106,8 @@ if global.gamePaused=false
       }
     }
 
-    yVel+=0.65
+    //yVel+=0.65
+    yVel=scrGravAcc(yVel,0.65,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
     {
       yVel=0
@@ -116,11 +119,17 @@ if global.gamePaused=false
         sprite_index=sGoradesWait
       }
     }
-    if isCollisionLeft(1)
+    //if isCollisionLeft(1)
+    //  xVel*=-1
+    //if isCollisionRight(1)
+    //  xVel*=-1
+    //60fps change: only turn around when moving into the wall (it can still touch it on the next frame above 30fps)
+    if isCollisionLeftEdit(1)
       xVel*=-1
-    if isCollisionRight(1)
+    if isCollisionRightEdit(1)
       xVel*=-1
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 
     if y>room_height+30
     {
@@ -132,8 +141,10 @@ if global.gamePaused=false
 
   if jumpTime>=10000 //ground hit
   {
-    jumpTime+=1
-    if jumpTime mod 6=0
+    //jumpTime+=1
+    jumpTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if jumpTime mod 6=0
+    if scrModPass(jumpTime,6) //60fps change: once each time the count reaches a multiple of it
     {
       for(i=0;i<2;i+=1)
       {

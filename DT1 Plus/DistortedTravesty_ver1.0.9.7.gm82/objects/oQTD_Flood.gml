@@ -26,15 +26,20 @@ if global.gamePaused=false
   if flowProgress=0
   {
     if y>oQuickTimeDistorter.yGround-8
-      y-=4
+      //y-=4
+      y-=4*gDeltaTime //60fps change: per 30fps tick
     else
       flowProgress=1
   }
-  else if flowProgress>=1 and flowProgress<=45
-    flowProgress+=1
-  else if flowProgress=46
+  //else if flowProgress>=1 and flowProgress<=45
+  else if flowProgress>=1 and flowProgress<46 //60fps change: it counts in gDeltaTime steps (the same as <=45 in whole ticks)
+    //flowProgress+=1
+    flowProgress+=gDeltaTime //60fps change: counts 30fps ticks
+  //else if flowProgress=46
+  else if flowProgress>=46 //60fps change: see above
   {
-    y+=4
+    //y+=4
+    y+=4*gDeltaTime //60fps change: per 30fps tick
     if y>room_height+8
     {
       oQuickTimeDistorter.waterAttackDelay=0

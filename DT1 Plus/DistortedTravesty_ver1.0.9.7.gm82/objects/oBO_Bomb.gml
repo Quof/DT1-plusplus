@@ -17,7 +17,8 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  y+=5.5
+  //y+=5.5
+  y+=5.5*gDeltaTime //60fps change: per 30fps tick
   if y>=352
   {
     explosion=instance_create(x,352,oGASGExplosion)

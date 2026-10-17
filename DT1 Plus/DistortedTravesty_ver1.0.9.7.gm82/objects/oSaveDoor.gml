@@ -39,7 +39,8 @@ if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up))
     global.newMapY=global.targetMapY
   }
   writeToPlayerGlobals()
-  transition_steps=30
+  //transition_steps=30
+  transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
   transition_kind=20
   if room!=rDataCenter
     room_goto(rDataCenter)

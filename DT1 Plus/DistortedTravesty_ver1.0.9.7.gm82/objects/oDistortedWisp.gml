@@ -56,7 +56,8 @@ if global.gamePaused=false
     if instance_exists(oCharacter)
     {
       dir=point_direction(x,y,oCharacter.x,oCharacter.y-22)
-      moveTo(runAcc*cos(degtorad(dir)),-runAcc*sin(degtorad(dir)))
+      //moveTo(runAcc*cos(degtorad(dir)),-runAcc*sin(degtorad(dir)))
+      moveTo(runAcc*cos(degtorad(dir))*gDeltaTime,-runAcc*sin(degtorad(dir))*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     }
   }
   enemyStepEvent()
@@ -100,25 +101,35 @@ if dist<=detectDistX
       pX=x+random(16)
       pY=y+random(16)
       effect_create_above(ef_smoke,pX,pY,0,image_blend)
-      effectDelay=3
+      //effectDelay=3
+      effectDelay=4-gDeltaTime //60fps change: counts down 30fps ticks; the frame that makes the smoke counts as a whole tick, as at 30fps (it doesn't count down), so the count starts that much lower (3 at 30fps)
     }
     else
-      effectDelay-=1
+      //effectDelay-=1
+      effectDelay-=gDeltaTime //60fps change: counts 30fps ticks
   }
 
   //looping circles
-  circleTime+=1
-  if circleTime>=1 and circleTime<=48
+  //circleTime+=1
+  circleTime+=gDeltaTime //60fps change: counts 30fps ticks
+  //if circleTime>=1 and circleTime<=48
+  if circleTime>0 and circleTime<=48 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
   {
-    circleRad[0]+=0.25
-    circleRad[1]-=0.25
-    circleAlpha-=0.004
+    //circleRad[0]+=0.25
+    circleRad[0]+=0.25*gDeltaTime //60fps change: per 30fps tick
+    //circleRad[1]-=0.25
+    circleRad[1]-=0.25*gDeltaTime //60fps change: per 30fps tick
+    //circleAlpha-=0.004
+    circleAlpha-=0.004*gDeltaTime //60fps change: per 30fps tick
   }
   else if circleTime>=48 and circleTime<=96
   {
-    circleRad[0]-=0.25
-    circleRad[1]+=0.25
-    circleAlpha+=0.004
+    //circleRad[0]-=0.25
+    circleRad[0]-=0.25*gDeltaTime //60fps change: per 30fps tick
+    //circleRad[1]+=0.25
+    circleRad[1]+=0.25*gDeltaTime //60fps change: per 30fps tick
+    //circleAlpha+=0.004
+    circleAlpha+=0.004*gDeltaTime //60fps change: per 30fps tick
     if circleTime>=96
       circleTime=0
   }

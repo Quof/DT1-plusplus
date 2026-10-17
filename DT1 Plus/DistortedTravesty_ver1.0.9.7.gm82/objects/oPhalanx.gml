@@ -102,7 +102,8 @@ if global.gamePaused=false
     //movement **************************************************
 
     //attacks **************************************************
-    laserTime+=1
+    //laserTime+=1
+    laserTime+=gDeltaTime //60fps change: counts 30fps ticks
     if laserDelay=0
     {
       if laserTime>=laserWait
@@ -113,7 +114,8 @@ if global.gamePaused=false
     }
     if laserTime>=laserDelay and laserDelay!=0
     {
-      if laserTime=laserDelay
+      //if laserTime=laserDelay
+      if scrCountPass(laserTime,laserDelay) //60fps change: once, when the count reaches it
       {
         sprite_index=sPhalanxMouthOpen
         oPhalUarms.sprite_index=sPhalUarmsIdle
@@ -121,7 +123,8 @@ if global.gamePaused=false
         oPhalLarms.sprite_index=sPhalLarmsIdle
         oPhalLarms.guardTime=0
       }
-      else if laserTime=laserDelay+30
+      //else if laserTime=laserDelay+30
+      else if scrCountPass(laserTime,laserDelay+30) //60fps change: once, when the count reaches it
       {
         energyLaser=instance_create(x-10,y+16,oPhalLaser)
         energyLaser.damageType="SPIRIT"
@@ -144,7 +147,8 @@ if global.gamePaused=false
         }
         else
         {
-          life+=20
+          //life+=20
+          life+=20*gDeltaTime //60fps change: per 30fps tick
           if lifePercent>=1
           {
             life=maxLife
@@ -153,36 +157,43 @@ if global.gamePaused=false
         }
 
         if jeremyMessage>0
-          jeremyMessage+=1
+          //jeremyMessage+=1
+          jeremyMessage+=gDeltaTime //60fps change: counts 30fps ticks
 
         if jMessageProg=1
         {
-          if jeremyMessage=2
+          //if jeremyMessage=2
+          if scrCountPass(jeremyMessage,2) //60fps change: once, when the count reaches it
           {
             msgCreate("It just gets it's life back when you damage it enough.",0,oMessagePerson,global.mainCharacters[1],0,1)
             newMessage.fadingTime=120
           }
-          else if jeremyMessage=122
+          //else if jeremyMessage=122
+          else if scrCountPass(jeremyMessage,122) //60fps change: once, when the count reaches it
           {
             msgCreate("What am I supposed to do then?",0,oMessagePerson,global.mainCharacters[0],0,1)
             newMessage.fadingTime=120
           }
-          else if jeremyMessage=242
+          //else if jeremyMessage=242
+          else if scrCountPass(jeremyMessage,242) //60fps change: once, when the count reaches it
           {
             msgCreate("I was thinking about that.#The Darkness already told us about Abstracity...",0,oMessagePerson,global.mainCharacters[1],0,1)
             newMessage.fadingTime=140
           }
-          else if jeremyMessage=382
+          //else if jeremyMessage=382
+          else if scrCountPass(jeremyMessage,382) //60fps change: once, when the count reaches it
           {
             msgCreate("What are you suggesting?",0,oMessagePerson,global.mainCharacters[0],0,1)
             newMessage.fadingTime=110
           }
-          else if jeremyMessage=492
+          //else if jeremyMessage=492
+          else if scrCountPass(jeremyMessage,492) //60fps change: once, when the count reaches it
           {
             msgCreate("Do you really NEED to beat this now?#Think about it.",0,oMessagePerson,global.mainCharacters[1],0,1)
             newMessage.fadingTime=130
           }
-          else if jeremyMessage=622
+          //else if jeremyMessage=622
+          else if scrCountPass(jeremyMessage,622) //60fps change: once, when the count reaches it
           {
             msgCreate("No way...",0,oMessagePerson,global.mainCharacters[0],0,1)
             newMessage.fadingTime=80
@@ -190,22 +201,26 @@ if global.gamePaused=false
         }
         else if jMessageProg=2
         {
-          if jeremyMessage=2
+          //if jeremyMessage=2
+          if scrCountPass(jeremyMessage,2) //60fps change: once, when the count reaches it
           {
             msgCreate("Despite what I said, you're still fighting him.",0,oMessagePerson,global.mainCharacters[1],0,1)
             newMessage.fadingTime=120
           }
-          else if jeremyMessage=122
+          //else if jeremyMessage=122
+          else if scrCountPass(jeremyMessage,122) //60fps change: once, when the count reaches it
           {
             msgCreate("Do I really have to use an exploit?",0,oMessagePerson,global.mainCharacters[0],0,1)
             newMessage.fadingTime=120
           }
-          else if jeremyMessage=242
+          //else if jeremyMessage=242
+          else if scrCountPass(jeremyMessage,242) //60fps change: once, when the count reaches it
           {
             msgCreate("What's stopping you?",0,oMessagePerson,global.mainCharacters[1],0,1)
             newMessage.fadingTime=90
           }
-          else if jeremyMessage=332
+          //else if jeremyMessage=332
+          else if scrCountPass(jeremyMessage,332) //60fps change: once, when the count reaches it
           {
             msgCreate("What a valid point.",0,oMessagePerson,global.mainCharacters[0],0,1)
             newMessage.fadingTime=100
@@ -213,17 +228,20 @@ if global.gamePaused=false
         }
         else if jMessageProg>=3
         {
-          if jeremyMessage=2
+          //if jeremyMessage=2
+          if scrCountPass(jeremyMessage,2) //60fps change: once, when the count reaches it
           {
             msgCreate(". . .",0,oMessagePerson,global.mainCharacters[1],0,1)
             newMessage.fadingTime=80
           }
-          else if jeremyMessage=82
+          //else if jeremyMessage=82
+          else if scrCountPass(jeremyMessage,82) //60fps change: once, when the count reaches it
           {
             msgCreate("I just want to see how long I can go.",0,oMessagePerson,global.mainCharacters[0],0,1)
             newMessage.fadingTime=120
           }
-          else if jeremyMessage=202
+          //else if jeremyMessage=202
+          else if scrCountPass(jeremyMessage,202) //60fps change: once, when the count reaches it
           {
             msgCreate("This would make it " +string(jMessageProg) +string(" times you've done this now."),0,oMessagePerson,global.mainCharacters[1],0,1)
             newMessage.fadingTime=120

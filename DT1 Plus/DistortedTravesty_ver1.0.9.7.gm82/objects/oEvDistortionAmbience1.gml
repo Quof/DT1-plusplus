@@ -26,42 +26,58 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  dRalphaTimer+=1
-  if dRalphaTimer>=1 and dRalphaTimer<=300
-    dRa+=0.001
-  else if dRalphaTimer>=301 and dRalphaTimer<=600
-    dRa-=0.001
+  //dRalphaTimer+=1
+  dRalphaTimer+=gDeltaTime //60fps change: counts 30fps ticks
+  //if dRalphaTimer>=1 and dRalphaTimer<=300
+  if dRalphaTimer>0 and dRalphaTimer<=300 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+    //dRa+=0.001
+    dRa+=0.001*gDeltaTime //60fps change: per 30fps tick
+  //else if dRalphaTimer>=301 and dRalphaTimer<=600
+  else if dRalphaTimer>300 and dRalphaTimer<=600 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+    //dRa-=0.001
+    dRa-=0.001*gDeltaTime //60fps change: per 30fps tick
 
   if dRalphaTimer>=600
     dRalphaTimer=0
 
-  scaleTime+=1
-  if scaleTime>=1 and scaleTime<=400
-    scaling+=0.0005
-  else if scaleTime>=401 and scaleTime<=800
-    scaling-=0.0005
+  //scaleTime+=1
+  scaleTime+=gDeltaTime //60fps change: counts 30fps ticks
+  //if scaleTime>=1 and scaleTime<=400
+  if scaleTime>0 and scaleTime<=400 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+    //scaling+=0.0005
+    scaling+=0.0005*gDeltaTime //60fps change: per 30fps tick
+  //else if scaleTime>=401 and scaleTime<=800
+  else if scaleTime>400 and scaleTime<=800 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+    //scaling-=0.0005
+    scaling-=0.0005*gDeltaTime //60fps change: per 30fps tick
 
   if scaleTime>=800
     scaleTime=0
   sCheck=frac(scaleTime/10)
   if sCheck>0.9
   {
-    cR-=2
-    cG-=5
-    cB-=0.01
+    //cR-=2
+    cR-=2*gDeltaTime //60fps change: per 30fps tick
+    //cG-=5
+    cG-=5*gDeltaTime //60fps change: per 30fps tick
+    //cB-=0.01
+    cB-=0.01*gDeltaTime //60fps change: per 30fps tick
   }
   if oPlayer1.attackState=oPlayer1.TECH_MENTAL_INSURRECTION
-    distortMentalI=random(0.5)
+    //distortMentalI=random(0.5)
+    if gDeltaDoTicks distortMentalI=random(0.5) //60fps change: once per 30fps tick
   else
     distortMentalI=0
 
   if oPlayer1.sprite_index=sPlayerDamaged
-    distortDamage=random(70)+30
+    //distortDamage=random(70)+30
+    if gDeltaDoTicks distortDamage=random(70)+30 //60fps change: once per 30fps tick
   else
     distortDamage=0
 
   if oPlayer1.attackState=oPlayer1.ACT_CASTING
-    distortCasting=random(70)+30
+    //distortCasting=random(70)+30
+    if gDeltaDoTicks distortCasting=random(70)+30 //60fps change: once per 30fps tick
   else
     distortCasting=0
 
@@ -77,6 +93,7 @@ action_id=603
 applies_to=self
 */
 backScale=scaling+distortMentalI
-dRx-=0.5
+//dRx-=0.5
+dRx-=0.5*gDeltaTime //60fps change: per 30fps tick
 draw_background_tiled_ext(global.backDistortion1,0,0,backScale,backScale,make_color_rgb(cR-distortDamage,cG-distortCasting,cB-distortKChain),1)
 draw_background_tiled_ext(backDistortedRclouds,dRx,0,2,2,c_white,dRa)

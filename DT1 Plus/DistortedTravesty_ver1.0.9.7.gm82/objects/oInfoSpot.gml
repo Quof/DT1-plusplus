@@ -43,7 +43,8 @@ if variable_local_exists("binary")
   draw_set_alpha(1)
   draw_set_font(fnt_ScanData)
   draw_set_halign(fa_left)
-  if changeTime=0
+  //if changeTime=0
+  if changeTime<=0 //60fps change: <= so it still happens if the frame rate changes mid-count
   {
     for(a=0;a<4;a+=1)
     {
@@ -52,10 +53,14 @@ if variable_local_exists("binary")
         bin[a,aa]=round(random(1))
       }
     }
-    changeTime=4
+    //changeTime=4
+    //60fps change: counts down 30fps ticks; the frame that changes the digits counts as a whole tick, as at 30fps (it
+    //doesn't count down), so the count starts that much higher (4 at 30fps)
+    changeTime=5-gDeltaTime
   }
   else
-    changeTime-=1
+    //changeTime-=1
+    changeTime-=gDeltaTime //60fps change: see above
   for(i=0;i<4;i+=1)
   {
     for(ii=0;ii<5;ii+=1)

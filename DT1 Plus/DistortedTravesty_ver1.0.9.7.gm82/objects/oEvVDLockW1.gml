@@ -78,8 +78,10 @@ if checkScene>=0 and global.gameProgress=226 //first time in VD Lock
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -126,11 +128,14 @@ else if checkScene>=0 and global.gameProgress=227 //first chat with Flame Instig
   else if sceneProgress=1
   {
     if oPlayer1.y<208
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=20
       {
@@ -185,11 +190,15 @@ else if checkScene>=0 and global.gameProgress=227 //first chat with Flame Instig
     msgCreate("They will have to wait, there is a high concentration of those scouts around here.#I do not want to get caught in here.#You probably want to unlock the seal leading to the lower level of this place.#Behind me is one of the four devices to unlock it.#Meet me in another of these locations and we can continue this, we cannot stay in#one area for long unless we want to get caught by The Darkness' scouts.",1,oMessageCutscene,"Flame Instigator")
   else if sceneProgress=23
   {
-    sceneDelay+=1
-    if sceneDelay>=1 and sceneDelay<=19
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=1 and sceneDelay<=19
+    if sceneDelay>0 and sceneDelay<=19 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      npcFI.image_xscale+=0.05
-      npcFI.image_yscale+=0.2
+      //npcFI.image_xscale+=0.05
+      npcFI.image_xscale+=0.05*gDeltaTime //60fps change: per 30fps tick
+      //npcFI.image_yscale+=0.2
+      npcFI.image_yscale+=0.2*gDeltaTime //60fps change: per 30fps tick
     }
     else if sceneDelay>=20
     {
@@ -233,11 +242,14 @@ else if checkScene>=0 and global.gameProgress=228 //second chat with Flame Insti
   else if sceneProgress=1
   {
     if oPlayer1.y<208
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=20
       {
@@ -308,11 +320,15 @@ else if checkScene>=0 and global.gameProgress=228 //second chat with Flame Insti
     msgCreate("I don't know if we'll meet again, I can't stick around here any longer.#I don't know how he's doing it, but your friend has been conceiling your location.#Whatever your plans are, be sure you are fully aware of the consequences.",1,oMessageCutscene,"Flame Instigator")
   else if sceneProgress=32
   {
-    sceneDelay+=1
-    if sceneDelay>=1 and sceneDelay<=19
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=1 and sceneDelay<=19
+    if sceneDelay>0 and sceneDelay<=19 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      npcFI.image_xscale+=0.05
-      npcFI.image_yscale+=0.2
+      //npcFI.image_xscale+=0.05
+      npcFI.image_xscale+=0.05*gDeltaTime //60fps change: per 30fps tick
+      //npcFI.image_yscale+=0.2
+      npcFI.image_yscale+=0.2*gDeltaTime //60fps change: per 30fps tick
     }
     else if sceneDelay>=20
     {
@@ -350,11 +366,14 @@ else if checkScene>=0 and global.gameProgress=230 //third chat with Flame Instig
   else if sceneProgress=1
   {
     if oPlayer1.y<208
-      oPlayer1.y+=4
+      //oPlayer1.y+=4
+      oPlayer1.y+=4*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=1
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=1
+      if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
         oPlayer1.sprite_index=sPlayerIdle
       else if sceneDelay>=20
       {
@@ -389,16 +408,20 @@ else if checkScene>=0 and global.gameProgress=230 //third chat with Flame Instig
     msgCreate("And being cryptic is definately going to help.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=14
   {
-    sceneDelay+=1
-    if sceneDelay=10
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
     {
       shakeScreen=instance_create(256,oPlayer1.y,oCutsceneShake)
       shakeScreen.shakePower=8
       view_object[0]=oCutsceneShake
       playSound(global.snd_BreakOut,0,1)
     }
-    else if sceneDelay>=30 and sceneDelay<=41
-      shakeScreen.shakePower-=0.5
+    //else if sceneDelay>=30 and sceneDelay<=41
+    else if sceneDelay>29 and sceneDelay<=41 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //shakeScreen.shakePower-=0.5
+      shakeScreen.shakePower-=0.5*gDeltaTime //60fps change: per 30fps tick
     else if sceneDelay>=50
     {
       sceneDelay=0
@@ -445,7 +468,8 @@ else if checkScene>=0 and global.gameProgress=230 //third chat with Flame Instig
   else if sceneProgress=22
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.1
+      //bossFinishFadeAlpha-=0.1
+      bossFinishFadeAlpha-=0.1*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
@@ -476,7 +500,8 @@ else if checkScene>=0 and global.gameProgress=230 //third chat with Flame Instig
   }
   else if sceneProgress=24
   {
-    if sceneDelay=0
+    //if sceneDelay=0
+    if scrCountPass(sceneDelay,0) //60fps change: once, when the count reaches it
     {
       stopPlayer()
       oPlayer1.x=144
@@ -489,7 +514,8 @@ else if checkScene>=0 and global.gameProgress=230 //third chat with Flame Instig
       sceneDelay=1
     }
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.1
+      //bossFinishFadeAlpha-=0.1
+      bossFinishFadeAlpha-=0.1*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
     {
       sceneDelay=0
@@ -498,7 +524,8 @@ else if checkScene>=0 and global.gameProgress=230 //third chat with Flame Instig
   }
   else if sceneProgress=25
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=20
     {
       sceneDelay=0
@@ -523,11 +550,15 @@ else if checkScene>=0 and global.gameProgress=230 //third chat with Flame Instig
     msgCreate("Think about what you are doing.",1,oMessageCutscene,"Flame Instigator")
   else if sceneProgress=34
   {
-    sceneDelay+=1
-    if sceneDelay>=1 and sceneDelay<=19
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=1 and sceneDelay<=19
+    if sceneDelay>0 and sceneDelay<=19 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      npcFI.image_xscale+=0.05
-      npcFI.image_yscale+=0.2
+      //npcFI.image_xscale+=0.05
+      npcFI.image_xscale+=0.05*gDeltaTime //60fps change: per 30fps tick
+      //npcFI.image_yscale+=0.2
+      npcFI.image_yscale+=0.2*gDeltaTime //60fps change: per 30fps tick
     }
     else if sceneDelay>=20
     {
@@ -572,8 +603,10 @@ else if room=rVDlock1_2 and global.VDportals[0]=2 //break crystal 1
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_Shock,0,1)
       effect=instance_create(crystalLock.x,crystalLock.y,oEffect)
@@ -581,7 +614,8 @@ else if room=rVDlock1_2 and global.VDportals[0]=2 //break crystal 1
       effect.image_speed=0.75
       effect.newBlend=1
     }
-    else if sceneDelay=31
+    //else if sceneDelay=31
+    else if scrCountPass(sceneDelay,31) //60fps change: once, when the count reaches it
     {
       with crystalLock
         instance_destroy()
@@ -621,8 +655,10 @@ else if room=rVDlock2_2 and global.VDportals[1]=2 //break crystal 2
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_Shock,0,1)
       effect=instance_create(crystalLock.x,crystalLock.y,oEffect)
@@ -630,7 +666,8 @@ else if room=rVDlock2_2 and global.VDportals[1]=2 //break crystal 2
       effect.image_speed=0.75
       effect.newBlend=1
     }
-    else if sceneDelay=31
+    //else if sceneDelay=31
+    else if scrCountPass(sceneDelay,31) //60fps change: once, when the count reaches it
     {
       with crystalLock
         instance_destroy()
@@ -670,8 +707,10 @@ else if room=rVDlock3_2 and global.VDportals[2]=2 //break crystal 3
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_Shock,0,1)
       effect=instance_create(crystalLock.x,crystalLock.y,oEffect)
@@ -679,7 +718,8 @@ else if room=rVDlock3_2 and global.VDportals[2]=2 //break crystal 3
       effect.image_speed=0.75
       effect.newBlend=1
     }
-    else if sceneDelay=31
+    //else if sceneDelay=31
+    else if scrCountPass(sceneDelay,31) //60fps change: once, when the count reaches it
     {
       with crystalLock
         instance_destroy()
@@ -719,8 +759,10 @@ else if room=rVDlock4_2 and global.VDportals[3]=2 //break crystal 4
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
     {
       playSound(global.snd_Shock,0,1)
       effect=instance_create(crystalLock.x,crystalLock.y,oEffect)
@@ -728,7 +770,8 @@ else if room=rVDlock4_2 and global.VDportals[3]=2 //break crystal 4
       effect.image_speed=0.75
       effect.newBlend=1
     }
-    else if sceneDelay=31
+    //else if sceneDelay=31
+    else if scrCountPass(sceneDelay,31) //60fps change: once, when the count reaches it
     {
       with crystalLock
         instance_destroy()
@@ -760,7 +803,8 @@ else if room=rVDlock4_2 and global.VDportals[3]=2 //break crystal 4
 if npcHelp=1 and global.gamePaused=false
 {
   if animChange!=-1
-    animChange+=1
+    //animChange+=1
+    animChange+=gDeltaTime //60fps change: counts 30fps ticks
   if npcFI.sprite_index=sKredaeusIdle
   {
     if x>oCharacter.x
@@ -770,13 +814,16 @@ if npcHelp=1 and global.gamePaused=false
   }
   if npcSpecialTime<npcSpecialWait
   {
-    npcShootTime+=1
+    //npcShootTime+=1
+    npcShootTime+=gDeltaTime //60fps change: counts 30fps ticks
     if npcShootTime>=npcShootWait //shoot straight
     {
-      if animChange=-1
+      //if animChange=-1
+      if scrCountPass(animChange,-1) //60fps change: once, when the count reaches it
         animChange=0
       npcFI.sprite_index=sKredaeusShootStraight
-      if animChange=8
+      //if animChange=8
+      if scrCountPass(animChange,8) //60fps change: once, when the count reaches it
       {
         var shroudCheck;
         shroudCheck=instance_nearest(npcFI.x,npcFI.y,oShroud)
@@ -794,24 +841,30 @@ if npcHelp=1 and global.gamePaused=false
         fireBall.fireSpeed=7
         fireBall.type=1
         if npcFI.image_xscale=1
-          fireBall.direction=0
+          //fireBall.direction=0
+          fireBall._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         else
-          fireBall.direction=180
+          //fireBall.direction=180
+          fireBall._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         npcShootTime=0
       }
     }
   }
-  if npcShootTime<npcShootWait
-    npcSpecialTime+=1
+  //if npcShootTime<npcShootWait
+  if npcShootTime<=npcShootWait-1 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+    //npcSpecialTime+=1
+    npcSpecialTime+=gDeltaTime //60fps change: counts 30fps ticks
   if npcSpecialTime>=npcSpecialWait //special attack
   {
-    if animChange=-1
+    //if animChange=-1
+    if scrCountPass(animChange,-1) //60fps change: once, when the count reaches it
       animChange=0
     if npcFI.sprite_index=sKredaeusIdle
       npcFI.sprite_index=sKredaeusRainFire1
     if npcFI.sprite_index=sKredaeusRainFire1
     {
-      if animChange=48
+      //if animChange=48
+      if scrCountPass(animChange,48) //60fps change: once, when the count reaches it
       {
         npcFI.sprite_index=sKredaeusRainFire2
         animChange=0
@@ -821,30 +874,35 @@ if npcHelp=1 and global.gamePaused=false
     {
       if tempVal<=15
       {
-        if animChange=4 //left gun
+        //if animChange=4 //left gun
+        if scrCountPass(animChange,4) //left gun //60fps change: once, when the count reaches it
         {
           playSound(global.snd_SpellFireball,0,1)
           fireBall=instance_create(npcFI.x-9,npcFI.y-56,oEvVDnpcAtk)
           fireBall.spiritPower=oPlayer1.spiritPower*2
           fireBall.fireSpeed=7
           fireBall.type=2
-          fireBall.direction=90
+          //fireBall.direction=90
+          fireBall._direction=90 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         }
-        else if animChange=8 //right gun
+        //else if animChange=8 //right gun
+        else if scrCountPass(animChange,8) //right gun //60fps change: once, when the count reaches it
         {
           playSound(global.snd_SpellFireball,0,1)
           fireBall=instance_create(npcFI.x+9,npcFI.y-56,oEvVDnpcAtk)
           fireBall.spiritPower=oPlayer1.spiritPower*2
           fireBall.fireSpeed=7
           fireBall.type=3
-          fireBall.direction=90
+          //fireBall.direction=90
+          fireBall._direction=90 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           tempVal+=1
           animChange=0
         }
       }
       else
       {
-        if animChange=4
+        //if animChange=4
+        if scrCountPass(animChange,4) //60fps change: once, when the count reaches it
         {
           npcFI.sprite_index=sKredaeusRainFire3
           animChange=0
@@ -853,7 +911,8 @@ if npcHelp=1 and global.gamePaused=false
     }
     else if npcFI.sprite_index=sKredaeusRainFire3
     {
-      if animChange=12
+      //if animChange=12
+      if scrCountPass(animChange,12) //60fps change: once, when the count reaches it
       {
         tempVal=0
         animChange=-1
@@ -892,13 +951,15 @@ if room=rVeiledDetritus12 and global.VDportals[1]=3 //Boss Fight (Dark Gear)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -918,8 +979,10 @@ if room=rVeiledDetritus12 and global.VDportals[1]=3 //Boss Fight (Dark Gear)
     msgCreate("What sense could that possibly make?",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=7
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       newBarrierL1=instance_create(1024,240,oBossBarrier)
       newBarrierR1=instance_create(1392,240,oBossBarrier)
@@ -950,14 +1013,17 @@ else if global.VDportals[1]=4 //boss fight ends (Dark Gear)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       with oMisc
@@ -976,13 +1042,15 @@ else if global.VDportals[1]=4 //boss fight ends (Dark Gear)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0

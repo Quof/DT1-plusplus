@@ -28,10 +28,12 @@ if global.gamePaused=false
   }
 
   if image_alpha<1
-    image_alpha+=0.02
+    //image_alpha+=0.02
+    image_alpha+=0.02*gDeltaTime //60fps change: per 30fps tick
   else
   {
-    laserDelay-=1
+    //laserDelay-=1
+    laserDelay-=gDeltaTime //60fps change: counts 30fps ticks
     if laserDelay<=0
     {
       if init=1
@@ -40,7 +42,8 @@ if global.gamePaused=false
         headLaser.spiritPower=spiritPower/1.1
         init=2
       }
-      effectDelay-=1
+      //effectDelay-=1
+      effectDelay-=gDeltaTime //60fps change: counts 30fps ticks
       if effectDelay<=0
       {
         effect_create_above(ef_firework,x,y,0,make_color_rgb(155+random(100),155+random(100),155+random(100)))
@@ -52,8 +55,10 @@ if global.gamePaused=false
         headLaser.image_angle=image_angle+30
 
       if idleTime<5000
-        idleTime-=1
-      if idleTime=0
+        //idleTime-=1
+        idleTime-=gDeltaTime //60fps change: counts 30fps ticks
+      //if idleTime=0
+      if idleTime<=0 //60fps change: <= so it still ends if the frame rate changes mid-count
       {
         with headLaser
           instance_destroy()

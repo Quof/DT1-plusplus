@@ -70,16 +70,17 @@ if global.gamePaused=false
         image_xscale=1
     }
 
+    //60fps change: counts 30fps ticks (each +=1 is +=gDeltaTime)
     if shootTime<reShootTime
       if distance_to_object(oPlayer1)>240
-        shootTime+=1
+        shootTime+=gDeltaTime
     if shootTime<reShootTime
       if distance_to_object(oPlayer1)>400
-        shootTime+=1
+        shootTime+=gDeltaTime
     if shootTime<reShootTime
       if distance_to_object(oPlayer1)>560
-        shootTime+=1
-    shootTime+=1
+        shootTime+=gDeltaTime
+    shootTime+=gDeltaTime
     if shootTime>=reShootTime
     {
       if x>oCharacter.x
@@ -131,7 +132,8 @@ if global.gamePaused=false
       }
     }
 
-    yVel+=0.2
+    //yVel+=0.2
+    yVel=scrGravAcc(yVel,0.2,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
     if isCollisionLeft(1)
@@ -140,7 +142,8 @@ if global.gamePaused=false
       xVel=0
     if isCollisionSolid()
       y-=2
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 
     if y>room_height+30
       instance_destroy()

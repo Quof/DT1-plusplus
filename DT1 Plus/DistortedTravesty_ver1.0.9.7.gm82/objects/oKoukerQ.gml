@@ -78,27 +78,33 @@ if global.gamePaused=false
     else
       image_xscale=-1
     //animation
-    frameSpeed+=1
-    if frameSpeed mod 4=0 and bSlamDown=false
+    //frameSpeed+=1
+    frameSpeed+=gDeltaTime //60fps change: counts 30fps ticks
+    //if frameSpeed mod 4=0 and bSlamDown=false
+    if scrModPass(frameSpeed,4) and bSlamDown=false //60fps change: once each time the count reaches a multiple of it
     {
       if image_index=0
         image_index=1
       else if image_index=1
         image_index=0
     }
-    if frameSpeed=40 and bSlamDown=false
+    //if frameSpeed=40 and bSlamDown=false
+    if frameSpeed>=40 and bSlamDown=false //60fps change: >= so it still resets if the frame rate changes mid-count
       frameSpeed=0
 
     if bSlamDown=false and stayTime=0 and bReturn=false //roam
     {
-      turnTime+=1
+      //turnTime+=1
+      turnTime+=gDeltaTime //60fps change: counts 30fps ticks
       xVel=moveSpeed
-      if turnTime mod 45=0
+      //if turnTime mod 45=0
+      if scrModPass(turnTime,45) //60fps change: once each time the count reaches a multiple of it
         moveSpeed*=-1
     }
     else if bReturn=true and stayTime=0 //return (fly up)
     {
-      y-=3
+      //y-=3
+      y-=3*gDeltaTime //60fps change: per 30fps tick
       if y<ystart
       {
         frameSpeed=0
@@ -110,10 +116,12 @@ if global.gamePaused=false
       }
     }
     else if stayTime>0 //stay on ground
-      stayTime-=1
+      //stayTime-=1
+      stayTime=max(0,stayTime-gDeltaTime) //60fps change: counts 30fps ticks (stops at 0: it's checked for =0)
 
     //slam down
-    slamTime+=1
+    //slamTime+=1
+    slamTime+=gDeltaTime //60fps change: counts 30fps ticks
     if slamTime>=reSlamTime and bReturn=false
     {
       xDist=point_distance(x,0,oPlayer1.x,0)
@@ -129,7 +137,8 @@ if global.gamePaused=false
           frameSpeed=200
           image_index=2
         }
-        else if frameSpeed=206
+        //else if frameSpeed=206
+        else if scrCountPass(frameSpeed,206) //60fps change: once, when the count reaches it
           image_index=3
         else if frameSpeed>=212
           yVel=slamSpeed
@@ -142,19 +151,22 @@ if global.gamePaused=false
       stayTime=30
       bReturn=true
     }
-    if isCollisionLeft(1)
+    //if isCollisionLeft(1)
+    if isCollisionLeft(1) and (gDeltaTime==1 or moveSpeed<0) //60fps change: above 30fps, only turn around when moving into the wall (it can still touch it on the next frame)
     {
       turnTime=0
       moveSpeed*=-1
     }
-    if isCollisionRight(1)
+    //if isCollisionRight(1)
+    if isCollisionRight(1) and (gDeltaTime==1 or moveSpeed>0) //60fps change: see above
     {
       turnTime=0
       moveSpeed*=-1
     }
     if isCollisionSolid()
       y-=2
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 
     if y>room_height+24
       instance_destroy()

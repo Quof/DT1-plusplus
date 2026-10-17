@@ -39,13 +39,16 @@ if global.gamePaused=false
 
   if bTargetFound=true
   {
-    yVel+=0.3
+    //yVel+=0.3
+    yVel=scrGravAcc(yVel,0.3,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if initDir=1
     {
       if xVel<0
-        image_angle+=5
+        //image_angle+=5
+      image_angle+=5*gDeltaTime //60fps change: per 30fps tick
       else
-        image_angle-=5
+        //image_angle-=5
+      image_angle-=5*gDeltaTime //60fps change: per 30fps tick
     }
   }
   if isCollisionBottom(1)
@@ -69,7 +72,8 @@ if global.gamePaused=false
     instance_destroy()
   if isCollisionRight(1) and xVel>0
     instance_destroy()
-  moveTo(xVel,yVel)
+  //moveTo(xVel,yVel)
+  moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
   if y>room_height+24
     instance_destroy()
 }

@@ -14,12 +14,14 @@ applies_to=self
 */
 if displayFadeTime<=0
 {
-  displayAlpha-=0.04
+  //displayAlpha-=0.04
+  displayAlpha-=0.04*gDeltaTime //60fps change: per 30fps tick
   if displayAlpha<=0
     instance_destroy()
 }
 else
-  displayFadeTime-=1
+  //displayFadeTime-=1
+  displayFadeTime-=gDeltaTime //60fps change: counts 30fps ticks
 if instance_exists(eID)
 {
   displayIndX=view_xview[0]+508

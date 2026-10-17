@@ -76,10 +76,12 @@ if global.gamePaused=false
     }
     else if attackProgress=1 //missiles
     {
-      shootTime+=1
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: counts 30fps ticks
       if attackType=0
       {
-        if shootTime=15
+        //if shootTime=15
+        if scrCountPass(shootTime,15) //60fps change: once, when the count reaches it
         {
           newBullet=instance_create(x,y-18,oSubMissile)
           newBullet.sprite_index=sDiveMissile
@@ -96,7 +98,8 @@ if global.gamePaused=false
       }
       else if attackType=1 //dive
       {
-        if shootTime=15
+        //if shootTime=15
+        if scrCountPass(shootTime,15) //60fps change: once, when the count reaches it
         {
           y-=24
           sprite_index=sDiveManDive
@@ -126,7 +129,8 @@ if global.gamePaused=false
     }
     else if attackProgress=2 //wait time
     {
-      shootTime+=1
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: counts 30fps ticks
       if attackType=0 and shootTime>=60
       {
         shootTime=0
@@ -141,13 +145,19 @@ if global.gamePaused=false
 
     if isCollisionBottom(1)
       yVel=0
-    if isCollisionLeft(1)
+    //if isCollisionLeft(1)
+    //  xVel*=-1
+    //if isCollisionRight(1)
+    //  xVel*=-1
+    //60fps change: only turn around when moving into the wall (it can still touch it on the next frame above 30fps)
+    if isCollisionLeftEdit(1)
       xVel*=-1
-    if isCollisionRight(1)
+    if isCollisionRightEdit(1)
       xVel*=-1
     if isCollisionSolid()
       y-=2
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
   }
   enemyStepEvent()
 }

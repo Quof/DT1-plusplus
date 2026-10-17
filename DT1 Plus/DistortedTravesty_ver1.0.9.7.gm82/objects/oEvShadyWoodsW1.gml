@@ -104,8 +104,10 @@ if global.gameProgress=243 //intro to Shady Woods
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       stopPlayer()
@@ -160,7 +162,8 @@ else if room=rShadyWoods4 and (global.gameProgress=247 or global.gameProgress=24
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -199,8 +202,10 @@ else if room=rShadyWoods4 and (global.gameProgress=247 or global.gameProgress=24
     msgCreate("Not really, but I'll accept it.",1,oMessageCutscene,global.mainCharacters[1])
   else if sceneProgress=15
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       newBarrier=instance_create(352,-128,oBossBarrier)
       newBarrier.image_yscale=7
@@ -238,10 +243,13 @@ else if room=rShadyWoods2 and global.gameProgress=249 //Into Distortion 4
   }
   else if sceneProgress=1
   {
-    if sceneDelay mod 15=0
+    //if sceneDelay mod 15=0
+    if scrModPass(sceneDelay,15) //60fps change: once each time the count reaches a multiple of it
       playSound(global.snd_Static,0,1)
-    sceneDelay+=1
-    staticAlpha+=0.01
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //staticAlpha+=0.01
+    staticAlpha+=0.01*gDeltaTime //60fps change: per 30fps tick
     background_alpha[6]=staticAlpha
     if sceneDelay>=130
     {
@@ -253,11 +261,14 @@ else if room=rShadyWoods2 and global.gameProgress=249 //Into Distortion 4
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay>=60
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=60
+    if sceneDelay>59 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       dataShow=1
-      backrgb-=5
+      //backrgb-=5
+      backrgb-=5*gDeltaTime //60fps change: per 30fps tick
       fadeColor=make_color_rgb(backrgb,backrgb,backrgb)
       if backrgb<=0
       {
@@ -268,7 +279,8 @@ else if room=rShadyWoods2 and global.gameProgress=249 //Into Distortion 4
   }
   else if sceneProgress=3
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -311,15 +323,19 @@ else if room=rShadyWoods2 and global.gameProgress=249 //Into Distortion 4
     msgCreate("Dang it " +string(global.mainCharacters[1]) +string(", what's going on!?"),1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=18
   {
-    if sceneDelay mod 15=0
+    //if sceneDelay mod 15=0
+    if scrModPass(sceneDelay,15) //60fps change: once each time the count reaches a multiple of it
       playSound(global.snd_Static,0,1)
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       staticAlpha=0
       background_visible[6]=true
     }
-    staticAlpha+=0.02
+    //staticAlpha+=0.02
+    staticAlpha+=0.02*gDeltaTime //60fps change: per 30fps tick
     background_alpha[6]=staticAlpha
     if sceneDelay>=90
     {
@@ -340,8 +356,10 @@ else if room=rShadyCaves1 and global.gameProgress=267 //intro to Shady Caves
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       stopAllMusic()
       global.gamePaused=true
@@ -405,8 +423,10 @@ else if room=rShadyCaves3 and global.gameProgress=270 //bullet storm
   }
   else if sceneProgress=1 and global.gamePaused=false
   {
-    sceneDelay+=1
-    if sceneDelay mod bulFreq=0 //normal spiral
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay mod bulFreq=0 //normal spiral
+    if scrModPass(sceneDelay,bulFreq) //normal spiral //60fps change: once each time the count reaches a multiple of it
     {
       dir=0
       for(i=0;i<bulSpiral;i+=1)
@@ -416,7 +436,8 @@ else if room=rShadyCaves3 and global.gameProgress=270 //bullet storm
         newBullet.image_blend=make_color_rgb(255,190,190)
         newBullet.physicalPower=bulPower
         newBullet.bulletSpeed=6
-        newBullet.direction=bulDir1+dir
+        //newBullet.direction=bulDir1+dir
+        newBullet._direction=bulDir1+dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.image_angle=bulDir1+dir
 
         newBullet=instance_create(bulPointX2,bulPointY2,oMMeShot1)
@@ -424,7 +445,8 @@ else if room=rShadyCaves3 and global.gameProgress=270 //bullet storm
         newBullet.image_blend=make_color_rgb(255,190,190)
         newBullet.physicalPower=bulPower
         newBullet.bulletSpeed=6
-        newBullet.direction=bulDir2+dir
+        //newBullet.direction=bulDir2+dir
+        newBullet._direction=bulDir2+dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.image_angle=bulDir2+dir
 
         dir+=360/bulSpiral
@@ -432,7 +454,8 @@ else if room=rShadyCaves3 and global.gameProgress=270 //bullet storm
       bulDir1+=8
       bulDir2-=8
     }
-    if sceneDelay mod bigCircle=0 //big circle
+    //if sceneDelay mod bigCircle=0 //big circle
+    if scrModPass(sceneDelay,bigCircle) //big circle //60fps change: once each time the count reaches a multiple of it
     {
       dir=0
       for(i=0;i<30;i+=1)
@@ -442,7 +465,8 @@ else if room=rShadyCaves3 and global.gameProgress=270 //bullet storm
         newBullet.image_blend=make_color_rgb(190,255,190)
         newBullet.physicalPower=bulPower
         newBullet.bulletSpeed=2
-        newBullet.direction=dir
+        //newBullet.direction=dir
+        newBullet._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.image_angle=dir
 
         newBullet=instance_create(bulPointX2,bulPointY2,oMMeShot1)
@@ -450,7 +474,8 @@ else if room=rShadyCaves3 and global.gameProgress=270 //bullet storm
         newBullet.image_blend=make_color_rgb(190,255,190)
         newBullet.physicalPower=bulPower
         newBullet.bulletSpeed=2
-        newBullet.direction=dir
+        //newBullet.direction=dir
+        newBullet._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         newBullet.image_angle=dir
 
         if sceneDelay>=900
@@ -460,7 +485,8 @@ else if room=rShadyCaves3 and global.gameProgress=270 //bullet storm
           newBullet.image_blend=make_color_rgb(190,190,255)
           newBullet.physicalPower=bulPower
           newBullet.bulletSpeed=3.25
-          newBullet.direction=dir
+          //newBullet.direction=dir
+          newBullet._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newBullet.image_angle=dir
 
           newBullet=instance_create(bulPointX2,bulPointY2,oMMeShot1)
@@ -468,7 +494,8 @@ else if room=rShadyCaves3 and global.gameProgress=270 //bullet storm
           newBullet.image_blend=make_color_rgb(190,190,255)
           newBullet.physicalPower=bulPower
           newBullet.bulletSpeed=3.25
-          newBullet.direction=dir
+          //newBullet.direction=dir
+          newBullet._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newBullet.image_angle=dir
         }
         dir+=360/30
@@ -483,8 +510,10 @@ else if room=rShadyCaves3 and global.gameProgress=270 //bullet storm
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=120
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=120
+    if scrCountPass(sceneDelay,120) //60fps change: once, when the count reaches it
     {
       oPlayer1.x=256
       oPlayer1.y=272
@@ -501,13 +530,15 @@ else if room=rShadyCaves3 and global.gameProgress=270 //bullet storm
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=45
     {
       sceneDelay=0
@@ -516,8 +547,10 @@ else if room=rShadyCaves3 and global.gameProgress=270 //bullet storm
   }
   else if sceneProgress=5
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       bossFinishFadeAlpha=1
       oPlayer1.sprite_index=sPlayerLookUp
@@ -525,8 +558,10 @@ else if room=rShadyCaves3 and global.gameProgress=270 //bullet storm
       muffin.muffinType=5
       playSound(global.snd_BreakOut,0,1)
     }
-    else if sceneDelay>=9 and sceneDelay<=109
-      bossFinishFadeAlpha-=0.01
+    //else if sceneDelay>=9 and sceneDelay<=109
+    else if sceneDelay>8 and sceneDelay<=109 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //bossFinishFadeAlpha-=0.01
+      bossFinishFadeAlpha-=0.01*gDeltaTime //60fps change: per 30fps tick
     else if sceneDelay>=120
     {
       sceneDelay=0
@@ -545,7 +580,8 @@ else if room=rShadyCaves3 and global.gameProgress=270 //bullet storm
   }
   else if sceneProgress=9
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -587,7 +623,8 @@ else if room=rShadyCaves5 and global.gameProgress<=273 //Boss Fight (Ultimate Ph
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -649,8 +686,10 @@ else if room=rShadyCaves5 and global.gameProgress<=273 //Boss Fight (Ultimate Ph
   }
   if sceneProgress=20
   {
-    sceneDelay+=1
-    if sceneDelay=3
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=3
+    if scrCountPass(sceneDelay,3) //60fps change: once, when the count reaches it
     {
       newBarrier=instance_create(352,-128,oBossBarrier)
       newBarrier.image_yscale=7
@@ -678,7 +717,8 @@ else if global.gameProgress=274 //boss fight ends (Ultimate Phalanx)
   if sceneProgress=0
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.1
+      //bossFinishFadeAlpha-=0.1
+      bossFinishFadeAlpha-=0.1*gDeltaTime //60fps change: per 30fps tick
   }
 
   if sceneProgress=0 and enemyCount=0
@@ -692,14 +732,17 @@ else if global.gameProgress=274 //boss fight ends (Ultimate Phalanx)
   else if sceneProgress=1
   {
     if bossFinishFadeAlpha<1
-      bossFinishFadeAlpha+=0.05
+      //bossFinishFadeAlpha+=0.05
+      bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha>=1
       sceneProgress+=1
   }
   else if sceneProgress=2
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       endBoss()
       with oMisc
@@ -718,13 +761,15 @@ else if global.gameProgress=274 //boss fight ends (Ultimate Phalanx)
   else if sceneProgress=3
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
       sceneProgress+=1
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=25
     {
       sceneDelay=0
@@ -760,13 +805,16 @@ else if global.gameProgress=274 //boss fight ends (Ultimate Phalanx)
 
 if (room=rShadyWoods2 or room=rShadyWoods3) and global.gameProgress=249 and global.gamePaused=false //Distortion Aura
 {
-  screenStaticTime+=1
-  if screenStaticTime=180
+  //screenStaticTime+=1
+  screenStaticTime+=gDeltaTime //60fps change: counts 30fps ticks
+  //if screenStaticTime=180
+  if scrCountPass(screenStaticTime,180) //60fps change: once, when the count reaches it
   {
     playSound(global.snd_Static,0,1)
     background_visible[6]=true
   }
-  else if screenStaticTime=215
+  //else if screenStaticTime=215
+  else if scrCountPass(screenStaticTime,215) //60fps change: once, when the count reaches it
   {
     background_visible[6]=false
     screenStaticTime=irandom(60)
@@ -775,15 +823,20 @@ if (room=rShadyWoods2 or room=rShadyWoods3) and global.gameProgress=249 and glob
 if room=rShadyCaves5 and global.gamePaused=false //Slightly boosted recovery
 {
   if oPlayer1.spiritEnergy<oPlayer1.maxSpiritEnergy
-    oPlayer1.spiritEnergy+=0.5
+    //oPlayer1.spiritEnergy+=0.5
+    oPlayer1.spiritEnergy+=0.5*gDeltaTime //60fps change: per 30fps tick
   if oPlayer1.fireEnergy<oPlayer1.maxFireEnergy
-    oPlayer1.fireEnergy+=0.5
+    //oPlayer1.fireEnergy+=0.5
+    oPlayer1.fireEnergy+=0.5*gDeltaTime //60fps change: per 30fps tick
   if oPlayer1.waterEnergy<oPlayer1.maxWaterEnergy
-    oPlayer1.waterEnergy+=0.5
+    //oPlayer1.waterEnergy+=0.5
+    oPlayer1.waterEnergy+=0.5*gDeltaTime //60fps change: per 30fps tick
   if oPlayer1.windEnergy<oPlayer1.maxWindEnergy
-    oPlayer1.windEnergy+=0.5
+    //oPlayer1.windEnergy+=0.5
+    oPlayer1.windEnergy+=0.5*gDeltaTime //60fps change: per 30fps tick
   if oPlayer1.earthEnergy<oPlayer1.maxEarthEnergy
-    oPlayer1.earthEnergy+=0.5
+    //oPlayer1.earthEnergy+=0.5
+    oPlayer1.earthEnergy+=0.5*gDeltaTime //60fps change: per 30fps tick
 }
 
 keyWaitForInput()
@@ -808,8 +861,10 @@ if dataShow=1
   if data_Pos<string_length(data_Full)
   {
     draw_text(view_xview[0]+32,view_yview[0]+256,data_New)
-    typingCount+=1
-    if typingCount mod typingSpeed=0
+    //typingCount+=1
+    typingCount+=gDeltaTime //60fps change: counts 30fps ticks
+    //if typingCount mod typingSpeed=0
+    if scrModPass(typingCount,typingSpeed) //60fps change: once each time the count reaches a multiple of it
     {
       data_Pos+=1
       data_New+=string_char_at(data_Full,data_Pos)
@@ -818,7 +873,8 @@ if dataShow=1
   else
   {
     draw_text(view_xview[0]+32,view_yview[0]+256,data_Full)
-    resetCount+=1
+    //resetCount+=1
+    resetCount+=gDeltaTime //60fps change: counts 30fps ticks
     if resetCount>=60
       draw_text(view_xview[0]+32,view_yview[0]+304,">RESET . . .")
   }
@@ -843,22 +899,34 @@ else if room=rShadyCaves4
 }
 else if room=rShadyCaves5
 {
-  lavaTopTimer+=1
-  if lavaTopTimer>=1 and lavaTopTimer<=200
-    lavaTop+=0.05
-  else if lavaTopTimer>=201 and lavaTopTimer<=400
+  //lavaTopTimer+=1
+  lavaTopTimer+=gDeltaTime //60fps change: counts 30fps ticks
+  //if lavaTopTimer>=1 and lavaTopTimer<=200
+  if lavaTopTimer>0 and lavaTopTimer<=200 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+    //lavaTop+=0.05
+    lavaTop+=0.05*gDeltaTime //60fps change: per 30fps tick
+  //else if lavaTopTimer>=201 and lavaTopTimer<=400
+  else if lavaTopTimer>200 and lavaTopTimer<=400 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
   {
-    lavaTop-=0.05
-    if lavaTopTimer=400
+    //lavaTop-=0.05
+    lavaTop-=0.05*gDeltaTime //60fps change: per 30fps tick
+    //if lavaTopTimer=400
+    if scrCountPass(lavaTopTimer,400) //60fps change: once, when the count reaches it
       lavaTopTimer=0
   }
-  lavaAlphaTimer+=1
-  if lavaAlphaTimer>=1 and lavaAlphaTimer<=300
-    lavaAlpha-=0.0005
-  else if lavaAlphaTimer>=301 and lavaAlphaTimer<=600
+  //lavaAlphaTimer+=1
+  lavaAlphaTimer+=gDeltaTime //60fps change: counts 30fps ticks
+  //if lavaAlphaTimer>=1 and lavaAlphaTimer<=300
+  if lavaAlphaTimer>0 and lavaAlphaTimer<=300 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+    //lavaAlpha-=0.0005
+    lavaAlpha-=0.0005*gDeltaTime //60fps change: per 30fps tick
+  //else if lavaAlphaTimer>=301 and lavaAlphaTimer<=600
+  else if lavaAlphaTimer>300 and lavaAlphaTimer<=600 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
   {
-    lavaAlpha+=0.0005
-    if lavaAlphaTimer=600
+    //lavaAlpha+=0.0005
+    lavaAlpha+=0.0005*gDeltaTime //60fps change: per 30fps tick
+    //if lavaAlphaTimer=600
+    if scrCountPass(lavaAlphaTimer,600) //60fps change: once, when the count reaches it
       lavaAlphaTimer=0
   }
 

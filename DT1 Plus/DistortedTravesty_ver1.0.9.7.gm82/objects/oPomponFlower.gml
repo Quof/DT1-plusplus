@@ -60,7 +60,8 @@ if global.gamePaused=false
       xVel=-runAcc
     else
       xVel=runAcc
-    yVel+=0.2
+    //yVel+=0.2
+    yVel=scrGravAcc(yVel,0.2,1) //60fps change: gravity per 30fps tick, following the 30fps arc
 
     if image_index>=1 and image_index<=1.2
     {
@@ -86,7 +87,8 @@ if global.gamePaused=false
     if isCollisionSolid()
       y-=2
 
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     if y>room_height+24
     {
       if questType>0

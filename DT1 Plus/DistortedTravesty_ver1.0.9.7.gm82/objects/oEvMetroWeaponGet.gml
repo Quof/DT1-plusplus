@@ -69,8 +69,10 @@ applies_to=self
 //stage intro
 if sceneProgress=0 //start music
 {
-  sceneDelay+=1
-  if sceneDelay=45
+  //sceneDelay+=1
+  sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+  //if sceneDelay=45
+  if scrCountPass(sceneDelay,45) //60fps change: once, when the count reaches it
   {
     var tempMplay;
     tempMplay=global.msc_MMweaponGet
@@ -81,9 +83,12 @@ if sceneProgress=0 //start music
 }
 else if sceneProgress=1 //center opens
 {
-  sceneDelay+=1
-  if sceneDelay>=1 and sceneDelay<=16
-    midY+=2
+  //sceneDelay+=1
+  sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+  //if sceneDelay>=1 and sceneDelay<=16
+  if sceneDelay>0 and sceneDelay<=16 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+    //midY+=2
+    midY+=2*gDeltaTime //60fps change: per 30fps tick
   else if sceneDelay>=25
   {
     sceneDelay=0
@@ -92,9 +97,11 @@ else if sceneProgress=1 //center opens
 }
 else if sceneProgress=2 //big strips
 {
-  sceneDelay+=1
+  //sceneDelay+=1
+  sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
   if bigStripsX<room_width
-    bigStripsX+=12
+    //bigStripsX+=12
+    bigStripsX+=12*gDeltaTime //60fps change: per 30fps tick
   else
   {
     sceneDelay=0
@@ -103,11 +110,14 @@ else if sceneProgress=2 //big strips
 }
 else if sceneProgress=3 //small strips
 {
-  sceneDelay+=1
+  //sceneDelay+=1
+  sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
   if outerY<6
-    outerY+=1
+    //outerY+=1
+    outerY+=gDeltaTime //60fps change: counts 30fps ticks
   if smallStripsX<room_width
-    smallStripsX+=12
+    //smallStripsX+=12
+    smallStripsX+=12*gDeltaTime //60fps change: per 30fps tick
   else
   {
     sceneDelay=0
@@ -116,7 +126,8 @@ else if sceneProgress=3 //small strips
 }
 else if sceneProgress=4 //wait time
 {
-  sceneDelay+=1
+  //sceneDelay+=1
+  sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
   if sceneDelay>=30
   {
     sceneDelay=0
@@ -125,7 +136,8 @@ else if sceneProgress=4 //wait time
 }
 else if sceneProgress=5 //player sprite appear
 {
-  sceneDelay+=1
+  //sceneDelay+=1
+  sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
   if sceneDelay>=30
   {
     sceneDelay=0
@@ -134,7 +146,8 @@ else if sceneProgress=5 //player sprite appear
 }
 else if sceneProgress=6 //wait time
 {
-  sceneDelay+=1
+  //sceneDelay+=1
+  sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
   if sceneDelay>=30
   {
     sceneDelay=0
@@ -143,7 +156,8 @@ else if sceneProgress=6 //wait time
 }
 else if sceneProgress=7 //text appear - you got a new ability
 {
-  sceneDelay+=1
+  //sceneDelay+=1
+  sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
   if sceneDelay>=60
   {
     sceneDelay=0
@@ -152,7 +166,8 @@ else if sceneProgress=7 //text appear - you got a new ability
 }
 else if sceneProgress=8 //text appear - ability
 {
-  sceneDelay+=1
+  //sceneDelay+=1
+  sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
   if sceneDelay>=75
   {
     sceneDelay=0
@@ -161,8 +176,10 @@ else if sceneProgress=8 //text appear - ability
 }
 else if sceneProgress=9 //Jeremy speaks
 {
-  sceneDelay+=1
-  if sceneDelay=1
+  //sceneDelay+=1
+  sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+  //if sceneDelay=1
+  if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
   {
     msgCreate(jeremyPhrase,0,oMessagePerson,global.mainCharacters[1],1,1)
     newMessage.fadingTime=90
@@ -181,13 +198,15 @@ else if sceneProgress=10 //end
   global.newMapY=0
   if goToCutscene=1
   {
-    transition_steps=30
+    //transition_steps=30
+    transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
     transition_kind=21
     room_goto(rCutscene2)
   }
   else
   {
-    transition_steps=45
+    //transition_steps=45
+    transition_steps=45/gDeltaTime //60fps change: transition_steps counts frames: the same time
     transition_kind=15
     room_goto(rMetropolisStageSelect)
   }
@@ -227,8 +246,11 @@ if sceneProgress>=4 //random text
     if data_Pos<string_length(data_Full)
     {
       draw_text(12,280,data_New)
+      if gDeltaDoTicks //60fps change (added): one letter per 30fps tick (the position stays a whole number)
+      { //60fps change (added)
       data_Pos+=1
       data_New+=string_char_at(data_Full,data_Pos)
+      } //60fps change (added)
     }
     else
       draw_text(12,280,data_Full)
@@ -238,7 +260,8 @@ if sceneProgress>=5 //character appears
 {
   draw_sprite_ext(sPlayerIdle,0,room_width/2,room_height/2+26,1,1,1,make_color_rgb(clBlend,clBlend,clBlend),1)
   if clBlend<255
-    clBlend+=10
+    //clBlend+=10
+    clBlend+=10*gDeltaTime //60fps change: per 30fps tick
 }
 if sceneProgress>=7 //you got a weapon
 {
@@ -250,8 +273,11 @@ if sceneProgress>=7 //you got a weapon
     if text_Pos<string_length(text_Full)
     {
       draw_text(room_width/2,room_height/2+64,text_New)
+      if gDeltaDoTicks //60fps change (added): one letter per 30fps tick (the position stays a whole number)
+      { //60fps change (added)
       text_Pos+=1
       text_New+=string_char_at(text_Full,text_Pos)
+      } //60fps change (added)
     }
     else
       draw_text(room_width/2,room_height/2+64,text_Full)
@@ -264,8 +290,11 @@ if sceneProgress>=8 //which weapon
     if abilityGet_Pos<string_length(abilityGet_Full)
     {
       draw_text(room_width/2,room_height/2+80,abilityGet_New)
+      if gDeltaDoTicks //60fps change (added): one letter per 30fps tick (the position stays a whole number)
+      { //60fps change (added)
       abilityGet_Pos+=1
       abilityGet_New+=string_char_at(abilityGet_Full,abilityGet_Pos)
+      } //60fps change (added)
     }
     else
       draw_text(room_width/2,room_height/2+80,abilityGet_Full)

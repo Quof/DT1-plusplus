@@ -67,33 +67,47 @@ if global.gamePaused=false
       else if canJump=2 and yVel=0
       {
         canJump=0
-        jumpTime=0
+        //jumpTime=0
+        //60fps change: counts 30fps ticks; the landing frame counts as a whole tick, as at 30fps (it doesn't count up),
+        //so the count starts that far back (0 at 30fps)
+        jumpTime=gDeltaTime-1
       }
     }
     else
-      jumpTime+=1
+      //jumpTime+=1
+      jumpTime+=gDeltaTime //60fps change: see above
 
     if xVel>8
       xVel=8
     else if xVel<-8
       xVel=-8
+    //60fps change: per 30fps tick
     if xVel>0
-      xVel-=0.05
+      //xVel-=0.05
+      xVel-=0.05*gDeltaTime
     else if xVel<0
-      xVel+=0.05
+      //xVel+=0.05
+      xVel+=0.05*gDeltaTime
 
-    yVel+=0.2
+    //yVel+=0.2
+    yVel=scrGravAcc(yVel,0.2,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
       yVel=0
     if isCollisionTop(1)
       yVel=0
-    if isCollisionLeft(1)
+    //if isCollisionLeft(1)
+    //  xVel*=-1
+    //if isCollisionRight(1)
+    //  xVel*=-1
+    //60fps change: only turn around when moving into the wall (it can still touch it on the next frame above 30fps)
+    if isCollisionLeftEdit(1)
       xVel*=-1
-    if isCollisionRight(1)
+    if isCollisionRightEdit(1)
       xVel*=-1
     if isCollisionSolid()
       y-=2
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     if y>room_height+24
     {
       if questType>0

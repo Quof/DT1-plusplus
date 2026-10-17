@@ -18,7 +18,8 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  speed=bulletSpeed
+  //speed=bulletSpeed
+  _speed=bulletSpeed //60fps change: moved by correctSpeedDirection (end of the step)
   if x<1344
   {
     effect=instance_create(x,y,oEffect)
@@ -30,7 +31,9 @@ if global.gamePaused=false
   }
 }
 else
-  speed=0
+  //speed=0
+  _speed=0 //60fps change: see above
+correctSpeedDirection(id) //60fps change (added): moves it by _speed in _direction, this frame's share of a 30fps tick
 #define Other_0
 /*"/*'/**//* YYD ACTION
 lib_id=1

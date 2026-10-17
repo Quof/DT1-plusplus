@@ -98,11 +98,13 @@ if global.gamePaused=false
   if bActive=true and dieFade=0
   {
     //------------------------- Bullet Attack: Cross Spiral -------------------------
-    crossSpiralTime+=1
+    //crossSpiralTime+=1
+    crossSpiralTime+=gDeltaTime //60fps change: counts 30fps ticks
     if crossSpiralTime>=crossSpiralWait
     {
       //spawn bullets
-      if crossSpiralTime mod 15=0
+      //if crossSpiralTime mod 15=0
+      if scrModPass(crossSpiralTime,15) //60fps change: once each time the count reaches a multiple of it
       {
         crossSpiralCurrent+=1
         effect=instance_create(spawnHeadX,spawnHeadY,oEffect)
@@ -114,7 +116,8 @@ if global.gamePaused=false
         newLaser=instance_create(spawnHeadX,spawnHeadY,oMechaLaser)
         newLaser.physicalPower=physicalPower
         newLaser.bulletSpeed=7
-        newLaser.direction=179
+        //newLaser.direction=179
+        newLaser._direction=179 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       }
       if crossSpiralCurrent>=crossSpiralAmt
       {
@@ -123,13 +126,16 @@ if global.gamePaused=false
       }
     }
     //------------------------- Bullet Attack: Rose Spark -------------------------
-    roseSparkTime+=1
+    //roseSparkTime+=1
+    roseSparkTime+=gDeltaTime //60fps change: counts 30fps ticks
     if roseSparkTime>=roseSparkWait
     {
-      if roseSparkTime=roseSparkWait
+      //if roseSparkTime=roseSparkWait
+      if scrCountPass(roseSparkTime,roseSparkWait) //60fps change: once, when the count reaches it
         roseSparkDir=0
 
-      if roseSparkTime mod roseSparkFreq=0
+      //if roseSparkTime mod roseSparkFreq=0
+      if scrModPass(roseSparkTime,roseSparkFreq) //60fps change: once each time the count reaches a multiple of it
       {
         effect=instance_create(spawnMainX,spawnMainY,oEffect)
         effect.sprite_index=sEnergyRip1
@@ -144,7 +150,8 @@ if global.gamePaused=false
           newBullet=instance_create(spawnMainX,spawnMainY,oMechaBullet)
           newBullet.physicalPower=physicalPower
           newBullet.bulletSpeed=7
-          newBullet.direction=roseSparkDir+roseTemp
+          //newBullet.direction=roseSparkDir+roseTemp
+          newBullet._direction=roseSparkDir+roseTemp //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           roseTemp+=360/roseSparkAmt
         }
         if bossProgress<=1
@@ -152,13 +159,16 @@ if global.gamePaused=false
         else
           roseSparkDir+=8
       }
-      if roseSparkTime=roseSparkWait+roseSparkLength
+      //if roseSparkTime=roseSparkWait+roseSparkLength
+      if roseSparkTime>=roseSparkWait+roseSparkLength //60fps change: >= so it still resets if the frame rate changes mid-count
         roseSparkTime=0
     }
     //------------------------- Special Attack: Wind Burst/Run Disable -------------------------
     if bossProgress>=2
-      windBurstTime+=1
-    if windBurstTime=windBurstWait //wind burst warn
+      //windBurstTime+=1
+      windBurstTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if windBurstTime=windBurstWait //wind burst warn
+    if scrCountPass(windBurstTime,windBurstWait) //wind burst warn //60fps change: once, when the count reaches it
     {
       afterImage=instance_create(oPlayer1.x,oPlayer1.y,oEnemyAfterImage)
       afterImage.sprite_index=sTheArtistIdle
@@ -167,7 +177,8 @@ if global.gamePaused=false
       afterImage.xScalingSet=-0.075
       afterImage.yScalingSet=0.075
     }
-    else if windBurstTime>=windBurstWait+55 and windBurstTime<=windBurstWait+95 //wind burst execute
+    //else if windBurstTime>=windBurstWait+55 and windBurstTime<=windBurstWait+95 //wind burst execute
+    else if windBurstTime>windBurstWait+54 and windBurstTime<=windBurstWait+95 //wind burst execute //60fps change: the same 30fps ticks, counted in gDeltaTime steps
     {
       oPlayer1.canRun=0
       oPlayer1.xVel=-13

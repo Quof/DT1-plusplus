@@ -45,13 +45,15 @@ if global.gamePaused=false
 {
   if bCanDealDamage=true
   {
-    decayTime+=1
+    //decayTime+=1
+    decayTime+=gDeltaTime //60fps change: counts 30fps ticks
     if decayTime>=10
       instance_destroy()
   }
   else
   {
-    warnTime-=1
+    //warnTime-=1
+    warnTime-=gDeltaTime //60fps change: counts 30fps ticks
     if warnTime<=0
     {
       if bShake=1
@@ -92,8 +94,10 @@ event_inherited()
 if warnTime>0
 {
   draw_sprite_ext(sWarningSymbol,-1,x,y-yAdjust,0.6,0.6,0,c_white,warnAlpha)
-  alphaChange+=1
-  if alphaChange=8
+  //alphaChange+=1
+  alphaChange+=gDeltaTime //60fps change: counts 30fps ticks
+  //if alphaChange=8
+  if alphaChange>=8 //60fps change: counts 30fps ticks; >= so it still flips if the frame rate changes mid-count
   {
     if warnAlpha=1
       warnAlpha=0

@@ -20,11 +20,15 @@ if global.gameProgress=279 //intro to Windy Mountains
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       global.gamePaused=true
-    else if sceneDelay>=10 and sceneDelay<=29
-      bossFinishFadeAlpha-=0.1
+    //else if sceneDelay>=10 and sceneDelay<=29
+    else if sceneDelay>9 and sceneDelay<=29 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //bossFinishFadeAlpha-=0.1
+      bossFinishFadeAlpha-=0.1*gDeltaTime //60fps change: per 30fps tick
     else if sceneDelay>=30
     {
       bossFinishFadeAlpha=0
@@ -47,10 +51,14 @@ if global.gameProgress>=280 //enemy pattern
 {
   if sceneProgress=0 and global.gamePaused=false
   {
-    sceneDelay+=1
-    if sceneDelay>=10 and sceneDelay<=19
-      bossFinishFadeAlpha-=0.1
-    else if sceneDelay=20
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=10 and sceneDelay<=19
+    if sceneDelay>9 and sceneDelay<=19 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //bossFinishFadeAlpha-=0.1
+      bossFinishFadeAlpha-=0.1*gDeltaTime //60fps change: per 30fps tick
+    //else if sceneDelay=20
+    else if scrCountPass(sceneDelay,20) //60fps change: once, when the count reaches it
     {
       bossFinishFadeAlpha=0
       areaDisplay=instance_create(0,0,oAreaDisplay)
@@ -64,8 +72,10 @@ if global.gameProgress>=280 //enemy pattern
   }
   else if sceneProgress=1 and global.gamePaused=false
   {
-    sceneDelay+=1
-    if sceneDelay=1 //########## ENEMY WAVE 1 :: RIGHT ##########
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1 //########## ENEMY WAVE 1 :: RIGHT ##########
+    if scrCountPass(sceneDelay,1) //########## ENEMY WAVE 1 :: RIGHT ########## //60fps change: once, when the count reaches it
     {
       var xPos;
       xPos=240
@@ -73,14 +83,16 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,-40,oEnemyShip1B)
         enemy[i].moveSpeed=6
-        enemy[i].direction=270
+        //enemy[i].direction=270
+        enemy[i]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveOutDir=90
         enemy[i].moveInTime=20
         enemy[i].reverseTime=120
         xPos+=30
       }
     }
-    else if sceneDelay=140 //########## ENEMY WAVE 2 :: LEFT ##########
+    //else if sceneDelay=140 //########## ENEMY WAVE 2 :: LEFT ##########
+    else if scrCountPass(sceneDelay,140) //########## ENEMY WAVE 2 :: LEFT ########## //60fps change: once, when the count reaches it
     {
       var xPos;
       xPos=96
@@ -88,14 +100,16 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,-40,oEnemyShip1B)
         enemy[i].moveSpeed=6
-        enemy[i].direction=270
+        //enemy[i].direction=270
+        enemy[i]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveOutDir=90
         enemy[i].moveInTime=20
         enemy[i].reverseTime=120
         xPos-=30
       }
     }
-    else if sceneDelay=280 //########## ENEMY WAVE 3 :: MID ##########
+    //else if sceneDelay=280 //########## ENEMY WAVE 3 :: MID ##########
+    else if scrCountPass(sceneDelay,280) //########## ENEMY WAVE 3 :: MID ########## //60fps change: once, when the count reaches it
     {
       var xPos;
       xPos=112
@@ -103,23 +117,27 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,-40,oEnemyShip1B)
         enemy[i].moveSpeed=6
-        enemy[i].direction=270
+        //enemy[i].direction=270
+        enemy[i]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveOutDir=90
         enemy[i].moveInTime=20
         enemy[i].reverseTime=135
         xPos+=30
       }
     }
-    else if sceneDelay=480 //########## ENEMY WAVE 4 :: MID BIG ##########
+    //else if sceneDelay=480 //########## ENEMY WAVE 4 :: MID BIG ##########
+    else if scrCountPass(sceneDelay,480) //########## ENEMY WAVE 4 :: MID BIG ########## //60fps change: once, when the count reaches it
     {
       enemy[0]=instance_create(shooterFieldMid,-32,oEnemyShip2C)
       enemy[0].moveSpeed=2
-      enemy[0].direction=270
+      //enemy[0].direction=270
+      enemy[0]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       enemy[0].moveOutDir=90
       enemy[0].moveInTime=40
       enemy[0].reverseTime=200
     }
-    else if sceneDelay=680 //########## ENEMY WAVE 5 :: RIGHT ##########
+    //else if sceneDelay=680 //########## ENEMY WAVE 5 :: RIGHT ##########
+    else if scrCountPass(sceneDelay,680) //########## ENEMY WAVE 5 :: RIGHT ########## //60fps change: once, when the count reaches it
     {
       var xPos;
       xPos=view_shooter_x+12
@@ -127,12 +145,14 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,96,oEnemyShip1C)
         enemy[i].moveSpeed=4
-        enemy[i].direction=180
+        //enemy[i].direction=180
+        enemy[i]._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveInTime=30+(i*5)
         xPos+=30
       }
     }
-    else if sceneDelay=840 //########## ENEMY WAVE 6 :: LEFT ##########
+    //else if sceneDelay=840 //########## ENEMY WAVE 6 :: LEFT ##########
+    else if scrCountPass(sceneDelay,840) //########## ENEMY WAVE 6 :: LEFT ########## //60fps change: once, when the count reaches it
     {
       var xPos;
       xPos=-12
@@ -140,12 +160,14 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,96,oEnemyShip1C)
         enemy[i].moveSpeed=4
-        enemy[i].direction=0
+        //enemy[i].direction=0
+        enemy[i]._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveInTime=30+(i*5)
         xPos-=30
       }
     }
-    else if sceneDelay=1000 //########## ENEMY WAVE 7 :: BOTH ##########
+    //else if sceneDelay=1000 //########## ENEMY WAVE 7 :: BOTH ##########
+    else if scrCountPass(sceneDelay,1000) //########## ENEMY WAVE 7 :: BOTH ########## //60fps change: once, when the count reaches it
     {
       var xPos;
       xPos=view_shooter_x+12
@@ -153,7 +175,8 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,96,oEnemyShip1C)
         enemy[i].moveSpeed=2
-        enemy[i].direction=180
+        //enemy[i].direction=180
+        enemy[i]._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveInTime=30+(i*5)
         xPos+=30
       }
@@ -163,27 +186,32 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,96,oEnemyShip1C)
         enemy[i].moveSpeed=2
-        enemy[i].direction=0
+        //enemy[i].direction=0
+        enemy[i]._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveInTime=30+(i*5)
         xPos-=30
       }
     }
-    else if sceneDelay=1250 //########## ENEMY WAVE 8 :: TOP SIDES BIG ##########
+    //else if sceneDelay=1250 //########## ENEMY WAVE 8 :: TOP SIDES BIG ##########
+    else if scrCountPass(sceneDelay,1250) //########## ENEMY WAVE 8 :: TOP SIDES BIG ########## //60fps change: once, when the count reaches it
     {
       enemy[0]=instance_create(shooterFieldMid-96,-32,oEnemyShip2C)
       enemy[0].moveSpeed=2
-      enemy[0].direction=270
+      //enemy[0].direction=270
+      enemy[0]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       enemy[0].moveOutDir=90
       enemy[0].moveInTime=40
       enemy[0].reverseTime=180
       enemy[1]=instance_create(shooterFieldMid+96,-32,oEnemyShip2C)
       enemy[1].moveSpeed=2
-      enemy[1].direction=270
+      //enemy[1].direction=270
+      enemy[1]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       enemy[1].moveOutDir=90
       enemy[1].moveInTime=40
       enemy[1].reverseTime=180
     }
-    else if sceneDelay=1480 //########## ENEMY WAVE 9 :: RIGHT BIG + HELP ##########
+    //else if sceneDelay=1480 //########## ENEMY WAVE 9 :: RIGHT BIG + HELP ##########
+    else if scrCountPass(sceneDelay,1480) //########## ENEMY WAVE 9 :: RIGHT BIG + HELP ########## //60fps change: once, when the count reaches it
     {
       var xPos;
       xPos=96
@@ -191,7 +219,8 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,-40,oEnemyShip1B)
         enemy[i].moveSpeed=6
-        enemy[i].direction=270
+        //enemy[i].direction=270
+        enemy[i]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveOutDir=90
         enemy[i].moveInTime=20
         enemy[i].reverseTime=120
@@ -199,12 +228,14 @@ if global.gameProgress>=280 //enemy pattern
       }
       enemy[0]=instance_create(shooterFieldMid+96,-32,oEnemyShip2C)
       enemy[0].moveSpeed=2
-      enemy[0].direction=270
+      //enemy[0].direction=270
+      enemy[0]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       enemy[0].moveOutDir=90
       enemy[0].moveInTime=40
       enemy[0].reverseTime=200
     }
-    else if sceneDelay=1710 //########## ENEMY WAVE 10 :: LEFT BIG + HELP ##########
+    //else if sceneDelay=1710 //########## ENEMY WAVE 10 :: LEFT BIG + HELP ##########
+    else if scrCountPass(sceneDelay,1710) //########## ENEMY WAVE 10 :: LEFT BIG + HELP ########## //60fps change: once, when the count reaches it
     {
       var xPos;
       xPos=240
@@ -212,7 +243,8 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,-40,oEnemyShip1B)
         enemy[i].moveSpeed=6
-        enemy[i].direction=270
+        //enemy[i].direction=270
+        enemy[i]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveOutDir=90
         enemy[i].moveInTime=20
         enemy[i].reverseTime=120
@@ -220,12 +252,14 @@ if global.gameProgress>=280 //enemy pattern
       }
       enemy[0]=instance_create(shooterFieldMid-96,-32,oEnemyShip2C)
       enemy[0].moveSpeed=2
-      enemy[0].direction=270
+      //enemy[0].direction=270
+      enemy[0]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       enemy[0].moveOutDir=90
       enemy[0].moveInTime=40
       enemy[0].reverseTime=200
     }
-    else if sceneDelay=1940 //########## ENEMY WAVE 11 :: MID BIG + HELP x2 ##########
+    //else if sceneDelay=1940 //########## ENEMY WAVE 11 :: MID BIG + HELP x2 ##########
+    else if scrCountPass(sceneDelay,1940) //########## ENEMY WAVE 11 :: MID BIG + HELP x2 ########## //60fps change: once, when the count reaches it
     {
       var xPos;
       xPos=96
@@ -233,7 +267,8 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,-40,oEnemyShip1B)
         enemy[i].moveSpeed=6
-        enemy[i].direction=270
+        //enemy[i].direction=270
+        enemy[i]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveOutDir=90
         enemy[i].moveInTime=20
         enemy[i].reverseTime=120
@@ -245,7 +280,8 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,-40,oEnemyShip1B)
         enemy[i].moveSpeed=6
-        enemy[i].direction=270
+        //enemy[i].direction=270
+        enemy[i]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveOutDir=90
         enemy[i].moveInTime=20
         enemy[i].reverseTime=120
@@ -253,12 +289,14 @@ if global.gameProgress>=280 //enemy pattern
       }
       enemy[0]=instance_create(shooterFieldMid,-32,oEnemyShip2C)
       enemy[0].moveSpeed=2
-      enemy[0].direction=270
+      //enemy[0].direction=270
+      enemy[0]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       enemy[0].moveOutDir=90
       enemy[0].moveInTime=40
       enemy[0].reverseTime=200
     }
-    else if sceneDelay=2170 //########## ENEMY WAVE 12 :: MID BIG + HELP x2 ##########
+    //else if sceneDelay=2170 //########## ENEMY WAVE 12 :: MID BIG + HELP x2 ##########
+    else if scrCountPass(sceneDelay,2170) //########## ENEMY WAVE 12 :: MID BIG + HELP x2 ########## //60fps change: once, when the count reaches it
     {
       var xPos;
       xPos=view_shooter_x+12
@@ -266,7 +304,8 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,96,oEnemyShip1C)
         enemy[i].moveSpeed=2
-        enemy[i].direction=180
+        //enemy[i].direction=180
+        enemy[i]._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveInTime=30+(i*5)
         xPos+=30
       }
@@ -276,18 +315,21 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,96,oEnemyShip1C)
         enemy[i].moveSpeed=2
-        enemy[i].direction=0
+        //enemy[i].direction=0
+        enemy[i]._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveInTime=30+(i*5)
         xPos-=30
       }
       enemy[0]=instance_create(shooterFieldMid,-32,oEnemyShip2C)
       enemy[0].moveSpeed=2
-      enemy[0].direction=270
+      //enemy[0].direction=270
+      enemy[0]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       enemy[0].moveOutDir=90
       enemy[0].moveInTime=40
       enemy[0].reverseTime=200
     }
-    else if sceneDelay=2400 //########## ENEMY WAVE 13 :: BOTH x2 ##########
+    //else if sceneDelay=2400 //########## ENEMY WAVE 13 :: BOTH x2 ##########
+    else if scrCountPass(sceneDelay,2400) //########## ENEMY WAVE 13 :: BOTH x2 ########## //60fps change: once, when the count reaches it
     {
       var xPos;
       xPos=96
@@ -295,7 +337,8 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,-40,oEnemyShip1B)
         enemy[i].moveSpeed=6
-        enemy[i].direction=270
+        //enemy[i].direction=270
+        enemy[i]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveOutDir=90
         enemy[i].moveInTime=20
         enemy[i].reverseTime=120
@@ -307,7 +350,8 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,-40,oEnemyShip1B)
         enemy[i].moveSpeed=6
-        enemy[i].direction=270
+        //enemy[i].direction=270
+        enemy[i]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveOutDir=90
         enemy[i].moveInTime=20
         enemy[i].reverseTime=120
@@ -319,7 +363,8 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,96,oEnemyShip1C)
         enemy[i].moveSpeed=2
-        enemy[i].direction=180
+        //enemy[i].direction=180
+        enemy[i]._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveInTime=30+(i*5)
         xPos+=30
       }
@@ -329,33 +374,39 @@ if global.gameProgress>=280 //enemy pattern
       {
         enemy[i]=instance_create(xPos,96,oEnemyShip1C)
         enemy[i].moveSpeed=2
-        enemy[i].direction=0
+        //enemy[i].direction=0
+        enemy[i]._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         enemy[i].moveInTime=30+(i*5)
         xPos-=30
       }
     }
-    else if sceneDelay=2630 //########## ENEMY WAVE 14 :: FULL TOP BIG ##########
+    //else if sceneDelay=2630 //########## ENEMY WAVE 14 :: FULL TOP BIG ##########
+    else if scrCountPass(sceneDelay,2630) //########## ENEMY WAVE 14 :: FULL TOP BIG ########## //60fps change: once, when the count reaches it
     {
       enemy[0]=instance_create(shooterFieldMid,-32,oEnemyShip2C)
       enemy[0].moveSpeed=2
-      enemy[0].direction=270
+      //enemy[0].direction=270
+      enemy[0]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       enemy[0].moveOutDir=90
       enemy[0].moveInTime=40
       enemy[0].reverseTime=240
       enemy[1]=instance_create(shooterFieldMid-96,-32,oEnemyShip2C)
       enemy[1].moveSpeed=2
-      enemy[1].direction=270
+      //enemy[1].direction=270
+      enemy[1]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       enemy[1].moveOutDir=90
       enemy[1].moveInTime=40
       enemy[1].reverseTime=240
       enemy[2]=instance_create(shooterFieldMid+96,-32,oEnemyShip2C)
       enemy[2].moveSpeed=2
-      enemy[2].direction=270
+      //enemy[2].direction=270
+      enemy[2]._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       enemy[2].moveOutDir=90
       enemy[2].moveInTime=40
       enemy[2].reverseTime=240
     }
-    else if sceneDelay=3030 //########## END WAVE ##########
+    //else if sceneDelay=3030 //########## END WAVE ##########
+    else if scrCountPass(sceneDelay,3030) //########## END WAVE ########## //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1
@@ -363,8 +414,10 @@ if global.gameProgress>=280 //enemy pattern
   }
   else if sceneProgress=2 and global.gamePaused=false
   {
-    sceneDelay+=1
-    if sceneDelay=60 //########## BOSS ##########
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=60 //########## BOSS ##########
+    if scrCountPass(sceneDelay,60) //########## BOSS ########## //60fps change: once, when the count reaches it
     {
       with oShipEnemyProjBase
       {
@@ -383,7 +436,8 @@ if global.gameProgress>=280 //enemy pattern
   }
   else if sceneProgress=4
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=90
     {
       if global.skillCapsules[94]=0 //award skill point
@@ -421,11 +475,14 @@ if global.gameProgress>=280 //enemy pattern
     msgCreate("Yeah, time to do this.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=8
   {
-    sceneDelay+=1
-    if sceneDelay>=15
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay>=15
+    if sceneDelay>14 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
       if bossFinishFadeAlpha<1
-        bossFinishFadeAlpha+=0.05
+        //bossFinishFadeAlpha+=0.05
+        bossFinishFadeAlpha+=0.05*gDeltaTime //60fps change: per 30fps tick
       else if bossFinishFadeAlpha>=1
       {
         sceneDelay=0
@@ -435,7 +492,8 @@ if global.gameProgress>=280 //enemy pattern
   }
   else if sceneProgress=9
   {
-    sceneDelay+=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if sceneDelay>=30
     {
       sceneDelay=0
@@ -447,7 +505,8 @@ if global.gameProgress>=280 //enemy pattern
     global.gamePaused=false
     global.newMapX=192
     global.newMapY=208
-    transition_steps=30
+    //transition_steps=30
+    transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
     transition_kind=20
     if global.gameProgress<=280
     {

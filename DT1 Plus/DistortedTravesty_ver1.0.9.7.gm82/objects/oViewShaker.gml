@@ -9,7 +9,8 @@ if instance_number(self)>1
 changeShake=2
 viewDirChange=changeShake/2
 viewDirShake="Right"
-alarm[0]=8
+//alarm[0]=8
+alarm[0]=8/gDeltaTime //60fps change: alarms count frames; 8 30fps ticks as before
 #define Alarm_0
 /*"/*'/**//* YYD ACTION
 lib_id=1
@@ -25,9 +26,12 @@ lib_id=1
 action_id=603
 applies_to=self
 */
-viewDirChange+=1
+//60fps change: the shake counts and moves per 30fps tick (*gDeltaTime)
+//viewDirChange+=1
+viewDirChange+=gDeltaTime
 
-if viewDirChange=changeShake
+//if viewDirChange=changeShake
+if viewDirChange>=changeShake //60fps change: (it counts in fractions)
 {
   if viewDirShake="Right"
     viewDirShake="Left"
@@ -37,6 +41,8 @@ if viewDirChange=changeShake
 }
 
 if viewDirShake="Right"
-  view_wview+=6
+  //view_wview+=6
+  view_wview+=6*gDeltaTime //60fps change: see above
 else
-  view_wview-=6
+  //view_wview-=6
+  view_wview-=6*gDeltaTime //60fps change: see above

@@ -52,13 +52,19 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true and stunnedTime=0 and dieFade=0
   {
-    dirChange+=1
-    if dirChange>=60
+    //dirChange+=1
+    //if dirChange>=60
+    //60fps change (as in DT3 60FPS): counts 30fps ticks; >59 covers every frame of ticks 60-87, so the slowdown
+    //(per 30fps tick) totals the same as at 30fps
+    dirChange+=gDeltaTime
+    if dirChange>59
     {
       if xVel>0
-        xVel-=runAcc/30
+        //xVel-=runAcc/30
+        xVel-=(runAcc/30)*gDeltaTime
       else
-        xVel+=runAcc/30
+        //xVel+=runAcc/30
+        xVel+=(runAcc/30)*gDeltaTime
       if dirChange>=87
       {
         if xVel>0
@@ -77,7 +83,8 @@ if global.gamePaused=false
       image_xscale=1
     else
       image_xscale=-1
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     if isCollisionSolid()
       y-=2
   }

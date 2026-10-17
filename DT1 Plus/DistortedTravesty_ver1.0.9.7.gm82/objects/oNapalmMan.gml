@@ -60,10 +60,12 @@ if global.gamePaused=false
     }
     else if attackProgress=1 //missiles
     {
-      shootTime+=1
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: counts 30fps ticks
       if attackType=0
       {
-        if shootTime mod 15=0
+        //if shootTime mod 15=0
+        if scrModPass(shootTime,15) //60fps change: once each time the count reaches a multiple of it
         {
           newAttack=instance_create(x,y-24,oMMeShot1)
           newAttack.sprite_index=sNapalmMissile
@@ -71,12 +73,14 @@ if global.gamePaused=false
           newAttack.bulletSpeed=8
           if image_xscale=1
           {
-            newAttack.direction=0
+            //newAttack.direction=0
+            newAttack._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             newAttack.x+=6
           }
           else
           {
-            newAttack.direction=180
+            //newAttack.direction=180
+            newAttack._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             newAttack.x-=6
           }
           newAttack.image_angle=direction
@@ -90,7 +94,8 @@ if global.gamePaused=false
       }
       else if attackType=1 //bombs
       {
-        if shootTime=15
+        //if shootTime=15
+        if scrCountPass(shootTime,15) //60fps change: once, when the count reaches it
         {
           newAttack=instance_create(x,y-26,oGASGrenade)
           newAttack.sprite_index=sNapalmBomb
@@ -132,7 +137,8 @@ if global.gamePaused=false
     }
     else if attackProgress=2 //wait time
     {
-      shootTime+=1
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: counts 30fps ticks
       if attackType=0 and shootTime>=5
       {
         shootTime=0
@@ -146,8 +152,10 @@ if global.gamePaused=false
     }
     else if attackProgress=3 //jump
     {
-      shootTime+=1
-      if shootTime=1
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if shootTime=1
+      if scrCountPass(shootTime,1) //60fps change: once, when the count reaches it
       {
         sprite_index=sNapalmManJump
         if x>oCharacter.x
@@ -165,7 +173,8 @@ if global.gamePaused=false
     }
     else if attackProgress=4 //slight wait time
     {
-      shootTime+=1
+      //shootTime+=1
+      shootTime+=gDeltaTime //60fps change: counts 30fps ticks
       if shootTime>=10
       {
         shootTime=0
@@ -173,7 +182,8 @@ if global.gamePaused=false
       }
     }
 
-    yVel+=0.4
+    //yVel+=0.4
+    yVel=scrGravAcc(yVel,0.4,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
     {
       yVel=0
@@ -185,13 +195,19 @@ if global.gamePaused=false
         attackProgress=4
       }
     }
-    if isCollisionLeft(1)
+    //if isCollisionLeft(1)
+    //  xVel*=-1
+    //if isCollisionRight(1)
+    //  xVel*=-1
+    //60fps change: only turn around when moving into the wall (it can still touch it on the next frame above 30fps)
+    if isCollisionLeftEdit(1)
       xVel*=-1
-    if isCollisionRight(1)
+    if isCollisionRightEdit(1)
       xVel*=-1
     if isCollisionSolid()
       y-=2
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
   }
   enemyStepEvent()
 }

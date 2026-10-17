@@ -72,7 +72,8 @@ if global.gamePaused=false
       image_alpha=1
       image_index=1
       dir=point_direction(x,y,oCharacter.x,oCharacter.y-22)
-      moveTo(runAcc*cos(degtorad(dir)),-runAcc*sin(degtorad(dir)))
+      //moveTo(runAcc*cos(degtorad(dir)),-runAcc*sin(degtorad(dir)))
+      moveTo(runAcc*cos(degtorad(dir))*gDeltaTime,-runAcc*sin(degtorad(dir))*gDeltaTime) //60fps change: this frame's share of a 30fps tick
       if dir>90 and dir<270
         image_xscale=-1
       else

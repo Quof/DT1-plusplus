@@ -21,8 +21,10 @@ if global.gameProgress=351 //The End
 {
   if sceneProgress=0
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
     {
       global.gamePaused=true
       global.optIdentifier=0
@@ -33,11 +35,14 @@ if global.gameProgress=351 //The End
       stopAllMusic()
       stopPlayer()
     }
-    else if sceneDelay>=40
+    //else if sceneDelay>=40
+    else if sceneDelay>39 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      rgbValue-=1
+      //rgbValue-=1
+      rgbValue-=gDeltaTime //60fps change: counts 30fps ticks
       fadeColor=make_color_rgb(rgbValue,rgbValue,rgbValue)
-      if rgbValue=0
+      //if rgbValue=0
+      if scrCountPassDown(rgbValue,0) //60fps change: once, when the count reaches it
       {
         sceneDelay=0
         sceneProgress+=1
@@ -46,8 +51,10 @@ if global.gameProgress=351 //The End
   }
   else if sceneProgress=1
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1
@@ -60,11 +67,14 @@ if global.gameProgress=351 //The End
   else if sceneProgress=4
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.05
+      //bossFinishFadeAlpha-=0.05
+      bossFinishFadeAlpha-=0.05*gDeltaTime //60fps change: per 30fps tick
     else if bossFinishFadeAlpha<=0
     {
-      sceneDelay+=1
-      if sceneDelay=70
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=70
+      if scrCountPass(sceneDelay,70) //60fps change: once, when the count reaches it
       {
         var tempMplay;
         tempMplay=global.msc_MarioOverworld
@@ -77,11 +87,14 @@ if global.gameProgress=351 //The End
   else if sceneProgress=5
   {
     if oPlayer1.image_alpha<1
-      oPlayer1.image_alpha+=0.01
+      //oPlayer1.image_alpha+=0.01
+      oPlayer1.image_alpha+=0.01*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=30
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=30
+      if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
       {
         sceneDelay=0
         sceneProgress+=1
@@ -128,8 +141,10 @@ if global.gameProgress=351 //The End
     msgCreate("Eh, I guess now is as good as any to tell you.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=25
   {
-    sceneDelay+=1
-    if sceneDelay=10
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
     {
       npcX=instance_create(320,-16,oMisc)
       npcX.sprite_index=sPlayerDiscombobulate
@@ -137,16 +152,19 @@ if global.gameProgress=351 //The End
       npcX.image_speed=0
       npcX.type=1
     }
-    else if sceneDelay>=11 and sceneDelay<=80
+    //else if sceneDelay>=11 and sceneDelay<=80
+    else if sceneDelay>10 and sceneDelay<=80 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      npcX.y+=16
+      //npcX.y+=16
+      npcX.y+=16*gDeltaTime //60fps change: per 30fps tick
       if npcX.y>=336
       {
         npcX.sprite_index=sMegamanXIdle
         sceneDelay=100
       }
     }
-    else if sceneDelay=130
+    //else if sceneDelay=130
+    else if scrCountPass(sceneDelay,130) //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1
@@ -170,12 +188,16 @@ if global.gameProgress=351 //The End
     msgCreate("You'll know soon enough, but for now...",1,oMessageCutscene,"X")
   else if sceneProgress=34
   {
-    sceneDelay+=1
-    if sceneDelay=1
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=1
+    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
       npcX.sprite_index=sPlayerDiscombobulate
-    else if sceneDelay>=2 and sceneDelay<=80
+    //else if sceneDelay>=2 and sceneDelay<=80
+    else if sceneDelay>1 and sceneDelay<=80 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      npcX.y-=16
+      //npcX.y-=16
+      npcX.y-=16*gDeltaTime //60fps change: per 30fps tick
       if npcX.y<=-16
       {
         with npcX
@@ -183,7 +205,8 @@ if global.gameProgress=351 //The End
         sceneDelay=100
       }
     }
-    else if sceneDelay=130
+    //else if sceneDelay=130
+    else if scrCountPass(sceneDelay,130) //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1
@@ -211,8 +234,10 @@ if global.gameProgress=351 //The End
     msgCreate("I think you'll like this.",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=45
   {
-    sceneDelay+=1
-    if sceneDelay=25
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=25
+    if scrCountPass(sceneDelay,25) //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1
@@ -222,28 +247,35 @@ if global.gameProgress=351 //The End
   {
     if bossFinishFadeAlpha>=0.7
     {
-      sceneDelay+=1
-      if sceneDelay=40
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=40
+      if scrCountPass(sceneDelay,40) //60fps change: once, when the count reaches it
       {
         sceneDelay=0
         sceneProgress+=1
       }
     }
     else
-      bossFinishFadeAlpha+=0.01
+      //bossFinishFadeAlpha+=0.01
+      bossFinishFadeAlpha+=0.01*gDeltaTime //60fps change: per 30fps tick
   }
   else if sceneProgress=47
   {
-    sceneDelay+=1
-    if sceneDelay=10
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
     {
       textEvent[0]=instance_create(room_width/2,48,oEvTheEndText1)
       textEvent[0].text_Full="The Darkness agreed to keep itself out#of human affairs so long as we did not#interfere with the stability of the world.#With the deletion of the Primary Memory,#both The Darkness and Jeremy lost some#of the control they had, but it seems#that we have stopped all threats..."
       textEvent[0].type=0
     }
-    else if sceneDelay=640
+    //else if sceneDelay=640
+    else if scrCountPass(sceneDelay,640) //60fps change: once, when the count reaches it
       textEvent[0].bFadeOut=1
-    else if sceneDelay=760
+    //else if sceneDelay=760
+    else if scrCountPass(sceneDelay,760) //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1
@@ -252,11 +284,14 @@ if global.gameProgress=351 //The End
   else if sceneProgress=48
   {
     if bossFinishFadeAlpha>0
-      bossFinishFadeAlpha-=0.01
+      //bossFinishFadeAlpha-=0.01
+      bossFinishFadeAlpha-=0.01*gDeltaTime //60fps change: per 30fps tick
     else
     {
-      sceneDelay+=1
-      if sceneDelay=30
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=30
+      if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
       {
         sceneDelay=0
         sceneProgress+=1
@@ -267,8 +302,10 @@ if global.gameProgress=351 //The End
     msgCreate("So what's the idea? That was just a pointless monologue.",1,oMessageCutscene,global.mainCharacters[1])
   else if sceneProgress=50
   {
-    sceneDelay+=1
-    if sceneDelay=10
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
     {
       npcX=instance_create(320,-16,oMisc)
       npcX.sprite_index=sPlayerDiscombobulate
@@ -276,16 +313,19 @@ if global.gameProgress=351 //The End
       npcX.image_speed=0
       npcX.type=1
     }
-    else if sceneDelay>=11 and sceneDelay<=80
+    //else if sceneDelay>=11 and sceneDelay<=80
+    else if sceneDelay>10 and sceneDelay<=80 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      npcX.y+=16
+      //npcX.y+=16
+      npcX.y+=16*gDeltaTime //60fps change: per 30fps tick
       if npcX.y>=336
       {
         npcX.sprite_index=sMegamanXIdle
         sceneDelay=100
       }
     }
-    else if sceneDelay=115
+    //else if sceneDelay=115
+    else if scrCountPass(sceneDelay,115) //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1
@@ -311,21 +351,27 @@ if global.gameProgress=351 //The End
     msgCreate("Awesome!",1,oMessageCutscene,global.mainCharacters[0])
   else if sceneProgress=60
   {
-    sceneDelay+=1
-    if sceneDelay=31
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=31
+    if scrCountPass(sceneDelay,31) //60fps change: once, when the count reaches it
     {
       oPlayer1.image_speed=0
       oPlayer1.sprite_index=sPlayerDiscombobulate
       npcX.sprite_index=sPlayerDiscombobulate
     }
-    else if sceneDelay>=32 and sceneDelay<=80
+    //else if sceneDelay>=32 and sceneDelay<=80
+    else if sceneDelay>31 and sceneDelay<=80 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      oPlayer1.y-=16
-      npcX.y-=16
+      //oPlayer1.y-=16
+      oPlayer1.y-=16*gDeltaTime //60fps change: per 30fps tick
+      //npcX.y-=16
+      npcX.y-=16*gDeltaTime //60fps change: per 30fps tick
       if npcX.y<=-16
         sceneDelay=100
     }
-    else if sceneDelay=140
+    //else if sceneDelay=140
+    else if scrCountPass(sceneDelay,140) //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1
@@ -335,43 +381,53 @@ if global.gameProgress=351 //The End
   {
     if bossFinishFadeAlpha>=0.7
     {
-      sceneDelay+=1
-      if sceneDelay=60
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=60
+      if scrCountPass(sceneDelay,60) //60fps change: once, when the count reaches it
       {
         sceneDelay=0
         sceneProgress+=1
       }
     }
     else
-      bossFinishFadeAlpha+=0.01
+      //bossFinishFadeAlpha+=0.01
+      bossFinishFadeAlpha+=0.01*gDeltaTime //60fps change: per 30fps tick
   }
   else if sceneProgress=62
   {
-    sceneDelay+=1
-    if sceneDelay=10
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=10
+    if scrCountPass(sceneDelay,10) //60fps change: once, when the count reaches it
     {
       textEvent[1]=instance_create(room_width/2,48,oEvTheEndText1)
       textEvent[1].text_Full="Okay, so maybe not, but something#has become clear to us all..."
       textEvent[1].type=0
     }
-    else if sceneDelay=200
+    //else if sceneDelay=200
+    else if scrCountPass(sceneDelay,200) //60fps change: once, when the count reaches it
       textEvent[1].bFadeOut=1
-    else if sceneDelay=305
+    //else if sceneDelay=305
+    else if scrCountPass(sceneDelay,305) //60fps change: once, when the count reaches it
     {
       textEvent[2]=instance_create(room_width/2,48,oEvTheEndText1)
       textEvent[2].text_Full="That whenever trouble arises,#We'll be there to stop it.#                    #This is our new home now,#and no matter what, we're..."
       textEvent[2].type=0
     }
-    else if sceneDelay=585
+    //else if sceneDelay=585
+    else if scrCountPass(sceneDelay,585) //60fps change: once, when the count reaches it
     {
       with oEvTheEndText1 {instance_destroy()}
     }
-    else if sceneDelay=590
+    //else if sceneDelay=590
+    else if scrCountPass(sceneDelay,590) //60fps change: once, when the count reaches it
     {
       msgCreate("Had to cut you off, you suck at monologues.",0,oMessagePerson,global.mainCharacters[1],0,1)
       newMessage.fadingTime=120
     }
-    else if sceneDelay=710
+    //else if sceneDelay=710
+    else if scrCountPass(sceneDelay,710) //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1
@@ -381,20 +437,25 @@ if global.gameProgress=351 //The End
   {
     if bossFinishFadeAlpha>=1
     {
-      sceneDelay+=1
-      if sceneDelay=60
+      //sceneDelay+=1
+      sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sceneDelay=60
+      if scrCountPass(sceneDelay,60) //60fps change: once, when the count reaches it
       {
         sceneDelay=0
         sceneProgress+=1
       }
     }
     else
-      bossFinishFadeAlpha+=0.01
+      //bossFinishFadeAlpha+=0.01
+      bossFinishFadeAlpha+=0.01*gDeltaTime //60fps change: per 30fps tick
   }
   else if sceneProgress=64
   {
-    sceneDelay+=1
-    if sceneDelay=30
+    //sceneDelay+=1
+    sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
+    //if sceneDelay=30
+    if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
     {
       sceneDelay=0
       sceneProgress+=1

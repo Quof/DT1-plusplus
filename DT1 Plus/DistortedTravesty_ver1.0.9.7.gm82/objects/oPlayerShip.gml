@@ -53,22 +53,26 @@ if global.gamePaused=false
   //key left
   if (keyboard_check(ord(global.ctrlLeft)) or keyboard_check(vk_left)) and x>16
   {
-    x-=moveSpd
+    //x-=moveSpd
+    x-=moveSpd*gDeltaTime //60fps change: per 30fps tick
   }
   //key right
   if (keyboard_check(ord(global.ctrlRight)) or keyboard_check(vk_right)) and x<view_shooter_x-16
   {
-    x+=moveSpd
+    //x+=moveSpd
+    x+=moveSpd*gDeltaTime //60fps change: per 30fps tick
   }
   //key up
   if (keyboard_check(ord(global.ctrlUp)) or keyboard_check(vk_up)) and y>16
   {
-    y-=moveSpd
+    //y-=moveSpd
+    y-=moveSpd*gDeltaTime //60fps change: per 30fps tick
   }
   //key down
   if (keyboard_check(ord(global.ctrlDown)) or keyboard_check(vk_down)) and y<room_height-16
   {
-    y+=moveSpd
+    //y+=moveSpd
+    y+=moveSpd*gDeltaTime //60fps change: per 30fps tick
   }
   //key "shoot"
   if keyboard_check(ord(global.ctrlAttack))
@@ -102,8 +106,10 @@ if global.gamePaused=false
 
   //reshoot
   if reShootTime>0
-    reShootTime-=1
-  if bShooting=true and reShootTime=0
+    //reShootTime-=1
+    reShootTime-=gDeltaTime //60fps change: counts 30fps ticks
+  //if bShooting=true and reShootTime=0
+  if bShooting=true and reShootTime<=0 //60fps change: <= so it can still fire if the frame rate changes mid-count
   {
     playSound(global.snd_ShipShot,0,0.6)
     newBullet=instance_create(x-4,y-6,oPlayerShooterShot)
@@ -121,12 +127,17 @@ if global.gamePaused=false
   //damage time
   if damageTime>0
   {
-    damageTime-=1
+    //damageTime-=1
+    damageTime-=gDeltaTime //60fps change: counts 30fps ticks
+    if scrModPassDown(damageTime,1) //60fps change (added): the blink once per 30fps tick (each time the count passes a whole number)
+    { //60fps change (added)
     if image_alpha=0.75
       image_alpha=0.25
     else
       image_alpha=0.75
-    if damageTime=0
+    } //60fps change (added)
+    //if damageTime=0
+    if damageTime<=0 //60fps change: <= so it still ends if the frame rate changes mid-count
     {
       image_alpha=1
       bCanTakeDamage=true
@@ -173,11 +184,14 @@ if global.gamePaused=false
   //------------------------------------
   //difficulty times
   if global.difficulty=1
-    global.recEasyTime+=1
+    //global.recEasyTime+=1
+    global.recEasyTime+=gDeltaTime //60fps change: counts 30fps ticks (as oPlayer1 does)
   else if global.difficulty=2
-    global.recNormalTime+=1
+    //global.recNormalTime+=1
+    global.recNormalTime+=gDeltaTime //60fps change: see above
   else if global.difficulty=3
-    global.recHardTime+=1
+    //global.recHardTime+=1
+    global.recHardTime+=gDeltaTime //60fps change: see above
 }
 #define Mouse_53
 /*"/*'/**//* YYD ACTION
@@ -414,8 +428,10 @@ if bFocus=true
 draw_sprite_ext(sPlayerShip,-1,x,y,1,1,0,c_white,image_alpha)
 if bFocus=true
 {
-  collisionRotate+=1
-  focusRotate+=3
+  //collisionRotate+=1
+  collisionRotate+=gDeltaTime //60fps change: per 30fps tick
+  //focusRotate+=3
+  focusRotate+=3*gDeltaTime //60fps change: per 30fps tick
   draw_sprite_ext(sPlayerShipViewCol,-1,x,y,1,1,collisionRotate,c_white,image_alpha)
 }
 //draw_sprite(sIdentifier2,-1,mouse_x,mouse_y)

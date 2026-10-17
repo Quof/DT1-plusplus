@@ -91,8 +91,10 @@ if global.gamePaused=false
   {
     direction=point_direction(x,y,oPlayer1.x,oPlayer1.y-26)
     image_angle=direction
-    shotTime+=1
-    if shotTime=shotWait
+    //shotTime+=1
+    shotTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if shotTime=shotWait
+    if scrCountPass(shotTime,shotWait) //60fps change: once, when the count reaches it
       {
         afterImage=instance_create(x,y,oEnemyAfterImage)
         afterImage.image_alpha=1
@@ -113,7 +115,8 @@ if global.gamePaused=false
       newBullet.spiritPower=spiritPower
       newBullet.elementType=elementType
       newBullet.bulletSpeed=5
-      newBullet.direction=direction
+      //newBullet.direction=direction
+      newBullet._direction=direction //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       newBullet.image_blend=baseColor
       shotTime=0
     }

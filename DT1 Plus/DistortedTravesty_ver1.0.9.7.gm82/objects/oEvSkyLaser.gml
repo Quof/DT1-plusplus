@@ -30,15 +30,20 @@ if global.gamePaused=false
 {
   if bCanDealDamage=true
   {
-    image_blend=make_color_rgb(155+random(100),155+random(100),155+random(100))
-    decayTime+=1
-    if decayTime>=idleTime
+    if gDeltaDoTicks //60fps change (added): a new colour once per 30fps tick
+      image_blend=make_color_rgb(155+random(100),155+random(100),155+random(100))
+    //decayTime+=1
+    decayTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if decayTime>=idleTime
+    if ceil(decayTime)>=idleTime //60fps change: the 30fps tick this frame is part of (the same at 30fps)
       instance_destroy()
   }
   else
   {
-    waitTime-=1
-    if waitTime=0
+    //waitTime-=1
+    waitTime-=gDeltaTime //60fps change: counts 30fps ticks
+    //if waitTime=0
+    if scrCountPassDown(waitTime,0) //60fps change: once, when the count reaches 0
     {
       if bShake=1
       {

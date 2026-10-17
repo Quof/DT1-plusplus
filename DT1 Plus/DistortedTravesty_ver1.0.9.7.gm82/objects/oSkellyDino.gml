@@ -79,8 +79,10 @@ if global.gamePaused=false
       }
     }
     if attackTime<attackDelay
-      jumpAttackTime+=1
-    if jumpAttackTime=30
+      //jumpAttackTime+=1
+      jumpAttackTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if jumpAttackTime=30
+    if jumpAttackTime>=30 and jumpAttackTime<500 //60fps change: the same as =30 in whole ticks (it's reset or set to 1000 there), and still happens if the frame rate changes mid-count
     {
       if random(200)-findTargetX>=60
       {
@@ -98,7 +100,8 @@ if global.gamePaused=false
       }
     }
 
-    attackTime+=1
+    //attackTime+=1
+    attackTime+=gDeltaTime //60fps change: counts 30fps ticks
     if attackTime>=attackDelay and findTargetX<=48 and findTargetY<=72 and bAttacking=false and jumpAttackTime<500
     {
       image_speed=0.15
@@ -109,7 +112,8 @@ if global.gamePaused=false
     }
     if bAttacking=true
     {
-      attacking+=1
+      //attacking+=1
+      attacking+=gDeltaTime //60fps change: counts 30fps ticks
       if attacking>=15
       {
         image_speed=0.1
@@ -120,12 +124,22 @@ if global.gamePaused=false
         bAttacking=false
       }
     }
-    yVel+=0.2
-    if yVel>=0 and jumpAttackTime>=1000
+    //yVel+=0.2
+    //if yVel>=0 and jumpAttackTime>=1000
+    //{
+    //  yVel+=1.2
+    //  image_index=2
+    //}
+    //60fps change: gravity per 30fps tick, following the 30fps arc (one scrGravAcc a frame, so both parts together;
+    //the extra 1.2 when falling in the jump attack is decided on the speed after the 0.2, as before)
+    var tGrav;
+    tGrav=0.2
+    if yVel+0.2>=0 and jumpAttackTime>=1000
     {
-      yVel+=1.2
+      tGrav+=1.2
       image_index=2
     }
+    yVel=scrGravAcc(yVel,tGrav,1)
     if isCollisionBottom(1)
     {
       yVel=0
@@ -154,7 +168,8 @@ if global.gamePaused=false
       xVel=0
     if isCollisionSolid()
       y-=2
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     if y>room_height+24
     {
       if questType>0

@@ -19,7 +19,8 @@ if global.gamePaused=false
   makeEnemyActive()
   if activated=1
   {
-    timeLeft-=1
+    //timeLeft-=1
+    timeLeft-=gDeltaTime //60fps change: counts 30fps ticks
     if timeLeft<=0
     {
       activated=0

@@ -117,14 +117,15 @@ if global.gamePaused=false
       physicalDefense=originalPDef*5
       spiritDefense=originalPDef*5
     }
+    //60fps change: these count 30fps ticks (each +=1 is +=gDeltaTime)
     if currentAttack=0
     {
-      sporeTime+=1
-      windRoarTime+=1
-      seedToss+=1
+      sporeTime+=gDeltaTime
+      windRoarTime+=gDeltaTime
+      seedToss+=gDeltaTime
     }
     if currentAttack!=3
-      strikeRootStrike+=1
+      strikeRootStrike+=gDeltaTime
     if sporeTime>=sporeDelay and currentAttack!=2 and currentAttack!=3 //spore attack
     {
       if currentAttack=0
@@ -132,8 +133,10 @@ if global.gamePaused=false
         sporeTime=1000
         currentAttack=1
       }
-      sporeTime+=1
-      if sporeTime mod 8=0
+      //sporeTime+=1
+      sporeTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if sporeTime mod 8=0
+      if scrModPass(sporeTime,8) //60fps change: once each time the count reaches a multiple of it
       {
         sporeAttack=instance_create(x-18,y-48,oDR_SporeNeedle)
         sporeAttack.spiritPower=spiritPower
@@ -155,10 +158,13 @@ if global.gamePaused=false
         seedToss=1000
         currentAttack=2
       }
-      seedToss+=1
-      if seedToss=1005
+      //seedToss+=1
+      seedToss+=gDeltaTime //60fps change: counts 30fps ticks
+      //if seedToss=1005
+      if scrCountPass(seedToss,1005) //60fps change: once, when the count reaches it
         sprite_index=sDragonrootHeadUp
-      else if seedToss>=1055 and seedToss mod seedFrequency=0
+      //else if seedToss>=1055 and seedToss mod seedFrequency=0
+      else if seedToss>=1055 and scrModPass(seedToss,seedFrequency) //60fps change: once each time the count reaches a multiple of it
       {
         seedAttack=instance_create(x,y-80,oDR_Seed)
         seedAttack.spiritPower=spiritPower
@@ -182,7 +188,8 @@ if global.gamePaused=false
         strikeRootStrike=1000
         xLine=x+64
       }
-      if strikeRootStrike mod 15=0
+      //if strikeRootStrike mod 15=0
+      if scrModPass(strikeRootStrike,15) //60fps change: once each time the count reaches a multiple of it
       {
         lineRootStrike=instance_create(xLine,yGround,oDR_RootSpike)
         lineRootStrike.spiritPower=spiritPower
@@ -198,11 +205,14 @@ if global.gamePaused=false
     {
       if windRoarTime<900
         windRoarTime=1000
-      if windRoarTime=1001
+      //if windRoarTime=1001
+      if scrCountPass(windRoarTime,1001) //60fps change: once, when the count reaches it
         sprite_index=sDragonrootHeadUp
-      if windRoarTime>=1026
+      //if windRoarTime>=1026
+      if windRoarTime>1025 //60fps change: the same 30fps ticks, counted in gDeltaTime steps (it pushes the player)
       {
-        if windRoarTime=1026
+        //if windRoarTime=1026
+        if scrCountPass(windRoarTime,1026) //60fps change: once, when the count reaches it
         {
           sprite_index=sDragonrootRoar
           playSound(global.snd_EnemyRoar1,0,0.9)

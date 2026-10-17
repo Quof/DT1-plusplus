@@ -71,7 +71,8 @@ if global.gamePaused=false
   if bActive=true and stunnedTime=0 and dieFade=0
   {
     //direction
-    if shotCycle!=4
+    //if shotCycle!=4
+    if shotCycle<4 or shotCycle>=5 //60fps change: not for the whole 30fps tick it's at 4 (from 4 it counts in gDeltaTime steps)
     {
       if x<=oPlayer1.x
         image_xscale=1
@@ -82,27 +83,33 @@ if global.gamePaused=false
     if shotCycle>=0 and shotCycle<=2 //hover down
     {
       if y<ystart+160
-        y+=hoverAcc
+        //y+=hoverAcc
+        y+=hoverAcc*gDeltaTime //60fps change: per 30fps tick
       else
-        shootTime+=1
+        //shootTime+=1
+        shootTime+=gDeltaTime //60fps change: counts 30fps ticks
     }
     else if shotCycle=3 //hover up
     {
       sprite_index=sTSentinelStand
       if y>ystart-32
-        y-=hoverAcc
+        //y-=hoverAcc
+        y-=hoverAcc*gDeltaTime //60fps change: per 30fps tick
       else
         shotCycle+=1
     }
     else if shotCycle>=4 //hover over
     {
-      shotCycle+=1
+      //shotCycle+=1
+      shotCycle+=gDeltaTime //60fps change: counts 30fps ticks (from 4 here it's a timer)
       if shotCycle<=50
       {
         if image_xscale=1
-          x+=hoverAcc
+          //x+=hoverAcc
+          x+=hoverAcc*gDeltaTime //60fps change: per 30fps tick
         else
-          x-=hoverAcc
+          //x-=hoverAcc
+          x-=hoverAcc*gDeltaTime //60fps change: per 30fps tick
       }
       if shotCycle>=70
         shotCycle=0
@@ -112,7 +119,8 @@ if global.gamePaused=false
       sprite_index=sTSentinelShoot
     if shootTime>=reShootTime
     {
-      if multiShot>0 and shootTime mod 20=0
+      //if multiShot>0 and shootTime mod 20=0
+      if multiShot>0 and scrModPass(shootTime,20) //60fps change: once each time the count reaches a multiple of it
       {
         var x1,dir;
         if image_xscale=1
@@ -125,7 +133,8 @@ if global.gamePaused=false
         {
           newAttack[i]=instance_create(x+x1,y-60,oLaserB)
           newAttack[i].physicalPower=physicalPower
-          newAttack[i].direction=dir
+          //newAttack[i].direction=dir
+          newAttack[i]._direction=dir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           newAttack[i].bulletSpeed=5
           dir+=24
         }
@@ -182,8 +191,10 @@ lib_id=1
 action_id=603
 applies_to=self
 */
-hoverEffect+=1
-if hoverEffect mod 2=0
+//hoverEffect+=1
+hoverEffect+=gDeltaTime //60fps change: counts 30fps ticks
+//if hoverEffect mod 2=0
+if ceil(hoverEffect) mod 2=0 //60fps change: every other 30fps tick (on the frames of the even ticks)
 {
   if image_xscale=1
   {

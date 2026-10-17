@@ -57,6 +57,7 @@ applies_to=self
 */
 if global.gamePaused=false
 {
+  var tJumpAcc; tJumpAcc=0 //60fps change (added): the jump's upward push, added in with the gravity at the end
   makeEnemyActive()
   if activateBoss=1
   {
@@ -73,7 +74,8 @@ if global.gamePaused=false
   if bActive=true and dieFade=0
   {
     if animChange!=-1
-      animChange+=1
+      //animChange+=1
+      animChange+=gDeltaTime //60fps change: counts 30fps ticks
     if sprite_index=sKredaeusIdle
     {
       if x>oCharacter.x
@@ -84,7 +86,10 @@ if global.gamePaused=false
     //========================= choose next action =========================
     if currentAction>=0 and currentAction<=9 //on ground
     {
-      if attackDelay>=waitTime
+      //if attackDelay>=waitTime
+      //60fps change: it counts in gDeltaTime steps after the check, so the frame that resets it isn't counted (as at
+      //30fps): the wait ends that much sooner in the count, so it's the same length (>=waitTime at 30fps)
+      if attackDelay>=waitTime+1-gDeltaTime
       {
         if specialAttack=1 or specialAttack=3
         {
@@ -170,21 +175,26 @@ if global.gamePaused=false
         }
       }
       else
-        attackDelay+=1
+        //attackDelay+=1
+        attackDelay+=gDeltaTime //60fps change: counts 30fps ticks
     }
     //========================= actions =========================
     else if currentAction>=10 and currentAction<=19 //jump straight up
     {
-      attackDelay+=1
-      if attackDelay=1
+      //attackDelay+=1
+      attackDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if attackDelay=1
+      if scrCountPass(attackDelay,1) //60fps change: once, when the count reaches it
       {
         jumpTime=6
         yVel=-4
         y-=4
       }
-      else if attackDelay=17
+      //else if attackDelay=17
+      else if scrCountPass(attackDelay,17) //60fps change: once, when the count reaches it
         currentAttack=20
-      else if attackDelay=41
+      //else if attackDelay=41
+      else if scrCountPass(attackDelay,41) //60fps change: once, when the count reaches it
       {
         if findTargetX>96
         {
@@ -196,11 +206,14 @@ if global.gamePaused=false
         else
           currentAttack=40
       }
-      else if tempVal=1 and attackDelay=45
+      //else if tempVal=1 and attackDelay=45
+      else if tempVal=1 and scrCountPass(attackDelay,45) //60fps change: once, when the count reaches it
         currentAttack=10
-      else if tempVal=2 and attackDelay=57
+      //else if tempVal=2 and attackDelay=57
+      else if tempVal=2 and scrCountPass(attackDelay,57) //60fps change: once, when the count reaches it
         currentAttack=10
-      else if tempVal!=0 and attackDelay=72
+      //else if tempVal!=0 and attackDelay=72
+      else if tempVal!=0 and scrCountPass(attackDelay,72) //60fps change: once, when the count reaches it
       {
         tempVal=0
         currentAction=0
@@ -208,8 +221,10 @@ if global.gamePaused=false
     }
     else if currentAction>=20 and currentAction<=29 //jump toward player
     {
-      attackDelay+=1
-      if attackDelay=1
+      //attackDelay+=1
+      attackDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if attackDelay=1
+      if scrCountPass(attackDelay,1) //60fps change: once, when the count reaches it
       {
         jumpTime=6
         yVel=-4
@@ -219,7 +234,8 @@ if global.gamePaused=false
         else
           xVel=-4
       }
-      else if attackDelay=41
+      //else if attackDelay=41
+      else if scrCountPass(attackDelay,41) //60fps change: once, when the count reaches it
       {
         if findTargetX>96
         {
@@ -237,7 +253,8 @@ if global.gamePaused=false
         currentAttack=30
         currentAction=21
       }
-      if attackDelay=60 and tempVal=4
+      //if attackDelay=60 and tempVal=4
+      if scrCountPass(attackDelay,60) and tempVal=4 //60fps change: once, when the count reaches it
       {
         currentAttack=0
         currentAction=0
@@ -246,8 +263,10 @@ if global.gamePaused=false
     }
     else if currentAction>=30 and currentAction<=39 //jump away from player
     {
-      attackDelay+=1
-      if attackDelay=1
+      //attackDelay+=1
+      attackDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if attackDelay=1
+      if scrCountPass(attackDelay,1) //60fps change: once, when the count reaches it
       {
         jumpTime=6
         yVel=-4
@@ -257,13 +276,17 @@ if global.gamePaused=false
         else
           xVel=4
       }
-      else if attackDelay=6
+      //else if attackDelay=6
+      else if scrCountPass(attackDelay,6) //60fps change: once, when the count reaches it
         currentAttack=20
-      else if attackDelay=29
+      //else if attackDelay=29
+      else if scrCountPass(attackDelay,29) //60fps change: once, when the count reaches it
         currentAttack=10
-      else if attackDelay=49
+      //else if attackDelay=49
+      else if scrCountPass(attackDelay,49) //60fps change: once, when the count reaches it
         currentAttack=10
-      else if attackDelay=70
+      //else if attackDelay=70
+      else if scrCountPass(attackDelay,70) //60fps change: once, when the count reaches it
       {
         if findTargetX<160
           currentAttack=60
@@ -276,8 +299,10 @@ if global.gamePaused=false
     }
     else if currentAction>=40 and currentAction<=49 //low jump
     {
-      attackDelay+=1
-      if attackDelay=1
+      //attackDelay+=1
+      attackDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if attackDelay=1
+      if scrCountPass(attackDelay,1) //60fps change: once, when the count reaches it
       {
         jumpTime=2
         yVel=-4
@@ -287,13 +312,16 @@ if global.gamePaused=false
         else
           xVel=-8
       }
-      else if attackDelay=9
+      //else if attackDelay=9
+      else if scrCountPass(attackDelay,9) //60fps change: once, when the count reaches it
         currentAttack=40
     }
     else if currentAction>=50 and currentAction<=59 //rain fire
     {
-      attackDelay+=1
-      if attackDelay=1
+      //attackDelay+=1
+      attackDelay+=gDeltaTime //60fps change: counts 30fps ticks
+      //if attackDelay=1
+      if scrCountPass(attackDelay,1) //60fps change: once, when the count reaches it
       {
         tempVal=6
         if x<xCenter
@@ -309,7 +337,8 @@ if global.gamePaused=false
       if animChange=-1
         animChange=0
       sprite_index=sKredaeusShootStraight
-      if animChange=8
+      //if animChange=8
+      if scrCountPass(animChange,8) //60fps change: once, when the count reaches it
       {
         currentAttack=0
         if image_xscale=1
@@ -321,9 +350,11 @@ if global.gamePaused=false
         fireBall.spiritPower=spiritPower
         fireBall.type=1
         if image_xscale=1
-          fireBall.direction=0
+          //fireBall.direction=0
+          fireBall._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         else
-          fireBall.direction=180
+          //fireBall.direction=180
+          fireBall._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       }
     }
     else if currentAttack=20 //shoot diagonal
@@ -331,14 +362,16 @@ if global.gamePaused=false
       if animChange=-1
         animChange=0
       sprite_index=sKredaeusShootDiagonal
-      if animChange=1
+      //if animChange=1
+      if scrCountPass(animChange,1) //60fps change: once, when the count reaches it
       {
         if x>oCharacter.x
           image_xscale=-1
         else
           image_xscale=1
       }
-      else if animChange=8
+      //else if animChange=8
+      else if scrCountPass(animChange,8) //60fps change: once, when the count reaches it
       {
         currentAttack=0
         if image_xscale=1
@@ -350,9 +383,11 @@ if global.gamePaused=false
         fireBall.spiritPower=spiritPower
         fireBall.type=1
         if image_xscale=1
-          fireBall.direction=315
+          //fireBall.direction=315
+          fireBall._direction=315 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         else
-          fireBall.direction=225
+          //fireBall.direction=225
+          fireBall._direction=225 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       }
     }
     else if currentAttack=30 //shoot down
@@ -360,14 +395,16 @@ if global.gamePaused=false
       if animChange=-1
         animChange=0
       sprite_index=sKredaeusShootDown
-      if animChange=8
+      //if animChange=8
+      if scrCountPass(animChange,8) //60fps change: once, when the count reaches it
       {
         currentAttack=0
         playSound(global.snd_SpellFireball,0,1)
         fireBall=instance_create(x,y-4,oKreFire)
         fireBall.spiritPower=spiritPower
         fireBall.type=1
-        fireBall.direction=270
+        //fireBall.direction=270
+        fireBall._direction=270 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
       }
     }
     else if currentAttack>=40 and currentAttack<=49 //shock wave start
@@ -387,7 +424,8 @@ if global.gamePaused=false
       if animChange=-1
         animChange=0
       sprite_index=sKredaeusGroundHit
-      if animChange=2
+      //if animChange=2
+      if scrCountPass(animChange,2) //60fps change: once, when the count reaches it
       {
         playSound(global.snd_BreakOut,0,1)
         currentAttack=0
@@ -395,10 +433,12 @@ if global.gamePaused=false
         effect.sprite_index=sGroundSmash
         shockwave=instance_create(x,y,oKreShockwave)
         shockwave.spiritPower=spiritPower+30
-        shockwave.direction=0
+        //shockwave.direction=0
+        shockwave._direction=0 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         shockwave=instance_create(x,y,oKreShockwave)
         shockwave.spiritPower=spiritPower+30
-        shockwave.direction=180
+        //shockwave.direction=180
+        shockwave._direction=180 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
         explosion=instance_create(x,y,oGASGExplosion)
         explosion.physicalPower=spiritPower+10
         explosion.sprite_index=sALfirePillar
@@ -413,7 +453,8 @@ if global.gamePaused=false
         sprite_index=sKredaeusChargeStart
       if sprite_index=sKredaeusChargeStart
       {
-        if animChange=12
+        //if animChange=12
+        if scrCountPass(animChange,12) //60fps change: once, when the count reaches it
         {
           playSound(global.snd_JumpStrike,0,1)
           sprite_index=sKredaeusCharging
@@ -428,7 +469,8 @@ if global.gamePaused=false
           xVel=-9
         if tempVal!=6
         {
-          if animChange=18
+          //if animChange=18
+          if scrCountPass(animChange,18) //60fps change: once, when the count reaches it
           {
             animChange=-1
             sprite_index=sKredaeusIdle
@@ -462,7 +504,8 @@ if global.gamePaused=false
       }
       if sprite_index=sKredaeusRainFire1
       {
-        if animChange=48
+        //if animChange=48
+        if scrCountPass(animChange,48) //60fps change: once, when the count reaches it
         {
           sprite_index=sKredaeusRainFire2
           animChange=0
@@ -472,28 +515,33 @@ if global.gamePaused=false
       {
         if tempVal<=15
         {
-          if animChange=4 //left gun
+          //if animChange=4 //left gun
+          if scrCountPass(animChange,4) //left gun //60fps change: once, when the count reaches it
           {
             playSound(global.snd_SpellFireball,0,1)
             fireBall=instance_create(x-9,y-56,oKreFire)
             fireBall.spiritPower=spiritPower+10
             fireBall.type=2
-            fireBall.direction=90
+            //fireBall.direction=90
+            fireBall._direction=90 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           }
-          else if animChange=8 //right gun
+          //else if animChange=8 //right gun
+          else if scrCountPass(animChange,8) //right gun //60fps change: once, when the count reaches it
           {
             playSound(global.snd_SpellFireball,0,1)
             fireBall=instance_create(x+9,y-56,oKreFire)
             fireBall.spiritPower=spiritPower+10
             fireBall.type=3
-            fireBall.direction=90
+            //fireBall.direction=90
+            fireBall._direction=90 //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             tempVal+=1
             animChange=0
           }
         }
         else
         {
-          if animChange=4
+          //if animChange=4
+          if scrCountPass(animChange,4) //60fps change: once, when the count reaches it
           {
             sprite_index=sKredaeusRainFire3
             animChange=0
@@ -502,7 +550,8 @@ if global.gamePaused=false
       }
       else if sprite_index=sKredaeusRainFire3
       {
-        if animChange=12
+        //if animChange=12
+        if scrCountPass(animChange,12) //60fps change: once, when the count reaches it
         {
           tempVal=0
           animChange=-1
@@ -581,9 +630,11 @@ if global.gamePaused=false
     if sprite_index=sKredaeusIdle
     {
       if xVel>0
-        xVel-=0.75
+        //xVel-=0.75
+        xVel-=0.75*gDeltaTime //60fps change: per 30fps tick
       else if xVel<0
-        xVel+=0.75
+        //xVel+=0.75
+        xVel+=0.75*gDeltaTime //60fps change: per 30fps tick
 
       if xVel>1.5
         xVel=0
@@ -594,15 +645,18 @@ if global.gamePaused=false
     //jumping
     if jumpTime>0
     {
-      jumpTime-=1
+      //jumpTime-=1
+      jumpTime-=gDeltaTime //60fps change: counts 30fps ticks
       if yVel>-7
-        yVel-=1
+        //yVel-=1
+        tJumpAcc=1 //60fps change: per 30fps tick, with the gravity below (one scrGravAcc a frame)
     }
 
     //afterimage and break "Earth Shift"
     if sprite_index=sKredaeusCharging
     {
-      kreAfterImage=instance_create(x,y,oKreAfterImage)
+      if gDeltaDoTicks //60fps change (added): the afterimage once per 30fps tick
+        kreAfterImage=instance_create(x,y,oKreAfterImage)
       if instance_exists(oEarthShift)
       {
         findESX=point_distance(oEarthShift.x,0,x,0)
@@ -658,14 +712,16 @@ if global.gamePaused=false
       bossProgress+=1
     }
   }
-  yVel+=0.3
+  //yVel+=0.3
+  yVel=scrGravAcc(yVel,0.3-tJumpAcc,1) //60fps change: gravity (and the jump's push) per 30fps tick, following the 30fps arc
   if isCollisionBottom(1)
     yVel=0
   if isCollisionLeft(1)
     xVel=1
   if isCollisionRight(1)
     xVel=-1
-  moveTo(xVel,yVel)
+  //moveTo(xVel,yVel)
+  moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
   enemyStepEvent()
 }
 #define Collision_oSpell

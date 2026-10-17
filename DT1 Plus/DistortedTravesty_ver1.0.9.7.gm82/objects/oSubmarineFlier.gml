@@ -73,8 +73,10 @@ if global.gamePaused=false
       }
       init=1
     }
-    x+=flySpeed
-    shootTime+=1
+    //x+=flySpeed
+    //shootTime+=1
+    x+=flySpeed*gDeltaTime //60fps change: per 30fps tick
+    shootTime+=gDeltaTime //60fps change: counts 30fps ticks
     if shootTime>=reShootTime
     {
       newBullet=instance_create(x,y,oSubMissile)

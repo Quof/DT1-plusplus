@@ -55,10 +55,13 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true
   {
-    fallingProgress+=1
-    if fallingProgress=1
+    //fallingProgress+=1
+    fallingProgress+=gDeltaTime //60fps change: counts 30fps ticks
+    //if fallingProgress=1
+    if scrCountPass(fallingProgress,1) //60fps change: once, when the count reaches it
       x+=1
-    else if fallingProgress>=2 and fallingProgress<=30
+    //else if fallingProgress>=2 and fallingProgress<=30
+    else if fallingProgress>=2 and fallingProgress<=30 and scrModPass(fallingProgress,1) //60fps change: the shake once per 30fps tick (each time the count reaches a whole number), as at 30fps
     {
       if shakeDir=1
         x-=2
@@ -66,10 +69,13 @@ if global.gamePaused=false
         x+=2
       shakeDir*=-1
     }
-    else if fallingProgress=31
+    //else if fallingProgress=31
+    else if scrCountPass(fallingProgress,31) //60fps change: once, when the count reaches it
       x=xstart
-    else if fallingProgress>=32
-      y+=fallSpeed
+    //else if fallingProgress>=32
+    else if fallingProgress>31 //60fps change: the same 30fps ticks, counted in gDeltaTime steps
+      //y+=fallSpeed
+      y+=fallSpeed*gDeltaTime //60fps change: per 30fps tick
   }
   if y>room_height+24
     instance_destroy()

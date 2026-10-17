@@ -50,7 +50,8 @@ if global.gamePaused=false
   if bActive=true and stunnedTime=0 and dieFade=0
   {
     //move
-    moveTime+=1
+    //moveTime+=1
+    moveTime+=gDeltaTime //60fps change: counts 30fps ticks
     if moveTime>=moveWait and jumpTime<jumpWait and yVel=0
     {
       image_index=1
@@ -64,7 +65,8 @@ if global.gamePaused=false
       moveTime=0
     }
     //jump
-    jumpTime+=1
+    //jumpTime+=1
+    jumpTime+=gDeltaTime //60fps change: counts 30fps ticks (it still lands on jumpWait exactly)
     if jumpTime=jumpWait and yVel=0
     {
       image_index=1
@@ -76,7 +78,8 @@ if global.gamePaused=false
         xVel=2
     }
 
-    yVel+=0.2
+    //yVel+=0.2
+    yVel=scrGravAcc(yVel,0.2,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionBottom(1)
     {
       image_index=0
@@ -88,11 +91,17 @@ if global.gamePaused=false
         jumpTime=0
       }
     }
-    if isCollisionLeft(1)
+    //if isCollisionLeft(1)
+    //  xVel*=-1
+    //if isCollisionRight(1)
+    //  xVel*=-1
+    //60fps change: only bounce off a wall when moving into it (it can still touch it on the next frame above 30fps)
+    if isCollisionLeftEdit(1)
       xVel*=-1
-    if isCollisionRight(1)
+    if isCollisionRightEdit(1)
       xVel*=-1
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     if isCollisionSolid()
       y-=1
     if y>room_height+30

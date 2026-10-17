@@ -67,14 +67,17 @@ if global.gamePaused=false
   {
     if lungeTime>=lungeWait //lunge
     {
-      lungeTime+=1
-      if lungeTime=lungeWait+1
+      //lungeTime+=1
+      lungeTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if lungeTime=lungeWait+1
+      if scrCountPass(lungeTime,lungeWait+1) //60fps change: once, when the count reaches it
       {
         xVel=0
         bLunge=true
         sprite_index=sDarkVariantReady
       }
-      else if lungeTime=lungeWait+18 //start lunge
+      //else if lungeTime=lungeWait+18 //start lunge
+      else if scrCountPass(lungeTime,lungeWait+18) //start lunge //60fps change: once, when the count reaches it
       {
         var jumpPower;
         if y>oPlayer1.y+28
@@ -99,7 +102,8 @@ if global.gamePaused=false
     {
       if bLunge=false
       {
-        lungeTime+=1
+        //lungeTime+=1
+        lungeTime+=gDeltaTime //60fps change: counts 30fps ticks
         //movement
         if point_distance(x,0,oPlayer1.x,0)>maxProximity
         {
@@ -139,7 +143,8 @@ if global.gamePaused=false
     if bLunge=true and yVel>0 and sprite_index=sDarkVariantUp //change to attack frame when coming down
       sprite_index=sDarkVariantAttack
 
-    yVel+=0.6
+    //yVel+=0.6
+    yVel=scrGravAcc(yVel,0.6,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if isCollisionTop(1)
       yVel=0
     if isCollisionBottom(1)
@@ -157,7 +162,8 @@ if global.gamePaused=false
       xVel=runAcc
     if isCollisionRight(1)
       xVel=-runAcc
-    moveTo(xVel,yVel)
+    //moveTo(xVel,yVel)
+    moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
     if isCollisionSolid()
       y-=2
     if y>room_height+64

@@ -44,7 +44,8 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true and stunnedTime=0 and dieFade=0
   {
-    y+=runAcc
+    //y+=runAcc
+    y+=runAcc*gDeltaTime //60fps change: per 30fps tick
     if y>room_height+24
     {
       if questType>0
