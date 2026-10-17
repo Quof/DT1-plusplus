@@ -217,7 +217,8 @@ global.optSound=ini_read_real(sectionRead,"515",1)
 global.optShowGlow=ini_read_real(sectionRead,"516",0)
 global.gamePriority=ini_read_real(sectionRead,"517",0)
 global.optGameDetail=ini_read_real(sectionRead,"518",0)
-global.optDPadDash=ini_read_real(sectionRead,"519",1)
+//global.optDPadDash=ini_read_real(sectionRead,"519",1)
+global.optDPadDash=ini_read_real(sectionRead,"519",0) //controls change: off unless the save has it on (D-Pad Dash is off by default now)
 global.optRightIsForward=ini_read_real(sectionRead,"520",1)
 global.optShowHUD=ini_read_real(sectionRead,"521",1)
 
@@ -253,6 +254,18 @@ global.ctrlAbilityBack=ini_read_string(sectionRead,"812","Z")
 global.ctrlAbilityForward=ini_read_string(sectionRead,"813","C")
 global.ctrlDashLeft=ini_read_string(sectionRead,"814","Q")
 global.ctrlDashRight=ini_read_string(sectionRead,"815","E")
+global.ctrlPause=ini_read_string(sectionRead,"816","P") //controls change (added): the Pause Menu key ([P] for a save made before it could be set)
+scrGamepadDefaults() //gamepad change (added): the defaults, for a save made before the gamepad settings
+global.optGamePad=ini_read_real(sectionRead,"830",1) //gamepad change (added): Gamepad Input On/Off
+for (i=1;i<=18;i+=1) //gamepad change (added): the gamepad's buttons, 831-848 (actions: scrGamepadInit)
+  global.gpBind[i]=ini_read_real(sectionRead,string(830+i),global.gpBind[i]) //gamepad change (added)
+scrDPadSpellDefaults() //dpad spells change (added): DPad Spells (DT2 Style) and its boxes, 850-870 (the defaults for a save made before them)
+global.optDPadSpells=ini_read_real(sectionRead,"850",0) //dpad spells change (added)
+for (i=0;i<=4;i+=1) //dpad spells change (added): element (0 techniques)
+  for (ii=0;ii<=3;ii+=1) //dpad spells change (added): box (0 middle, 1 up, 2 left/right, 3 down)
+    global.dpsSpell[i,ii]=ini_read_real(sectionRead,string(851+i*4+ii),global.dpsSpell[i,ii]) //dpad spells change (added)
+scrGamepadPoll() //gamepad change (added): a button still held (the one that loaded the file) doesn't count as pressed
+scrGamepadSync() //gamepad change (added): for whatever action it's on now
 
 for (i=0;i<=global.maxSkillCapsules;i+=1)
   global.skillCapsules[i]=ini_read_real(sectionRead,string("90") +string(i),0)

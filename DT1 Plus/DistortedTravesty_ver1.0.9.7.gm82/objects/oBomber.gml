@@ -149,9 +149,11 @@ else if cripplePointProgress=1
     inflictStatus(0)
 }
 if other.elementType=1 or other.elementType=4
-  explodeCheck+=20
+  //explodeCheck+=20
+  explodeCheck+=20*gDeltaTime //60fps change: added every frame the attack touches it: per 30fps tick
 else
-  explodeCheck+=10
+  //explodeCheck+=10
+  explodeCheck+=10*gDeltaTime //60fps change: see above
 #define Collision_oSpell
 /*"/*'/**//* YYD ACTION
 lib_id=1
@@ -162,9 +164,12 @@ event_inherited()
 if other.elementType=1 or other.elementType=4
 {
   if other.currentSpell="FIREBALL" or other.currentSpell="FLAME PILLAR"
-    explodeCheck+=50
+    //explodeCheck+=50
+    explodeCheck+=50*gDeltaTime //60fps change: added every frame the spell touches it: per 30fps tick
   else
-    explodeCheck+=20
+    //explodeCheck+=20
+    explodeCheck+=20*gDeltaTime //60fps change: see above
 }
 else
-  explodeCheck+=10
+  //explodeCheck+=10
+  explodeCheck+=10*gDeltaTime //60fps change: see above

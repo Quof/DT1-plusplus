@@ -256,7 +256,8 @@ global.killingSpree=0            //current kills in killing spree
 global.killSpreeSoundCheck=0     //checks the sound being played
 global.muffins=0                 //current amount of muffins
 global.location="Not Started"    //your general location
-global.screenWindowDouble=false  //if window is set to 2x mode
+//global.screenWindowDouble=false  //if window is set to 2x mode
+if !variable_global_exists("screenWindowDouble") {global.screenWindowDouble=true} //2x window change: the game starts at 2x (rIntro's creation code sizes the window), and coming back to the title keeps the flag, so F3 stays in step with the window
 global.rbSwitchBlueOn=false      //which switch color is active
 global.levelLimer[0]=0           //current timer (countdown)
 global.levelLimer[1]=0           //set timer (when map changes or a gameover occurs)
@@ -368,7 +369,8 @@ global.optShowAwesome=true
 global.optEnemyHP=true
 global.optGameDetail=1
 
-global.optDPadDash=1
+//global.optDPadDash=1
+global.optDPadDash=0 //controls change: D-Pad Dash (Up/Down + Jump dashes; Options Set 3) is off for a new game
 global.optRightIsForward=1
 global.optShowHUD=1
 global.optDashWarn=0
@@ -481,6 +483,13 @@ global.ctrlAbilityForward="C"
 global.ctrlRave="M"
 global.ctrlDashLeft="Q"
 global.ctrlDashRight="E"
+global.ctrlPause="P" //controls change (added): the Pause Menu key can be set now (Keyboard Controls)
+global.optDPadSpells=0 //dpad spells change (added): DPad Spells (DT2 Style) off, and its default boxes (Controls page)
+scrDPadSpellDefaults() //dpad spells change (added)
+global.optGamePad=1 //gamepad change (added): Gamepad Input on and the default gamepad controls, like the keys above
+scrGamepadDefaults() //gamepad change (added)
+scrGamepadPoll() //gamepad change (added): a button still held from the game doesn't count as pressed
+scrGamepadSync() //gamepad change (added): for whatever action it's on now
 
 global.debugMouseMove=0
 
@@ -488,6 +497,7 @@ global.debugMouseMove=0
 fileCursorPos=1
 fileCursorX=84
 fileCursorY=240
+fileCursorFrame=0 //60fps change (added): the file cursor's walk frame, counted in the Draw
 cursorMoveInc=86
 arraySizeMin=1
 arraySizeMax=5
@@ -509,7 +519,8 @@ action_id=603
 applies_to=self
 */
 //cursor movement
-if keyboard_check_pressed(ord("D")) or keyboard_check_pressed(vk_right) or keyboard_check_pressed(ord("S")) or keyboard_check_pressed(vk_down) and fade=0
+//if keyboard_check_pressed(ord("D")) or keyboard_check_pressed(vk_right) or keyboard_check_pressed(ord("S")) or keyboard_check_pressed(vk_down) and fade=0
+if keyboard_check_pressed(ord("D")) or (keyboard_check_pressed(vk_right) or scrPadPressed(2)) or keyboard_check_pressed(ord("S")) or (keyboard_check_pressed(vk_down) or scrPadPressed(4)) and fade=0 //gamepad change: and the gamepad's Right, the gamepad's Down (scrGamepadInit)
 {
   playSound(global.snd_MenuCursor,0,1)
   if fileCursorPos<arraySizeMax
@@ -528,7 +539,8 @@ if keyboard_check_pressed(ord("D")) or keyboard_check_pressed(vk_right) or keybo
       fileCursorX-=cursorMoveInc*(arraySizeMax-1)
   }
 }
-else if keyboard_check_pressed(ord("A")) or keyboard_check_pressed(vk_left) or keyboard_check_pressed(ord("W")) or keyboard_check_pressed(vk_up) and fade=0
+//else if keyboard_check_pressed(ord("A")) or keyboard_check_pressed(vk_left) or keyboard_check_pressed(ord("W")) or keyboard_check_pressed(vk_up) and fade=0
+else if keyboard_check_pressed(ord("A")) or (keyboard_check_pressed(vk_left) or scrPadPressed(1)) or keyboard_check_pressed(ord("W")) or (keyboard_check_pressed(vk_up) or scrPadPressed(3)) and fade=0 //gamepad change: and the gamepad's Left, the gamepad's Up (scrGamepadInit)
 {
   playSound(global.snd_MenuCursor,0,1)
   if fileCursorPos>arraySizeMin
@@ -549,7 +561,8 @@ else if keyboard_check_pressed(ord("A")) or keyboard_check_pressed(vk_left) or k
 }
 
 //start game
-if keyboard_check_pressed(ord("J")) and fade=0
+//if keyboard_check_pressed(ord("J")) and fade=0
+if (keyboard_check_pressed(ord("J")) or scrPadPressed(17)) and fade=0 //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
 {
   if chooseNewGame=true
   {
@@ -614,7 +627,8 @@ if keyboard_check_pressed(ord("J")) and fade=0
 
 if f1_GameBeat>0 or f2_GameBeat>0 or f3_GameBeat>0 //Go to Boss Rush room
 {
-  if keyboard_check_pressed(ord("P"))
+  //if keyboard_check_pressed(ord("P"))
+  if (keyboard_check_pressed(ord("P")) or scrPadPressed(16)) //gamepad change: and the gamepad's Pause Menu (scrGamepadInit)
   {
     for(i=0;i<18;i+=1)
       global.invBracelet[i]=1
@@ -626,7 +640,8 @@ if f1_GameBeat>0 or f2_GameBeat>0 or f3_GameBeat>0 //Go to Boss Rush room
   }
 }
 
-if keyboard_check_pressed(ord("K")) and fade=0 and introProgress=0
+//if keyboard_check_pressed(ord("K")) and fade=0 and introProgress=0
+if (keyboard_check_pressed(ord("K")) or scrPadPressed(18)) and fade=0 and introProgress=0 //gamepad change: and the gamepad's Menu Cancel (scrGamepadInit)
 {
   if chooseNewGame=true
   {
@@ -777,7 +792,13 @@ else
   draw_set_color(c_white)
   draw_text(256,152,cursorTip)
   //file cursor
-  draw_sprite(sPlayerWalk,-1,fileCursorX,fileCursorY)
+  //draw_sprite(sPlayerWalk,-1,fileCursorX,fileCursorY)
+  //60fps change: the walk frame is counted here, a frame per 30fps tick (the default image_speed of 1 this object walked
+  //it at), so Jerry walks at the original speed at every frame rate. Drawn with -1 it used this object's own image_index,
+  //which has no sprite of its own: GM8.1 advances that, but whether it does here (GM8.2) and whether oGame's correction
+  //reaches it (oGame only exists once a game has been loaded) made it walk too fast above 30fps
+  draw_sprite(sPlayerWalk,fileCursorFrame,fileCursorX,fileCursorY)
+  fileCursorFrame+=gDeltaTime
 
   if introProgress=0
   {

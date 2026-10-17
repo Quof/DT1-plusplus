@@ -40,7 +40,8 @@ if global.gamePaused=false
 {
   //****************************** CONTROLS ******************************
   //key "focus"
-  if keyboard_check(ord(global.ctrlJump))
+  //if keyboard_check(ord(global.ctrlJump))
+  if (keyboard_check(ord(global.ctrlJump)) or scrPadHeld(5)) //gamepad change: and the gamepad's Jump (scrGamepadInit)
   {
     bFocus=true
     moveSpd=focusSpd
@@ -51,42 +52,49 @@ if global.gamePaused=false
     moveSpd=normalSpd
   }
   //key left
-  if (keyboard_check(ord(global.ctrlLeft)) or keyboard_check(vk_left)) and x>16
+  //if (keyboard_check(ord(global.ctrlLeft)) or keyboard_check(vk_left)) and x>16
+  if (keyboard_check(ord(global.ctrlLeft)) or (keyboard_check(vk_left) or scrPadHeld(1))) and x>16 //gamepad change: and the gamepad's Left (scrGamepadInit)
   {
     //x-=moveSpd
     x-=moveSpd*gDeltaTime //60fps change: per 30fps tick
   }
   //key right
-  if (keyboard_check(ord(global.ctrlRight)) or keyboard_check(vk_right)) and x<view_shooter_x-16
+  //if (keyboard_check(ord(global.ctrlRight)) or keyboard_check(vk_right)) and x<view_shooter_x-16
+  if (keyboard_check(ord(global.ctrlRight)) or (keyboard_check(vk_right) or scrPadHeld(2))) and x<view_shooter_x-16 //gamepad change: and the gamepad's Right (scrGamepadInit)
   {
     //x+=moveSpd
     x+=moveSpd*gDeltaTime //60fps change: per 30fps tick
   }
   //key up
-  if (keyboard_check(ord(global.ctrlUp)) or keyboard_check(vk_up)) and y>16
+  //if (keyboard_check(ord(global.ctrlUp)) or keyboard_check(vk_up)) and y>16
+  if (keyboard_check(ord(global.ctrlUp)) or (keyboard_check(vk_up) or scrPadHeld(3))) and y>16 //gamepad change: and the gamepad's Up (scrGamepadInit)
   {
     //y-=moveSpd
     y-=moveSpd*gDeltaTime //60fps change: per 30fps tick
   }
   //key down
-  if (keyboard_check(ord(global.ctrlDown)) or keyboard_check(vk_down)) and y<room_height-16
+  //if (keyboard_check(ord(global.ctrlDown)) or keyboard_check(vk_down)) and y<room_height-16
+  if (keyboard_check(ord(global.ctrlDown)) or (keyboard_check(vk_down) or scrPadHeld(4))) and y<room_height-16 //gamepad change: and the gamepad's Down (scrGamepadInit)
   {
     //y+=moveSpd
     y+=moveSpd*gDeltaTime //60fps change: per 30fps tick
   }
   //key "shoot"
-  if keyboard_check(ord(global.ctrlAttack))
+  //if keyboard_check(ord(global.ctrlAttack))
+  if (keyboard_check(ord(global.ctrlAttack)) or scrPadHeld(6)) //gamepad change: and the gamepad's Attack (scrGamepadInit)
     bShooting=true
   else
     bShooting=false
   //key "bomb"
-  if keyboard_check_pressed(ord(global.ctrlTech)) and !instance_exists(oPlayerBomb) and bomb>0
+  //if keyboard_check_pressed(ord(global.ctrlTech)) and !instance_exists(oPlayerBomb) and bomb>0
+  if (keyboard_check_pressed(ord(global.ctrlTech)) or scrPadPressed(7)) and !instance_exists(oPlayerBomb) and bomb>0 //gamepad change: and the gamepad's Use Tech (scrGamepadInit)
   {
     bomb-=1
     pBomb=instance_create(x,y,oPlayerBomb)
   }
   //key "pause"
-  if keyboard_check_pressed(ord("P"))
+  //if keyboard_check_pressed(ord("P"))
+  if (keyboard_check_pressed(ord(global.ctrlPause)) or scrPadPressed(16)) //gamepad change: and the gamepad's Pause Menu (scrGamepadInit); controls change: the Pause Menu key (Keyboard Controls)
   {
     global.gamePaused=true
     pauseMenu=instance_create(0,0,oShipPauseMenu)

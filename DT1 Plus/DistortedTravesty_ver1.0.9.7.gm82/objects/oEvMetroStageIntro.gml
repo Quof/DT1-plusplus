@@ -19,6 +19,7 @@ oPlayer1.visible=false
 oHUD.visible=false
 oIdentifier.visible=false
 image_speed=0.5
+bossFrame=0 //60fps change (added): the boss's animation frame, counted in the Draw at image_speed a 30fps tick (this object has no sprite of its own to animate image_index with)
 global.gamePaused=true
 stopPlayer()
 if oPlayer1.x=16
@@ -306,10 +307,12 @@ else if sceneProgress=8 //boss animate
       bossShow=sDiveManShoot
     //else if sceneDelay=30
     else if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
-      image_index=1
+      //image_index=1
+      bossFrame=1 //60fps change: the frame the Draw uses (see Create)
     //else if sceneDelay=40
     else if scrCountPass(sceneDelay,40) //60fps change: once, when the count reaches it
-      image_index=0
+      //image_index=0
+      bossFrame=0 //60fps change: see above
     //else if sceneDelay=70
     else if scrCountPass(sceneDelay,70) //60fps change: once, when the count reaches it
       bossShow=sDiveManIdle
@@ -385,7 +388,8 @@ if sceneProgress>=4 and sceneProgress<=8 //logo show
   draw_sprite(logo,-1,room_width/2,room_height/2)
 if sceneProgress>=7 //boss show
 {
-  draw_sprite_ext(bossShow,image_index,room_width/2,yPlacement,image_xscale,1,0,make_color_rgb(clBlend,clBlend,clBlend),1)
+  //draw_sprite_ext(bossShow,image_index,room_width/2,yPlacement,image_xscale,1,0,make_color_rgb(clBlend,clBlend,clBlend),1)
+  draw_sprite_ext(bossShow,bossFrame,room_width/2,yPlacement,image_xscale,1,0,make_color_rgb(clBlend,clBlend,clBlend),1) //60fps change: bossFrame (see Create)
   if clBlend<255
     //clBlend+=10
     clBlend+=10*gDeltaTime //60fps change: per 30fps tick
@@ -405,3 +409,4 @@ if bossFinishFadeAlpha>0
   draw_set_color(fadeColor)
   draw_rectangle(view_xview[0],view_yview[0],view_xview[0]+view_wview[0],view_yview[0]+view_hview[0],false)
 }
+bossFrame+=image_speed*gDeltaTime //60fps change (added): the boss's animation, image_speed a 30fps tick (see Create)

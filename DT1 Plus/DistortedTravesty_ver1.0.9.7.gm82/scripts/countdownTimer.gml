@@ -8,7 +8,8 @@ if argument0=1 and global.gamePaused=false
   var bTimeOut;
   bTimeOut=0
   //count down time
-  global.cTimerHundred-=3.3
+  //global.cTimerHundred-=3.3
+  global.cTimerHundred-=3.3*gDeltaTime //60fps change: per 30fps tick (it's called every frame from a Draw event), so a second still takes 30 ticks
   
   if global.cTimerMinute<=0 and global.cTimerSecond<=0 and global.cTimerHundred<=0 {bTimeOut=1}
   

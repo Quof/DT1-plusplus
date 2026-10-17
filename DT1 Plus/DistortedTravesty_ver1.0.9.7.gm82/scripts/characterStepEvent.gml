@@ -21,7 +21,8 @@ if player=1 //========================================
     kLeftReleased=0
     if kLeft
     {
-      kLeft=keyboard_check(ord(global.ctrlLeft)) or keyboard_check(vk_left)
+      //kLeft=keyboard_check(ord(global.ctrlLeft)) or keyboard_check(vk_left)
+      kLeft=keyboard_check(ord(global.ctrlLeft)) or (keyboard_check(vk_left) or scrPadHeld(1)) //gamepad change: and the gamepad's Left (scrGamepadInit)
       //kLeftPushedSteps+=1
       kLeftPushedSteps+=gDeltaTime //60fps change: counts 30fps ticks
       kLeftPressed=0;
@@ -30,7 +31,8 @@ if player=1 //========================================
     }
     else
     {
-      kLeft=keyboard_check(ord(global.ctrlLeft)) or keyboard_check(vk_left)
+      //kLeft=keyboard_check(ord(global.ctrlLeft)) or keyboard_check(vk_left)
+      kLeft=keyboard_check(ord(global.ctrlLeft)) or (keyboard_check(vk_left) or scrPadHeld(1)) //gamepad change: and the gamepad's Left (scrGamepadInit)
       if kLeft
         kLeftPressed=1
       kLeftPushedSteps=0
@@ -39,7 +41,8 @@ if player=1 //========================================
     kRightReleased=0
     if kRight
     {
-      kRight=keyboard_check(ord(global.ctrlRight)) or keyboard_check(vk_right)
+      //kRight=keyboard_check(ord(global.ctrlRight)) or keyboard_check(vk_right)
+      kRight=keyboard_check(ord(global.ctrlRight)) or (keyboard_check(vk_right) or scrPadHeld(2)) //gamepad change: and the gamepad's Right (scrGamepadInit)
       //kRightPushedSteps+=1
       kRightPushedSteps+=gDeltaTime //60fps change: counts 30fps ticks
       kRightPressed=0
@@ -48,15 +51,18 @@ if player=1 //========================================
     }
     else
     {
-      kRight=keyboard_check(ord(global.ctrlRight)) or keyboard_check(vk_right)
+      //kRight=keyboard_check(ord(global.ctrlRight)) or keyboard_check(vk_right)
+      kRight=keyboard_check(ord(global.ctrlRight)) or (keyboard_check(vk_right) or scrPadHeld(2)) //gamepad change: and the gamepad's Right (scrGamepadInit)
       if kRight
         kRightPressed=1
       kRightPushedSteps=0
     }
     //key up
-    kUp=keyboard_check(ord(global.ctrlUp)) or keyboard_check(vk_up)
+    //kUp=keyboard_check(ord(global.ctrlUp)) or keyboard_check(vk_up)
+    kUp=keyboard_check(ord(global.ctrlUp)) or (keyboard_check(vk_up) or scrPadHeld(3)) //gamepad change: and the gamepad's Up (scrGamepadInit)
     //key down
-    kDown=keyboard_check(ord(global.ctrlDown)) or keyboard_check(vk_down)
+    //kDown=keyboard_check(ord(global.ctrlDown)) or keyboard_check(vk_down)
+    kDown=keyboard_check(ord(global.ctrlDown)) or (keyboard_check(vk_down) or scrPadHeld(4)) //gamepad change: and the gamepad's Down (scrGamepadInit)
     //key "run"
     //if canRun
     //  kRun=keyboard_check(vk_shift)
@@ -65,131 +71,153 @@ if player=1 //========================================
     //key "jump"
     if kJump
     {
-      kJump=keyboard_check(ord(global.ctrlJump))
+      //kJump=keyboard_check(ord(global.ctrlJump))
+      kJump=(keyboard_check(ord(global.ctrlJump)) or scrPadHeld(5)) //gamepad change: and the gamepad's Jump (scrGamepadInit)
       kJumpPressed=0
     }
     else
     {
-      kJump=keyboard_check(ord(global.ctrlJump))
+      //kJump=keyboard_check(ord(global.ctrlJump))
+      kJump=(keyboard_check(ord(global.ctrlJump)) or scrPadHeld(5)) //gamepad change: and the gamepad's Jump (scrGamepadInit)
       if kJump
         kJumpPressed=1
     }
     //key "attack"
     if kAttack
     {
-      kAttack=keyboard_check(ord(global.ctrlAttack))
+      //kAttack=keyboard_check(ord(global.ctrlAttack))
+      kAttack=(keyboard_check(ord(global.ctrlAttack)) or scrPadHeld(6)) //gamepad change: and the gamepad's Attack (scrGamepadInit)
       kAttackPressed=0
     }
     else
     {
-      kAttack=keyboard_check(ord(global.ctrlAttack))
+      //kAttack=keyboard_check(ord(global.ctrlAttack))
+      kAttack=(keyboard_check(ord(global.ctrlAttack)) or scrPadHeld(6)) //gamepad change: and the gamepad's Attack (scrGamepadInit)
       if kAttack
         kAttackPressed=1
     }
     //key "element swap forward"
     if kElementSwapForward
     {
-      kElementSwapForward=keyboard_check(ord(global.ctrlCycleForward))
+      //kElementSwapForward=keyboard_check(ord(global.ctrlCycleForward))
+      kElementSwapForward=(keyboard_check(ord(global.ctrlCycleForward)) or scrPadHeld(10)) //gamepad change: and the gamepad's Cycle Element Forward (scrGamepadInit)
       kElementSwapForwardPressed=0
     }
     else
     {
-      kElementSwapForward=keyboard_check(ord(global.ctrlCycleForward))
+      //kElementSwapForward=keyboard_check(ord(global.ctrlCycleForward))
+      kElementSwapForward=(keyboard_check(ord(global.ctrlCycleForward)) or scrPadHeld(10)) //gamepad change: and the gamepad's Cycle Element Forward (scrGamepadInit)
       if kElementSwapForward
         kElementSwapForwardPressed=1
     }
     //key "element swap back"
     if kElementSwapBack
     {
-      kElementSwapBack=keyboard_check(ord(global.ctrlCycleBack))
+      //kElementSwapBack=keyboard_check(ord(global.ctrlCycleBack))
+      kElementSwapBack=(keyboard_check(ord(global.ctrlCycleBack)) or scrPadHeld(9)) //gamepad change: and the gamepad's Cycle Element Back (scrGamepadInit)
       kElementSwapBackPressed=0
     }
     else
     {
-      kElementSwapBack=keyboard_check(ord(global.ctrlCycleBack))
+      //kElementSwapBack=keyboard_check(ord(global.ctrlCycleBack))
+      kElementSwapBack=(keyboard_check(ord(global.ctrlCycleBack)) or scrPadHeld(9)) //gamepad change: and the gamepad's Cycle Element Back (scrGamepadInit)
       if kElementSwapBack
         kElementSwapBackPressed=1
     }
     //key "ability swap forward"
     if kAbilitySwapForward
     {
-      kAbilitySwapForward=keyboard_check(ord(global.ctrlAbilityForward))
+      //kAbilitySwapForward=keyboard_check(ord(global.ctrlAbilityForward))
+      kAbilitySwapForward=(keyboard_check(ord(global.ctrlAbilityForward)) or scrPadHeld(12)) //gamepad change: and the gamepad's Cycle Ability Forward (scrGamepadInit)
       kAbilitySwapForwardPressed=0
     }
     else
     {
-      kAbilitySwapForward=keyboard_check(ord(global.ctrlAbilityForward))
+      //kAbilitySwapForward=keyboard_check(ord(global.ctrlAbilityForward))
+      kAbilitySwapForward=(keyboard_check(ord(global.ctrlAbilityForward)) or scrPadHeld(12)) //gamepad change: and the gamepad's Cycle Ability Forward (scrGamepadInit)
       if kAbilitySwapForward
         kAbilitySwapForwardPressed=1
     }
     //key "ability swap back"
     if kAbilitySwapBack
     {
-      kAbilitySwapBack=keyboard_check(ord(global.ctrlAbilityBack))
+      //kAbilitySwapBack=keyboard_check(ord(global.ctrlAbilityBack))
+      kAbilitySwapBack=(keyboard_check(ord(global.ctrlAbilityBack)) or scrPadHeld(11)) //gamepad change: and the gamepad's Cycle Ability Back (scrGamepadInit)
       kAbilitySwapBackPressed=0
     }
     else
     {
-      kAbilitySwapBack=keyboard_check(ord(global.ctrlAbilityBack))
+      //kAbilitySwapBack=keyboard_check(ord(global.ctrlAbilityBack))
+      kAbilitySwapBack=(keyboard_check(ord(global.ctrlAbilityBack)) or scrPadHeld(11)) //gamepad change: and the gamepad's Cycle Ability Back (scrGamepadInit)
       if kAbilitySwapBack
         kAbilitySwapBackPressed=1
     }
     //key "tech use"
     if kTechUse
     {
-      kTechUse=keyboard_check(ord(global.ctrlTech))
+      //kTechUse=keyboard_check(ord(global.ctrlTech))
+      kTechUse=(keyboard_check(ord(global.ctrlTech)) or scrPadHeld(7)) //gamepad change: and the gamepad's Use Tech (scrGamepadInit)
       kTechUsePressed=0
     }
     else
     {
-      kTechUse=keyboard_check(ord(global.ctrlTech))
+      //kTechUse=keyboard_check(ord(global.ctrlTech))
+      kTechUse=(keyboard_check(ord(global.ctrlTech)) or scrPadHeld(7)) //gamepad change: and the gamepad's Use Tech (scrGamepadInit)
       if kTechUse
         kTechUsePressed=1
     }
     //key "spell use"
     if kSpellUse
     {
-      kSpellUse=keyboard_check(ord(global.ctrlSpell))
+      //kSpellUse=keyboard_check(ord(global.ctrlSpell))
+      kSpellUse=(keyboard_check(ord(global.ctrlSpell)) or scrPadHeld(8)) //gamepad change: and the gamepad's Cast Spell (scrGamepadInit)
       kSpellUsePressed=0
     }
     else
     {
-      kSpellUse=keyboard_check(ord(global.ctrlSpell))
+      //kSpellUse=keyboard_check(ord(global.ctrlSpell))
+      kSpellUse=(keyboard_check(ord(global.ctrlSpell)) or scrPadHeld(8)) //gamepad change: and the gamepad's Cast Spell (scrGamepadInit)
       if kSpellUse
         kSpellUsePressed=1
     }
     //key "rave"
     if kRave
     {
-      kRave=keyboard_check(ord(global.ctrlRave))
+      //kRave=keyboard_check(ord(global.ctrlRave))
+      kRave=(keyboard_check(ord(global.ctrlRave)) or scrPadHeld(15)) //gamepad change: and the gamepad's Rave Mode (scrGamepadInit)
       kRavePressed=0
     }
     else
     {
-      kRave=keyboard_check(ord(global.ctrlRave))
+      //kRave=keyboard_check(ord(global.ctrlRave))
+      kRave=(keyboard_check(ord(global.ctrlRave)) or scrPadHeld(15)) //gamepad change: and the gamepad's Rave Mode (scrGamepadInit)
       if kRave
         kRavePressed=1
     }
     //key "Dash Left"
     if kDashLeft
     {
-      kDashLeft=keyboard_check(ord(global.ctrlDashLeft))
+      //kDashLeft=keyboard_check(ord(global.ctrlDashLeft))
+      kDashLeft=(keyboard_check(ord(global.ctrlDashLeft)) or scrPadHeld(13)) //gamepad change: and the gamepad's Dash Left (scrGamepadInit)
       kDashLeftPressed=0
     }
     else
     {
-      kDashLeft=keyboard_check(ord(global.ctrlDashLeft))
+      //kDashLeft=keyboard_check(ord(global.ctrlDashLeft))
+      kDashLeft=(keyboard_check(ord(global.ctrlDashLeft)) or scrPadHeld(13)) //gamepad change: and the gamepad's Dash Left (scrGamepadInit)
       if kDashLeft {kDashLeftPressed=1}
     }
     //key "Dash Right"
     if kDashRight
     {
-      kDashRight=keyboard_check(ord(global.ctrlDashRight))
+      //kDashRight=keyboard_check(ord(global.ctrlDashRight))
+      kDashRight=(keyboard_check(ord(global.ctrlDashRight)) or scrPadHeld(14)) //gamepad change: and the gamepad's Dash Right (scrGamepadInit)
       kDashRightPressed=0
     }
     else
     {
-      kDashRight=keyboard_check(ord(global.ctrlDashRight))
+      //kDashRight=keyboard_check(ord(global.ctrlDashRight))
+      kDashRight=(keyboard_check(ord(global.ctrlDashRight)) or scrPadHeld(14)) //gamepad change: and the gamepad's Dash Right (scrGamepadInit)
       if kDashRight {kDashRightPressed=1}
     }
   }
@@ -349,10 +377,46 @@ if isCollisionTop(1) and state=JUMPING
 {
   yVel=abs(yVel*0.3)
 }
-if (isCollisionLeft(1) and facing=LEFT) or (isCollisionRight(1) and facing=RIGHT)
+//if (isCollisionLeft(1) and facing=LEFT) or (isCollisionRight(1) and facing=RIGHT)
+//{
+//  xVel=0
+//}
+//60fps change: above 30fps the wall stop works per 30fps tick, as at 30fps. It checks on each tick's first frame (where
+//30fps checked, with the position the last tick left) and a hit stops the player for that whole tick: xVel is zeroed on
+//each of its frames, with xVelSetTick so pMoveToWrapNew uses the 30fps formula and the tick's run acceleration still
+//counts. Checked every frame, the next pixel of a slope counted as a wall on most frames (the player moves a few pixels
+//at a time instead of a tick's 7-8), which zeroed the speed again and again: running up slopes was 3-7x slower than at
+//30fps. Only ground at least as steep as 45 degrees (or a real wall) stops the player: it must also rise a pixel by the
+//next column. A 1:2 slope steps up a pixel every other column, which 30fps's 8px strides mostly stepped over (simulated:
+//45 degree slopes climb at 30fps's speed to within 0.1 tick over 256px, 1:2 slopes ~5% faster than 30fps, which now and
+//then loses a stride there)
+if gDeltaTime==1
 {
-  xVel=0
+  if (isCollisionLeft(1) and facing=LEFT) or (isCollisionRight(1) and facing=RIGHT)
+  {
+    xVel=0
+  }
 }
+else
+{
+  if abs(gDeltaTick-gDeltaTime)<0.0001 //the tick's first frame
+  {
+    wallStopTick=0
+    wallStopFacing=facing
+    calculateCollisionBounds()
+    if facing=LEFT and isCollisionLeft(1)
+      wallStopTick=(collision_line(round(lb-2),round(tb),round(lb-2),round(bb-2),oSolid,1,1)>0) //the next column, a pixel higher
+    else if facing=RIGHT and isCollisionRight(1)
+      wallStopTick=(collision_line(round(rb+1),round(tb),round(rb+1),round(bb-2),oSolid,1,1)>0) //see above
+  }
+  else if facing!=wallStopFacing //turned away from it during the tick
+    wallStopTick=0
+  if wallStopTick
+  {
+    xVel=0
+    xVelSetTick=1
+  }
+} //60fps change (added)
 //player may jump
 if bTakingDamage=false and attackState!=ACT_CASTING and attackState!=ACT_CASTED
 {
@@ -817,7 +881,10 @@ else
 //60fps change: the acceleration, friction and movement code moved into pMoveToWrapOrig (unchanged, used at 30fps) and
 //pMoveToWrapNew (above 30fps)
 if gDeltaTime==1
+{ //60fps change (added)
   pMoveToWrapOrig()
+  xVelSetExt=0; yVelSetExt=0 //60fps change (added): unused at 30fps (pMoveToWrapNew clears them once used), so one set at 30fps isn't left waiting for when the frame rate goes up
+} //60fps change (added)
 else
 {
   pMoveToWrapNew()
@@ -875,7 +942,7 @@ if kAttack and bTakingDamage=false and kAttackPressed=1 and attackState!=PART_JU
         attackState=PART_JUMP_SLASH_1
         yAcc=-2.5
         yVel=-2.5
-        yVelSetTick=1 //60fps change (added): set speed + one-off push: a full 30fps tick's worth (see pMoveToWrapNew)
+        yVelSetExt=1 //60fps change (added): set speed + one-off push: a full 30fps tick's worth (see pMoveToWrapNew). Ext, not Tick: this is after the move, and the Tick flags are cleared at the top of the next step before they're used (the jump slash's pop came out 4.9px at 60fps, 3.5px at 120fps instead of 6.9; now 6.7)
       }
       else if kUp
         attackState=PART_UP_SLASH
@@ -887,7 +954,7 @@ if kAttack and bTakingDamage=false and kAttackPressed=1 and attackState!=PART_JU
         {
           yVel-=2
           yAcc-=1
-          yVelSetTick=1 //60fps change (added): see above
+          yVelSetExt=1 //60fps change (added): see above
         }
       }
       playerBattleCry()
@@ -997,7 +1064,7 @@ if attackState=TECH_GRAND_SLAM
 {
   xVel=0
   yVel=14
-  xVelSetTick=1; yVelSetTick=1 //60fps change (added): set every frame (see pMoveToWrapNew)
+  xVelSetExt=1; yVelSetExt=1 //60fps change (added): set every frame (see pMoveToWrapNew). Ext, not Tick: this is after the move (see the jump slash above); the dive was 7% slow
   //jumpSlashPower+=15
   jumpSlashPower+=15*gDeltaTime //60fps change: per 30fps tick
 }
@@ -1272,9 +1339,11 @@ if bTakingDamage=false and attackState!=PART_JUMP_SLASH_1 and attackState!=ACT_C
 {
   //tech/spell use
   if kTechUse and kTechUsePressed=1 and (state=STANDING or state=RUNNING or state=JUMPING or state=FALLING or state=DUCKING or state=LOOKING_UP)
-    playerTechUse(1)
+    //playerTechUse(1)
+    scrDPadSpellUse(1) //dpad spells change: playerTechUse(1), with the technique for the direction held while DPad Spells is on
   if kSpellUse and kSpellUsePressed=1 and (state=STANDING or state=RUNNING or state=JUMPING or state=FALLING or state=DUCKING or state=LOOKING_UP)
-    playerTechUse(2)
+    //playerTechUse(2)
+    scrDPadSpellUse(2) //dpad spells change: playerTechUse(2), with the spell for the direction held while DPad Spells is on
 
   //start rave
   if kRave and bRaveActive=false and kRavePressed=1 and global.currentBoss="" and global.p1RaveEnergy>=raveMax and (state=STANDING or state=RUNNING or state=JUMPING or state=FALLING or state=DUCKING or state=LOOKING_UP)

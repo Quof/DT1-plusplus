@@ -820,7 +820,8 @@ if teleportTime>=teleportDelay
   //draw_set_alpha(1)
   //draw_set_color(c_teal)
   //draw_line(x-offsetX1,y-sprite_yoffset+teleLineY,x-offsetX1+offsetX2,y-sprite_yoffset+teleLineY)
-  if global.gamePaused=false
+  //if global.gamePaused=false
+  if global.gamePaused=false and gDeltaDoTicks //60fps change: the sparks once per 30fps tick
   {
     if image_xscale=1
     {

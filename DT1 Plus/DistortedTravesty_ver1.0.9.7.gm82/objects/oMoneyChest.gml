@@ -30,7 +30,8 @@ objectNum relates to which global flag to write to.
 
 objectType relates to how much money to give.
 */
-if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up)) and global.gamePaused=false
+//if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up)) and global.gamePaused=false
+if (keyboard_check_pressed(ord(global.ctrlUp)) or (keyboard_check_pressed(vk_up) or scrPadPressed(3))) and global.gamePaused=false //gamepad change: and the gamepad's Up (scrGamepadInit)
 {
   if global.moneyChest[objectNum]=0
   {

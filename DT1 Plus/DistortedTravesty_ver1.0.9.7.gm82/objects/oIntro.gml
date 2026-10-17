@@ -80,7 +80,8 @@ else if loadState>=12
 {
   if !instance_exists(oInitializeGame)
   {
-    if keyboard_check_pressed(ord("J"))
+    //if keyboard_check_pressed(ord("J"))
+    if (keyboard_check_pressed(ord("J")) or scrPadPressed(17)) //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
     {
       init=instance_create(0,0,oInitializeGame)
       titleAlpha=1

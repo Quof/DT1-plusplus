@@ -27,7 +27,8 @@ applies_to=self
 */
 if activate=1
 {
-  if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
+  //if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
+  if keyboard_check_pressed(curUp) or (keyboard_check_pressed(vk_up) or scrPadPressed(3)) //gamepad change: and the gamepad's Up (scrGamepadInit)
   {
     playSound(global.snd_MenuCursor,0,1)
     if floorChoice<(global.sofsMax*5)+1
@@ -35,7 +36,8 @@ if activate=1
     else
       floorChoice=1
   }
-  if keyboard_check_pressed(curDown) or keyboard_check_pressed(vk_down)
+  //if keyboard_check_pressed(curDown) or keyboard_check_pressed(vk_down)
+  if keyboard_check_pressed(curDown) or (keyboard_check_pressed(vk_down) or scrPadPressed(4)) //gamepad change: and the gamepad's Down (scrGamepadInit)
   {
     playSound(global.snd_MenuCursor,0,1)
     if floorChoice>1
@@ -43,7 +45,8 @@ if activate=1
     else
       floorChoice=(global.sofsMax*5)+1
   }
-  if keyboard_check_pressed(curConfirm)
+  //if keyboard_check_pressed(curConfirm)
+  if (keyboard_check_pressed(curConfirm) or scrPadPressed(17)) //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
   {
     playSound(global.snd_MenuConfirm,0,1)
     global.recUsedAreaExit+=1
@@ -83,7 +86,8 @@ if activate=1
     global.gamePaused=false
     room_goto(toRoom)
   }
-  if keyboard_check_pressed(curCancel)
+  //if keyboard_check_pressed(curCancel)
+  if (keyboard_check_pressed(curCancel) or scrPadPressed(18)) //gamepad change: and the gamepad's Menu Cancel (scrGamepadInit)
   {
     io_clear()
     playSound(global.snd_MenuCancel,0,1)
@@ -101,7 +105,8 @@ applies_to=self
 Spire of Forgotten Souls door script.
 This will move the player inside the spire.
 */
-if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up)) and activate=0 and global.gamePaused=false
+//if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up)) and activate=0 and global.gamePaused=false
+if (keyboard_check_pressed(ord(global.ctrlUp)) or (keyboard_check_pressed(vk_up) or scrPadPressed(3))) and activate=0 and global.gamePaused=false //gamepad change: and the gamepad's Up (scrGamepadInit)
 {
   global.gamePaused=true
   activate=1
@@ -115,10 +120,13 @@ applies_to=self
 draw_sprite(sprite_index,-1,x,y)
 if bShowArrow=true
 {
-  pointTime+=1
-  if pointTime=20
+  //pointTime+=1
+  pointTime+=gDeltaTime //60fps change: counts 30fps ticks
+  //if pointTime=20
+  if scrCountPass(pointTime,20) //60fps change: once, when the count reaches it
     arrowY+=1
-  else if pointTime=40
+  //else if pointTime=40
+  else if scrCountPass(pointTime,40) //60fps change: once, when the count reaches it
   {
     arrowY-=1
     pointTime=0

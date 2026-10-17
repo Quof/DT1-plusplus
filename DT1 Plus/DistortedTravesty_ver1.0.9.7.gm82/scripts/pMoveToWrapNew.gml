@@ -143,7 +143,12 @@ effectiveMaxSlope = floor(maxSlope*gDeltaTime+frac(ditherCounter * 0.618))
 
 //maxSlope doesn't work as a speed penalty on upward slopes above 30fps (each frame climbs less), so slow the
 //character down on them by how steep the ground is here
+//DT1 change: no slowdown here. In DT1 what slows the player on a slope at 30fps is the wall stop (characterStepEvent:
+//the ground ahead counts as a wall), which now works per 30fps tick above 30fps too, so this would slow 45 degree slopes
+//a second time (simulated: they came out 29% slower than at 30fps). DT1's slopes are 45 degrees and 1:2, which every
+//frame rate climbs with room to spare, so the extra climbing above 30fps this made up for doesn't come into it
 speedmod = 1.0
+/*
 if platformCharacterIs(ON_GROUND) && abs(xVel)>0
 {
   __xtemp=x;
@@ -179,6 +184,7 @@ if platformCharacterIs(ON_GROUND) && abs(xVel)>0
   x = __xtemp
   y = __ytemp
 }
+*/
 
 //prepares the character to move up a hill
 //we need to use the "slopeYPrev" variable later to know the "true" y previous value
@@ -211,7 +217,15 @@ if effectiveMaxSlope*abs(xVel)>0 and platformCharacterIs(ON_GROUND)
     y=yPrevHigh  //we need the character to be high so the character can move down
     //this time we'll move the correct distance, but we need to shorten out the xVel a little
     ratio=1.075
-    pMoveTo((xVel*gDeltaTime*ratio*speedmod),(yVel*gDeltaTime*ratio*speedmod+slopeChangeInY))
+    //pMoveTo((xVel*gDeltaTime*ratio*speedmod),(yVel*gDeltaTime*ratio*speedmod+slopeChangeInY))
+    //DT1 change: 30fps moves round(xVelInteger*ratio) for its tick, xVelInteger being floor(abs(xVel)) plus a pixel
+    //every round(1/frac) ticks (moveTo30): this frame moves its share of that tick's average. xVel*ratio straight through
+    //pMoveTo rounds differently (fptoif): 7.5px a tick at full speed up a 1:2 slope instead of 30fps's 8
+    var tSlA, tSlI, tSlF;
+    tSlA=fptoif(abs(xVel))
+    tSlI=floor(tSlA)
+    tSlF=tSlA-tSlI
+    pMoveTo(sign(xVel)*((1-tSlF)*round(tSlI*ratio)+tSlF*round((tSlI+1)*ratio))*gDeltaTime,(yVel*gDeltaTime*ratio*speedmod+slopeChangeInY))
   }
 }
 else

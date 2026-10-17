@@ -18,7 +18,7 @@ if argument0=1 and attackState=0
     {
       yVel=-2
       yAcc=-2
-      yVelSetTick=1 //60fps change (added): set speed + one-off push: a full 30fps tick's worth (see pMoveToWrapNew)
+      yVelSetExt=1 //60fps change (added): set speed + one-off push: a full 30fps tick's worth (see pMoveToWrapNew). Ext, not Tick: this runs after the frame's move and characterStepEvent clears the Tick flags before the next one, so the hop only got part of a tick (simulated: 3.05px high at 60fps, 2.24px at 120fps instead of 30fps's 3.95; now 3.78)
     }
     playSound(global.snd_JumpStrike,0,1)
     playSound(global.snd_BarrierDestroy,0,1)

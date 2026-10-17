@@ -53,7 +53,8 @@ if tutorialProgress>0 and tutorialProgress<100
   }
 
   //Wait for input
-  if keyboard_check_pressed(ord("J")) and bWaitForInput=true
+  //if keyboard_check_pressed(ord("J")) and bWaitForInput=true
+  if (keyboard_check_pressed(ord("J")) or scrPadPressed(17)) and bWaitForInput=true //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
   {
     io_clear()
     bWaitForInput=false
@@ -81,7 +82,8 @@ objectNum relates to which global flag to write to.
 
 objectType relates to which bead to show in the message
 */
-if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up)) and global.gamePaused=false
+//if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up)) and global.gamePaused=false
+if (keyboard_check_pressed(ord(global.ctrlUp)) or (keyboard_check_pressed(vk_up) or scrPadPressed(3))) and global.gamePaused=false //gamepad change: and the gamepad's Up (scrGamepadInit)
 {
   if global.invBracelet[objectNum]=0
   {

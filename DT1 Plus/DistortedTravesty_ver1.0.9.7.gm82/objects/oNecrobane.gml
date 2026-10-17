@@ -491,7 +491,8 @@ if global.gamePaused=false
     {
       //specialAttack+=1
       specialAttack+=gDeltaTime //60fps change: counts 30fps ticks
-      torchOutTime+=50
+      //torchOutTime+=50
+      torchOutTime+=50*gDeltaTime //60fps change: per 30fps tick (the torches go out after the same ticks)
       //if specialAttack=160
       if scrCountPass(specialAttack,160) //60fps change: once, when the count reaches it
       {

@@ -96,19 +96,22 @@ if windowClosed=true
 
 if bShowInfo=true
 {
-  if keyboard_check_pressed(ord("J")) and windowClosed=false
+  //if keyboard_check_pressed(ord("J")) and windowClosed=false
+  if (keyboard_check_pressed(ord("J")) or scrPadPressed(17)) and windowClosed=false //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
   {
     io_clear()
     playSound(global.snd_InfoOff,0,1)
     windowClosed=true
     global.gamePaused=false
   }
-  else if keyboard_check_pressed(ord("K")) and windowClosed=false
+  //else if keyboard_check_pressed(ord("K")) and windowClosed=false
+  else if (keyboard_check_pressed(ord("K")) or scrPadPressed(18)) and windowClosed=false //gamepad change: and the gamepad's Menu Cancel (scrGamepadInit)
   {
     playSound(global.snd_MenuCursor,0,1)
     currentDisplay=combatData
   }
-  else if keyboard_check_pressed(ord("L")) and sideComment!="" and windowClosed=false
+  //else if keyboard_check_pressed(ord("L")) and sideComment!="" and windowClosed=false
+  else if (keyboard_check_pressed(ord("L")) or scrPadPressed(21)) and sideComment!="" and windowClosed=false //gamepad change: and the gamepad's Y (swap lists) (scrGamepadInit)
   {
     playSound(global.snd_MenuCursor,0,1)
     currentDisplay=sideComment

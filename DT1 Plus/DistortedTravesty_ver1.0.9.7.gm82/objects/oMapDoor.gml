@@ -57,7 +57,8 @@ exitType relates to whether the player has to press up to activate the event.
 */
 if exitType=0
 {
-  if keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up) and global.gamePaused=false
+  //if keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up) and global.gamePaused=false
+  if keyboard_check_pressed(ord(global.ctrlUp)) or (keyboard_check_pressed(vk_up) or scrPadPressed(3)) and global.gamePaused=false //gamepad change: and the gamepad's Up (scrGamepadInit)
   {
     oPlayer1.x=newX
     oPlayer1.y=newY
@@ -71,7 +72,8 @@ else if exitType=1
 }
 else if exitType=2
 {
-  if keyboard_check_pressed(ord(global.ctrlDown)) or keyboard_check_pressed(vk_down) and global.gamePaused=false
+  //if keyboard_check_pressed(ord(global.ctrlDown)) or keyboard_check_pressed(vk_down) and global.gamePaused=false
+  if keyboard_check_pressed(ord(global.ctrlDown)) or (keyboard_check_pressed(vk_down) or scrPadPressed(4)) and global.gamePaused=false //gamepad change: and the gamepad's Down (scrGamepadInit)
   {
     with oCharacter
     {

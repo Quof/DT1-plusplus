@@ -1362,8 +1362,10 @@ else if global.gameProgress=149 and room=rFortL2_4 //Boss Fight (Copy X)
   {
     //sceneDelay+=1
     sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
-    if sceneDelay>=1 and sceneDelay<=60
-      fadeVolume(global.msc_MMxTheme,150)
+    //if sceneDelay>=1 and sceneDelay<=60
+    if sceneDelay>0 and sceneDelay<=60 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //fadeVolume(global.msc_MMxTheme,150)
+      fadeVolume(global.msc_MMxTheme,150*gDeltaTime) //60fps change: fades every frame: per 30fps tick
     //if sceneDelay=65
     if scrCountPass(sceneDelay,65) //60fps change: once, when the count reaches it
     {

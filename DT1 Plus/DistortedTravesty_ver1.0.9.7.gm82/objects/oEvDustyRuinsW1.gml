@@ -485,7 +485,8 @@ else if global.gameProgress=79 and room=rDustyRuins6 //Quicktime Event
   }
   else if sceneProgress=1
   {
-    if keyboard_check_pressed(ord("X"))
+    //if keyboard_check_pressed(ord("X"))
+    if (keyboard_check_pressed(ord("X")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
       sceneProgress+=1
@@ -495,7 +496,8 @@ else if global.gameProgress=79 and room=rDustyRuins6 //Quicktime Event
   }
   else if sceneProgress=2
   {
-    if keyboard_check_pressed(ord("F"))
+    //if keyboard_check_pressed(ord("F"))
+    if (keyboard_check_pressed(ord("F")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
       sceneProgress+=1
@@ -505,7 +507,8 @@ else if global.gameProgress=79 and room=rDustyRuins6 //Quicktime Event
   }
   else if sceneProgress=3
   {
-    if keyboard_check_pressed(ord("A"))
+    //if keyboard_check_pressed(ord("A"))
+    if (keyboard_check_pressed(ord("A")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
       sceneProgress+=1
@@ -515,7 +518,8 @@ else if global.gameProgress=79 and room=rDustyRuins6 //Quicktime Event
   }
   else if sceneProgress=4
   {
-    if keyboard_check_pressed(ord("I"))
+    //if keyboard_check_pressed(ord("I"))
+    if (keyboard_check_pressed(ord("I")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
       sceneProgress+=1
@@ -525,7 +529,8 @@ else if global.gameProgress=79 and room=rDustyRuins6 //Quicktime Event
   }
   else if sceneProgress=5
   {
-    if keyboard_check_pressed(ord("L"))
+    //if keyboard_check_pressed(ord("L"))
+    if (keyboard_check_pressed(ord("L")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
       sceneProgress+=1

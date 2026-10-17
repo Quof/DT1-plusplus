@@ -15,7 +15,8 @@ applies_to=self
 Save Point script.
 This will save the game.
 */
-if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up)) and global.gamePaused=false
+//if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up)) and global.gamePaused=false
+if (keyboard_check_pressed(ord(global.ctrlUp)) or (keyboard_check_pressed(vk_up) or scrPadPressed(3))) and global.gamePaused=false //gamepad change: and the gamepad's Up (scrGamepadInit)
 {
   playSound(global.snd_MenuConfirm,0,1)
   bSaving=1
@@ -280,6 +281,14 @@ if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up))
   ini_write_string(sectionWrite,"813",global.ctrlAbilityForward)
   ini_write_string(sectionWrite,"814",global.ctrlDashLeft)
   ini_write_string(sectionWrite,"815",global.ctrlDashRight)
+  ini_write_string(sectionWrite,"816",global.ctrlPause) //controls change (added): the Pause Menu key
+  ini_write_real(sectionWrite,"830",global.optGamePad) //gamepad change (added): Gamepad Input On/Off
+  for (i=1;i<=18;i+=1) //gamepad change (added): the gamepad's buttons, 831-848 (actions: scrGamepadInit)
+    ini_write_real(sectionWrite,string(830+i),global.gpBind[i]) //gamepad change (added)
+  ini_write_real(sectionWrite,"850",global.optDPadSpells) //dpad spells change (added): DPad Spells (DT2 Style)
+  for (i=0;i<=4;i+=1) //dpad spells change (added): and its boxes, 851-870: element (0 techniques)
+    for (ii=0;ii<=3;ii+=1) //dpad spells change (added): box (0 middle, 1 up, 2 left/right, 3 down)
+      ini_write_real(sectionWrite,string(851+i*4+ii),global.dpsSpell[i,ii]) //dpad spells change (added)
   saveProgress=80
   screen_redraw()
 

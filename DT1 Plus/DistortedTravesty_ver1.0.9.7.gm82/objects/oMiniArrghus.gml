@@ -48,7 +48,8 @@ if global.gamePaused=false
   {
     //shootTime+=1
     shootTime+=gDeltaTime //60fps change: counts 30fps ticks
-    if shootTime=shootWait
+    //if shootTime=shootWait
+    if scrCountPass(shootTime,shootWait) //60fps change: once, when the count reaches it (even if a frame rate change moved it off whole ticks)
       effect_create_above(ef_ring,x,y,0,c_silver)
     else if shootTime>=shootWait+15
     {

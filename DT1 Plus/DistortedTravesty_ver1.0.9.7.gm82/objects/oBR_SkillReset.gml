@@ -32,7 +32,8 @@ if global.gamePaused=false
 }
 if shopProgress>0
 {
-  if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
+  //if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
+  if keyboard_check_pressed(curUp) or (keyboard_check_pressed(vk_up) or scrPadPressed(3)) //gamepad change: and the gamepad's Up (scrGamepadInit)
   {
     playSound(global.snd_MenuCursor,0,1)
     if menuCursorPos=1
@@ -46,7 +47,8 @@ if shopProgress>0
       menuCursorY-=cursorIncY
     }
   }
-  if keyboard_check_pressed(curDown) or keyboard_check_pressed(vk_down)
+  //if keyboard_check_pressed(curDown) or keyboard_check_pressed(vk_down)
+  if keyboard_check_pressed(curDown) or (keyboard_check_pressed(vk_down) or scrPadPressed(4)) //gamepad change: and the gamepad's Down (scrGamepadInit)
   {
     playSound(global.snd_MenuCursor,0,1)
     if menuCursorPos=menuMax
@@ -60,7 +62,8 @@ if shopProgress>0
       menuCursorY+=cursorIncY
     }
   }
-  if keyboard_check_pressed(curConfirm)=true
+  //if keyboard_check_pressed(curConfirm)=true
+  if (keyboard_check_pressed(curConfirm) or scrPadPressed(17))=true //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
   {
     if menuCursorPos=1 //Yes
     {
@@ -120,7 +123,8 @@ if shopProgress>0
     depth=50
     global.gamePaused=false
   }
-  if keyboard_check_pressed(curCancel)=true
+  //if keyboard_check_pressed(curCancel)=true
+  if (keyboard_check_pressed(curCancel) or scrPadPressed(18))=true //gamepad change: and the gamepad's Menu Cancel (scrGamepadInit)
   {
     io_clear()
     oPlayer1.image_alpha=1
@@ -138,7 +142,8 @@ applies_to=self
 /*
 Shop script.
 */
-if (keyboard_check_pressed(ord(global.ctrlUp))) or keyboard_check_pressed(vk_up) and global.gamePaused=false and shopProgress=0
+//if (keyboard_check_pressed(ord(global.ctrlUp))) or keyboard_check_pressed(vk_up) and global.gamePaused=false and shopProgress=0
+if (keyboard_check_pressed(ord(global.ctrlUp))) or (keyboard_check_pressed(vk_up) or scrPadPressed(3)) and global.gamePaused=false and shopProgress=0 //gamepad change: and the gamepad's Up (scrGamepadInit)
 {
   depth=0
   oPlayer1.image_alpha=0

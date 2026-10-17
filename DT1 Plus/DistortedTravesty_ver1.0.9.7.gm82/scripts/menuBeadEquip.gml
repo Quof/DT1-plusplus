@@ -172,7 +172,8 @@ else if argument0=1 //menu control
 {
   if subCursorPos=1 //equip slots ==================================================
   {
-    if keyboard_check_pressed(curLeft) or keyboard_check_pressed(vk_left)
+    //if keyboard_check_pressed(curLeft) or keyboard_check_pressed(vk_left)
+    if keyboard_check_pressed(curLeft) or (keyboard_check_pressed(vk_left) or scrPadPressed(1)) //gamepad change: and the gamepad's Left (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosX=1
@@ -186,7 +187,8 @@ else if argument0=1 //menu control
         beadCursorPosX-=cursorIncX
       }
     }
-    if keyboard_check_pressed(curRight) or keyboard_check_pressed(vk_right)
+    //if keyboard_check_pressed(curRight) or keyboard_check_pressed(vk_right)
+    if keyboard_check_pressed(curRight) or (keyboard_check_pressed(vk_right) or scrPadPressed(2)) //gamepad change: and the gamepad's Right (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosX=4
@@ -200,7 +202,8 @@ else if argument0=1 //menu control
         beadCursorPosX+=cursorIncX
       }
     }
-    if keyboard_check_pressed(curConfirm)
+    //if keyboard_check_pressed(curConfirm)
+    if (keyboard_check_pressed(curConfirm) or scrPadPressed(17)) //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
     {
       remCurPos=cursorPosX
       if remCurPos>global.p1BraceletSlots
@@ -216,13 +219,15 @@ else if argument0=1 //menu control
         subCursorPos=2
       }
     }
-    if keyboard_check_pressed(curChange)
+    //if keyboard_check_pressed(curChange)
+    if (keyboard_check_pressed(curChange) or scrPadPressed(21)) //gamepad change: and the gamepad's Y (swap lists) (scrGamepadInit)
     {
       playSound(global.snd_MenuConfirm,0,1)
       remCurPos=cursorPosX
       menuBeadUnequip(remCurPos+1)
     }
-    if keyboard_check_pressed(curCancel)
+    //if keyboard_check_pressed(curCancel)
+    if (keyboard_check_pressed(curCancel) or scrPadPressed(18)) //gamepad change: and the gamepad's Menu Cancel (scrGamepadInit)
     {
       playSound(global.snd_MenuCancel,0,1)
       cursorPosY=8
@@ -232,7 +237,8 @@ else if argument0=1 //menu control
   }
   else if subCursorPos=2 //bead slots ==================================================
   {
-    if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
+    //if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
+    if keyboard_check_pressed(curUp) or (keyboard_check_pressed(vk_up) or scrPadPressed(3)) //gamepad change: and the gamepad's Up (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosY=1
@@ -246,7 +252,8 @@ else if argument0=1 //menu control
         beadCursorPosY-=cursorIncX
       }
     }
-    if keyboard_check_pressed(curDown) or keyboard_check_pressed(vk_down)
+    //if keyboard_check_pressed(curDown) or keyboard_check_pressed(vk_down)
+    if keyboard_check_pressed(curDown) or (keyboard_check_pressed(vk_down) or scrPadPressed(4)) //gamepad change: and the gamepad's Down (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosY=4
@@ -260,7 +267,8 @@ else if argument0=1 //menu control
         beadCursorPosY+=cursorIncX
       }
     }
-    if keyboard_check_pressed(curLeft) or keyboard_check_pressed(vk_left)
+    //if keyboard_check_pressed(curLeft) or keyboard_check_pressed(vk_left)
+    if keyboard_check_pressed(curLeft) or (keyboard_check_pressed(vk_left) or scrPadPressed(1)) //gamepad change: and the gamepad's Left (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosX=1
@@ -274,7 +282,8 @@ else if argument0=1 //menu control
         beadCursorPosX-=cursorIncX
       }
     }
-    if keyboard_check_pressed(curRight) or keyboard_check_pressed(vk_right)
+    //if keyboard_check_pressed(curRight) or keyboard_check_pressed(vk_right)
+    if keyboard_check_pressed(curRight) or (keyboard_check_pressed(vk_right) or scrPadPressed(2)) //gamepad change: and the gamepad's Right (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosX=5
@@ -288,7 +297,8 @@ else if argument0=1 //menu control
         beadCursorPosX+=cursorIncX
       }
     }
-    if keyboard_check_pressed(curConfirm)
+    //if keyboard_check_pressed(curConfirm)
+    if (keyboard_check_pressed(curConfirm) or scrPadPressed(17)) //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
     {
       playSound(global.snd_MenuConfirm,0,1)
       if cursorPosY=1
@@ -394,7 +404,8 @@ else if argument0=1 //menu control
         }
       }
     }
-    if keyboard_check_pressed(curCancel)
+    //if keyboard_check_pressed(curCancel)
+    if (keyboard_check_pressed(curCancel) or scrPadPressed(18)) //gamepad change: and the gamepad's Menu Cancel (scrGamepadInit)
     {
       playSound(global.snd_MenuCancel,0,1)
       cursorPosX=remCurPos

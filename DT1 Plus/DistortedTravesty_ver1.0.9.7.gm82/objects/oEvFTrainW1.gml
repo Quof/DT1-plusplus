@@ -203,7 +203,8 @@ else if global.gameProgress=92 //quick time event - jump gap
   }
   else if sceneProgress=1
   {
-    if keyboard_check_pressed(ord("X"))
+    //if keyboard_check_pressed(ord("X"))
+    if (keyboard_check_pressed(ord("X")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
       oPlayer1.x=576
@@ -229,7 +230,8 @@ else if global.gameProgress=92 //quick time event - jump gap
   }
   else if sceneProgress=11
   {
-    if keyboard_check_pressed(ord("X"))
+    //if keyboard_check_pressed(ord("X"))
+    if (keyboard_check_pressed(ord("X")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
       oPlayer1.x=3312
@@ -255,7 +257,8 @@ else if global.gameProgress=92 //quick time event - jump gap
   }
   else if sceneProgress=21
   {
-    if keyboard_check_pressed(ord("X"))
+    //if keyboard_check_pressed(ord("X"))
+    if (keyboard_check_pressed(ord("X")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
       oPlayer1.x=3664
@@ -267,7 +270,8 @@ else if global.gameProgress=92 //quick time event - jump gap
   }
   else if sceneProgress=22
   {
-    if keyboard_check_pressed(ord("Y"))
+    //if keyboard_check_pressed(ord("Y"))
+    if (keyboard_check_pressed(ord("Y")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
       oPlayer1.x=3792
@@ -278,7 +282,8 @@ else if global.gameProgress=92 //quick time event - jump gap
   }
   else if sceneProgress=23
   {
-    if keyboard_check_pressed(ord("Z"))
+    //if keyboard_check_pressed(ord("Z"))
+    if (keyboard_check_pressed(ord("Z")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
       oPlayer1.x=3792
@@ -346,6 +351,7 @@ else if global.gameProgress=94 //Fright Train Elevator Start
     global.gamePaused=false
     timeline_index=tlFTrainTunnel
     timeline_running=true
+    timeline_speed=gDeltaTime //60fps change (added): a timeline moves timeline_speed every frame; 1 per 30fps tick (1 at 30fps)
   }
 }
 else if global.gameProgress=95 //Fright Train Elevator Control
@@ -357,6 +363,7 @@ else if global.gameProgress=95 //Fright Train Elevator Control
     timeline_running=true
     sceneProgress=10
   }
+  timeline_speed=gDeltaTime //60fps change (added): a timeline moves timeline_speed every frame; 1 per 30fps tick (1 at 30fps)
   if global.gamePaused=false
   {
     timeline_running=true
@@ -369,13 +376,17 @@ else if global.gameProgress=95 //Fright Train Elevator Control
     if timeline_position>=751
       newTimeline.timeline_running=false
   }
-  if sceneProgress=10 and timeline_position=750
+  if timeline_position>=751
+    newTimeline.timeline_speed=gDeltaTime //60fps change (added): the spike loop's timeline too
+  //if sceneProgress=10 and timeline_position=750
+  if sceneProgress=10 and timeline_position>=750 //60fps change: >= so it still starts if a frame rate change leaves the timeline between whole positions
   {
     newTimeline=instance_create(0,0,oMisc)
     newTimeline.type=0
     newTimeline.sprite_index=sNull
     newTimeline.timeline_index=tlFTrainTunnelSpikesLoop
     newTimeline.timeline_loop=true
+    newTimeline.timeline_speed=gDeltaTime //60fps change (added): see above
     sceneProgress=11
   }
   if sceneProgress=11 and enemyCount=0

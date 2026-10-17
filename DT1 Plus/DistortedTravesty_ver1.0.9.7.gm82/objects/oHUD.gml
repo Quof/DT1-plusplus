@@ -8,6 +8,8 @@ applies_to=self
 musicCheck=false //check music on load
 menuOpen=false //if the pause menu is open
 image_speed=0.1 //cursor image speed
+hudAnimFrame=0 //60fps change (added): this object's animation frame (image_speed 0.1 a 30fps tick), counted in the Draw for the falling piece of the life bar
+recRanNumber=0 //60fps change (added): the Records page's "A Random Number", kept between frames and rolled again once per 30fps tick in the Draw (0: not rolled yet)
 lineEffectMax=0
 lineEffect=0
 currentMenu=1 //menu section
@@ -64,12 +66,33 @@ curCancel=ord("K")
 curChange=ord("L")
 curTeleport=ord("M")
 curInfo=vk_f1
+//gamepad change (added): the Controls page (menuControlConfig). ctrlView: 0 = its three options (Keyboard Controls,
+//Gamepad Controls, Gamepad Input), 1 = the keyboard lists, 2 = the gamepad lists. gpListen: 1 while the gamepad list
+//waits for a button on the pad (gpWaitRelease: until everything on it is let go first; gpListenTime: 30fps ticks)
+ctrlView=0
+gpListen=0
+gpListenTime=0
+gpWaitRelease=0
+//dpad spells change (added): the Controls page's D-pad panel (ctrlView 3; menuDPadSpellConfig): the element it's for
+//(0 techniques), the box the cursor is on (0 middle, 1 up, 2 left, 3 right, 4 down), and the box's list (open, row)
+dpsElem=0
+dpsBox=0
+dpsList=0
+dpsListPos=1
 #define Step_0
 /*"/*'/**//* YYD ACTION
 lib_id=1
 action_id=603
 applies_to=self
 */
+//gamepad change (added): the gamepad's Pause Menu button opens and closes the menu as [P] does, but not while the
+//Controls page waits for a gamepad button
+//controls change: the keyboard's Pause Menu key can be set now (global.ctrlPause, Keyboard Controls), so opening and
+//closing the menu, which was this object's Key Press P event, is its User Defined 0 event, run from here
+//if scrPadPressed(16) and (gpListen=0 or menuOpen=false)
+//  event_perform(ev_keypress,ord("P"))
+if (keyboard_check_pressed(ord(global.ctrlPause)) or scrPadPressed(16)) and (gpListen=0 or menuOpen=false) //controls change: see above
+  event_user(0) //controls change: see above
 //--------------------------------
 //---------- PAUSE MENU ----------
 //--------------------------------
@@ -78,7 +101,8 @@ if global.gamePaused=true and menuOpen=true
   //cursor movement------------------------------------------------------------
   if currentMenu=2 //Inventory----------
   {
-    if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
+    //if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
+    if keyboard_check_pressed(curUp) or (keyboard_check_pressed(vk_up) or scrPadPressed(3)) //gamepad change: and the gamepad's Up (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosY=1
@@ -92,7 +116,8 @@ if global.gamePaused=true and menuOpen=true
         menuCursorY-=cursorIncY
       }
     }
-    if keyboard_check_pressed(curDown) or keyboard_check_pressed(vk_down)
+    //if keyboard_check_pressed(curDown) or keyboard_check_pressed(vk_down)
+    if keyboard_check_pressed(curDown) or (keyboard_check_pressed(vk_down) or scrPadPressed(4)) //gamepad change: and the gamepad's Down (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosY=menuMax
@@ -106,7 +131,8 @@ if global.gamePaused=true and menuOpen=true
         menuCursorY+=cursorIncY
       }
     }
-    if keyboard_check_pressed(curConfirm)
+    //if keyboard_check_pressed(curConfirm)
+    if (keyboard_check_pressed(curConfirm) or scrPadPressed(17)) //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
     {
       if global.location!="Spire of Forgotten Souls"
       {
@@ -290,7 +316,8 @@ if global.gamePaused=true and menuOpen=true
   }
   else if currentMenu=3 //Techniques----------
   {
-    if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
+    //if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
+    if keyboard_check_pressed(curUp) or (keyboard_check_pressed(vk_up) or scrPadPressed(3)) //gamepad change: and the gamepad's Up (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosY=1
@@ -304,7 +331,8 @@ if global.gamePaused=true and menuOpen=true
         menuCursorY-=cursorIncY
       }
     }
-    if keyboard_check_pressed(curDown) or keyboard_check_pressed(vk_down)
+    //if keyboard_check_pressed(curDown) or keyboard_check_pressed(vk_down)
+    if keyboard_check_pressed(curDown) or (keyboard_check_pressed(vk_down) or scrPadPressed(4)) //gamepad change: and the gamepad's Down (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosY=menuMax
@@ -318,7 +346,8 @@ if global.gamePaused=true and menuOpen=true
         menuCursorY+=cursorIncY
       }
     }
-    if keyboard_check_pressed(curLeft) or keyboard_check_pressed(vk_left)
+    //if keyboard_check_pressed(curLeft) or keyboard_check_pressed(vk_left)
+    if keyboard_check_pressed(curLeft) or (keyboard_check_pressed(vk_left) or scrPadPressed(1)) //gamepad change: and the gamepad's Left (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if subCursorPos=1
@@ -328,7 +357,8 @@ if global.gamePaused=true and menuOpen=true
       cursorPosY=1
       menuCursorY=menuMainY+28
     }
-    if keyboard_check_pressed(curRight) or keyboard_check_pressed(vk_right)
+    //if keyboard_check_pressed(curRight) or keyboard_check_pressed(vk_right)
+    if keyboard_check_pressed(curRight) or (keyboard_check_pressed(vk_right) or scrPadPressed(2)) //gamepad change: and the gamepad's Right (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if subCursorPos=5
@@ -338,7 +368,8 @@ if global.gamePaused=true and menuOpen=true
       cursorPosY=1
       menuCursorY=menuMainY+28
     }
-    if keyboard_check_pressed(curConfirm)
+    //if keyboard_check_pressed(curConfirm)
+    if (keyboard_check_pressed(curConfirm) or scrPadPressed(17)) //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
     {
       if oPlayer1.attackState!=oPlayer1.ACT_CASTING
       {
@@ -469,7 +500,8 @@ if global.gamePaused=true and menuOpen=true
   }
   else if currentMenu=4 //Skills----------
   {
-    if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
+    //if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
+    if keyboard_check_pressed(curUp) or (keyboard_check_pressed(vk_up) or scrPadPressed(3)) //gamepad change: and the gamepad's Up (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosX=0
@@ -499,7 +531,8 @@ if global.gamePaused=true and menuOpen=true
         }
       }
     }
-    if keyboard_check_pressed(curDown) or keyboard_check_pressed(vk_down)
+    //if keyboard_check_pressed(curDown) or keyboard_check_pressed(vk_down)
+    if keyboard_check_pressed(curDown) or (keyboard_check_pressed(vk_down) or scrPadPressed(4)) //gamepad change: and the gamepad's Down (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosX=0
@@ -529,7 +562,8 @@ if global.gamePaused=true and menuOpen=true
         }
       }
     }
-    if keyboard_check_pressed(curLeft) or keyboard_check_pressed(vk_left)
+    //if keyboard_check_pressed(curLeft) or keyboard_check_pressed(vk_left)
+    if keyboard_check_pressed(curLeft) or (keyboard_check_pressed(vk_left) or scrPadPressed(1)) //gamepad change: and the gamepad's Left (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosX<=1
@@ -549,7 +583,8 @@ if global.gamePaused=true and menuOpen=true
         menuCursorX-=cursorIncX
       }
     }
-    if keyboard_check_pressed(curRight) or keyboard_check_pressed(vk_right)
+    //if keyboard_check_pressed(curRight) or keyboard_check_pressed(vk_right)
+    if keyboard_check_pressed(curRight) or (keyboard_check_pressed(vk_right) or scrPadPressed(2)) //gamepad change: and the gamepad's Right (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosX=0
@@ -581,7 +616,8 @@ if global.gamePaused=true and menuOpen=true
         }
       }
     }
-    if keyboard_check_pressed(curConfirm)
+    //if keyboard_check_pressed(curConfirm)
+    if (keyboard_check_pressed(curConfirm) or scrPadPressed(17)) //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
     {
       tempSPcount=global.p1SkillPoints
       if subCursorPos=1 //Weapon
@@ -1052,7 +1088,8 @@ if global.gamePaused=true and menuOpen=true
   }
   else if currentMenu=5 //Options----------
   {
-    if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
+    //if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
+    if keyboard_check_pressed(curUp) or (keyboard_check_pressed(vk_up) or scrPadPressed(3)) //gamepad change: and the gamepad's Up (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosY=1
@@ -1066,7 +1103,8 @@ if global.gamePaused=true and menuOpen=true
         menuCursorY-=cursorIncY
       }
     }
-    if keyboard_check_pressed(curDown) or keyboard_check_pressed(vk_down)
+    //if keyboard_check_pressed(curDown) or keyboard_check_pressed(vk_down)
+    if keyboard_check_pressed(curDown) or (keyboard_check_pressed(vk_down) or scrPadPressed(4)) //gamepad change: and the gamepad's Down (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosY=menuMax
@@ -1081,7 +1119,8 @@ if global.gamePaused=true and menuOpen=true
       }
     }
     //if keyboard_check(curLeft)=true
-    if keyboard_check(curLeft)=true and gDeltaDoTicks //60fps change: one step per 30fps tick while the key is held (it changes the setting and plays the cursor sound every frame it's held, so it went twice as fast at 60fps)
+    //if keyboard_check(curLeft)=true and gDeltaDoTicks //60fps change: one step per 30fps tick while the key is held (it changes the setting and plays the cursor sound every frame it's held, so it went twice as fast at 60fps)
+    if (keyboard_check(curLeft) or scrPadHeld(1))=true and gDeltaDoTicks //60fps change: one step per 30fps tick while the key is held (it changes the setting and plays the cursor sound every frame it's held, so it went twice as fast at 60fps) //gamepad change: and the gamepad's Left (scrGamepadInit)
     {
       if subCursorPos=1
       {
@@ -1112,7 +1151,8 @@ if global.gamePaused=true and menuOpen=true
       }
     }
     //if keyboard_check(curRight)=true
-    if keyboard_check(curRight)=true and gDeltaDoTicks //60fps change: see above
+    //if keyboard_check(curRight)=true and gDeltaDoTicks //60fps change: see above
+    if (keyboard_check(curRight) or scrPadHeld(2))=true and gDeltaDoTicks //60fps change: see above //gamepad change: and the gamepad's Right (scrGamepadInit)
     {
       if subCursorPos=1
       {
@@ -1143,7 +1183,8 @@ if global.gamePaused=true and menuOpen=true
         }
       }
     }
-    if keyboard_check_pressed(curConfirm)
+    //if keyboard_check_pressed(curConfirm)
+    if (keyboard_check_pressed(curConfirm) or scrPadPressed(17)) //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
     {
       if subCursorPos=1
       {
@@ -1325,7 +1366,8 @@ if global.gamePaused=true and menuOpen=true
       }
       playSound(global.snd_MenuConfirm,0,1)
     }
-    if keyboard_check_pressed(curChange)
+    //if keyboard_check_pressed(curChange)
+    if (keyboard_check_pressed(curChange) or scrPadPressed(21)) //gamepad change: and the gamepad's Y (swap lists) (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       bChangedMenu=true
@@ -1335,7 +1377,8 @@ if global.gamePaused=true and menuOpen=true
   }
   else if currentMenu=7 //Records----------
   {
-    if keyboard_check_pressed(curLeft) or keyboard_check_pressed(vk_left)
+    //if keyboard_check_pressed(curLeft) or keyboard_check_pressed(vk_left)
+    if keyboard_check_pressed(curLeft) or (keyboard_check_pressed(vk_left) or scrPadPressed(1)) //gamepad change: and the gamepad's Left (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if subCursorPos=1
@@ -1343,7 +1386,8 @@ if global.gamePaused=true and menuOpen=true
       else
         subCursorPos-=1
     }
-    if keyboard_check_pressed(curRight) or keyboard_check_pressed(vk_right)
+    //if keyboard_check_pressed(curRight) or keyboard_check_pressed(vk_right)
+    if keyboard_check_pressed(curRight) or (keyboard_check_pressed(vk_right) or scrPadPressed(2)) //gamepad change: and the gamepad's Right (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if subCursorPos=5
@@ -1356,7 +1400,8 @@ if global.gamePaused=true and menuOpen=true
     menuControlConfig()
   else if currentMenu=9 //System----------
   {
-    if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
+    //if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
+    if keyboard_check_pressed(curUp) or (keyboard_check_pressed(vk_up) or scrPadPressed(3)) //gamepad change: and the gamepad's Up (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosY=1
@@ -1370,7 +1415,8 @@ if global.gamePaused=true and menuOpen=true
         menuCursorY-=cursorIncY
       }
     }
-    if keyboard_check_pressed(curDown) or keyboard_check_pressed(vk_down)
+    //if keyboard_check_pressed(curDown) or keyboard_check_pressed(vk_down)
+    if keyboard_check_pressed(curDown) or (keyboard_check_pressed(vk_down) or scrPadPressed(4)) //gamepad change: and the gamepad's Down (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if cursorPosY=menuMax
@@ -1385,7 +1431,8 @@ if global.gamePaused=true and menuOpen=true
       }
     }
 
-    if keyboard_check_pressed(curConfirm)
+    //if keyboard_check_pressed(curConfirm)
+    if (keyboard_check_pressed(curConfirm) or scrPadPressed(17)) //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
     {
       if cursorPosY=1 //Force Game Over
       {
@@ -1406,9 +1453,11 @@ if global.gamePaused=true and menuOpen=true
   else if currentMenu>=100 //Bead Equip----------
     menuBeadEquip(1)
   //swap menus------------------------------------------------------------
-  if currentMenu<10
+  //if currentMenu<10
+  if currentMenu<10 and (currentMenu!=8 or ctrlView=0) //gamepad change, controls change: not while the Controls page's key/button panel is open (it waits for gamepad buttons there, and L1/R1 may be the one being set)
   {
-    if keyboard_check_pressed(curMenuShiftForward)
+    //if keyboard_check_pressed(curMenuShiftForward)
+    if (keyboard_check_pressed(curMenuShiftForward) or scrPadPressed(20)) //gamepad change: and the gamepad's R1 (menu tab forward) (scrGamepadInit)
     {
       playSound(global.snd_MenuShift,0,1)
       subCursorPos=1
@@ -1418,7 +1467,8 @@ if global.gamePaused=true and menuOpen=true
         currentMenu+=1
       bChangedMenu=true
     }
-    if keyboard_check_pressed(curMenuShiftBack)
+    //if keyboard_check_pressed(curMenuShiftBack)
+    if (keyboard_check_pressed(curMenuShiftBack) or scrPadPressed(19)) //gamepad change: and the gamepad's L1 (menu tab back) (scrGamepadInit)
     {
       playSound(global.snd_MenuShift,0,1)
       subCursorPos=1
@@ -1546,12 +1596,18 @@ if global.gamePaused=true and menuOpen=true
     else if currentMenu=8 //Controls
     {
       cursorPosY=1
-      if subCursorPos=1
-        menuMax=9
-      else
-        menuMax=8
+      //if subCursorPos=1
+      //  menuMax=9
+      //else
+      //  menuMax=8
+      //gamepad change: the page starts on its three options (menuControlConfig sets up the lists it opens)
+      ctrlView=0
+      gpListen=0
+      subCursorPos=1
+      menuMax=4+5*global.optDPadSpells //dpad spells change: and DPad Spells (DT2 Style), with its five element rows while it's on
       menuCursorX=menuMainX+18
-      menuCursorY=menuMainY+42
+      //menuCursorY=menuMainY+42
+      menuCursorY=menuMainY+28 //controls change: the three options are at the top of a smaller box (no header row)
       cursorIncY=12
     }
     else if currentMenu=9 //System
@@ -1568,7 +1624,8 @@ if global.gamePaused=true and menuOpen=true
   if keyboard_check_pressed(curInfo)
     show_info()
   //teleport-------------------------------------------------------------
-  if keyboard_check_pressed(curTeleport) and global.gameProgress>=86
+  //if keyboard_check_pressed(curTeleport) and global.gameProgress>=86
+  if (keyboard_check_pressed(curTeleport) or scrPadPressed(22)) and global.gameProgress>=86 and (currentMenu!=8 or ctrlView=0) //gamepad change: and the gamepad's BACK (teleport) (scrGamepadInit), not while the Controls page's key/button panel is open
   {
     if global.teleportEnabled=0 and global.currentBoss=""
     {
@@ -1655,6 +1712,92 @@ else if global.gamePaused=false
     tempMplay=findMusic()
     playMusic(tempMplay,0)
     musicCheck=false
+  }
+}
+#define Other_10
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+//controls change: this was the Key Press P event; it's run from the Step event (event_user(0)) when the Pause
+//Menu key (global.ctrlPause, Keyboard Controls) or the gamepad's Pause Menu button is pressed
+if global.gameOver=false
+{
+  if menuOpen=false and global.gamePaused=false
+  {
+    playSound(global.snd_MenuOpen,0,1)
+    depth=-150
+    //fix items going over max
+    if oPlayer1.conSkittles>9
+      oPlayer1.conSkittles=9
+    if oPlayer1.conSmoothie>3
+      oPlayer1.conSmoothie=3
+    if oPlayer1.conStarburst>5
+      oPlayer1.conStarburst=5
+    if oPlayer1.conGummyBears>7
+      oPlayer1.conGummyBears=7
+    menuMainX=view_xview[0]+96
+    menuMainY=view_yview[0]+82
+    xLineEffectMax=26
+    xLineEffect=0
+    xCreate=menuMainX+4
+    yCreate=menuMainY+4
+    oLineDummy=object_add()
+    for (iCreate=0;iCreate<xLineEffectMax;iCreate+=1)
+    {
+      xLineEffect[iCreate]=instance_create(xCreate,yCreate,oLineDummy)
+      xCreate+=12
+    }
+
+    yLineEffectMax=16
+    yLineEffect=0
+    xCreate=menuMainX+4
+    yCreate=menuMainY+4
+    for (iCreate=0;iCreate<yLineEffectMax;iCreate+=1)
+    {
+      yLineEffect[iCreate]=instance_create(xCreate,yCreate,oLineDummy)
+      yCreate+=12
+    }
+    menuOpen=true
+    global.gamePaused=true
+    oPlayer1.image_speed=0
+    if global.optKeepMenuPosition=false
+      currentMenu=1
+    else
+    {
+      if global.menuPosition>=100
+        global.menuPosition=2
+      currentMenu=global.menuPosition
+    }
+    global.recOpenedMenuNumber+=1
+    bChangedMenu=true
+    subCursorPos=1
+    cursorPosX=1
+    cursorPosY=1
+    menuCursorX=menuMainX
+    menuCursorY=menuMainX
+    identCursorX=menuMainX
+    identCursorY=menuMainX
+    cursorIncX=1
+    cursorIncY=1
+    triX=0
+    triMoveTime=0
+  }
+  else if menuOpen=true and global.gamePaused=true
+  {
+    playSound(global.snd_MenuClose,0,1)
+    depth=-99
+    global.menuPosition=currentMenu
+    menuOpen=false
+    global.gamePaused=false
+    gpListen=0 //gamepad change (added): stop waiting for a gamepad button (Controls page)
+    ctrlView=0 //controls change (added): and close the key/button panel (the tabs can be changed again)
+    with oMessageMenuPopup
+      instance_destroy()
+    with oLineDummy
+      instance_destroy()
+    object_delete(oLineDummy)
   }
 }
 #define Draw_0
@@ -1781,7 +1924,11 @@ if global.optShowHUD=1
     else
       bShowLifeDrop=false
     newTrack=oldTrack-healthTrack
-    draw_sprite_ext(sHealthTrack,-1,healthDisplayX+27+healthTrack,healthDisplayY+10+yDrop,newTrack,1,dropAngle,dropBarColor,dropAlpha)
+    //draw_sprite_ext(sHealthTrack,-1,healthDisplayX+27+healthTrack,healthDisplayY+10+yDrop,newTrack,1,dropAngle,dropBarColor,dropAlpha)
+    //60fps change: its frame is counted here at image_speed's 0.1 a 30fps tick. With -1 it used this object's own
+    //image_index, which has no sprite to animate: whether GM advances it, and with oGame's correction, depends on the runner
+    draw_sprite_ext(sHealthTrack,hudAnimFrame,healthDisplayX+27+healthTrack,healthDisplayY+10+yDrop,newTrack,1,dropAngle,dropBarColor,dropAlpha)
+    hudAnimFrame+=image_speed*gDeltaTime //60fps change (added): see above
   }
 
   //dash icon
@@ -1868,10 +2015,12 @@ if global.optShowHUD=1
   draw_set_color(techColor)
   draw_set_halign(fa_center)
   draw_set_font(fnt_SubMenu)
-  draw_text(elementDisplayX+74,elementDisplayY+3,global.p1SpellEquip)
+  //draw_text(elementDisplayX+74,elementDisplayY+3,global.p1SpellEquip)
+  draw_text(elementDisplayX+74,elementDisplayY+3,scrDPadSpellShown(2)) //dpad spells change: with DPad Spells on, the element's name
   draw_set_color(make_color_rgb(248,192,72))
   if global.p1TechniqueEquip!="CONJURE"
-    draw_text(elementDisplayX+74,elementDisplayY+17,global.p1TechniqueEquip)
+    //draw_text(elementDisplayX+74,elementDisplayY+17,global.p1TechniqueEquip)
+    draw_text(elementDisplayX+74,elementDisplayY+17,scrDPadSpellShown(1)) //dpad spells change: blank with DPad Spells on
   else
   {
     if global.p1CurrentElement=1
@@ -3748,7 +3897,8 @@ if global.gamePaused=true and menuOpen=true
       draw_set_halign(fa_right)
       var ranNumber,expBonus,currDifficulty; //, sesPtHour, sesPtMinute, sesPtSec;
       //ranNumber=round(random(899999999)+100000000)
-      if gDeltaDoTicks ranNumber=round(random(899999999)+100000000) //60fps change: once per 30fps tick
+      if gDeltaDoTicks or recRanNumber=0 {recRanNumber=round(random(899999999)+100000000)} //60fps change: once per 30fps tick (every frame at 30fps), kept in recRanNumber: a var is unset again on the frames between
+      ranNumber=recRanNumber //60fps change (added)
       expBonus=round((oPlayer1.awesomePoints/100000)*100)
       if expBonus>100 {expBonus=100}
       expBonus+=global.SkStatistician*5
@@ -3840,15 +3990,42 @@ if global.gamePaused=true and menuOpen=true
     draw_set_font(fnt_SubMenu)
     draw_set_alpha(0.9)
     draw_set_color(colorDarkPink)
-    draw_rectangle(subMenuControlsX,subMenuControlsY,subMenuControlsX+170,subMenuControlsY+173,false)
+    //draw_rectangle(subMenuControlsX,subMenuControlsY,subMenuControlsX+170,subMenuControlsY+173,false)
+    draw_rectangle(subMenuControlsX,subMenuControlsY,subMenuControlsX+170,subMenuControlsY+62+60*global.optDPadSpells,false) //controls change: as tall as its options (the key/button lists are a panel now; dpad spells change: 4 rows, or 9 with DPad Spells on)
     draw_set_alpha(1)
     draw_set_color(colorLightPink)
-    draw_rectangle(subMenuControlsX,subMenuControlsY,subMenuControlsX+170,subMenuControlsY+173,true)
+    //draw_rectangle(subMenuControlsX,subMenuControlsY,subMenuControlsX+170,subMenuControlsY+173,true)
+    draw_rectangle(subMenuControlsX,subMenuControlsY,subMenuControlsX+170,subMenuControlsY+62+60*global.optDPadSpells,true) //controls change: see above
     draw_line(subMenuControlsX,subMenuControlsY+10,subMenuControlsX+170,subMenuControlsY+10)
     draw_set_halign(fa_center)
     draw_text(subMenuControlsX+85,subMenuControlsY-2,"CONTROL CONFIGURATION")
     draw_set_color(colorDarkPurple)
     draw_set_halign(fa_left)
+    //gamepad change (added): the page has three options: Keyboard Controls, Gamepad Controls and Gamepad Input On/Off
+    //controls change: the first two open a panel over the middle of the screen with every key/button in one list
+    //(menuControlWidget, drawn after the map quote below); this box stays under it. No header row (like the System menu)
+    var tRow,tText;
+    for(tRow=1;tRow<=3;tRow+=1)
+      draw_rectangle(subMenuControlsX+4,subMenuControlsY+2+tRow*12,subMenuControlsX+12,subMenuControlsY+10+tRow*12,true)
+    draw_text(subMenuControlsX+16,subMenuControlsY+11,"Keyboard Controls")
+    draw_text(subMenuControlsX+16,subMenuControlsY+23,"Gamepad Controls")
+    if global.optGamePad {tText="Gamepad Input: On"} else {tText="Gamepad Input: Off"}
+    draw_text(subMenuControlsX+16,subMenuControlsY+35,tText)
+    //dpad spells change (added): DPad Spells (DT2 Style) On/Off; while it's on, a row for each element's D-pad panel
+    //(menuDPadSpellWidget) under it, indented
+    draw_rectangle(subMenuControlsX+4,subMenuControlsY+50,subMenuControlsX+12,subMenuControlsY+58,true)
+    if global.optDPadSpells {tText="DPad Spells (DT2 Style): On"} else {tText="DPad Spells (DT2 Style): Off"}
+    draw_text(subMenuControlsX+16,subMenuControlsY+47,tText)
+    if global.optDPadSpells
+    {
+      for(tRow=5;tRow<=9;tRow+=1)
+      {
+        draw_rectangle(subMenuControlsX+16,subMenuControlsY+2+tRow*12,subMenuControlsX+24,subMenuControlsY+10+tRow*12,true)
+        if tRow=9 {tText=global.dpsLabel[0]} else {tText=global.dpsLabel[tRow-4]}
+        draw_text(subMenuControlsX+28,subMenuControlsY-1+tRow*12,tText)
+      }
+    }
+    /* controls change: the two keyboard lists as they were drawn here (one list in menuControlWidget now)
     draw_text(subMenuControlsX+3,subMenuControlsY+11,"Key")
     draw_text(subMenuControlsX+35,subMenuControlsY+11,"Action")
     if subCursorPos=1
@@ -3917,23 +4094,58 @@ if global.gamePaused=true and menuOpen=true
       draw_text(subMenuControlsX+35,subMenuControlsY+85,"Dash Left")
       draw_text(subMenuControlsX+35,subMenuControlsY+97,"Dash Right")
     }
+    */
 
     //---------- HELP INFO ----------
+    //gamepad change: what [J] does on the page, in a box as tall as its lines (the key/button panel has its own help);
+    //a GAMEPAD box below it shows the pad
+    var tHelp0,tHelp1,tHelp2,tLines;
+    tHelp0="[J]: Select"
+    tHelp1=""
+    tHelp2=""
+    tLines=1
     subMenuInfoX=menuMainX+190
     subMenuInfoY=menuMainY+16
     draw_set_alpha(0.9)
     draw_set_color(colorDarkPink)
-    draw_rectangle(subMenuInfoX,subMenuInfoY,subMenuInfoX+122,subMenuInfoY+37,false)
+    //draw_rectangle(subMenuInfoX,subMenuInfoY,subMenuInfoX+122,subMenuInfoY+37,false)
+    draw_rectangle(subMenuInfoX,subMenuInfoY,subMenuInfoX+122,subMenuInfoY+13+tLines*12,false) //gamepad change: as tall as its lines
     draw_set_alpha(1)
     draw_set_color(colorLightPink)
-    draw_rectangle(subMenuInfoX,subMenuInfoY,subMenuInfoX+122,subMenuInfoY+37,true)
+    //draw_rectangle(subMenuInfoX,subMenuInfoY,subMenuInfoX+122,subMenuInfoY+37,true)
+    draw_rectangle(subMenuInfoX,subMenuInfoY,subMenuInfoX+122,subMenuInfoY+13+tLines*12,true) //gamepad change: see above
     draw_line(subMenuInfoX,subMenuInfoY+10,subMenuInfoX+122,subMenuInfoY+10)
     draw_set_halign(fa_center)
     draw_text(subMenuInfoX+61,subMenuInfoY-2,"HELP INFO")
     draw_set_color(colorDarkPurple)
     draw_set_halign(fa_left)
-    draw_text(subMenuInfoX+3,subMenuInfoY+11,"[J]: Select action")
-    draw_text(subMenuInfoX+3,subMenuInfoY+23,"[L]: Swap Menus")
+    //draw_text(subMenuInfoX+3,subMenuInfoY+11,"[J]: Select action")
+    //draw_text(subMenuInfoX+3,subMenuInfoY+23,"[L]: Swap Menus")
+    draw_text(subMenuInfoX+3,subMenuInfoY+11,tHelp0) //gamepad change: see above
+    draw_text(subMenuInfoX+3,subMenuInfoY+23,tHelp1)
+    draw_text(subMenuInfoX+3,subMenuInfoY+35,tHelp2)
+    //---------- GAMEPAD ---------- //gamepad change (added): the gamepad being read, and whether Gamepad Input is on
+    subMenuPadY=subMenuInfoY+tLines*12+27
+    draw_set_alpha(0.9)
+    draw_set_color(colorDarkPink)
+    draw_rectangle(subMenuInfoX,subMenuPadY,subMenuInfoX+122,subMenuPadY+37,false)
+    draw_set_alpha(1)
+    draw_set_color(colorLightPink)
+    draw_rectangle(subMenuInfoX,subMenuPadY,subMenuInfoX+122,subMenuPadY+37,true)
+    draw_line(subMenuInfoX,subMenuPadY+10,subMenuInfoX+122,subMenuPadY+10)
+    draw_set_halign(fa_center)
+    draw_text(subMenuInfoX+61,subMenuPadY-2,"GAMEPAD")
+    draw_set_color(colorDarkPurple)
+    draw_set_halign(fa_left)
+    if global.gpDevice<0 {tText="None found"}
+    else
+    {
+      tText=global.gpName
+      if string_length(tText)>24 {tText=string_copy(tText,1,23)+"."}
+    }
+    draw_text(subMenuInfoX+3,subMenuPadY+11,tText)
+    if global.optGamePad {tText="Input: On"} else {tText="Input: Off"}
+    draw_text(subMenuInfoX+3,subMenuPadY+23,tText)
   }
   else if currentMenu=9 //System ==================================================
   {
@@ -3988,93 +4200,14 @@ if global.gamePaused=true and menuOpen=true
         draw_rectangle(identCursorX+global.optIdentifier,identCursorY+12,identCursorX+global.optIdentifier+4,identCursorY+18,true)
       }
     }
-    else if currentMenu=8
+    //else if currentMenu=8
+    else if currentMenu=8 and ctrlView=0 //controls change: the key/button panel draws its own (menuControlWidget)
       draw_rectangle(menuCursorX,menuCursorY,menuCursorX+12,menuCursorY+12,true)
     else if currentMenu=9
       draw_rectangle(menuCursorX,menuCursorY,menuCursorX+12,menuCursorY+12,true)
   }
   menuSlotDisplay()
   menuQuote()
-}
-#define KeyPress_80
-/*"/*'/**//* YYD ACTION
-lib_id=1
-action_id=603
-applies_to=self
-*/
-if global.gameOver=false
-{
-  if menuOpen=false and global.gamePaused=false
-  {
-    playSound(global.snd_MenuOpen,0,1)
-    depth=-150
-    //fix items going over max
-    if oPlayer1.conSkittles>9
-      oPlayer1.conSkittles=9
-    if oPlayer1.conSmoothie>3
-      oPlayer1.conSmoothie=3
-    if oPlayer1.conStarburst>5
-      oPlayer1.conStarburst=5
-    if oPlayer1.conGummyBears>7
-      oPlayer1.conGummyBears=7
-    menuMainX=view_xview[0]+96
-    menuMainY=view_yview[0]+82
-    xLineEffectMax=26
-    xLineEffect=0
-    xCreate=menuMainX+4
-    yCreate=menuMainY+4
-    oLineDummy=object_add()
-    for (iCreate=0;iCreate<xLineEffectMax;iCreate+=1)
-    {
-      xLineEffect[iCreate]=instance_create(xCreate,yCreate,oLineDummy)
-      xCreate+=12
-    }
-
-    yLineEffectMax=16
-    yLineEffect=0
-    xCreate=menuMainX+4
-    yCreate=menuMainY+4
-    for (iCreate=0;iCreate<yLineEffectMax;iCreate+=1)
-    {
-      yLineEffect[iCreate]=instance_create(xCreate,yCreate,oLineDummy)
-      yCreate+=12
-    }
-    menuOpen=true
-    global.gamePaused=true
-    oPlayer1.image_speed=0
-    if global.optKeepMenuPosition=false
-      currentMenu=1
-    else
-    {
-      if global.menuPosition>=100
-        global.menuPosition=2
-      currentMenu=global.menuPosition
-    }
-    global.recOpenedMenuNumber+=1
-    bChangedMenu=true
-    subCursorPos=1
-    cursorPosX=1
-    cursorPosY=1
-    menuCursorX=menuMainX
-    menuCursorY=menuMainX
-    identCursorX=menuMainX
-    identCursorY=menuMainX
-    cursorIncX=1
-    cursorIncY=1
-    triX=0
-    triMoveTime=0
-  }
-  else if menuOpen=true and global.gamePaused=true
-  {
-    playSound(global.snd_MenuClose,0,1)
-    depth=-99
-    global.menuPosition=currentMenu
-    menuOpen=false
-    global.gamePaused=false
-    with oMessageMenuPopup
-      instance_destroy()
-    with oLineDummy
-      instance_destroy()
-    object_delete(oLineDummy)
-  }
+  //if currentMenu=8 and ctrlView>0 {menuControlWidget()} //controls change (added): the Controls page's key/button panel, over the rest of the menu
+  if currentMenu=8 and ctrlView>0 {if ctrlView=3 {menuDPadSpellWidget()} else {menuControlWidget()}} //controls change (added): the Controls page's key/button panel, over the rest of the menu (dpad spells change: or its D-pad panel)
 }

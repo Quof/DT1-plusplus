@@ -25,7 +25,8 @@ applies_to=self
 Dungeon Portal script.
 This will move the player to the world map.
 */
-if (keyboard_check(ord(global.ctrlUp)) or keyboard_check(vk_up)) and global.gamePaused=false
+//if (keyboard_check(ord(global.ctrlUp)) or keyboard_check(vk_up)) and global.gamePaused=false
+if (keyboard_check(ord(global.ctrlUp)) or (keyboard_check(vk_up) or scrPadHeld(3))) and global.gamePaused=false //gamepad change: and the gamepad's Up (scrGamepadInit)
 {
   if holdTime>=30
   {

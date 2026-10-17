@@ -55,7 +55,8 @@ if global.gamePaused=false
       else
         image_xscale=1
     }
-    if shootTime=reShootTime-10
+    //if shootTime=reShootTime-10
+    if scrCountPass(shootTime,reShootTime-10) //60fps change: once, when the count reaches it (even if a frame rate change moved it off whole ticks)
     {
       y-=4
       yVel=-2.4

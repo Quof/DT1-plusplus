@@ -14,4 +14,14 @@ if !instance_exists(oGame)
 }
 //GM8.2 change (added): old GM8.1 instance ids, see GID
 if !variable_global_exists("objectIDMap") {global.objectIDMap=ds_map_create()}
+//2x window change (added): the game starts with the window at 2x (1024x768, the size F3 switches to). Only when the
+//game starts: coming back to the title keeps whatever size F3 left it at (oInitializeGame keeps the flag too)
+if !variable_global_exists("screenWindowDouble")
+{
+  global.screenWindowDouble=true
+  window_set_size(1024,768)
+  window_center()
+}
+//gamepad change (added): the gamepad reader, for the whole game (persistent), before anything reads the controls
+if !instance_exists(oGamepad) {instance_create(0,0,oGamepad)}
 gameIntro=instance_create(0,0,oIntro)

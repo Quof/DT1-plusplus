@@ -207,7 +207,8 @@ if difficultyChange=false
 {
   if useCommands=true
   {
-    if keyboard_check_pressed(ord("S")) or keyboard_check_pressed(vk_down) //down
+    //if keyboard_check_pressed(ord("S")) or keyboard_check_pressed(vk_down) //down
+    if keyboard_check_pressed(ord("S")) or (keyboard_check_pressed(vk_down) or scrPadPressed(4)) //down //gamepad change: and the gamepad's Down (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if GOCursorPos=5
@@ -229,7 +230,8 @@ if difficultyChange=false
         GOCursorY+=GOCursorInc
       }
     }
-    if keyboard_check_pressed(ord("W")) or keyboard_check_pressed(vk_up) //up
+    //if keyboard_check_pressed(ord("W")) or keyboard_check_pressed(vk_up) //up
+    if keyboard_check_pressed(ord("W")) or (keyboard_check_pressed(vk_up) or scrPadPressed(3)) //up //gamepad change: and the gamepad's Up (scrGamepadInit)
     {
       playSound(global.snd_MenuCursor,0,1)
       if global.currentBoss=""
@@ -259,7 +261,8 @@ if difficultyChange=false
         }
       }
     }
-    if keyboard_check_pressed(ord("J")) //confirm
+    //if keyboard_check_pressed(ord("J")) //confirm
+    if (keyboard_check_pressed(ord("J")) or scrPadPressed(17)) //confirm //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
     {
       if GOCursorPos=1 //retry boss
       {
@@ -410,7 +413,8 @@ if difficultyChange=false
 }
 else //difficulty change selection
 {
-  if keyboard_check_pressed(ord("S")) or keyboard_check_pressed(vk_down) //down
+  //if keyboard_check_pressed(ord("S")) or keyboard_check_pressed(vk_down) //down
+  if keyboard_check_pressed(ord("S")) or (keyboard_check_pressed(vk_down) or scrPadPressed(4)) //down //gamepad change: and the gamepad's Down (scrGamepadInit)
   {
     playSound(global.snd_MenuCursor,0,1)
     if dcCursorPos=3
@@ -424,7 +428,8 @@ else //difficulty change selection
       dcCursorY+=GOCursorInc
     }
   }
-  if keyboard_check_pressed(ord("W")) or keyboard_check_pressed(vk_up) //up
+  //if keyboard_check_pressed(ord("W")) or keyboard_check_pressed(vk_up) //up
+  if keyboard_check_pressed(ord("W")) or (keyboard_check_pressed(vk_up) or scrPadPressed(3)) //up //gamepad change: and the gamepad's Up (scrGamepadInit)
   {
     playSound(global.snd_MenuCursor,0,1)
     if dcCursorPos=1
@@ -438,13 +443,15 @@ else //difficulty change selection
       dcCursorY-=GOCursorInc
     }
   }
-  if keyboard_check_pressed(ord("J")) //confirm
+  //if keyboard_check_pressed(ord("J")) //confirm
+  if (keyboard_check_pressed(ord("J")) or scrPadPressed(17)) //confirm //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
   {
     playSound(global.snd_MenuConfirm,0,1)
     global.difficulty=dcCursorPos
     difficultyChange=false
   }
-  if keyboard_check_pressed(ord("K")) //cancel
+  //if keyboard_check_pressed(ord("K")) //cancel
+  if (keyboard_check_pressed(ord("K")) or scrPadPressed(18)) //cancel //gamepad change: and the gamepad's Menu Cancel (scrGamepadInit)
   {
     playSound(global.snd_MenuCancel,0,1)
     difficultyChange=false

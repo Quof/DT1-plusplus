@@ -29,7 +29,8 @@ action_id=603
 applies_to=self
 */
 //key up
-if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up))
+//if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up))
+if (keyboard_check_pressed(ord(global.ctrlUp)) or (keyboard_check_pressed(vk_up) or scrPadPressed(3))) //gamepad change: and the gamepad's Up (scrGamepadInit)
 {
   playSound(global.snd_MenuCursor,0,1)
   missionCursorPos=1
@@ -52,7 +53,8 @@ if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up))
     diffCursorPos=global.difficulty
 }
 //key down
-if (keyboard_check_pressed(ord(global.ctrlDown)) or keyboard_check_pressed(vk_down))
+//if (keyboard_check_pressed(ord(global.ctrlDown)) or keyboard_check_pressed(vk_down))
+if (keyboard_check_pressed(ord(global.ctrlDown)) or (keyboard_check_pressed(vk_down) or scrPadPressed(4))) //gamepad change: and the gamepad's Down (scrGamepadInit)
 {
   playSound(global.snd_MenuCursor,0,1)
   missionCursorPos=1
@@ -75,7 +77,8 @@ if (keyboard_check_pressed(ord(global.ctrlDown)) or keyboard_check_pressed(vk_do
     diffCursorPos=global.difficulty
 }
 //key left
-if (keyboard_check_pressed(ord(global.ctrlLeft)) or keyboard_check_pressed(vk_left))
+//if (keyboard_check_pressed(ord(global.ctrlLeft)) or keyboard_check_pressed(vk_left))
+if (keyboard_check_pressed(ord(global.ctrlLeft)) or (keyboard_check_pressed(vk_left) or scrPadPressed(1))) //gamepad change: and the gamepad's Left (scrGamepadInit)
 {
   playSound(global.snd_MenuCursor,0,1)
   if cursorPos=1
@@ -100,7 +103,8 @@ if (keyboard_check_pressed(ord(global.ctrlLeft)) or keyboard_check_pressed(vk_le
   }
 }
 //key right
-if (keyboard_check_pressed(ord(global.ctrlRight)) or keyboard_check_pressed(vk_right))
+//if (keyboard_check_pressed(ord(global.ctrlRight)) or keyboard_check_pressed(vk_right))
+if (keyboard_check_pressed(ord(global.ctrlRight)) or (keyboard_check_pressed(vk_right) or scrPadPressed(2))) //gamepad change: and the gamepad's Right (scrGamepadInit)
 {
   playSound(global.snd_MenuCursor,0,1)
   if cursorPos=1
@@ -125,7 +129,8 @@ if (keyboard_check_pressed(ord(global.ctrlRight)) or keyboard_check_pressed(vk_r
   }
 }
 //key confirm
-if keyboard_check_pressed(ord(global.ctrlJump))
+//if keyboard_check_pressed(ord(global.ctrlJump))
+if (keyboard_check_pressed(ord(global.ctrlJump)) or scrPadPressed(5)) //gamepad change: and the gamepad's Jump (scrGamepadInit)
 {
   if cursorPos=1
   {

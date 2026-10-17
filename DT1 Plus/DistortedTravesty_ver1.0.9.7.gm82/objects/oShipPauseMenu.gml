@@ -25,7 +25,8 @@ action_id=603
 applies_to=self
 */
 //key up
-if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up))
+//if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up))
+if (keyboard_check_pressed(ord(global.ctrlUp)) or (keyboard_check_pressed(vk_up) or scrPadPressed(3))) //gamepad change: and the gamepad's Up (scrGamepadInit)
 {
   playSound(global.snd_MenuCursor,0,1)
   if cursorPos=1
@@ -40,7 +41,8 @@ if (keyboard_check_pressed(ord(global.ctrlUp)) or keyboard_check_pressed(vk_up))
   }
 }
 //key down
-if (keyboard_check_pressed(ord(global.ctrlDown)) or keyboard_check_pressed(vk_down))
+//if (keyboard_check_pressed(ord(global.ctrlDown)) or keyboard_check_pressed(vk_down))
+if (keyboard_check_pressed(ord(global.ctrlDown)) or (keyboard_check_pressed(vk_down) or scrPadPressed(4))) //gamepad change: and the gamepad's Down (scrGamepadInit)
 {
   playSound(global.snd_MenuCursor,0,1)
   if cursorPos=menuMax
@@ -55,7 +57,8 @@ if (keyboard_check_pressed(ord(global.ctrlDown)) or keyboard_check_pressed(vk_do
   }
 }
 //key confirm
-if keyboard_check_pressed(ord(global.ctrlJump))
+//if keyboard_check_pressed(ord(global.ctrlJump))
+if (keyboard_check_pressed(ord(global.ctrlJump)) or scrPadPressed(5)) //gamepad change: and the gamepad's Jump (scrGamepadInit)
 {
   global.gamePaused=false
   if cursorPos=1

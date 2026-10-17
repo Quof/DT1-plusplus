@@ -1222,18 +1222,22 @@ if instance_exists(bossSL_Rhand)
   if bossSL_Rhand.slamDelay=0
   {
     if bossSL_Rhand.currentAttack=0
-      bossSL_Rhand.slamTime+=7
+      //bossSL_Rhand.slamTime+=7
+      bossSL_Rhand.slamTime+=7*gDeltaTime //60fps change: added every frame an attack touches it: per 30fps tick
     else
-      bossSL_Rhand.slamTime+=3
+      //bossSL_Rhand.slamTime+=3
+      bossSL_Rhand.slamTime+=3*gDeltaTime //60fps change: see above
     if bossSL_Rhand.slamTime>bossSL_Rhand.slamWait
       bossSL_Rhand.slamTime=bossSL_Rhand.slamWait
   }
   if bossSL_Rhand.bulletStormDelay=0
   {
     if bossSL_Rhand.currentAttack=1
-      bossSL_Rhand.bulletStormTime+=7
+      //bossSL_Rhand.bulletStormTime+=7
+      bossSL_Rhand.bulletStormTime+=7*gDeltaTime //60fps change: see above
     else
-      bossSL_Rhand.bulletStormTime+=3
+      //bossSL_Rhand.bulletStormTime+=3
+      bossSL_Rhand.bulletStormTime+=3*gDeltaTime //60fps change: see above
     if bossSL_Rhand.bulletStormTime>bossSL_Rhand.bulletStormWait
       bossSL_Rhand.bulletStormTime=bossSL_Rhand.bulletStormWait
   }
@@ -1243,18 +1247,22 @@ if instance_exists(bossSL_Lhand)
   if bossSL_Lhand.slamDelay=0
   {
     if bossSL_Lhand.currentAttack=0
-      bossSL_Lhand.slamTime+=7
+      //bossSL_Lhand.slamTime+=7
+      bossSL_Lhand.slamTime+=7*gDeltaTime //60fps change: see above
     else
-      bossSL_Lhand.slamTime+=3
+      //bossSL_Lhand.slamTime+=3
+      bossSL_Lhand.slamTime+=3*gDeltaTime //60fps change: see above
     if bossSL_Lhand.slamTime>bossSL_Lhand.slamWait
       bossSL_Lhand.slamTime=bossSL_Lhand.slamWait
   }
   if bossSL_Lhand.bulletStormDelay=0
   {
     if bossSL_Lhand.currentAttack=1
-      bossSL_Lhand.bulletStormTime+=7
+      //bossSL_Lhand.bulletStormTime+=7
+      bossSL_Lhand.bulletStormTime+=7*gDeltaTime //60fps change: see above
     else
-      bossSL_Lhand.bulletStormTime+=3
+      //bossSL_Lhand.bulletStormTime+=3
+      bossSL_Lhand.bulletStormTime+=3*gDeltaTime //60fps change: see above
     if bossSL_Lhand.bulletStormTime>bossSL_Lhand.bulletStormWait
       bossSL_Lhand.bulletStormTime=bossSL_Lhand.bulletStormWait
   }

@@ -85,12 +85,15 @@ else if sceneProgress=2
 {
   //sceneDelay+=1
   sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
-  tile_layer_shift(1000000,0.9,0)
-  tile_layer_shift(999999,1.15,0)
+  //tile_layer_shift(1000000,0.9,0)
+  tile_layer_shift(1000000,0.9*gDeltaTime,0) //60fps change: the layers slide every frame: per 30fps tick
+  //tile_layer_shift(999999,1.15,0)
+  tile_layer_shift(999999,1.15*gDeltaTime,0) //60fps change: see above
   //if sceneDelay>=300
   if sceneDelay>299 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
   {
-    tile_layer_shift(999998,-1.5,0)
+    //tile_layer_shift(999998,-1.5,0)
+    tile_layer_shift(999998,-1.5*gDeltaTime,0) //60fps change: see above
     //playerImage.x-=1.5
     playerImage.x-=1.5*gDeltaTime //60fps change: per 30fps tick
   }

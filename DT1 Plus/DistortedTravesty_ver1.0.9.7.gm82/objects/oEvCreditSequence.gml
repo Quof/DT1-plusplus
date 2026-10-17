@@ -638,7 +638,8 @@ if global.gameProgress=352
       showRank+=1
     else if sceneDelay>=1271
     {
-      if keyboard_check_pressed(ord("J"))
+      //if keyboard_check_pressed(ord("J"))
+      if (keyboard_check_pressed(ord("J")) or scrPadPressed(17)) //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
       {
         global.gameProgress=353
         sceneProgress=0
