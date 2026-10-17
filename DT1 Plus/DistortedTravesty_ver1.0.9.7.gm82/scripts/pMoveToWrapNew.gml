@@ -207,6 +207,7 @@ if effectiveMaxSlope*abs(xVel)>0 and platformCharacterIs(ON_GROUND)
   xPrev=x
   yPrev=slopeYPrev      //we don't want to use y, because y is too high
   yPrevHigh=y          //we'll use the higher previous variable later
+  var tXSub; tXSub=xSubPx //stutter fix (added): the pixel leftover from before this move, for the redo below (pMoveTo)
   pMoveTo(xVel*gDeltaTime*speedmod,yVel*gDeltaTime*speedmod+slopeChangeInY)
   dist=point_distance(xPrev,yPrev,x,y) //overall distance that has been traveled
   //we should have only ran at xVel
@@ -225,6 +226,7 @@ if effectiveMaxSlope*abs(xVel)>0 and platformCharacterIs(ON_GROUND)
     tSlA=fptoif(abs(xVel))
     tSlI=floor(tSlA)
     tSlF=tSlA-tSlI
+    xSubPx=tXSub //stutter fix (added): the move above is undone, so is what it did to the pixel leftover
     pMoveTo(sign(xVel)*((1-tSlF)*round(tSlI*ratio)+tSlF*round((tSlI+1)*ratio))*gDeltaTime,(yVel*gDeltaTime*ratio*speedmod+slopeChangeInY))
   }
 }

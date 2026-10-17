@@ -50,4 +50,5 @@ else
   mask_index=sprite_index
   alpha=1
 }
-draw_sprite_ext(sprite_index,-1,x,y,image_xscale,image_yscale,image_angle,image_blend,alpha)
+//draw_sprite_ext(sprite_index,-1,x,y,image_xscale,image_yscale,image_angle,image_blend,alpha)
+draw_sprite_ext(sprite_index,-1,x,y,image_xscale,image_yscale,image_angle,scrElemColor(doorElement,image_blend),alpha) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)

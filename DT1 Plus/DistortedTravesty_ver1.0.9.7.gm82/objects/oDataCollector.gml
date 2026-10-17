@@ -278,7 +278,8 @@ if global.gamePaused=false
         WATERresist=-100
         WINDresist=100
         EARTHresist=100
-        baseColor=colRed
+        //baseColor=colRed
+        ecElem=1; ecBase=colRed; baseColor=scrElemColor(ecElem,ecBase) //element colors change: its tint in the colour picked for its element (Element Colors, Options Set 3) (scrElemColorRefresh)
         image_blend=baseColor
       }
       else if currentColor=2
@@ -287,7 +288,8 @@ if global.gamePaused=false
         WATERresist=100
         WINDresist=-100
         EARTHresist=100
-        baseColor=colBlue
+        //baseColor=colBlue
+        ecElem=2; ecBase=colBlue; baseColor=scrElemColor(ecElem,ecBase) //element colors change: its tint in the colour picked for its element (Element Colors, Options Set 3) (scrElemColorRefresh)
         image_blend=baseColor
       }
       else if currentColor=3
@@ -296,7 +298,8 @@ if global.gamePaused=false
         WATERresist=100
         WINDresist=100
         EARTHresist=-100
-        baseColor=colGreen
+        //baseColor=colGreen
+        ecElem=3; ecBase=colGreen; baseColor=scrElemColor(ecElem,ecBase) //element colors change: its tint in the colour picked for its element (Element Colors, Options Set 3) (scrElemColorRefresh)
         image_blend=baseColor
       }
       else if currentColor=4
@@ -305,7 +308,8 @@ if global.gamePaused=false
         WATERresist=100
         WINDresist=100
         EARTHresist=100
-        baseColor=colBrown
+        //baseColor=colBrown
+        ecElem=4; ecBase=colBrown; baseColor=scrElemColor(ecElem,ecBase) //element colors change: its tint in the colour picked for its element (Element Colors, Options Set 3) (scrElemColorRefresh)
         image_blend=baseColor
       }
       colorChangeTime=0

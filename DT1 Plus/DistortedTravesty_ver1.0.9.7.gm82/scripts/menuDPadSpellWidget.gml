@@ -65,8 +65,8 @@ draw_rectangle(tBX[dpsBox]-2,tBY[dpsBox]-2,tBX[dpsBox]+bw+2,tBY[dpsBox]+bh+2,tru
 //help
 draw_set_halign(fa_left)
 draw_set_color(colorDarkPurple)
-if dpsList=0 {draw_text(tX+4,tY+117,"[J]: Choose for this box     [K]: Back")}
-else {draw_text(tX+4,tY+117,"[J]: Put it on the box     [K]: Close the list")}
+if dpsList=0 {scrDrawHint(tX+4,tY+117,"[J]: Choose for this box     [K]: Back",fa_left,1)} //pad hints change: the gamepad's buttons while it's in use
+else {scrDrawHint(tX+4,tY+117,"[J]: Put it on the box     [K]: Close the list",fa_left,1)} //pad hints change: see above
 if e=0 {draw_text(tX+4,tY+129,"Hold a direction + Use Tech to use that box's technique")}
 else {draw_text(tX+4,tY+129,"Hold a direction + Cast Spell to cast that box's spell")}
 

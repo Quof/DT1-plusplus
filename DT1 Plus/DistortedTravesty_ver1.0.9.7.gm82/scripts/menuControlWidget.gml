@@ -68,11 +68,11 @@ for(tRow=1;tRow<=tN+1;tRow+=1)
 }
 
 //help, and (gamepad) the pad being read
-if ctrlView=1 {draw_text(tX+4,tFY+1,"[J]: Change key     [K]: Back")}
+if ctrlView=1 {scrDrawHint(tX+4,tFY+1,"[J]: Change key     [K]: Back",fa_left,1)} //pad hints change: the gamepad's buttons while it's in use
 else
 {
-  if gpListen=1 {draw_text(tX+4,tFY+1,"Press a gamepad button...     [K]: Cancel")}
-  else {draw_text(tX+4,tFY+1,"[J]: Change button     [K]: Back")}
+  if gpListen=1 {draw_text(tX+4,tFY+1,"Press a gamepad button...     [K]: Cancel")} //(the keyboard's [K]: the pad's buttons are being read)
+  else {scrDrawHint(tX+4,tFY+1,"[J]: Change button     [K]: Back",fa_left,1)} //pad hints change: see above
   if global.gpDevice<0 {tText="Gamepad: None found"}
   else
   {

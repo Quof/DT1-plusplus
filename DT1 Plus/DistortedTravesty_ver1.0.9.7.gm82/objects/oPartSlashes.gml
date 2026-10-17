@@ -13,28 +13,32 @@ if global.p1CurrentElement=1 and oPlayer1.firePercent>0.3
   global.recElementsFused+=1
   elementType=global.p1CurrentElement
   oPlayer1.fireEnergy-=44-(global.SkFireAffinity*3)
-  image_blend=make_color_rgb(246,54,54)
+  //image_blend=make_color_rgb(246,54,54)
+  image_blend=scrElemColor(1,make_color_rgb(246,54,54)) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)
 }
 else if global.p1CurrentElement=2 and oPlayer1.waterPercent>0.3
 {
   global.recElementsFused+=1
   elementType=global.p1CurrentElement
   oPlayer1.waterEnergy-=44-(global.SkWaterAffinity*3)
-  image_blend=make_color_rgb(51,117,201)
+  //image_blend=make_color_rgb(51,117,201)
+  image_blend=scrElemColor(2,make_color_rgb(51,117,201)) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)
 }
 else if global.p1CurrentElement=3 and oPlayer1.windPercent>0.3
 {
   global.recElementsFused+=1
   elementType=global.p1CurrentElement
   oPlayer1.windEnergy-=44-(global.SkWindAffinity*3)
-  image_blend=make_color_rgb(0,214,0)
+  //image_blend=make_color_rgb(0,214,0)
+  image_blend=scrElemColor(3,make_color_rgb(0,214,0)) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)
 }
 else if global.p1CurrentElement=4 and oPlayer1.earthPercent>0.3
 {
   global.recElementsFused+=1
   elementType=global.p1CurrentElement
   oPlayer1.earthEnergy-=44-(global.SkEarthAffinity*3)
-  image_blend=make_color_rgb(175,76,33)
+  //image_blend=make_color_rgb(175,76,33)
+  image_blend=scrElemColor(4,make_color_rgb(175,76,33)) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)
 }
 
 if oPlayer1.image_xscale=-1

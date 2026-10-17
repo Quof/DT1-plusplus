@@ -50,6 +50,7 @@ global.gpOrderSure=0     //1 once the order is known; until then L2 isn't read (
 global.gpL2Ready=0
 global.gpR2Ready=0
 global.gpDeadZone=0.4  //how far a stick has to be pushed to count
+global.gpLastUsed=0   //pad hints change (added): 1 once a gamepad action is held, 0 again on a key press (scrGamepadPoll); the menus' hints show the pad's buttons while it's 1 (scrDrawHint)
 
 global.gpActions=22   //actions, the four fixed menu buttons included (see above)
 for(i=0;i<=global.gpActions;i+=1)

@@ -7,3 +7,4 @@ global.gameFrameRate=argument0
 room_speed=global.gameFrameRate*global.debugSpeedMul
 gDeltaTime=30/global.gameFrameRate
 gDeltaTick=0.0
+scrVSyncApply() //vsync change (added): VSync's Auto goes by the frame rate (Options Set 2)

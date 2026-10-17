@@ -96,6 +96,7 @@ if keyboard_check_pressed(vk_f3)
     window_center()
     global.screenWindowDouble=false
   }
+  scrSettingsSaveDisplay() //settings change (added): the game starts at this size next time (Settings.ini)
 }
 //windowed/fullscreen mode
 /*if keyboard_check_pressed(vk_f4)
@@ -218,11 +219,13 @@ if keyboard_check_pressed(vk_f2)
   if global.gameFrameRateNext==30 {global.gameFrameRateNext=60}
   else if global.gameFrameRateNext==60 {global.gameFrameRateNext=120}
   else {global.gameFrameRateNext=30}
+  scrSettingsSaveDisplay() //settings change (added): the game starts at this rate next time (Settings.ini)
 }
 //the new rate starts with a 30fps tick (the last frame finished one): timers count 30fps ticks in gDeltaTime steps
 //and check for exact counts, so they have to stay on the same steps (0.25 steps switching to 0.5 halfway through a
 //0.5 step would skip the whole numbers)
 if global.gameFrameRateNext!=global.gameFrameRate and gDeltaDoTicks>0 {scrSetFrameRate(global.gameFrameRateNext)}
+if global.vsyncPending {scrVSyncApply()} //vsync change (added): a VSync change waiting for a screen effect's surface to be done with (scrVSyncApply)
 room_speed=global.gameFrameRate*global.debugSpeedMul
 gDeltaTime=30/global.gameFrameRate
 

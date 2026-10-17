@@ -27,3 +27,4 @@ global.ctrlRowName[18]="Menu Cancel";                                           
 global.kbRowCount=16  //rows with a key (the keyboard's menu keys are fixed: [WASD], [J], [K], [U]/[I])
 global.gpRowCount=18  //rows with a button
 scrDPadSpellInit() //dpad spells change (added): the DPad Spells lists (the Controls page's D-pad panels)
+scrSettingsNames() //settings change (added): the Options page's settings kept in Settings.ini

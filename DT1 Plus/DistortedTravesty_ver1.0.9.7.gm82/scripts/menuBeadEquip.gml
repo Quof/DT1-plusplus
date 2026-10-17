@@ -166,7 +166,8 @@ if argument0=0 //draw menu
   draw_text(subMenuInfoX+64,subMenuInfoY-2,"HELP INFO")
   draw_set_color(colorDarkPurple)
   draw_set_halign(fa_left)
-  draw_text(subMenuInfoX+3,subMenuInfoY+9,"[J]: Confirm/Equip#[K]: Cancel/Previous Menu#[L]: Unequip Selected Slot")
+  //draw_text(subMenuInfoX+3,subMenuInfoY+9,"[J]: Confirm/Equip#[K]: Cancel/Previous Menu#[L]: Unequip Selected Slot")
+  scrDrawHint(subMenuInfoX+3,subMenuInfoY+9,"[J]: Confirm/Equip#[K]: Cancel/Previous Menu#[L]: Unequip Selected Slot",fa_left,1) //pad hints change: the gamepad's buttons while it's in use
 }
 else if argument0=1 //menu control
 {

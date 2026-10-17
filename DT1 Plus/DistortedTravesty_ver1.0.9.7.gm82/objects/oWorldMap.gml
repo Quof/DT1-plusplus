@@ -232,6 +232,11 @@ if global.gameProgress>=324
   lPrimaryMemory.zoneLoc1=rPrimaryMemory1
   lPrimaryMemory.sprite_index=sWorldMapDistortion
 }
+//dpad map change (added): the levels can be picked with the d-pad and arrow keys too (the Step): mapFocus is the level
+//they're on (noone: none yet), mapMouseX/Y where the mouse was (moving it hands the choice back to the mouse)
+mapFocus=noone
+mapMouseX=mouse_x
+mapMouseY=mouse_y
 #define Step_0
 /*"/*'/**//* YYD ACTION
 lib_id=1
@@ -349,6 +354,63 @@ if global.gameProgress=16 //intro to World Map
     charDialogue[0]+=1
   }
 }
+
+//dpad map change (added): the d-pad / arrow keys / WASD move between the levels, from the one picked to the nearest one
+//that way (the first press picks the level you came from, or the one nearest the mouse). The picked level shows its
+//name and items as with the mouse on it (its own mouse events are run), and [J] / Enter / the gamepad's Menu Confirm
+//goes there as a click does. Moving the mouse hands the choice back to the mouse.
+var tDX,tDY,tBest,tScore,tAlong,tAcross,tNew,tInst,tI,tN;
+if choseLevel=0
+{
+  if mapFocus!=noone and (mouse_x!=mapMouseX or mouse_y!=mapMouseY)
+  {
+    with mapFocus {if !position_meeting(mouse_x,mouse_y,id) {event_perform(ev_mouse,ev_mouse_leave)}}
+    mapFocus=noone
+  }
+  tDX=(keyboard_check_pressed(vk_right) or keyboard_check_pressed(ord(global.ctrlRight)) or scrPadPressed(2))-(keyboard_check_pressed(vk_left) or keyboard_check_pressed(ord(global.ctrlLeft)) or scrPadPressed(1))
+  tDY=(keyboard_check_pressed(vk_down) or keyboard_check_pressed(ord(global.ctrlDown)) or scrPadPressed(4))-(keyboard_check_pressed(vk_up) or keyboard_check_pressed(ord(global.ctrlUp)) or scrPadPressed(3))
+  if tDX!=0 or tDY!=0
+  {
+    tNew=noone
+    if mapFocus=noone
+    {
+      if global.worldMapX>0 {tNew=instance_nearest(global.worldMapX,global.worldMapY,oMapLevel)} //the level you came from
+      else {tNew=instance_nearest(mouse_x,mouse_y,oMapLevel)}
+    }
+    else
+    {
+      //the nearest level that way, the ones more in line with it first
+      tBest=-1
+      tN=instance_number(oMapLevel)
+      for(tI=0;tI<tN;tI+=1)
+      {
+        tInst=instance_find(oMapLevel,tI)
+        if tInst!=mapFocus
+        {
+          if tDX!=0 {tAlong=(tInst.x-mapFocus.x)*tDX; tAcross=abs(tInst.y-mapFocus.y)}
+          else {tAlong=(tInst.y-mapFocus.y)*tDY; tAcross=abs(tInst.x-mapFocus.x)}
+          if tAlong>0
+          {
+            tScore=tAlong+tAcross*2
+            if tBest<0 or tScore<tBest {tBest=tScore; tNew=tInst}
+          }
+        }
+      }
+    }
+    if tNew!=noone and tNew!=mapFocus
+    {
+      with oMapLevel {if showLevelName=true {event_perform(ev_mouse,ev_mouse_leave)}} //the one showing (the mouse's or the last picked)
+      mapFocus=tNew
+      with mapFocus {event_perform(ev_mouse,ev_mouse_enter)} //its name and items, and the blip
+    }
+  }
+  if mapFocus!=noone and (keyboard_check_pressed(ord("J")) or keyboard_check_pressed(vk_enter) or scrPadPressed(17))
+  {
+    with mapFocus {event_perform(ev_mouse,ev_left_press)} //goes there, as a click does
+  }
+}
+mapMouseX=mouse_x
+mapMouseY=mouse_y
 
 //toggle item check
 /*

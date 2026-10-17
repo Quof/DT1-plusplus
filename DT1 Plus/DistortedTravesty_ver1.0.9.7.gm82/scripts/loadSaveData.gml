@@ -199,6 +199,13 @@ global.recBusterShotsUsed=ini_read_real(sectionRead,"449",0); global.recBusterSh
 global.recMaxBubbles=ini_read_real(sectionRead,"450",0); global.recMaxBubbles=encryptDecrypt(global.recMaxBubbles,1)
 global.recBlazingAppear=ini_read_real(sectionRead,"451",0); global.recBlazingAppear=encryptDecrypt(global.recBlazingAppear,1)
 
+//settings change (added): Options and Controls are global (Settings.ini, scrSettingsLoad), not the save's. A save
+//only gives them while there's no Settings.ini yet (global.settingsNew, oInitializeGame): the first one loaded that
+//has them (one from an older build) does, once, and they're Settings.ini's from then on (below)
+var tImport; //settings change (added)
+tImport=(global.settingsNew=1 and ini_key_exists(sectionRead,"501")) //settings change (added)
+if tImport //settings change (added)
+{ //settings change (added)
 global.optLowHealthWarn=ini_read_real(sectionRead,"501",1)
 global.optShowExpEarned=ini_read_real(sectionRead,"502",1)
 global.optShowDamage=ini_read_real(sectionRead,"503",1)
@@ -221,6 +228,7 @@ global.optGameDetail=ini_read_real(sectionRead,"518",0)
 global.optDPadDash=ini_read_real(sectionRead,"519",0) //controls change: off unless the save has it on (D-Pad Dash is off by default now)
 global.optRightIsForward=ini_read_real(sectionRead,"520",1)
 global.optShowHUD=ini_read_real(sectionRead,"521",1)
+} //settings change (added)
 
 global.p1WeaponGem=ini_read_string(sectionRead,"601","Amethyst")
 global.p1Armor=ini_read_string(sectionRead,"602","Feather Jacket")
@@ -239,6 +247,8 @@ global.p1Smoothie=ini_read_real(sectionRead,"702",1); global.p1Smoothie=encryptD
 global.p1Starburst=ini_read_real(sectionRead,"703",1); global.p1Starburst=encryptDecrypt(global.p1Starburst,1)
 global.p1GummyBears=ini_read_real(sectionRead,"704",1); global.p1GummyBears=encryptDecrypt(global.p1GummyBears,1)
 
+if tImport //settings change (added): the controls too (see the options above)
+{ //settings change (added)
 global.ctrlUp=ini_read_string(sectionRead,"801","W")
 global.ctrlDown=ini_read_string(sectionRead,"802","S")
 global.ctrlLeft=ini_read_string(sectionRead,"803","A")
@@ -264,6 +274,7 @@ global.optDPadSpells=ini_read_real(sectionRead,"850",0) //dpad spells change (ad
 for (i=0;i<=4;i+=1) //dpad spells change (added): element (0 techniques)
   for (ii=0;ii<=3;ii+=1) //dpad spells change (added): box (0 middle, 1 up, 2 left/right, 3 down)
     global.dpsSpell[i,ii]=ini_read_real(sectionRead,string(851+i*4+ii),global.dpsSpell[i,ii]) //dpad spells change (added)
+} //settings change (added)
 scrGamepadPoll() //gamepad change (added): a button still held (the one that loaded the file) doesn't count as pressed
 scrGamepadSync() //gamepad change (added): for whatever action it's on now
 
@@ -289,3 +300,4 @@ for (i=0;i<=global.maxDoors;i+=1)
 for (i=0;i<18;i+=1)
   global.invBracelet[i]=ini_read_real(sectionRead,string("99") +string(i),0)
 ini_close()
+if tImport {scrSettingsSave()} //settings change (added): what the save gave is Settings.ini's now

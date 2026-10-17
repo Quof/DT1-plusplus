@@ -998,6 +998,11 @@ It is used to display the slot descriptions.
         itemCapacity=global.optGameDetail
         itemInfo="Set this to Low if the game has trouble#displaying surfaces."
       }
+      else if cursorPosY=10 //vsync change (added)
+      { //vsync change (added)
+        itemName="VSYNC" //vsync change (added)
+        itemInfo="Wait for the screen's refresh: no tearing, even frames.#Auto: on when the frame rate fits the screen's." //vsync change (added)
+      } //vsync change (added)
     }
     else if subCursorPos=3
     {
@@ -1021,6 +1026,11 @@ It is used to display the slot descriptions.
         itemName="DASH WARN"
         itemInfo="Audio warning when low on dash points."
       }
+      else if cursorPosY=5 //element colors change (added)
+      { //element colors change (added)
+        itemName="ELEMENT COLORS" //element colors change (added)
+        itemInfo="Change the colors of the elements: their zones,#doors, switches, HUD, glow and attacks." //element colors change (added)
+      } //element colors change (added)
     }
   }
   else if currentMenu=9 //System
@@ -1167,5 +1177,6 @@ It is used to display the slot descriptions.
       xText=string_width(itemType)
       draw_text(subMenuInfoX+164+xText,subMenuInfoY-2,itemCapacity)
     }
-    draw_text(subMenuInfoX+3,subMenuInfoY+9,itemInfo)
+    //draw_text(subMenuInfoX+3,subMenuInfoY+9,itemInfo)
+    scrDrawHint(subMenuInfoX+3,subMenuInfoY+9,itemInfo,fa_left,1) //pad hints change: keys in it ([A] & [D]...) as the gamepad's buttons while it's in use
   }

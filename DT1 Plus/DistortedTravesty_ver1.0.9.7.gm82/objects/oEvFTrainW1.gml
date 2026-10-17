@@ -207,6 +207,7 @@ else if global.gameProgress=92 //quick time event - jump gap
     if (keyboard_check_pressed(ord("X")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
+      scrGamepadSync() //gamepad change (added): and the gamepad's presses (io_clear only clears the keyboard's, so a pad press it was meant to use up still counted for the rest of the frame: A that closed dialogue also jumped, Up at a door went through the door it arrived at and back)
       oPlayer1.x=576
       oPlayer1.y=320
       sceneProgress+=1
@@ -234,6 +235,7 @@ else if global.gameProgress=92 //quick time event - jump gap
     if (keyboard_check_pressed(ord("X")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
+      scrGamepadSync() //gamepad change (added): and the gamepad's presses (io_clear only clears the keyboard's, so a pad press it was meant to use up still counted for the rest of the frame: A that closed dialogue also jumped, Up at a door went through the door it arrived at and back)
       oPlayer1.x=3312
       oPlayer1.y=352
       sceneProgress+=1
@@ -261,6 +263,7 @@ else if global.gameProgress=92 //quick time event - jump gap
     if (keyboard_check_pressed(ord("X")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
+      scrGamepadSync() //gamepad change (added): and the gamepad's presses (io_clear only clears the keyboard's, so a pad press it was meant to use up still counted for the rest of the frame: A that closed dialogue also jumped, Up at a door went through the door it arrived at and back)
       oPlayer1.x=3664
       oPlayer1.y=208
       oPlayer1.sprite_index=sPlayerJump
@@ -274,6 +277,7 @@ else if global.gameProgress=92 //quick time event - jump gap
     if (keyboard_check_pressed(ord("Y")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
+      scrGamepadSync() //gamepad change (added): and the gamepad's presses (io_clear only clears the keyboard's, so a pad press it was meant to use up still counted for the rest of the frame: A that closed dialogue also jumped, Up at a door went through the door it arrived at and back)
       oPlayer1.x=3792
       oPlayer1.y=128
       sceneProgress+=1
@@ -286,6 +290,7 @@ else if global.gameProgress=92 //quick time event - jump gap
     if (keyboard_check_pressed(ord("Z")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
+      scrGamepadSync() //gamepad change (added): and the gamepad's presses (io_clear only clears the keyboard's, so a pad press it was meant to use up still counted for the rest of the frame: A that closed dialogue also jumped, Up at a door went through the door it arrived at and back)
       oPlayer1.x=3792
       oPlayer1.y=160
       sceneProgress+=1

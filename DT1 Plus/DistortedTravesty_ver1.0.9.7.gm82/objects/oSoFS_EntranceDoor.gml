@@ -90,6 +90,7 @@ if activate=1
   if (keyboard_check_pressed(curCancel) or scrPadPressed(18)) //gamepad change: and the gamepad's Menu Cancel (scrGamepadInit)
   {
     io_clear()
+    scrGamepadSync() //gamepad change (added): and the gamepad's presses (io_clear only clears the keyboard's, so a pad press it was meant to use up still counted for the rest of the frame: A that closed dialogue also jumped, Up at a door went through the door it arrived at and back)
     playSound(global.snd_MenuCancel,0,1)
     global.gamePaused=false
     activate=0

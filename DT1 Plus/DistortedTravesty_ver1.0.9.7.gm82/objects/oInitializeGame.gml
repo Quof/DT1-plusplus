@@ -350,6 +350,13 @@ global.recMaxBubbles=0
 global.recBlazingAppear=0
 
 //options flags
+//settings change (added): Options and Controls are global, kept in Settings.ini (scrSettingsLoad, scrSettingsSave), not
+//in the saves. These defaults (and the controls' below) are only set while there's no Settings.ini (global.settingsNew),
+//on each visit to the title as before; with one, it's read below, which also undoes what a scene changed for itself
+//(the ending hides the identifier)
+if !variable_global_exists("settingsNew") {global.settingsNew=1} //settings change (added)
+if global.settingsNew=1 //settings change (added)
+{ //settings change (added)
 global.optLowHealthWarn=true
 global.optShowExpEarned=true
 global.optShowDamage=true
@@ -374,6 +381,9 @@ global.optDPadDash=0 //controls change: D-Pad Dash (Up/Down + Jump dashes; Optio
 global.optRightIsForward=1
 global.optShowHUD=1
 global.optDashWarn=0
+global.optVSync=0 //vsync change (added): VSync (Options Set 2): Auto (scrVSyncApply)
+for(i=1;i<=4;i+=1) {global.elemColor[i]=global.elemColorDef[i]} //element colors change (added): Element Colors (Options Set 3): each element's own colour
+} //settings change (added)
 
 //main characters
 global.mainCharacters[0]="Jerry"           //Protagonist
@@ -468,6 +478,8 @@ global.p1Starburst=1
 global.p1GummyBears=1
 
 //controls
+if global.settingsNew=1 //settings change (added): see the options flags
+{ //settings change (added)
 global.ctrlUp="W"
 global.ctrlDown="S"
 global.ctrlLeft="A"
@@ -488,6 +500,12 @@ global.optDPadSpells=0 //dpad spells change (added): DPad Spells (DT2 Style) off
 scrDPadSpellDefaults() //dpad spells change (added)
 global.optGamePad=1 //gamepad change (added): Gamepad Input on and the default gamepad controls, like the keys above
 scrGamepadDefaults() //gamepad change (added)
+} //settings change (added)
+if scrSettingsLoad() {global.settingsNew=0} //settings change (added): Settings.ini's, when there is one (see the options flags)
+scrVSyncApply() //vsync change (added): VSync (Options Set 2), as the settings have it
+//settings change (added): the title's music at the Music volume, or none with it off (the options were the defaults
+//here, so it always played at full)
+if global.optMusic>0 {SS_SetSoundVol(global.msc_TitleMenu,global.optMusic*100)} else {SS_StopSound(global.msc_TitleMenu)} //settings change (added)
 scrGamepadPoll() //gamepad change (added): a button still held from the game doesn't count as pressed
 scrGamepadSync() //gamepad change (added): for whatever action it's on now
 
@@ -518,6 +536,17 @@ lib_id=1
 action_id=603
 applies_to=self
 */
+//title options change (added): [O] (the gamepad's Y) opens the pause menu's Options and Controls pages here (oHUD in
+//title mode: it's in rIntro, see its titleMenu); the title waits while they're open
+if instance_exists(oHUD) {exit}
+if loadImage=true and fade=0 and introProgress=0 and chooseNewGame=false and (keyboard_check_pressed(ord("O")) or scrPadPressed(21))
+{
+  instance_create(0,0,oHUD)
+  with oHUD {event_user(0)} //opens it, on Options
+  io_clear() //the key that opened it doesn't count in it this frame
+  scrGamepadSync()
+  exit
+}
 //cursor movement
 //if keyboard_check_pressed(ord("D")) or keyboard_check_pressed(vk_right) or keyboard_check_pressed(ord("S")) or keyboard_check_pressed(vk_down) and fade=0
 if keyboard_check_pressed(ord("D")) or (keyboard_check_pressed(vk_right) or scrPadPressed(2)) or keyboard_check_pressed(ord("S")) or (keyboard_check_pressed(vk_down) or scrPadPressed(4)) and fade=0 //gamepad change: and the gamepad's Right, the gamepad's Down (scrGamepadInit)
@@ -703,9 +732,15 @@ else
   draw_set_alpha(1)
   draw_set_font(fnt_showMessage)
   draw_set_halign(fa_left)
-  textDropShadow(controlHelp,272,302,c_white,c_black,3)
+  //textDropShadow(controlHelp,272,302,c_white,c_black,3)
+  scrDrawHintShadow(controlHelp,272,302,c_white,c_black,3,fa_left) //pad hints change: the gamepad's buttons while it's in use
   textDropShadow("Game by ZephyrBurst",3,368,c_white,c_black,1)
   textDropShadow("Version: " +string(versionTag),3,3,c_white,c_black,1)
+  if introProgress=0 and chooseNewGame=false //title options change (added): how to open Options & Controls (the Step)
+  {
+    scrDrawHintShadow("[O] Options & Controls",509,3,c_white,c_black,1,fa_right)
+    draw_set_halign(fa_left)
+  }
 
   //quest records
   draw_set_font(fnt_SubMenu)
@@ -757,7 +792,8 @@ else
   if f1_GameBeat>0 or f2_GameBeat>0 or f3_GameBeat>0 //Boss Rush Reminder
   {
     draw_set_halign(fa_left)
-    textDropShadow("Press [P] to find yourself in the Boss Room!",24,277,c_white,c_black,1)
+    //textDropShadow("Press [P] to find yourself in the Boss Room!",24,277,c_white,c_black,1)
+    scrDrawHintShadow("Press [P] to find yourself in the Boss Room!",24,277,c_white,c_black,1,fa_left) //pad hints change: the gamepad's button while it's in use
   }
   if f1_GameBeat=6 or f2_GameBeat=6 or f3_GameBeat=6 //Debug Mode Reminder
   {

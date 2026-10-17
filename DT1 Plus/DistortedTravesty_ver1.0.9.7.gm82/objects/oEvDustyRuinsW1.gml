@@ -489,6 +489,7 @@ else if global.gameProgress=79 and room=rDustyRuins6 //Quicktime Event
     if (keyboard_check_pressed(ord("X")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
+      scrGamepadSync() //gamepad change (added): and the gamepad's presses (io_clear only clears the keyboard's, so a pad press it was meant to use up still counted for the rest of the frame: A that closed dialogue also jumped, Up at a door went through the door it arrived at and back)
       sceneProgress+=1
       oPlayer1.sprite_index=sPlayerStab
       qtTextEvent="PRESS [F] TO NOT DIE!!"
@@ -500,6 +501,7 @@ else if global.gameProgress=79 and room=rDustyRuins6 //Quicktime Event
     if (keyboard_check_pressed(ord("F")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
+      scrGamepadSync() //gamepad change (added): and the gamepad's presses (io_clear only clears the keyboard's, so a pad press it was meant to use up still counted for the rest of the frame: A that closed dialogue also jumped, Up at a door went through the door it arrived at and back)
       sceneProgress+=1
       oPlayer1.sprite_index=sPlayerGuard
       qtTextEvent="PRESS [A] TO NOT DIE!!"
@@ -511,6 +513,7 @@ else if global.gameProgress=79 and room=rDustyRuins6 //Quicktime Event
     if (keyboard_check_pressed(ord("A")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
+      scrGamepadSync() //gamepad change (added): and the gamepad's presses (io_clear only clears the keyboard's, so a pad press it was meant to use up still counted for the rest of the frame: A that closed dialogue also jumped, Up at a door went through the door it arrived at and back)
       sceneProgress+=1
       oPlayer1.sprite_index=sPlayerChestHit
       qtTextEvent="PRESS [I] TO NOT DIE!!"
@@ -522,6 +525,7 @@ else if global.gameProgress=79 and room=rDustyRuins6 //Quicktime Event
     if (keyboard_check_pressed(ord("I")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
+      scrGamepadSync() //gamepad change (added): and the gamepad's presses (io_clear only clears the keyboard's, so a pad press it was meant to use up still counted for the rest of the frame: A that closed dialogue also jumped, Up at a door went through the door it arrived at and back)
       sceneProgress+=1
       oPlayer1.sprite_index=sPlayerCasted
       qtTextEvent="PRESS [L] TO NOT DIE!!"
@@ -533,6 +537,7 @@ else if global.gameProgress=79 and room=rDustyRuins6 //Quicktime Event
     if (keyboard_check_pressed(ord("L")) or scrPadAnyPressed()) //gamepad change: and any gamepad action button (scrGamepadInit)
     {
       io_clear()
+      scrGamepadSync() //gamepad change (added): and the gamepad's presses (io_clear only clears the keyboard's, so a pad press it was meant to use up still counted for the rest of the frame: A that closed dialogue also jumped, Up at a door went through the door it arrived at and back)
       sceneProgress+=1
       oPlayer1.sprite_index=sPlayerIdle
       oPlayer1.y=335

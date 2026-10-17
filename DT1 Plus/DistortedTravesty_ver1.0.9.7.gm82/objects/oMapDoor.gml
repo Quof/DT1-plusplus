@@ -63,6 +63,7 @@ if exitType=0
     oPlayer1.x=newX
     oPlayer1.y=newY
     io_clear()
+    scrGamepadSync() //gamepad change (added): and the gamepad's presses (io_clear only clears the keyboard's, so a pad press it was meant to use up still counted for the rest of the frame: A that closed dialogue also jumped, Up at a door went through the door it arrived at and back)
   }
 }
 else if exitType=1
@@ -82,6 +83,7 @@ else if exitType=2
         x=other.newX
         y=other.newY
         io_clear()
+        scrGamepadSync() //gamepad change (added): and the gamepad's presses (io_clear only clears the keyboard's, so a pad press it was meant to use up still counted for the rest of the frame: A that closed dialogue also jumped, Up at a door went through the door it arrived at and back)
       }
     }
   }

@@ -14,7 +14,16 @@ mtYPrev=y
 var a0mod, a1mod;
 a0mod = fptoif(argument0/gDeltaTime)*gDeltaTime
 a1mod = fptoif(argument1/gDeltaTime)*gDeltaTime
-xVelInteger=sign(a0mod) * floor(abs(a0mod) + frac(ditherCounter * 0.618))
+//xVelInteger=sign(a0mod) * floor(abs(a0mod) + frac(ditherCounter * 0.618))
+//stutter fix: x carries the leftover part of a pixel over to the next frame (xSubPx) instead of the golden-ratio dither.
+//Running at 60fps is 3.525px a frame: carried over it moves 3,4,3,4... (7px a 30fps tick, as at 30fps); the dither gave
+//an uneven 3,4,3,3,4,4... that strayed up to 2px from a steady line, and as the view follows the player the whole
+//screen jittered with it. The leftover is dropped when the player stops or turns. y keeps the dither (the jump
+//corrections, pJumpCorrection, are fitted to it)
+if a0mod=0 or sign(a0mod)!=sign(xSubPx) {xSubPx=0} //stutter fix
+xSubPx+=a0mod //stutter fix
+xVelInteger=sign(xSubPx)*floor(abs(xSubPx)+0.000001) //stutter fix
+xSubPx-=xVelInteger //stutter fix
 yVelInteger=sign(a1mod) * floor(abs(a1mod) + frac(ditherCounter * 0.618))
 //object is moving to the right
 if xVelInteger>0

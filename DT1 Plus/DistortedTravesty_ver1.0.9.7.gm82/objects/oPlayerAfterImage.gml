@@ -13,6 +13,7 @@ else if global.p1CurrentElement=3
     imageColor=make_color_rgb(0,214,0)
 else if global.p1CurrentElement=4
     imageColor=make_color_rgb(175,76,33)
+imageColor=scrElemColor(global.p1CurrentElement,imageColor) //element colors change (added): in the colour picked for its element (Element Colors, Options Set 3)
 
 sprite_index=oPlayer1.sprite_index
 image_index=oPlayer1.image_index

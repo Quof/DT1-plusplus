@@ -7,6 +7,10 @@ applies_to=self
 //Integrated Visualization System (IVS)
 musicCheck=false //check music on load
 menuOpen=false //if the pause menu is open
+//title options change (added): made on the title screen (oInitializeGame), it's the pause menu's Options and Controls
+//pages only, with nothing of the game's (the Step, Other_10 and Draw check it); closing it destroys it
+titleMenu=(room=rIntro)
+titlePaused=0 //title options change (added): global.gamePaused when it opened there (put back when it closes)
 image_speed=0.1 //cursor image speed
 hudAnimFrame=0 //60fps change (added): this object's animation frame (image_speed 0.1 a 30fps tick), counted in the Draw for the falling piece of the life bar
 recRanNumber=0 //60fps change (added): the Records page's "A Random Number", kept between frames and rolled again once per 30fps tick in the Draw (0: not rolled yet)
@@ -49,11 +53,14 @@ yDrop=0
 yDropSpeed=0
 bShowLifeDrop=false //show life bar drop when hit
 
+if titleMenu=0 //title options change (added): no static over the title screen
+{
 background_index[7]=backStatic
 background_alpha[7]=0.07
 background_foreground[7]=true
 background_hspeed[7]=31
 background_vspeed[7]=21
+} //title options change (added)
 //input commands==========
 curUp=ord("W")
 curDown=ord("S")
@@ -79,6 +86,13 @@ dpsElem=0
 dpsBox=0
 dpsList=0
 dpsListPos=1
+//element colors change (added): the Element Colors panel (Options Set 3's last row; menuElemColorConfig). ecView: 0 =
+//closed, 1 = the elements (ecPos: 1-4 fire/water/wind/earth, 5 Set to Default Colors), 2 = changing one (ecEditPos:
+//1-3 red/green/blue, 4 Default; ecHold: 30fps ticks [A]/[D] held)
+ecView=0
+ecPos=1
+ecEditPos=1
+ecHold=0
 #define Step_0
 /*"/*'/**//* YYD ACTION
 lib_id=1
@@ -93,6 +107,19 @@ applies_to=self
 //  event_perform(ev_keypress,ord("P"))
 if (keyboard_check_pressed(ord(global.ctrlPause)) or scrPadPressed(16)) and (gpListen=0 or menuOpen=false) //controls change: see above
   event_user(0) //controls change: see above
+//title options change (added): on the title screen Menu Cancel ([K]) closes it too, where it does nothing else (the
+//Options page, the Controls page's options); once closed it's gone, and the key that closed it doesn't count on the title
+if titleMenu=1
+{
+  if menuOpen=true and (keyboard_check_pressed(curCancel) or scrPadPressed(18)) and ecView=0 and (currentMenu=5 or (ctrlView=0 and gpListen=0)) {event_user(0)} //element colors change: not while the Element Colors panel is open ([K] goes back there)
+  if menuOpen=false
+  {
+    io_clear()
+    scrGamepadSync()
+    instance_destroy()
+    exit
+  }
+}
 //--------------------------------
 //---------- PAUSE MENU ----------
 //--------------------------------
@@ -1088,6 +1115,9 @@ if global.gamePaused=true and menuOpen=true
   }
   else if currentMenu=5 //Options----------
   {
+    if ecView>0 {menuElemColorConfig()} //element colors change (added): while the Element Colors panel (Options Set 3) is open, it has the keys
+    else //element colors change (added)
+    { //element colors change (added)
     //if keyboard_check_pressed(curUp) or keyboard_check_pressed(vk_up)
     if keyboard_check_pressed(curUp) or (keyboard_check_pressed(vk_up) or scrPadPressed(3)) //gamepad change: and the gamepad's Up (scrGamepadInit)
     {
@@ -1130,7 +1160,8 @@ if global.gamePaused=true and menuOpen=true
           {
             global.optMusic-=1
             var tempMplay;
-            tempMplay=findMusic()
+            //tempMplay=findMusic()
+            if titleMenu=1 {tempMplay=global.msc_TitleMenu} else {tempMplay=findMusic()} //title options change: the title's music there (findMusic goes by the game's location)
             SS_SetSoundVol(tempMplay,global.optMusic*100)
             if global.optMusic=0
               stopAllMusic()
@@ -1162,7 +1193,8 @@ if global.gamePaused=true and menuOpen=true
           {
             var prevVol,tempMplay;
             prevVol=global.optMusic
-            tempMplay=findMusic()
+            //tempMplay=findMusic()
+            if titleMenu=1 {tempMplay=global.msc_TitleMenu} else {tempMplay=findMusic()} //title options change: see above
             global.optMusic+=1
             if prevVol=0
               playMusic(tempMplay,0)
@@ -1229,7 +1261,8 @@ if global.gamePaused=true and menuOpen=true
           {
             global.optMusic=100
             var tempMplay;
-            tempMplay=findMusic()
+            //tempMplay=findMusic()
+            if titleMenu=1 {tempMplay=global.msc_TitleMenu} else {tempMplay=findMusic()} //title options change: see above
             playMusic(tempMplay,0)
           }
           else
@@ -1332,6 +1365,12 @@ if global.gamePaused=true and menuOpen=true
           else
             global.optGameDetail=0
         }
+        else if cursorPosY=10 //vsync change (added): VSync: Auto, On, Off (scrVSyncApply)
+        { //vsync change (added)
+          global.optVSync+=1 //vsync change (added)
+          if global.optVSync>2 {global.optVSync=0} //vsync change (added)
+          scrVSyncApply() //vsync change (added)
+        } //vsync change (added)
       }
       else if subCursorPos=3
       {
@@ -1363,6 +1402,11 @@ if global.gamePaused=true and menuOpen=true
           else
             global.optDashWarn=false
         }
+        else if cursorPosY=5 //element colors change (added): Element Colors opens its panel (menuElemColorConfig)
+        { //element colors change (added)
+          ecView=1 //element colors change (added)
+          ecPos=1 //element colors change (added)
+        } //element colors change (added)
       }
       playSound(global.snd_MenuConfirm,0,1)
     }
@@ -1374,6 +1418,7 @@ if global.gamePaused=true and menuOpen=true
       subCursorPos+=1
       if subCursorPos>3 {subCursorPos=1}
     }
+    } //element colors change (added)
   }
   else if currentMenu=7 //Records----------
   {
@@ -1438,6 +1483,7 @@ if global.gamePaused=true and menuOpen=true
       {
         global.quickGameOver=1
         oPlayer1.life-=oPlayer1.maxLife
+        scrSettingsSave() //settings change (added): the menu closes here too (see the User Defined 0 event)
         menuOpen=false
         exit;
       }
@@ -1446,6 +1492,7 @@ if global.gamePaused=true and menuOpen=true
         stopLoopingSounds()
         stopAllMusic()
         playSound(global.snd_MenuCancel,0,1)
+        scrSettingsSave() //settings change (added): the menu goes with the room (and the title reads Settings.ini again)
         room_goto(rIntro)
       }
     }
@@ -1454,7 +1501,7 @@ if global.gamePaused=true and menuOpen=true
     menuBeadEquip(1)
   //swap menus------------------------------------------------------------
   //if currentMenu<10
-  if currentMenu<10 and (currentMenu!=8 or ctrlView=0) //gamepad change, controls change: not while the Controls page's key/button panel is open (it waits for gamepad buttons there, and L1/R1 may be the one being set)
+  if currentMenu<10 and (currentMenu!=8 or ctrlView=0) and (currentMenu!=5 or ecView=0) and titleMenu=0 //element colors change: nor while the Element Colors panel is open //gamepad change, controls change: not while the Controls page's key/button panel is open (it waits for gamepad buttons there, and L1/R1 may be the one being set); title options change: the title screen's below
   {
     //if keyboard_check_pressed(curMenuShiftForward)
     if (keyboard_check_pressed(curMenuShiftForward) or scrPadPressed(20)) //gamepad change: and the gamepad's R1 (menu tab forward) (scrGamepadInit)
@@ -1543,6 +1590,17 @@ if global.gamePaused=true and menuOpen=true
       bChangedMenu=true
     }
   }
+  //title options change (added): on the title screen [U]/[I] (L1/R1) go between its two pages
+  if titleMenu=1 and (currentMenu!=8 or ctrlView=0) and (currentMenu!=5 or ecView=0) //element colors change: not while the Element Colors panel is open
+  {
+    if keyboard_check_pressed(curMenuShiftForward) or scrPadPressed(20) or keyboard_check_pressed(curMenuShiftBack) or scrPadPressed(19)
+    {
+      playSound(global.snd_MenuShift,0,1)
+      subCursorPos=1
+      if currentMenu=5 {currentMenu=8} else {currentMenu=5}
+      bChangedMenu=true
+    }
+  }
 
   if bChangedMenu=true
   {
@@ -1589,9 +1647,11 @@ if global.gamePaused=true and menuOpen=true
           menuMax=9
       }
       else if subCursorPos=2
-        menuMax=9
+        //menuMax=9
+        menuMax=10 //vsync change: and VSync
       else
-        menuMax=4
+        //menuMax=4
+        menuMax=5 //element colors change: and Element Colors
     }
     else if currentMenu=8 //Controls
     {
@@ -1625,7 +1685,7 @@ if global.gamePaused=true and menuOpen=true
     show_info()
   //teleport-------------------------------------------------------------
   //if keyboard_check_pressed(curTeleport) and global.gameProgress>=86
-  if (keyboard_check_pressed(curTeleport) or scrPadPressed(22)) and global.gameProgress>=86 and (currentMenu!=8 or ctrlView=0) //gamepad change: and the gamepad's BACK (teleport) (scrGamepadInit), not while the Controls page's key/button panel is open
+  if (keyboard_check_pressed(curTeleport) or scrPadPressed(22)) and global.gameProgress>=86 and (currentMenu!=8 or ctrlView=0) and (currentMenu!=5 or ecView=0) and titleMenu=0 //element colors change: nor while the Element Colors panel is open //gamepad change: and the gamepad's BACK (teleport) (scrGamepadInit), not while the Controls page's key/button panel is open (title options change: nor on the title screen)
   {
     if global.teleportEnabled=0 and global.currentBoss=""
     {
@@ -1645,6 +1705,7 @@ if global.gamePaused=true and menuOpen=true
           transition_kind=20
           //transition_steps=30
           transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
+          scrSettingsSave() //settings change (added): the menu goes with the room
           room_goto(rWorldMap)
         }
       }
@@ -1714,6 +1775,15 @@ else if global.gamePaused=false
     musicCheck=false
   }
 }
+#define Other_3
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+//settings change (added): the game closed with the menu open (oGame's [Esc], the window's close button): its Options
+//and Controls are kept (Settings.ini) as when it closes
+if menuOpen=true {scrSettingsSave()}
 #define Other_10
 /*"/*'/**//* YYD ACTION
 lib_id=1
@@ -1722,12 +1792,17 @@ applies_to=self
 */
 //controls change: this was the Key Press P event; it's run from the Step event (event_user(0)) when the Pause
 //Menu key (global.ctrlPause, Keyboard Controls) or the gamepad's Pause Menu button is pressed
-if global.gameOver=false
+//title options change: on the title screen (titleMenu) it's opened by oInitializeGame and has no player to touch
+//if global.gameOver=false
+if global.gameOver=false or titleMenu=1 //title options change: see above
 {
-  if menuOpen=false and global.gamePaused=false
+  //if menuOpen=false and global.gamePaused=false
+  if menuOpen=false and (global.gamePaused=false or titleMenu=1) //title options change: the title screen counts as paused (oInitializeGame)
   {
     playSound(global.snd_MenuOpen,0,1)
     depth=-150
+    if titleMenu=0 //title options change (added): see above
+    {
     //fix items going over max
     if oPlayer1.conSkittles>9
       oPlayer1.conSkittles=9
@@ -1737,6 +1812,7 @@ if global.gameOver=false
       oPlayer1.conStarburst=5
     if oPlayer1.conGummyBears>7
       oPlayer1.conGummyBears=7
+    } //title options change (added)
     menuMainX=view_xview[0]+96
     menuMainY=view_yview[0]+82
     xLineEffectMax=26
@@ -1760,8 +1836,10 @@ if global.gameOver=false
       yCreate+=12
     }
     menuOpen=true
+    titlePaused=global.gamePaused //title options change (added): put back when it closes there
     global.gamePaused=true
-    oPlayer1.image_speed=0
+    //oPlayer1.image_speed=0
+    if titleMenu=0 {oPlayer1.image_speed=0} //title options change: see above
     if global.optKeepMenuPosition=false
       currentMenu=1
     else
@@ -1770,7 +1848,9 @@ if global.gameOver=false
         global.menuPosition=2
       currentMenu=global.menuPosition
     }
-    global.recOpenedMenuNumber+=1
+    if titleMenu=1 {currentMenu=5} //title options change (added): Options first (it has Options and Controls only)
+    //global.recOpenedMenuNumber+=1
+    if titleMenu=0 {global.recOpenedMenuNumber+=1} //title options change: a save's record, not the title screen's
     bChangedMenu=true
     subCursorPos=1
     cursorPosX=1
@@ -1788,11 +1868,15 @@ if global.gameOver=false
   {
     playSound(global.snd_MenuClose,0,1)
     depth=-99
-    global.menuPosition=currentMenu
+    //global.menuPosition=currentMenu
+    if titleMenu=0 {global.menuPosition=currentMenu} //title options change: a save's setting, not the title screen's
     menuOpen=false
-    global.gamePaused=false
+    //global.gamePaused=false
+    if titleMenu=1 {global.gamePaused=titlePaused} else {global.gamePaused=false} //title options change: the title screen stays as it was
     gpListen=0 //gamepad change (added): stop waiting for a gamepad button (Controls page)
     ctrlView=0 //controls change (added): and close the key/button panel (the tabs can be changed again)
+    if ecView>0 {ecView=0; scrElemColorRefresh()} //element colors change (added): and the Element Colors panel (the element enemies already about take its colours)
+    scrSettingsSave() //settings change (added): Options and Controls are global (Settings.ini): what was set is kept as it closes
     with oMessageMenuPopup
       instance_destroy()
     with oLineDummy
@@ -1987,18 +2071,26 @@ if global.optShowHUD=1
   waterTrack=oPlayer1.waterPercent*25
   windTrack=oPlayer1.windPercent*25
   earthTrack=oPlayer1.earthPercent*25
-  draw_sprite_ext(sElementTrack,0,elementDisplayX+15,elementDisplayY+49,1,-fireTrack,0,c_white,1)
-  draw_sprite_ext(sElementTrack,1,elementDisplayX+28,elementDisplayY+49,1,-waterTrack,0,c_white,1)
-  draw_sprite_ext(sElementTrack,2,elementDisplayX+41,elementDisplayY+49,1,-windTrack,0,c_white,1)
-  draw_sprite_ext(sElementTrack,3,elementDisplayX+54,elementDisplayY+49,1,-earthTrack,0,c_white,1)
+  //draw_sprite_ext(sElementTrack,0,elementDisplayX+15,elementDisplayY+49,1,-fireTrack,0,c_white,1)
+  scrDrawElemSprite(3,1,elementDisplayX+15,elementDisplayY+49,1,-fireTrack,0,1) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)
+  //draw_sprite_ext(sElementTrack,1,elementDisplayX+28,elementDisplayY+49,1,-waterTrack,0,c_white,1)
+  scrDrawElemSprite(3,2,elementDisplayX+28,elementDisplayY+49,1,-waterTrack,0,1) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)
+  //draw_sprite_ext(sElementTrack,2,elementDisplayX+41,elementDisplayY+49,1,-windTrack,0,c_white,1)
+  scrDrawElemSprite(3,3,elementDisplayX+41,elementDisplayY+49,1,-windTrack,0,1) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)
+  //draw_sprite_ext(sElementTrack,3,elementDisplayX+54,elementDisplayY+49,1,-earthTrack,0,c_white,1)
+  scrDrawElemSprite(3,4,elementDisplayX+54,elementDisplayY+49,1,-earthTrack,0,1) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)
   draw_sprite_ext(sSpiritTrack,-1,elementDisplayX+9,elementDisplayY+59,spiritTrack,1,0,c_white,1)
   draw_sprite(sElementBar,-1,elementDisplayX,elementDisplayY)
   if global.p1CurrentElement=0 //None
     draw_sprite(sNull,-1,elementDisplayX,elementDisplayY)
   else
-    draw_sprite(sCurrentElement,global.p1CurrentElement-1,elementDisplayX+9,elementDisplayY+4)
+    //draw_sprite(sCurrentElement,global.p1CurrentElement-1,elementDisplayX+9,elementDisplayY+4)
+    scrDrawElemSprite(2,global.p1CurrentElement,elementDisplayX+9,elementDisplayY+4,1,1,0,1) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)
 
   //technique/spell display --------------------------------------------------
+  if global.optDPadSpells {hudDPadSpellBox()} //dpad spells change (added): its own box instead: the element on, and the rave/cast bar along the bottom
+  else //dpad spells change (added): DPad Spells off: as before
+  {
   elementDisplayX=view_xview[0]+295
   elementDisplayY=view_yview[0]+4
   draw_sprite(sTechDisplay,-1,elementDisplayX,elementDisplayY)
@@ -2012,15 +2104,14 @@ if global.optShowHUD=1
     techColor=make_color_rgb(33,225,33)
   else if global.p1CurrentElement=4
     techColor=make_color_rgb(220,104,53)
+  techColor=scrElemColor(global.p1CurrentElement,techColor) //element colors change (added): in the colour picked for its element (Element Colors, Options Set 3)
   draw_set_color(techColor)
   draw_set_halign(fa_center)
   draw_set_font(fnt_SubMenu)
-  //draw_text(elementDisplayX+74,elementDisplayY+3,global.p1SpellEquip)
-  draw_text(elementDisplayX+74,elementDisplayY+3,scrDPadSpellShown(2)) //dpad spells change: with DPad Spells on, the element's name
+  draw_text(elementDisplayX+74,elementDisplayY+3,global.p1SpellEquip)
   draw_set_color(make_color_rgb(248,192,72))
   if global.p1TechniqueEquip!="CONJURE"
-    //draw_text(elementDisplayX+74,elementDisplayY+17,global.p1TechniqueEquip)
-    draw_text(elementDisplayX+74,elementDisplayY+17,scrDPadSpellShown(1)) //dpad spells change: blank with DPad Spells on
+    draw_text(elementDisplayX+74,elementDisplayY+17,global.p1TechniqueEquip)
   else
   {
     if global.p1CurrentElement=1
@@ -2044,6 +2135,7 @@ if global.optShowHUD=1
     castTrack=oPlayer1.castPercent*134
     draw_sprite_ext(sSpiritTrack,-1,elementDisplayX+7,elementDisplayY+16,castTrack,1,0,c_white,1)
   }
+  } //dpad spells change (added): end of DPad Spells off
 
   //dash point display --------------------------------------------------
   dashPointDisplayX=view_xview[0]+50
@@ -2202,6 +2294,14 @@ if global.gamePaused=true and menuOpen=true
   subMenu7="RECORDS"
   subMenu8="CONTROLS"
   subMenu9="SYSTEM"
+  if titleMenu=1 //title options change (added): its two pages' names either side of each, and the backdrop the HUD's Draw gives the pause menu (the HUD's off on the title screen)
+  {
+    subMenu4=subMenu8; subMenu6=subMenu8; subMenu7=subMenu5; subMenu9=subMenu5
+    draw_set_color(make_color_rgb(184,104,8))
+    draw_set_alpha(0.9)
+    draw_rectangle(view_xview[0],view_yview[0],view_xview[0]+view_wview[0],view_yview[0]+view_hview[0],false)
+    draw_set_alpha(1)
+  }
   draw_sprite(sPmenuMain,-1,menuMainX,menuMainY) //main menu
   colorLightPink=make_color_rgb(213,180,112)
   colorDarkPink=make_color_rgb(184,104,8)
@@ -2219,7 +2319,8 @@ if global.gamePaused=true and menuOpen=true
   draw_set_halign(fa_left)
   draw_text(menuMainX+3,menuMainY+219,"F1 Game Info")
   //teleport option
-  if global.gameProgress>=86
+  //if global.gameProgress>=86
+  if global.gameProgress>=86 and titleMenu=0 //title options change: not on the title screen
   {
     if global.teleportEnabled=0
       draw_set_color(colorLightPink)
@@ -2230,7 +2331,13 @@ if global.gamePaused=true and menuOpen=true
     draw_rectangle(menuMainX+263,menuMainY+220,menuMainX+319,menuMainY+231,true)
     draw_line(menuMainX+277,menuMainY+220,menuMainX+277,menuMainY+231)
     draw_set_color(colorDarkPurple)
-    draw_text(menuMainX+266,menuMainY+219,"M Teleport")
+    //draw_text(menuMainX+266,menuMainY+219,"M Teleport")
+    if global.gpLastUsed=1 //pad hints change (added): the gamepad's button (BACK) in the key's spot while it's in use
+    {
+      draw_sprite_ext(sKeyPressPad,scrHintIcon("M"),menuMainX+270,menuMainY+225,1,1,0,c_white,1)
+      draw_text(menuMainX+279,menuMainY+219,"Teleport")
+    }
+    else {draw_text(menuMainX+266,menuMainY+219,"M Teleport")} //pad hints change: as before
   }
   //Close game note
   draw_set_font(fnt_SubMenu)
@@ -2252,7 +2359,8 @@ if global.gamePaused=true and menuOpen=true
     with xLineEffect[iLine]
     {
       draw_line(x,y,x,y+191)
-      x+=0.5
+      //x+=0.5
+      x+=0.5*gDeltaTime //60fps change: per 30fps tick (this is the Draw event, run every frame)
       if x>=oHUD.menuMainX+316
         x=oHUD.menuMainX+4
     }
@@ -2263,13 +2371,16 @@ if global.gamePaused=true and menuOpen=true
     with yLineEffect[iLine]
     {
       draw_line(x,y,x+311,y)
-      y+=0.5
+      //y+=0.5
+      y+=0.5*gDeltaTime //60fps change: per 30fps tick (this is the Draw event, run every frame)
       if y>=oHUD.menuMainY+196
         y=oHUD.menuMainY+4
     }
   }
   draw_set_blend_mode(bm_normal)
   //menu pos
+  if titleMenu=0 //title options change (added): the nine pages' dots, not on the title screen (two pages)
+  {
   menuPosDisplayX=menuMainX+218
   menuPosDisplayY=menuMainY-6
   draw_set_alpha(1)
@@ -2328,6 +2439,7 @@ if global.gamePaused=true and menuOpen=true
   draw_circle(menuPosDisplayX+48,menuPosDisplayY,3,true)
   draw_circle(menuPosDisplayX+56,menuPosDisplayY,3,true)
   draw_circle(menuPosDisplayX+64,menuPosDisplayY,3,true)
+  } //title options change (added)
   // ======================================================================
   if currentMenu=1 //Status ==================================================
   {
@@ -3537,6 +3649,8 @@ if global.gamePaused=true and menuOpen=true
       draw_text(subMenuOptionsX+16,subMenuOptionsY+83,"Show Enemy Health")
       draw_text(subMenuOptionsX+16,subMenuOptionsY+95,"Game Priority")
       draw_text(subMenuOptionsX+16,subMenuOptionsY+107,"Game Detail")
+      draw_rectangle(subMenuOptionsX+4,subMenuOptionsY+122,subMenuOptionsX+12,subMenuOptionsY+130,true) //vsync change (added): VSync
+      draw_text(subMenuOptionsX+16,subMenuOptionsY+119,"VSync") //vsync change (added)
       draw_set_color(colorLightPink)
       if global.optKillChainScreen=true
         draw_rectangle(subMenuOptionsX+5,subMenuOptionsY+15,subMenuOptionsX+11,subMenuOptionsY+21,false)
@@ -3566,6 +3680,10 @@ if global.gamePaused=true and menuOpen=true
       else if global.optGameDetail=1
         gDetail="Normal"
       draw_text(subMenuOptionsX+90,subMenuOptionsY+107,gDetail)
+      if global.optVSync=1 {draw_text(subMenuOptionsX+90,subMenuOptionsY+119,"On")} //vsync change (added)
+      else if global.optVSync=2 {draw_text(subMenuOptionsX+90,subMenuOptionsY+119,"Off")} //vsync change (added)
+      else if global.vsyncOn=1 {draw_text(subMenuOptionsX+90,subMenuOptionsY+119,"Auto (on)")} //vsync change (added): Auto, and what it's doing now
+      else {draw_text(subMenuOptionsX+90,subMenuOptionsY+119,"Auto (off)")} //vsync change (added)
     }
     else if subCursorPos=3 //---------- OPTIONS SET 3 ----------
     {
@@ -3580,6 +3698,17 @@ if global.gamePaused=true and menuOpen=true
       draw_text(subMenuOptionsX+16,subMenuOptionsY+23,"Right is Forward")
       draw_text(subMenuOptionsX+16,subMenuOptionsY+35,"Show HUD")
       draw_text(subMenuOptionsX+16,subMenuOptionsY+47,"Dash Warn")
+      draw_rectangle(subMenuOptionsX+4,subMenuOptionsY+62,subMenuOptionsX+12,subMenuOptionsY+70,true) //element colors change (added): Element Colors, with the four colours after it
+      draw_text(subMenuOptionsX+16,subMenuOptionsY+59,"Element Colors") //element colors change (added)
+      var tECX,tECi; //element colors change (added)
+      tECX=subMenuOptionsX+22+string_width("Element Colors") //element colors change (added)
+      for(tECi=1;tECi<=4;tECi+=1) //element colors change (added)
+      { //element colors change (added)
+        draw_rectangle(tECX+(tECi-1)*10,subMenuOptionsY+63,tECX+(tECi-1)*10+7,subMenuOptionsY+70,false) //element colors change (added)
+        draw_set_color(global.elemColor[tECi]) //element colors change (added)
+        draw_rectangle(tECX+(tECi-1)*10+1,subMenuOptionsY+64,tECX+(tECi-1)*10+6,subMenuOptionsY+69,false) //element colors change (added)
+        draw_set_color(colorDarkPurple) //element colors change (added)
+      } //element colors change (added)
       draw_set_color(colorLightPink)
       if global.optDPadDash=true
         draw_rectangle(subMenuOptionsX+5,subMenuOptionsY+15,subMenuOptionsX+11,subMenuOptionsY+21,false)
@@ -3604,7 +3733,8 @@ if global.gamePaused=true and menuOpen=true
     draw_text(subMenuInfoX+48,subMenuInfoY-2,"HELP INFO")
     draw_set_color(colorDarkPurple)
     draw_set_halign(fa_left)
-    draw_text(subMenuInfoX+3,subMenuInfoY+11,"[L]: Swap Menus")
+    //draw_text(subMenuInfoX+3,subMenuInfoY+11,"[L]: Swap Menus")
+    scrDrawHint(subMenuInfoX+3,subMenuInfoY+11,"[L]: Swap Menus",fa_left,1) //pad hints change: the gamepad's button while it's in use
   }
   // ======================================================================
   else if currentMenu=6 //Quest ==================================================
@@ -3952,8 +4082,10 @@ if global.gamePaused=true and menuOpen=true
     draw_text(subMenuInfoX+56,subMenuInfoY-2,"HELP INFO")
     draw_set_color(colorDarkPurple)
     draw_set_halign(fa_left)
-    draw_text(subMenuInfoX+3,subMenuInfoY+11,"[A]: Swap Menus")
-    draw_text(subMenuInfoX+3,subMenuInfoY+23,"[D]: Swap Menus")
+    //draw_text(subMenuInfoX+3,subMenuInfoY+11,"[A]: Swap Menus")
+    //draw_text(subMenuInfoX+3,subMenuInfoY+23,"[D]: Swap Menus")
+    scrDrawHint(subMenuInfoX+3,subMenuInfoY+11,"[A]: Swap Menus",fa_left,1) //pad hints change: the gamepad's buttons while it's in use
+    scrDrawHint(subMenuInfoX+3,subMenuInfoY+23,"[D]: Swap Menus",fa_left,1) //pad hints change: see above
     //---------- CURRENT SUBSUB-MENU ----------
     subSubMenuX=menuMainX+200
     subSubMenuY=menuMainY+49
@@ -4121,7 +4253,7 @@ if global.gamePaused=true and menuOpen=true
     draw_set_halign(fa_left)
     //draw_text(subMenuInfoX+3,subMenuInfoY+11,"[J]: Select action")
     //draw_text(subMenuInfoX+3,subMenuInfoY+23,"[L]: Swap Menus")
-    draw_text(subMenuInfoX+3,subMenuInfoY+11,tHelp0) //gamepad change: see above
+    scrDrawHint(subMenuInfoX+3,subMenuInfoY+11,tHelp0,fa_left,1) //gamepad change: see above (pad hints change: the gamepad's button while it's in use)
     draw_text(subMenuInfoX+3,subMenuInfoY+23,tHelp1)
     draw_text(subMenuInfoX+3,subMenuInfoY+35,tHelp2)
     //---------- GAMEPAD ---------- //gamepad change (added): the gamepad being read, and whether Gamepad Input is on
@@ -4207,7 +4339,9 @@ if global.gamePaused=true and menuOpen=true
       draw_rectangle(menuCursorX,menuCursorY,menuCursorX+12,menuCursorY+12,true)
   }
   menuSlotDisplay()
-  menuQuote()
+  //menuQuote()
+  if titleMenu=0 {menuQuote()} //title options change: no map quote on the title screen
   //if currentMenu=8 and ctrlView>0 {menuControlWidget()} //controls change (added): the Controls page's key/button panel, over the rest of the menu
+  if currentMenu=5 and ecView>0 {menuElemColorWidget()} //element colors change (added): the Element Colors panel, over the rest of the menu
   if currentMenu=8 and ctrlView>0 {if ctrlView=3 {menuDPadSpellWidget()} else {menuControlWidget()}} //controls change (added): the Controls page's key/button panel, over the rest of the menu (dpad spells change: or its D-pad panel)
 }

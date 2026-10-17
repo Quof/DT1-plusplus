@@ -53,7 +53,9 @@ if image_speed>0
   else if type=3
     gColor=make_color_rgb(150,85,0)
   draw_set_blend_mode(bm_add)
-  draw_circle_color(x,y,16,gColor,c_black,false)
+  //draw_circle_color(x,y,16,gColor,c_black,false)
+  draw_circle_color(x,y,16,scrElemColor(type+1,gColor),c_black,false) //element colors change: in the colour picked for its element (Element Colors, Options Set 3) (type 0-3: fire-earth)
   draw_set_blend_mode(bm_normal)
 }
-draw_sprite_ext(sprite_index,-1,x,y,image_xscale,image_yscale,0,image_blend,image_alpha)
+//draw_sprite_ext(sprite_index,-1,x,y,image_xscale,image_yscale,0,image_blend,image_alpha)
+draw_sprite_ext(sprite_index,-1,x,y,image_xscale,image_yscale,0,scrElemColor(type+1,image_blend),image_alpha) //element colors change: see above (oQuickTimeDistorter tints them)

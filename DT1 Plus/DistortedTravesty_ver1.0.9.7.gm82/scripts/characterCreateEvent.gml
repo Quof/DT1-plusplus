@@ -204,6 +204,7 @@ backDashRec=0              //used for controlling when the player can stop back 
 
 //60fps change (added): variables for running above 30fps (see characterStepEvent and pMoveToWrapNew)
 ditherCounter=0            //counts frames; pMoveTo uses it to spread the leftover part of a pixel over the frames
+xSubPx=0                   //stutter fix (added): the part of a pixel pMoveTo's x move carries over to the next frame
 xVelSetTick=0              //code set xVel/yVel directly this frame (or gave a one-off push): pMoveToWrapNew uses the 30fps formula
 yVelSetTick=0
 xVelSetExt=0               //the same, but set by other objects (knockback, jumpers, Blast Off); cleared once pMoveToWrapNew used it

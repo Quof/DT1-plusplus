@@ -1173,4 +1173,5 @@ if showRank>=16
 if showRank>=17
   draw_text(256,320,finalRank)
 if showRank>=18
-  draw_text(256,352,"Press [J] to continue.")
+  //draw_text(256,352,"Press [J] to continue.")
+  scrDrawHint(256,352,"Press [J] to continue.",fa_center,1) //pad hints change: the gamepad's button while it's in use

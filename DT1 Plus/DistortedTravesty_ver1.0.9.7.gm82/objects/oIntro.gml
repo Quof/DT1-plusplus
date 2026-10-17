@@ -361,7 +361,13 @@ if !instance_exists(oInitializeGame)
 
   draw_set_font(fnt_MessageMenu)
   draw_set_halign(fa_right)
-  draw_text_color(504,332,helpString[0],textColor,textColor,textColor,textColor,helpAlpha[0])
+  //draw_text_color(504,332,helpString[0],textColor,textColor,textColor,textColor,helpAlpha[0])
+  //pad hints change: drawn by scrDrawHint ([J] as the gamepad's button while it's in use), in the colour and alpha
+  //draw_text_color gave it, which are put back after
+  var tHintCol,tHintAlpha; tHintCol=draw_get_color(); tHintAlpha=draw_get_alpha() //pad hints change (added)
+  draw_set_color(textColor); draw_set_alpha(helpAlpha[0]) //pad hints change (added)
+  scrDrawHint(504,332,helpString[0],fa_right,1) //pad hints change (added)
+  draw_set_color(tHintCol); draw_set_alpha(tHintAlpha) //pad hints change (added)
   draw_set_halign(fa_left)
   draw_text_color(8,8,helpString[1],textColor,textColor,textColor,textColor,helpAlpha[1])
   }

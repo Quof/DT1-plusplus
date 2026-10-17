@@ -118,6 +118,7 @@ if shopProgress>0
       global.SkFaith=0
     }
     io_clear()
+    scrGamepadSync() //gamepad change (added): and the gamepad's presses (io_clear only clears the keyboard's, so a pad press it was meant to use up still counted for the rest of the frame: A that closed dialogue also jumped, Up at a door went through the door it arrived at and back)
     oPlayer1.image_alpha=1
     shopProgress=0
     depth=50
@@ -127,6 +128,7 @@ if shopProgress>0
   if (keyboard_check_pressed(curCancel) or scrPadPressed(18))=true //gamepad change: and the gamepad's Menu Cancel (scrGamepadInit)
   {
     io_clear()
+    scrGamepadSync() //gamepad change (added): and the gamepad's presses (io_clear only clears the keyboard's, so a pad press it was meant to use up still counted for the rest of the frame: A that closed dialogue also jumped, Up at a door went through the door it arrived at and back)
     oPlayer1.image_alpha=1
     shopProgress=0
     depth=50
@@ -209,7 +211,8 @@ if shopProgress>0
   draw_text(controlMenuX+46,controlMenuY-2,"CONTROLS")
   draw_set_color(colorDarkPurple)
   draw_set_halign(fa_left)
-  draw_text(controlMenuX+3,controlMenuY+9,"[J] Confirm#[K]Cancel")
+  //draw_text(controlMenuX+3,controlMenuY+9,"[J] Confirm#[K]Cancel")
+  scrDrawHint(controlMenuX+3,controlMenuY+9,"[J] Confirm#[K]Cancel",fa_left,1) //pad hints change: the gamepad's buttons while it's in use
   //menu cursor
   draw_set_color(colorLightPink)
   draw_rectangle(menuCursorX,menuCursorY,menuCursorX+12,menuCursorY+12,true)

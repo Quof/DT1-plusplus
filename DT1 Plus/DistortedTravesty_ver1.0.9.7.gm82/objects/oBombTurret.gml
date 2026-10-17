@@ -77,6 +77,9 @@ else if elementType=4
   WINDresist=50
   EARTHresist=100
 }
+ecElem=elementType //element colors change (added): its tint in the colour picked for its element (Element Colors, Options Set 3),
+ecBase=baseColor //element colors change (added): from the game's (scrElemColorRefresh redoes it when they're changed)
+baseColor=scrElemColor(ecElem,ecBase) //element colors change (added)
 image_blend=baseColor
 #define Step_0
 /*"/*'/**//* YYD ACTION

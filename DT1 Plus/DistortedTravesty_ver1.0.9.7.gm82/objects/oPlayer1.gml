@@ -764,13 +764,17 @@ if global.optShowGlow=true and global.p1CurrentElement!=0
   draw_set_alpha(0.85)
   draw_set_blend_mode(bm_add)
   if global.p1CurrentElement=1
-    draw_circle_color(x,y-26,32,make_color_rgb(255,0,0),c_black,false)
+    //draw_circle_color(x,y-26,32,make_color_rgb(255,0,0),c_black,false)
+    draw_circle_color(x,y-26,32,scrElemColor(1,make_color_rgb(255,0,0)),c_black,false) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)
   else if global.p1CurrentElement=2
-    draw_circle_color(x,y-26,32,make_color_rgb(0,0,255),c_black,false)
+    //draw_circle_color(x,y-26,32,make_color_rgb(0,0,255),c_black,false)
+    draw_circle_color(x,y-26,32,scrElemColor(2,make_color_rgb(0,0,255)),c_black,false) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)
   else if global.p1CurrentElement=3
-    draw_circle_color(x,y-26,32,make_color_rgb(0,255,0),c_black,false)
+    //draw_circle_color(x,y-26,32,make_color_rgb(0,255,0),c_black,false)
+    draw_circle_color(x,y-26,32,scrElemColor(3,make_color_rgb(0,255,0)),c_black,false) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)
   else if global.p1CurrentElement=4
-    draw_circle_color(x,y-26,32,make_color_rgb(220,110,0),c_black,false)
+    //draw_circle_color(x,y-26,32,make_color_rgb(220,110,0),c_black,false)
+    draw_circle_color(x,y-26,32,scrElemColor(4,make_color_rgb(220,110,0)),c_black,false) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)
   draw_set_blend_mode(bm_normal)
   draw_set_alpha(1)
 }

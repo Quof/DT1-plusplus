@@ -83,7 +83,8 @@ applies_to=self
 */
 if zoneType=0
 {
-  draw_set_color(image_blend)
+  //draw_set_color(image_blend)
+  draw_set_color(scrElemColor(zoneElement,image_blend)) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)
   draw_set_alpha(innerAlpha)
   draw_rectangle(x,y,x+zoneWidth,y+zoneHeight,0)
   draw_set_alpha(0.9)
@@ -91,7 +92,8 @@ if zoneType=0
 }
 else if zoneType=1
 {
-  draw_set_color(image_blend)
+  //draw_set_color(image_blend)
+  draw_set_color(scrElemColor(zoneElement,image_blend)) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)
   draw_set_alpha(innerAlpha)
   draw_circle(x,y,zoneRadius,0)
   draw_set_alpha(0.9)

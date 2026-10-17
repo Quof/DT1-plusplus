@@ -49,6 +49,9 @@ if joystick_found() or (global.gpDevice=-1 and tCount>0) or global.gpDevice>=tCo
 
 for(i=1;i<=global.gpActions;i+=1) {global.gpHeld[i]=0}
 global.gpFrames+=1
+//pad hints change (added): a key pressed (or no pad, or Gamepad Input off) means the keyboard is what's being used; a
+//held gamepad action sets it back (at the end). The menus' hints show the pad's buttons while it is (scrDrawHint)
+if keyboard_check(vk_anykey) or global.gpDevice<0 or global.optGamePad=0 {global.gpLastUsed=0}
 //Only while the game window has focus (gm82core's window_has_focus, updated in its Begin Step), so the pad doesn't play
 //the game from the background. Skipped for the first frames, before gm82core has set it.
 tRead=(global.gpDevice>=0)
@@ -93,12 +96,18 @@ if tRead
   global.gpHeld[21]=scrGamepadCheck(4)
   global.gpHeld[22]=scrGamepadCheck(9)
   //The left stick always moves as well, like the arrow keys next to the keyboard controls
+  //double press fix: once a direction counts, it keeps counting until the stick is back under 0.3 (gpDeadZone-0.1), so a
+  //stick resting near 0.4 can't flicker on and off and count as pressed again and again (menus stepping twice)
   if global.gpAxes>=2
   {
-    if global.gpAxis[0]<=-global.gpDeadZone {global.gpHeld[1]=1}
-    if global.gpAxis[0]>=global.gpDeadZone {global.gpHeld[2]=1}
-    if global.gpAxis[1]<=-global.gpDeadZone {global.gpHeld[3]=1}
-    if global.gpAxis[1]>=global.gpDeadZone {global.gpHeld[4]=1}
+    //if global.gpAxis[0]<=-global.gpDeadZone {global.gpHeld[1]=1}
+    //if global.gpAxis[0]>=global.gpDeadZone {global.gpHeld[2]=1}
+    //if global.gpAxis[1]<=-global.gpDeadZone {global.gpHeld[3]=1}
+    //if global.gpAxis[1]>=global.gpDeadZone {global.gpHeld[4]=1}
+    if global.gpAxis[0]<=-(global.gpDeadZone-0.1*global.gpPrev[1]) {global.gpHeld[1]=1} //double press fix: see above
+    if global.gpAxis[0]>=global.gpDeadZone-0.1*global.gpPrev[2] {global.gpHeld[2]=1} //double press fix
+    if global.gpAxis[1]<=-(global.gpDeadZone-0.1*global.gpPrev[3]) {global.gpHeld[3]=1} //double press fix
+    if global.gpAxis[1]>=global.gpDeadZone-0.1*global.gpPrev[4] {global.gpHeld[4]=1} //double press fix
   }
 }
 
@@ -107,4 +116,5 @@ for(i=1;i<=global.gpActions;i+=1)
 {
   global.gpPressed[i]=(global.gpHeld[i] and !global.gpPrev[i])
   global.gpPrev[i]=global.gpHeld[i]
+  if global.gpHeld[i] and global.optGamePad=1 {global.gpLastUsed=1} //pad hints change (added): see above
 }

@@ -39,3 +39,11 @@ if global.gamePaused=false
       instance_destroy()
   }
 }
+#define Draw_0
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+//element colors change (added): in the colour picked for its element (Element Colors, Options Set 3); it was drawn as it is (frame type-1, set in the Step)
+scrDrawElemSprite(1,type,x,y,image_xscale,image_yscale,image_angle,image_alpha)
