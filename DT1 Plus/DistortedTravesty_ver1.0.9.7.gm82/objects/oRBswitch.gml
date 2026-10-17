@@ -14,7 +14,8 @@ applies_to=self
 if global.gamePaused=false
 {
   if reHitTime>0
-    reHitTime-=1
+    //reHitTime-=1
+    reHitTime-=gDeltaTime //60fps change: counts 30fps ticks
 }
 #define Collision_oEProjectileBase
 /*"/*'/**//* YYD ACTION
@@ -22,7 +23,8 @@ lib_id=1
 action_id=603
 applies_to=self
 */
-if reHitTime=0 and global.gamePaused=false
+//if reHitTime=0 and global.gamePaused=false
+if reHitTime<=0 and global.gamePaused=false //60fps change: <= so it can still be hit if the frame rate changes mid-count
 {
   playSound(global.snd_RBSwitch,0,1)
   if global.rbSwitchBlueOn=false
@@ -38,7 +40,8 @@ lib_id=1
 action_id=603
 applies_to=self
 */
-if reHitTime=0 and global.gamePaused=false
+//if reHitTime=0 and global.gamePaused=false
+if reHitTime<=0 and global.gamePaused=false //60fps change: <= so it can still be hit if the frame rate changes mid-count
 {
   playSound(global.snd_RBSwitch,0,1)
   if global.rbSwitchBlueOn=false

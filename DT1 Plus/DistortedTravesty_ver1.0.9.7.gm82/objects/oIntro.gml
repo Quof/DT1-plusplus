@@ -62,8 +62,10 @@ lib_id=1
 action_id=603
 applies_to=self
 */
-loadState+=1
-if loadState=2
+//loadState+=1
+loadState+=gDeltaTime //60fps change: counts 30fps ticks
+//if loadState=2
+if scrCountPass(loadState,2) //60fps change: once, when the count reaches it
 {
   //load external files
   if !variable_global_exists("gamePriority")
@@ -106,11 +108,16 @@ if !instance_exists(oInitializeGame)
 {
   if annoyTime<300 //annoy text
   {
-    annoyTime+=1
-    if annoyTime>=11 and annoyTime<=20
-      annoyAlpha+=0.1
-    else if annoyTime>=181 and annoyTime<=190
-      annoyAlpha-=0.1
+    //annoyTime+=1
+    annoyTime+=gDeltaTime //60fps change: counts 30fps ticks
+    //if annoyTime>=11 and annoyTime<=20
+    if annoyTime>10 and annoyTime<=20 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //annoyAlpha+=0.1
+      annoyAlpha+=0.1*gDeltaTime //60fps change: per 30fps tick
+    //else if annoyTime>=181 and annoyTime<=190
+    else if annoyTime>180 and annoyTime<=190 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //annoyAlpha-=0.1
+      annoyAlpha-=0.1*gDeltaTime //60fps change: per 30fps tick
     else if annoyTime>=195
       annoyTime=500
     draw_text_color(256,16,annoyString[0],textColor,textColor,textColor,textColor,annoyAlpha)
@@ -129,7 +136,8 @@ if !instance_exists(oInitializeGame)
   draw_set_halign(fa_left)
   draw_set_font(fnt_CombatData)
   draw_set_color(make_color_rgb(20,230,60))
-  mmx_timer+=1
+  //mmx_timer+=1
+  mmx_timer+=gDeltaTime //60fps change: counts 30fps ticks
   if mmx_timer>=round(random(4)+8)
   {
     mmx_timer=0
@@ -189,103 +197,126 @@ if !instance_exists(oInitializeGame)
   {
     if mainFadeInTime>=mainFadeInTimeTotal
     {
-      mainAlpha[0]+=0.02
+      //mainAlpha[0]+=0.02
+      mainAlpha[0]+=0.02*gDeltaTime //60fps change: per 30fps tick
       if mainAlpha[0]>=1
       {
-        mainFadeInTime=0
+        //mainFadeInTime=0
+        mainFadeInTime=gDeltaTime-1 //60fps change: the next part's wait counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
         sceneProgress+=1
       }
     }
     else
-      mainFadeInTime+=1
+      //mainFadeInTime+=1
+      mainFadeInTime+=gDeltaTime //60fps change: counts 30fps ticks
   }
   else if sceneProgress=1 //definition 2
   {
     if mainFadeInTime>=mainFadeInTimeTotal
     {
-      mainAlpha[1]+=0.02
+      //mainAlpha[1]+=0.02
+      mainAlpha[1]+=0.02*gDeltaTime //60fps change: per 30fps tick
       if mainAlpha[1]>=1
       {
-        mainFadeInTime=0
+        //mainFadeInTime=0
+        mainFadeInTime=gDeltaTime-1 //60fps change: the next part's wait counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
         sceneProgress+=1
       }
     }
     else
-      mainFadeInTime+=1
+      //mainFadeInTime+=1
+      mainFadeInTime+=gDeltaTime //60fps change: counts 30fps ticks
   }
   else if sceneProgress=2 //definition 3
   {
     if mainFadeInTime>=mainFadeInTimeTotal
     {
-      mainAlpha[2]+=0.02
+      //mainAlpha[2]+=0.02
+      mainAlpha[2]+=0.02*gDeltaTime //60fps change: per 30fps tick
       if mainAlpha[2]>=1
       {
-        mainFadeInTime=0
+        //mainFadeInTime=0
+        mainFadeInTime=gDeltaTime-1 //60fps change: the next part's wait counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
         sceneProgress+=1
       }
     }
     else
-      mainFadeInTime+=1
+      //mainFadeInTime+=1
+      mainFadeInTime+=gDeltaTime //60fps change: counts 30fps ticks
   }
   else if sceneProgress=3 //fade out definitions
   {
     if mainFadeInTime>=mainFadeInTimeTotal+10
     {
       for (i=0;i<3;i+=1)
-        mainAlpha[i]-=0.02
+        //mainAlpha[i]-=0.02
+        mainAlpha[i]-=0.02*gDeltaTime //60fps change: per 30fps tick
       if mainAlpha[0]<=0
       {
-        mainFadeInTime=0
+        //mainFadeInTime=0
+        mainFadeInTime=gDeltaTime-1 //60fps change: the next part's wait counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
         sceneProgress+=1
       }
     }
     else
-      mainFadeInTime+=1
+      //mainFadeInTime+=1
+      mainFadeInTime+=gDeltaTime //60fps change: counts 30fps ticks
   }
   else if sceneProgress=4 //warning 1
   {
     if mainFadeInTime>=mainFadeInTimeTotal-60
     {
-      mainAlpha[3]+=0.02
+      //mainAlpha[3]+=0.02
+      mainAlpha[3]+=0.02*gDeltaTime //60fps change: per 30fps tick
       if mainAlpha[3]>=1
       {
-        mainFadeInTime=0
+        //mainFadeInTime=0
+        mainFadeInTime=gDeltaTime-1 //60fps change: the next part's wait counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
         sceneProgress+=1
       }
     }
     else
-      mainFadeInTime+=1
+      //mainFadeInTime+=1
+      mainFadeInTime+=gDeltaTime //60fps change: counts 30fps ticks
   }
   else if sceneProgress=5 //warning 2
   {
     if mainFadeInTime>=mainFadeInTimeTotal
     {
-      mainAlpha[4]+=0.02
+      //mainAlpha[4]+=0.02
+      mainAlpha[4]+=0.02*gDeltaTime //60fps change: per 30fps tick
       if mainAlpha[4]>=1
       {
-        mainFadeInTime=0
+        //mainFadeInTime=0
+        mainFadeInTime=gDeltaTime-1 //60fps change: the next part's wait counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
         sceneProgress+=1
       }
     }
     else
-      mainFadeInTime+=1
+      //mainFadeInTime+=1
+      mainFadeInTime+=gDeltaTime //60fps change: counts 30fps ticks
   }
   else if sceneProgress=6 //fade out warnings
   {
     if mainFadeInTime>=mainFadeInTimeTotal
     {
       for (i=3;i<5;i+=1)
-        mainAlpha[i]-=0.02
-      helpAlpha[0]-=0.02
-      helpAlpha[1]-=0.02
+        //mainAlpha[i]-=0.02
+        mainAlpha[i]-=0.02*gDeltaTime //60fps change: per 30fps tick
+      //helpAlpha[0]-=0.02
+      helpAlpha[0]-=0.02*gDeltaTime //60fps change: per 30fps tick
+      //helpAlpha[1]-=0.02
+      helpAlpha[1]-=0.02*gDeltaTime //60fps change: per 30fps tick
       if mainAlpha[3]<=0
       {
-        mainFadeInTime=0
+        //mainFadeInTime=0
+        mainFadeInTime=gDeltaTime-1 //60fps change: the next part's wait counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
         sceneProgress+=1
       }
     }
     else
-      mainFadeInTime+=1
+      //mainFadeInTime+=1
+      mainFadeInTime+=gDeltaTime //60fps change: counts 30fps ticks
   }
   else if sceneProgress=7 //title show
   {
@@ -293,15 +324,18 @@ if !instance_exists(oInitializeGame)
     {
       if sBlackAlpha<=0
       {
-        titleAlpha+=0.01
+        //titleAlpha+=0.01
+        titleAlpha+=0.01*gDeltaTime //60fps change: per 30fps tick
         if titleAlpha>=1
           init=instance_create(0,0,oInitializeGame)
       }
       else
-        sBlackAlpha-=0.01
+        //sBlackAlpha-=0.01
+        sBlackAlpha-=0.01*gDeltaTime //60fps change: per 30fps tick
     }
     else
-      mainFadeInTime+=1
+      //mainFadeInTime+=1
+      mainFadeInTime+=gDeltaTime //60fps change: counts 30fps ticks
   }
   xText=256
   yText=90
@@ -318,9 +352,11 @@ if !instance_exists(oInitializeGame)
     yText+=88
   }
   if mainAlpha[1]>=0.40 and helpAlpha[0]<1
-    helpAlpha[0]+=0.02
+    //helpAlpha[0]+=0.02
+    helpAlpha[0]+=0.02*gDeltaTime //60fps change: per 30fps tick
   if sceneProgress>=3 and sceneProgress<=5 and mainAlpha[0]<=0.60 and helpAlpha[1]<1
-    helpAlpha[1]+=0.02
+    //helpAlpha[1]+=0.02
+    helpAlpha[1]+=0.02*gDeltaTime //60fps change: per 30fps tick
 
   draw_set_font(fnt_MessageMenu)
   draw_set_halign(fa_right)
@@ -352,13 +388,15 @@ if titleAlpha>=1
   draw_set_blend_mode(bm_add)
   if bFadeInGlow=true
   {
-    titleGlowAlpha+=0.002
+    //titleGlowAlpha+=0.002
+    titleGlowAlpha+=0.002*gDeltaTime //60fps change: per 30fps tick
     if titleGlowAlpha>=0.3
       bFadeInGlow=false
   }
   else
   {
-    titleGlowAlpha-=0.002
+    //titleGlowAlpha-=0.002
+    titleGlowAlpha-=0.002*gDeltaTime //60fps change: per 30fps tick
     if titleGlowAlpha<=0
       bFadeInGlow=true
   }

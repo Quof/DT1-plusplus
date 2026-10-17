@@ -15,12 +15,14 @@ applies_to=self
 if changeType=0 //going off
 {
   if fadeAlpha>0
-    fadeAlpha-=0.1
+    //fadeAlpha-=0.1
+    fadeAlpha-=0.1*gDeltaTime //60fps change: per 30fps tick
 }
 else if changeType=1 //going on
 {
   if fadeAlpha<1
-    fadeAlpha+=0.1
+    //fadeAlpha+=0.1
+    fadeAlpha+=0.1*gDeltaTime //60fps change: per 30fps tick
 }
 #define Draw_0
 /*"/*'/**//* YYD ACTION

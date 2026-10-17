@@ -15,8 +15,10 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  yVel+=0.3
-  moveTo(xVel,yVel)
+  //yVel+=0.3
+  yVel=scrGravAcc(yVel,0.3,1) //60fps change: gravity per 30fps tick, following the 30fps arc
+  //moveTo(xVel,yVel)
+  moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 
   if isCollisionSolid()
     y-=2

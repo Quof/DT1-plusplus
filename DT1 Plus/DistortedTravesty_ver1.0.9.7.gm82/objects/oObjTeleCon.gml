@@ -37,10 +37,12 @@ if changeTime>=9
   digit1=round(random(9))
   digit2=round(random(9))
   digit3=round(random(9))
-  changeTime=0
+  //changeTime=0
+  changeTime=gDeltaTime-1 //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (the same at 30fps)
 }
 else
-  changeTime+=1
+  //changeTime+=1
+  changeTime+=gDeltaTime //60fps change: counts 30fps ticks
 draw_text(x+1,y,digit1)
 draw_text(x+5,y,digit2)
 draw_text(x+9,y,digit3)

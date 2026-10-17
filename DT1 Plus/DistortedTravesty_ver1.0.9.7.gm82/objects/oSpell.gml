@@ -142,7 +142,8 @@ if global.gamePaused=false
 {
   if currentSpell="FIREBALL"
   {
-    if oGame.time mod 2=0
+    //if oGame.time mod 2=0
+    if gDeltaDoTicks and oGame.time30 mod 2=0 //60fps change: every other 30fps tick (oGame.time counts frames, time30 counts ticks; the same at 30fps)
     {
       var tEffect;
       tEffect=instance_create(x-4+random(8),y-4+random(8),oEffect)
@@ -160,28 +161,37 @@ if global.gamePaused=false
   {
     if lifeTime<=25
     {
-      image_xscale-=0.02
-      image_yscale+=0.05
+      //image_xscale-=0.02
+      image_xscale-=0.02*gDeltaTime //60fps change: per 30fps tick
+      //image_yscale+=0.05
+      image_yscale+=0.05*gDeltaTime //60fps change: per 30fps tick
     }
     else
     {
-      image_xscale-=0.005
-      image_yscale+=0.01
+      //image_xscale-=0.005
+      image_xscale-=0.005*gDeltaTime //60fps change: per 30fps tick
+      //image_yscale+=0.01
+      image_yscale+=0.01*gDeltaTime //60fps change: per 30fps tick
     }
   }
   else if currentSpell="INFERNO"
   {
 
+    if gDeltaDoTicks //60fps change (added): the effect once per 30fps tick
+    { //60fps change (added)
     var tEffect;
     tEffect=instance_create(x-16+random(32),y-32-random(8),oEffect)
     tEffect.sprite_index=sXshotEffect1; tEffect.image_speed=0.2+random(0.1)
     tEffect.image_xscale=0.6; tEffect.image_yscale=0.6
     tEffect.image_alpha=0.5
+    } //60fps change (added)
 
-    y+=13
+    //y+=13
+    y+=13*gDeltaTime //60fps change: per 30fps tick
   }
   else if currentSpell="WATER BLAST"
   {
+    if gDeltaDoTicks //60fps change (added): the effect once per 30fps tick
     for(i=0;i<2;i+=1)
     {
       var tEffect;
@@ -192,6 +202,7 @@ if global.gamePaused=false
   }
   else if currentSpell="FLOOD"
   {
+    if gDeltaDoTicks //60fps change (added): the effect once per 30fps tick
     for(i=0;i<4;i+=1)
     {
       var tEffect;
@@ -201,73 +212,100 @@ if global.gamePaused=false
     }
 
     if image_xscale=1
-      x+=12
+      //x+=12
+      x+=12*gDeltaTime //60fps change: per 30fps tick
     else
-      x-=12
+      //x-=12
+      x-=12*gDeltaTime //60fps change: per 30fps tick
   }
   else if currentSpell="PIERCING STREAM"
   {
-    x+=xMove
-    if lifeTime mod 5=0
+    //x+=xMove
+    x+=xMove*gDeltaTime //60fps change: per 30fps tick
+    //if lifeTime mod 5=0
+    if scrModPassDown(lifeTime,5) //60fps change: once each time the count (down) reaches a multiple of 5
       effect_create_above(ef_flare,x,y,1,c_blue)
-    if lifeTime>=30
+    //if lifeTime>=30
+    if lifeTime>29 //60fps change: the same 30fps ticks (it counts down in gDeltaTime steps after this check)
     {
       if image_xscale>0
-        image_xscale+=0.2
+        //image_xscale+=0.2
+        image_xscale+=0.2*gDeltaTime //60fps change: per 30fps tick
       else
-        image_xscale-=0.2
-      image_yscale+=0.015
+        //image_xscale-=0.2
+        image_xscale-=0.2*gDeltaTime //60fps change: per 30fps tick
+      //image_yscale+=0.015
+      image_yscale+=0.015*gDeltaTime //60fps change: per 30fps tick
     }
     else
     {
       if image_xscale>0
-        image_xscale+=0.05
+        //image_xscale+=0.05
+        image_xscale+=0.05*gDeltaTime //60fps change: per 30fps tick
       else
-        image_xscale-=0.05
-      image_yscale+=0.004
+        //image_xscale-=0.05
+        image_xscale-=0.05*gDeltaTime //60fps change: per 30fps tick
+      //image_yscale+=0.004
+      image_yscale+=0.004*gDeltaTime //60fps change: per 30fps tick
     }
   }
   else if currentSpell="WIND BURST"
   {
+    if gDeltaDoTicks //60fps change (added): the effect once per 30fps tick
+    { //60fps change (added)
     var tEffect;
     tEffect=instance_create(x-14+random(28),y-2-random(16),oEffect)
     tEffect.sprite_index=sWindEffect; tEffect.image_speed=0.2+random(0.1)
     tEffect.image_alpha=0.2; tEffect.xSpd=random_range(-2,2); tEffect.ySpd=-2-random(3)
+    } //60fps change (added)
 
     if isCollisionLeft(1)
       instance_destroy()
     if isCollisionRight(1)
       instance_destroy()
     if xVel>0 and xVel<8
-      xVel+=0.1
+      //xVel+=0.1
+      xVel=scrGravAccX(xVel,0.1,1) //60fps change: speeds up per 30fps tick, following the 30fps path
     if xVel<0 and xVel>-8
-      xVel-=0.1
+      //xVel-=0.1
+      xVel=scrGravAccX(xVel,-0.1,1) //60fps change: see above
   }
   else if currentSpell="CYCLONE"
   {
+    if gDeltaDoTicks //60fps change (added): the effect once per 30fps tick
+    { //60fps change (added)
     var tEffect;
     tEffect=instance_create(x-16+random(32),y-2-random(sprite_height*0.75),oEffect)
     tEffect.sprite_index=sWindEffect; tEffect.image_speed=0.2+random(0.1)
     tEffect.image_alpha=0.2; tEffect.xSpd=random_range(-2,2); tEffect.ySpd=-2-random(3)
+    } //60fps change (added)
 
-    if lifeTime>=8
+    //if lifeTime>=8
+    if lifeTime>7 //60fps change: see above
     {
-      image_xscale+=0.015
-      image_yscale+=0.015
+      //image_xscale+=0.015
+      image_xscale+=0.015*gDeltaTime //60fps change: per 30fps tick
+      //image_yscale+=0.015
+      image_yscale+=0.015*gDeltaTime //60fps change: per 30fps tick
     }
     else
     {
-      image_xscale+=0.3
-      image_yscale+=0.3
+      //image_xscale+=0.3
+      image_xscale+=0.3*gDeltaTime //60fps change: per 30fps tick
+      //image_yscale+=0.3
+      image_yscale+=0.3*gDeltaTime //60fps change: per 30fps tick
     }
   }
   else if currentSpell="ROCK SMASH"
   {
+    if gDeltaDoTicks //60fps change (added): the effect once per 30fps tick
+    { //60fps change (added)
     var tEffect,tScale;
     tScale=1+((91-lifeTime)/40)
     tEffect=instance_create(x,y,oEffect)
     tEffect.sprite_index=sXshotEffect2; tEffect.image_speed=0.2; tEffect.image_alpha=0.35
     tEffect.image_xscale=tScale; tEffect.image_yscale=tScale
+    } //60fps change (added)
 
     if isCollisionBottom(1)
     {
@@ -294,24 +332,29 @@ if global.gamePaused=false
       instance_destroy()
     }
     if yVel<12
-      yVel+=0.2
+      //yVel+=0.2
+      yVel=scrGravAcc(yVel,0.2,1) //60fps change: gravity per 30fps tick, following the 30fps arc
     if image_xscale=1
     {
       if xVel<16
-        xVel+=0.4
+        //xVel+=0.4
+        xVel=scrGravAccX(xVel,0.4,1) //60fps change: speeds up per 30fps tick, following the 30fps path
     }
     else
     {
       if xVel>-16
-        xVel-=0.4
+        //xVel-=0.4
+        xVel=scrGravAccX(xVel,-0.4,1) //60fps change: see above
     }
   }
 
   if lifeTime<=0
     instance_destroy()
   else
-    lifeTime-=1
-  moveTo(xVel,yVel)
+    //lifeTime-=1
+    lifeTime-=gDeltaTime //60fps change: counts 30fps ticks
+  //moveTo(xVel,yVel)
+  moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 }
 #define Draw_0
 /*"/*'/**//* YYD ACTION

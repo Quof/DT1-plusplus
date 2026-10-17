@@ -145,15 +145,20 @@ applies_to=self
 if global.gamePaused=false
 {
   if oPlayer1.spiritEnergy<oPlayer1.maxSpiritEnergy
-    oPlayer1.spiritEnergy+=3.25
+    //oPlayer1.spiritEnergy+=3.25
+    oPlayer1.spiritEnergy+=3.25*gDeltaTime //60fps change: per 30fps tick
   if oPlayer1.fireEnergy<oPlayer1.maxFireEnergy
-    oPlayer1.fireEnergy+=3
+    //oPlayer1.fireEnergy+=3
+    oPlayer1.fireEnergy+=3*gDeltaTime //60fps change: per 30fps tick
   if oPlayer1.waterEnergy<oPlayer1.maxWaterEnergy
-    oPlayer1.waterEnergy+=3
+    //oPlayer1.waterEnergy+=3
+    oPlayer1.waterEnergy+=3*gDeltaTime //60fps change: per 30fps tick
   if oPlayer1.windEnergy<oPlayer1.maxWindEnergy
-    oPlayer1.windEnergy+=3
+    //oPlayer1.windEnergy+=3
+    oPlayer1.windEnergy+=3*gDeltaTime //60fps change: per 30fps tick
   if oPlayer1.earthEnergy<oPlayer1.maxEarthEnergy
-    oPlayer1.earthEnergy+=3
+    //oPlayer1.earthEnergy+=3
+    oPlayer1.earthEnergy+=3*gDeltaTime //60fps change: per 30fps tick
 }
 #define Draw_0
 /*"/*'/**//* YYD ACTION
@@ -166,11 +171,16 @@ if init=1
   loadingData[4]="DATA LOADED SUCCESSFULLY"
   init=2
 }
-colorChange+=1
-if colorChange>=1 and colorChange<=80
-  greenColor-=0.5
-else if colorChange>=81 and colorChange<=160
-  greenColor+=0.5
+//colorChange+=1
+colorChange+=gDeltaTime //60fps change: counts 30fps ticks
+//if colorChange>=1 and colorChange<=80
+if colorChange>0 and colorChange<=80 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+  //greenColor-=0.5
+  greenColor-=0.5*gDeltaTime //60fps change: per 30fps tick
+//else if colorChange>=81 and colorChange<=160
+else if colorChange>80 and colorChange<=160 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+  //greenColor+=0.5
+  greenColor+=0.5*gDeltaTime //60fps change: per 30fps tick
 else if colorChange>=161
   colorChange=0
 //loading data
@@ -185,7 +195,8 @@ draw_set_color(make_color_rgb(0,255,0))
 draw_set_halign(fa_left)
 draw_text(loadingDataX,loadingDataYY,startData)
 
-loadingIncTime+=1
+//loadingIncTime+=1
+loadingIncTime+=gDeltaTime //60fps change: counts 30fps ticks
 for(i=0;i<16;i+=1)
 {
   draw_text(loadingDataX,loadingDataY[i],">")
@@ -209,8 +220,11 @@ if objective_Pos>=0
   if objective_Pos<string_length(objective_Full)
   {
     draw_text(496,80,objective_New)
+    if gDeltaDoTicks //60fps change (added): one letter per 30fps tick (the position stays a whole number)
+    { //60fps change (added)
     objective_Pos+=1
     objective_New+=string_char_at(objective_Full,objective_Pos)
+    } //60fps change (added)
   }
   else
     draw_text(496,80,objective_Full)

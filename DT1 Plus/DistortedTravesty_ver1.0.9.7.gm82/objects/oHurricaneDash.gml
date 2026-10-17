@@ -23,8 +23,10 @@ applies_to=self
 event_inherited()
 if global.gamePaused=false
 {
-  image_alpha-=0.1
-  image_blend=make_color_rgb(irandom(255),irandom(255),irandom(255))
+  //image_alpha-=0.1
+  image_alpha-=0.1*gDeltaTime //60fps change: per 30fps tick
+  //image_blend=make_color_rgb(irandom(255),irandom(255),irandom(255))
+  if gDeltaDoTicks image_blend=make_color_rgb(irandom(255),irandom(255),irandom(255)) //60fps change: a new colour once per 30fps tick
 }
 if image_alpha<=0
   instance_destroy()

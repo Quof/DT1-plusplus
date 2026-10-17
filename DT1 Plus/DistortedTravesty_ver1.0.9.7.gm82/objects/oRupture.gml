@@ -28,11 +28,19 @@ if global.gamePaused=false
     image_yscale=scaling
     init=1
   }
-  y-=yInc
-  yInc-=initYinc/10
+  //y-=yInc
+  //yInc-=initYinc/10
+  //60fps change: it moves by yInc and then slows by initYinc/10, per 30fps tick; scrGravAcc (move first, then
+  //accelerate) follows the 30fps arc
+  yInc=scrGravAcc(yInc,-initYinc/10,-1)
+  y-=yInc*gDeltaTime
+  if gDeltaTime==1
+    yInc-=initYinc/10
 
-  lifeTime-=1
-  if lifeTime=baseLifeTime-5 and rocksLeft>0
+  //lifeTime-=1
+  lifeTime-=gDeltaTime //60fps change: counts 30fps ticks
+  //if lifeTime=baseLifeTime-5 and rocksLeft>0
+  if scrCountPassDown(lifeTime,baseLifeTime-5) and rocksLeft>0 //60fps change: once, when the count reaches it
   {
     if type=0
     {

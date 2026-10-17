@@ -28,13 +28,15 @@ if findTargetX<480 and findTargetY<352
   draw_set_alpha(random(0.02)+0.58)
   if bSizeUp=false
   {
-    sizeMod-=0.01
+    //sizeMod-=0.01
+    sizeMod-=0.01*gDeltaTime //60fps change: per 30fps tick
     if sizeMod<=-1
       bSizeUp=true
   }
   else
   {
-    sizeMod+=0.01
+    //sizeMod+=0.01
+    sizeMod+=0.01*gDeltaTime //60fps change: per 30fps tick
     if sizeMod>=1
       bSizeUp=false
   }

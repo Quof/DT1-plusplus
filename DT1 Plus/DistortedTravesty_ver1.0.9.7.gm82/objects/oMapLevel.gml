@@ -187,14 +187,19 @@ applies_to=self
 */
 if sprite_index=sWorldMapSecret or sprite_index=sWorldMapDistortion
 {
-  frameTime+=1
-  if frameTime=7
+  //frameTime+=1
+  frameTime+=gDeltaTime //60fps change: counts 30fps ticks
+  //if frameTime=7
+  if scrCountPass(frameTime,7) //60fps change: once, when the count reaches it
     image_index=1
-  else if frameTime=13
+  //else if frameTime=13
+  else if scrCountPass(frameTime,13) //60fps change: once, when the count reaches it
     image_index=2
-  else if frameTime=19
+  //else if frameTime=19
+  else if scrCountPass(frameTime,19) //60fps change: once, when the count reaches it
     image_index=1
-  else if frameTime=25
+  //else if frameTime=25
+  else if scrCountPass(frameTime,25) //60fps change: once, when the count reaches it
   {
     image_index=0
     frameTime=0
@@ -202,7 +207,8 @@ if sprite_index=sWorldMapSecret or sprite_index=sWorldMapDistortion
 }
 if oWorldMap.choseLevel>0 and selectionMade=true
 {
-  screenFlash-=0.1
+  //screenFlash-=0.1
+  screenFlash-=0.1*gDeltaTime //60fps change: per 30fps tick
   if screenFlash<=0
   {
     //transition_steps=10
@@ -276,7 +282,8 @@ if showLevelName=true
   draw_rectangle(x+29,y+8,x+40,y+20,false)
   draw_rectangle(x+29,y+15,x+29-recLength,y+20,false)
   if recLength<36
-    recLength+=6
+    //recLength+=6
+    recLength+=6*gDeltaTime //60fps change: per 30fps tick
   else
   {
     draw_set_font(fnt_ScanData)
@@ -292,9 +299,12 @@ if showLevelName=true
   //circle
   draw_set_alpha(0.7)
   draw_set_color(lineColor)
-  cirSizeChange+=1
-  if cirSizeChange>=1 and cirSizeChange<=14
-    cirRad-=1.5
+  //cirSizeChange+=1
+  cirSizeChange+=gDeltaTime //60fps change: counts 30fps ticks
+  //if cirSizeChange>=1 and cirSizeChange<=14
+  if cirSizeChange>0 and cirSizeChange<=14 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+    //cirRad-=1.5
+    cirRad-=1.5*gDeltaTime //60fps change: per 30fps tick
   else if cirSizeChange>=15
   {
     cirRad=24

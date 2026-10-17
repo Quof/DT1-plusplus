@@ -33,9 +33,12 @@ if global.gamePaused=false
   if bSummoning=true
   {
     if summonCircle<0.6
-      summonCircle+=0.05
-    summonRotate+=5
-    summonTime-=1
+      //summonCircle+=0.05
+      summonCircle+=0.05*gDeltaTime //60fps change: per 30fps tick
+    //summonRotate+=5
+    summonRotate+=5*gDeltaTime //60fps change: per 30fps tick
+    //summonTime-=1
+    summonTime-=gDeltaTime //60fps change: counts 30fps ticks
     if summonTime<=0
     {
       x=oPlayer1.x
@@ -52,8 +55,10 @@ if global.gamePaused=false
   {
     if init=0 //-------------------- fall --------------------
     {
-      y+=4
-      fallTime-=1
+      //y+=4
+      y+=4*gDeltaTime //60fps change: per 30fps tick
+      //fallTime-=1
+      fallTime-=gDeltaTime //60fps change: counts 30fps ticks
       if fallTime<=0
       {
         init=1
@@ -64,7 +69,8 @@ if global.gamePaused=false
     }
     else if init=1 //-------------------- flip --------------------
     {
-      if image_index=4
+      //if image_index=4
+      if image_index>=4 //60fps change: the animation steps are smaller above 30fps and may not land exactly on 4
       {
         image_speed=0
         init=2
@@ -72,8 +78,10 @@ if global.gamePaused=false
     }
     else if init=2 //-------------------- pose --------------------
     {
-      fallTime+=1
-      if fallTime=8
+      //fallTime+=1
+      fallTime+=gDeltaTime //60fps change: counts 30fps ticks
+      //if fallTime=8
+      if scrCountPass(fallTime,8) //60fps change: once, when the count reaches it
       {
         effect_create_below(ef_ring,x,y-12,1,c_blue)
         sprite_index=sMuuguruAttack
@@ -83,7 +91,8 @@ if global.gamePaused=false
         {
           newSpark=instance_create(x,y-12,oMuuguruWaterSpark)
           newSpark.bulletSpeed=9
-          newSpark.direction=wSparkDir
+          //newSpark.direction=wSparkDir
+          newSpark._direction=wSparkDir //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
           wSparkDir+=45
         }
       }
@@ -96,7 +105,8 @@ if global.gamePaused=false
     }
     else if init=3 //-------------------- normal actions --------------------
     {
-      attackTime-=1
+      //attackTime-=1
+      attackTime-=gDeltaTime //60fps change: counts 30fps ticks
       if attackTime<=0 and yVel=0 //attacking
       {
         if attacking=-1
@@ -109,7 +119,8 @@ if global.gamePaused=false
             enemyCheck=instance_nearest(x,y-12,oEnemyBase)
             newSpark=instance_create(x,y-12,oMuuguruWaterSpark)
             newSpark.bulletSpeed=7
-            newSpark.direction=point_direction(x,y-12,enemyCheck.x,enemyCheck.y)
+            //newSpark.direction=point_direction(x,y-12,enemyCheck.x,enemyCheck.y)
+            newSpark._direction=point_direction(x,y-12,enemyCheck.x,enemyCheck.y) //60fps change: _direction (it moves by _speed/_direction, see correctSpeedDirection)
             attacking=15
           }
           else
@@ -119,13 +130,15 @@ if global.gamePaused=false
           }
         }
 
-        if attacking=0
+        //if attacking=0
+        if scrCountPassDown(attacking,0) //60fps change: once, when the count (down) reaches 0 (-1 means not attacking)
         {
           attacking=-1
           attackTime=90
         }
         else if attacking>0
-          attacking-=1
+          //attacking-=1
+          attacking-=gDeltaTime //60fps change: counts 30fps ticks
       }
 
       if attacking=-1
@@ -166,7 +179,8 @@ if global.gamePaused=false
         }
       }
 
-      yVel+=0.201
+      //yVel+=0.201
+      yVel=scrGravAcc(yVel,0.201,1) //60fps change: gravity per 30fps tick, following the 30fps arc
       if isCollisionBottom(1)
         yVel=0
       if isCollisionLeft(1)
@@ -187,9 +201,11 @@ if global.gamePaused=false
           yVel=-6
         }
       }
-      moveTo(xVel,yVel)
+      //moveTo(xVel,yVel)
+      moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 
-      lifeTime-=1
+      //lifeTime-=1
+      lifeTime-=gDeltaTime //60fps change: counts 30fps ticks
       if lifeTime<=0
         instance_destroy()
 

@@ -786,13 +786,15 @@ else
     draw_set_alpha(recRed)
     if bFadeInRed=true
     {
-      recRed+=0.002
+      //recRed+=0.002
+      recRed+=0.002*gDeltaTime //60fps change: per 30fps tick
       if recRed>=0.2
         bFadeInRed=false
     }
     else
     {
-      recRed-=0.002
+      //recRed-=0.002
+      recRed-=0.002*gDeltaTime //60fps change: per 30fps tick
       if recRed<=0
         bFadeInRed=true
     }
@@ -806,7 +808,8 @@ else
   if fade>0
   {
     if introProgress=0
-      sFade+=1 //+=0.01
+      //sFade+=1 //+=0.01
+      sFade+=gDeltaTime //+=0.01 //60fps change: counts 30fps ticks
 
     if sFade>=1 and introProgress=0
     {

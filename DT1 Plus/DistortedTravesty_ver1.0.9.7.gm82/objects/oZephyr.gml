@@ -25,13 +25,18 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  if soundRepeat=0
+  //if soundRepeat=0
+  if soundRepeat<=0 //60fps change: <= so it still plays if the frame rate changes mid-count
   {
     playSound(global.snd_WindGust,0,0.8)
-    soundRepeat=22
+    //soundRepeat=22
+    //60fps change: counts down 30fps ticks; the frame that plays it counts as a whole tick, as at 30fps (it doesn't
+    //count down), so the count starts that much higher (22 at 30fps)
+    soundRepeat=23-gDeltaTime
   }
   else
-    soundRepeat-=1
+    //soundRepeat-=1
+    soundRepeat-=gDeltaTime //60fps change: see above
   with oEnemyBase
   {
     if weight<10000
@@ -40,7 +45,8 @@ if global.gamePaused=false
         directionMod=30
       else
         directionMod=-30
-      moveTo(directionMod/weight,0)
+      //moveTo(directionMod/weight,0)
+      moveTo(directionMod/weight*gDeltaTime,0) //60fps change: this frame's share of a 30fps tick's push
       //xVel+=directionMod/weight
     }
   }
@@ -52,7 +58,8 @@ if global.gamePaused=false
         directionMod=5
       else
         directionMod=-5
-      xVel+=directionMod/weight
+      //xVel+=directionMod/weight
+      xVel+=directionMod/weight*gDeltaTime //60fps change: per 30fps tick
     }
   }
   with oEarthShift
@@ -61,7 +68,8 @@ if global.gamePaused=false
       directionMod=5
     else
       directionMod=-5
-    xVel+=directionMod/weight
+    //xVel+=directionMod/weight
+    xVel+=directionMod/weight*gDeltaTime //60fps change: per 30fps tick
   }
   with oSpell
   {
@@ -71,7 +79,8 @@ if global.gamePaused=false
         directionMod=30
       else
         directionMod=-30
-      moveTo(directionMod/weight,0)
+      //moveTo(directionMod/weight,0)
+      moveTo(directionMod/weight*gDeltaTime,0) //60fps change: this frame's share of a 30fps tick's push
       //xVel+=directionMod/weight
     }
   }
@@ -81,13 +90,15 @@ if global.gamePaused=false
       directionMod=15
     else
       directionMod=-15
-    moveTo(directionMod/weight,0)
+    //moveTo(directionMod/weight,0)
+    moveTo(directionMod/weight*gDeltaTime,0) //60fps change: this frame's share of a 30fps tick's push
     //xVel+=directionMod/weight
   }
   if lifeTime<=0
     instance_destroy()
   else
-    lifeTime-=1
+    //lifeTime-=1
+    lifeTime-=gDeltaTime //60fps change: counts 30fps ticks
 }
 #define Draw_0
 /*"/*'/**//* YYD ACTION
@@ -101,7 +112,8 @@ for (i=0;i<50;i+=1)
 {
   if windDir="RIGHT"
   {
-    effectLineX[i]+=8
+    //effectLineX[i]+=8
+    effectLineX[i]+=8*gDeltaTime //60fps change: per 30fps tick
     if effectLineX[i]>=oPlayer1.x+384
     {
       effectLineX[i]=oPlayer1.x-384
@@ -111,7 +123,8 @@ for (i=0;i<50;i+=1)
   }
   else
   {
-    effectLineX[i]-=8
+    //effectLineX[i]-=8
+    effectLineX[i]-=8*gDeltaTime //60fps change: per 30fps tick
     if effectLineX[i]<=oPlayer1.x-384
     {
       effectLineX[i]=oPlayer1.x+384

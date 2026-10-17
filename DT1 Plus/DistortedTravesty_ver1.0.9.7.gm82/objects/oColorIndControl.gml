@@ -48,11 +48,14 @@ applies_to=self
 if global.gamePaused=false
 {
   if bWillDamagePlayer>0
-    bWillDamagePlayer-=1
-  warnTime+=1
+    //bWillDamagePlayer-=1
+    bWillDamagePlayer-=gDeltaTime //60fps change: counts 30fps ticks (the zones set it to 2 every frame the player is in the right one)
+  //warnTime+=1
+  warnTime+=gDeltaTime //60fps change: counts 30fps ticks
   if warnTime>=warnDelay
   {
-    if warnTime=warnDelay
+    //if warnTime=warnDelay
+    if scrCountPass(warnTime,warnDelay) //60fps change: once, when the count reaches it
     {
       rotateAmt=-5
       if elementToShow=1
@@ -82,14 +85,16 @@ if global.gamePaused=false
       bWarnStart=3
     }
 
-    damageTime+=1
+    //damageTime+=1
+    damageTime+=gDeltaTime //60fps change: counts 30fps ticks
     if damageTime>=damageDelay
     {
       warnCycle+=1
       if warnCycle=warnAmt
       {
         //deal damage to player if not inside the appropriate zone
-        if bWillDamagePlayer=0
+        //if bWillDamagePlayer=0
+        if bWillDamagePlayer<=0 //60fps change: <= so it still counts if the frame rate changes mid-count
         {
           with oPlayer1
           {
@@ -119,7 +124,9 @@ if global.gamePaused=false
         damageTime=0
       }
     }
-    visualWarnSize+=0.05
-    visualWarnAlpha-=0.0125
+    //visualWarnSize+=0.05
+    visualWarnSize+=0.05*gDeltaTime //60fps change: per 30fps tick
+    //visualWarnAlpha-=0.0125
+    visualWarnAlpha-=0.0125*gDeltaTime //60fps change: per 30fps tick
   }
 }

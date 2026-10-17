@@ -15,13 +15,15 @@ applies_to=self
 draw_set_alpha(0.4)
 if bSizeUp=false
 {
-  sizeMod-=0.05
+  //sizeMod-=0.05
+  sizeMod-=0.05*gDeltaTime //60fps change: per 30fps tick
   if sizeMod<=-1
     bSizeUp=true
 }
 else
 {
-  sizeMod+=0.05
+  //sizeMod+=0.05
+  sizeMod+=0.05*gDeltaTime //60fps change: per 30fps tick
   if sizeMod>=3
     bSizeUp=false
 }

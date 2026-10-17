@@ -43,8 +43,10 @@ for (i=0;i<10;i+=1)
     else
       lineLightX[i]=random(224)
     lineLightY[i]=random(224)
-    lineEffectDelay[i]=round(random(3)+2)
+    //lineEffectDelay[i]=round(random(3)+2)
+    lineEffectDelay[i]=round(random(3)+2)+1-gDeltaTime //60fps change: counts down 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count down), so the count starts that much higher (the same at 30fps)
   }
   else
-    lineEffectDelay[i]-=1
+    //lineEffectDelay[i]-=1
+    lineEffectDelay[i]-=gDeltaTime //60fps change: counts 30fps ticks
 }

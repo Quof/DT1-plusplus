@@ -33,12 +33,14 @@ applies_to=self
 event_inherited()
 if global.gamePaused=false
 {
-  x+=shootSpeed
+  //x+=shootSpeed
+  x+=shootSpeed*gDeltaTime //60fps change: per 30fps tick
   if x<view_xview[0]
     instance_destroy()
   if x>view_xview[0]+view_wview[0]
     instance_destroy()
-  decayTime-=1
+  //decayTime-=1
+  decayTime-=gDeltaTime //60fps change: counts 30fps ticks
   if decayTime<=0
     instance_destroy()
 }

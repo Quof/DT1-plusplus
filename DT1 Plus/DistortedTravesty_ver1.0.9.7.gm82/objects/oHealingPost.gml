@@ -36,13 +36,15 @@ draw_sprite(sHealingPost,-1,x,y)
 draw_set_alpha(0.45)
 if bSizeUp=false
 {
-  sizeMod-=0.08
+  //sizeMod-=0.08
+  sizeMod-=0.08*gDeltaTime //60fps change: per 30fps tick
   if sizeMod<=-2
     bSizeUp=true
 }
 else
 {
-  sizeMod+=0.08
+  //sizeMod+=0.08
+  sizeMod+=0.08*gDeltaTime //60fps change: per 30fps tick
   if sizeMod>=6
     bSizeUp=false
 }
@@ -54,14 +56,17 @@ draw_circle_color(x,y-56,36+sizeMod+distSize,make_color_rgb(72,248,64),c_black,f
 draw_set_blend_mode(bm_normal)
 if global.gamePaused=false
 {
-  if effectDelay=0
+  //if effectDelay=0
+  if effectDelay<=0 //60fps change: <= so it still happens if the frame rate changes mid-count
   {
     ranX=x-(sprite_width/2)+random(14)
     ranY=y-(sprite_height)+random(sprite_height/2)
     ranColor=make_color_rgb(67+random(10),243+random(10),59+random(10))
     effect_create_above(ef_spark,ranX,ranY,0,ranColor)
-    effectDelay=22+round(random(12))
+    //effectDelay=22+round(random(12))
+    effectDelay=22+round(random(12))+1-gDeltaTime //60fps change: counts down 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count down), so the count starts that much higher (the same at 30fps)
   }
   else
-    effectDelay-=1
+    //effectDelay-=1
+    effectDelay-=gDeltaTime //60fps change: counts 30fps ticks
 }

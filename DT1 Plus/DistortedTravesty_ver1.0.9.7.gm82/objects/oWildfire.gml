@@ -42,20 +42,30 @@ applies_to=self
 event_inherited()
 if global.gamePaused=false
 {
-  image_angle+=arcChange
-  flyDir+=dirChange
+  //image_angle+=arcChange
+  image_angle+=arcChange*gDeltaTime //60fps change: per 30fps tick
+  //flyDir+=dirChange
+  flyDir+=dirChange*gDeltaTime //60fps change: per 30fps tick
   x=oPlayer1.x+lengthdir_x(flyDist,flyDir)
   y=oPlayer1.y-26+lengthdir_y(flyDist,flyDir)
-  lifeTime+=1
-  if lifeTime>=1 and lifeTime<=12
-    flyDist-=2
-  else if lifeTime>=20
+  //lifeTime+=1
+  lifeTime+=gDeltaTime //60fps change: counts 30fps ticks
+  //if lifeTime>=1 and lifeTime<=12
+  if lifeTime>0 and lifeTime<=12 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+    //flyDist-=2
+    flyDist-=2*gDeltaTime //60fps change: per 30fps tick
+  //else if lifeTime>=20
+  else if lifeTime>19 //60fps change: see above
   {
-    flyDist+=spiralOutSpd
-    spiralOutSpd+=0.1
-    if lifeTime>=60
+    //flyDist+=spiralOutSpd
+    flyDist+=spiralOutSpd*gDeltaTime //60fps change: per 30fps tick
+    //spiralOutSpd+=0.1
+    spiralOutSpd+=0.1*gDeltaTime //60fps change: per 30fps tick
+    //if lifeTime>=60
+    if lifeTime>59 //60fps change: see above
     {
-      image_alpha-=0.1
+      //image_alpha-=0.1
+      image_alpha-=0.1*gDeltaTime //60fps change: per 30fps tick
       if image_alpha<=0
         instance_destroy()
     }

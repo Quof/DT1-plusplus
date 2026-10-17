@@ -28,16 +28,19 @@ if global.gamePaused=false
     {
       if zoneElement=oColorIndControl.elementToShow
         oColorIndControl.bWillDamagePlayer=2
-      if flashTime=0
+      //if flashTime=0
+      if scrCountPassDown(flashTime,0) //60fps change: once, when the count reaches it
       {
         if innerAlpha=0.5
           innerAlpha=0.6
         else
           innerAlpha=0.5
-        flashTime=3
+        //flashTime=3
+        flashTime=4-gDeltaTime //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (the same at 30fps)
       }
       else
-        flashTime-=1
+        //flashTime-=1
+        flashTime-=gDeltaTime //60fps change: counts 30fps ticks
     }
     else
     {
@@ -51,16 +54,19 @@ if global.gamePaused=false
     {
       if zoneElement=oColorIndControl.elementToShow
         oColorIndControl.bWillDamagePlayer=2
-      if flashTime=0
+      //if flashTime=0
+      if scrCountPassDown(flashTime,0) //60fps change: once, when the count reaches it
       {
         if innerAlpha=0.5
           innerAlpha=0.6
         else
           innerAlpha=0.5
-        flashTime=3
+        //flashTime=3
+        flashTime=4-gDeltaTime //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (the same at 30fps)
       }
       else
-        flashTime-=1
+        //flashTime-=1
+        flashTime-=gDeltaTime //60fps change: counts 30fps ticks
     }
     else
     {

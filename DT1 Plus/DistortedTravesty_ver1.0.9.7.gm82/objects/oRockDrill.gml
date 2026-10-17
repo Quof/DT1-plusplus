@@ -46,15 +46,19 @@ if global.gamePaused=false
       instance_destroy()
   }
   if image_xscale=1 and xVel<10
-    xVel+=0.25
+    //xVel+=0.25
+    xVel=scrGravAccX(xVel,0.25,1) //60fps change: speeds up per 30fps tick, following the 30fps path
   else if image_xscale=-1 and xVel>-10
-    xVel-=0.25
+    //xVel-=0.25
+    xVel=scrGravAccX(xVel,-0.25,1) //60fps change: see above
 
   if lifeTime<=0
     instance_destroy()
   else
-    lifeTime-=1
-  moveTo(xVel,yVel)
+    //lifeTime-=1
+    lifeTime-=gDeltaTime //60fps change: counts 30fps ticks
+  //moveTo(xVel,yVel)
+  moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick
 }
 #define Collision_oBreakableBlock1
 /*"/*'/**//* YYD ACTION

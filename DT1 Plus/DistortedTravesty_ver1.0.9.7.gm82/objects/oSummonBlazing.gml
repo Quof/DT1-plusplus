@@ -44,9 +44,12 @@ if global.gamePaused=false
   if bSummoning=true
   {
     if summonCircle<0.6
-      summonCircle+=0.05
-    summonRotate+=5
-    summonTime-=1
+      //summonCircle+=0.05
+      summonCircle+=0.05*gDeltaTime //60fps change: per 30fps tick
+    //summonRotate+=5
+    summonRotate+=5*gDeltaTime //60fps change: per 30fps tick
+    //summonTime-=1
+    summonTime-=gDeltaTime //60fps change: counts 30fps ticks
     if summonTime<=0
     {
       bSummoning=false
@@ -58,20 +61,23 @@ if global.gamePaused=false
   }
   else
   {
-    flyDir+=flySpd
+    //flyDir+=flySpd
+    flyDir+=flySpd*gDeltaTime //60fps change: per 30fps tick
     if oPlayer1.image_xscale=1
       image_xscale=1
     else if oPlayer1.image_xscale=-1
       image_xscale=-1
     x=oPlayer1.x+lengthdir_x(flyDist,flyDir)
     y=oPlayer1.y-26+lengthdir_y(flyDist,flyDir)
-    effectDelay+=1
+    //effectDelay+=1
+    effectDelay+=gDeltaTime //60fps change: counts 30fps ticks
     if effectDelay>=4
     {
       effect_create_below(ef_spark,x,y,0,c_red)
       effectDelay=0
     }
-    lifeTime-=1
+    //lifeTime-=1
+    lifeTime-=gDeltaTime //60fps change: counts 30fps ticks
     if lifeTime<=0
       instance_destroy()
   }

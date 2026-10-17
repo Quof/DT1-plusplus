@@ -18,19 +18,25 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  lifeTime-=1
-  if lifeTime>0
-    x+=xVel
+  //lifeTime-=1
+  lifeTime-=gDeltaTime //60fps change: counts 30fps ticks
+  //if lifeTime>0
+  if lifeTime>=1 //60fps change: the same 30fps ticks (it counts down in gDeltaTime steps; the same as >0 in whole ticks)
+    //x+=xVel
+    x+=xVel*gDeltaTime //60fps change: per 30fps tick
   else
   {
-    image_alpha-=0.1
+    //image_alpha-=0.1
+    image_alpha-=0.1*gDeltaTime //60fps change: per 30fps tick
     if image_alpha<=0
       instance_destroy()
   }
   if xVel>0
-    xVel-=0.05
+    //xVel-=0.05
+    xVel-=0.05*gDeltaTime //60fps change: per 30fps tick
   else
-    xVel+=0.05
+    //xVel+=0.05
+    xVel+=0.05*gDeltaTime //60fps change: per 30fps tick
 }
 #define Collision_oPlayer1
 /*"/*'/**//* YYD ACTION

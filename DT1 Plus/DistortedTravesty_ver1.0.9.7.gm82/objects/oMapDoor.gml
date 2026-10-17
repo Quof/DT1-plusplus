@@ -32,10 +32,12 @@ if type=1
         pY=y-2+random(36)
         sizeRan=round(random(1))
         effect_create_above(ef_smoke,pX,pY,sizeRan,c_black)
-        effectLimit=3
+        //effectLimit=3
+        effectLimit=4-gDeltaTime //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (the same at 30fps)
       }
       else
-        effectLimit-=1
+        //effectLimit-=1
+        effectLimit-=gDeltaTime //60fps change: counts 30fps ticks
     }
   }
 }
@@ -90,10 +92,13 @@ applies_to=self
 */
 if bShowArrow=true
 {
-  pointTime+=1
-  if pointTime=20
+  //pointTime+=1
+  pointTime+=gDeltaTime //60fps change: counts 30fps ticks
+  //if pointTime=20
+  if scrCountPass(pointTime,20) //60fps change: once, when the count reaches it
     arrowY+=1
-  else if pointTime=40
+  //else if pointTime=40
+  else if scrCountPass(pointTime,40) //60fps change: once, when the count reaches it
   {
     arrowY-=1
     pointTime=0

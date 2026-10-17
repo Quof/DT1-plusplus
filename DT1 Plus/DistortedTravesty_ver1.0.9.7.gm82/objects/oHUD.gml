@@ -1080,7 +1080,8 @@ if global.gamePaused=true and menuOpen=true
         menuCursorY+=cursorIncY
       }
     }
-    if keyboard_check(curLeft)=true
+    //if keyboard_check(curLeft)=true
+    if keyboard_check(curLeft)=true and gDeltaDoTicks //60fps change: one step per 30fps tick while the key is held (it changes the setting and plays the cursor sound every frame it's held, so it went twice as fast at 60fps)
     {
       if subCursorPos=1
       {
@@ -1110,7 +1111,8 @@ if global.gamePaused=true and menuOpen=true
         }
       }
     }
-    if keyboard_check(curRight)=true
+    //if keyboard_check(curRight)=true
+    if keyboard_check(curRight)=true and gDeltaDoTicks //60fps change: see above
     {
       if subCursorPos=1
       {
@@ -1618,9 +1620,12 @@ else if global.gamePaused=false
 {
   if oPlayer1.hitCombo>0 //hit combo fade
   {
-    hitComboFadeTime-=1
-    if hitComboFadeTime<=25
-      hitComboAlpha-=0.04
+    //hitComboFadeTime-=1
+    hitComboFadeTime-=gDeltaTime //60fps change: counts 30fps ticks
+    //if hitComboFadeTime<=25
+    if hitComboFadeTime<26 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //hitComboAlpha-=0.04
+      hitComboAlpha-=0.04*gDeltaTime //60fps change: per 30fps tick
     if hitComboFadeTime<=0
     {
       if oPlayer1.hitCombo>=4
@@ -1635,9 +1640,12 @@ else if global.gamePaused=false
   }
   if oPlayer1.killChain>0 //kill chain fade
   {
-    killChainFadeTime-=1
-    if killChainFadeTime<=25
-      killChainAlpha-=0.04
+    //killChainFadeTime-=1
+    killChainFadeTime-=gDeltaTime //60fps change: counts 30fps ticks
+    //if killChainFadeTime<=25
+    if killChainFadeTime<26 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+      //killChainAlpha-=0.04
+      killChainAlpha-=0.04*gDeltaTime //60fps change: per 30fps tick
     if killChainFadeTime<=0
       oPlayer1.killChain=0
   }
@@ -1710,14 +1718,16 @@ if global.optShowHUD=1
     if redRingAlphaDrop=true
     {
       if redRingAlpha>=0.3
-        redRingAlpha-=0.01
+        //redRingAlpha-=0.01
+        redRingAlpha-=0.01*gDeltaTime //60fps change: per 30fps tick
       else
         redRingAlphaDrop=false
     }
     else
     {
       if redRingAlpha<=0.7
-        redRingAlpha+=0.01
+        //redRingAlpha+=0.01
+        redRingAlpha+=0.01*gDeltaTime //60fps change: per 30fps tick
       else
         redRingAlphaDrop=true
     }
@@ -1752,14 +1762,21 @@ if global.optShowHUD=1
   if bShowLifeDrop=true //show life meter drop --------------------------------------------------
   {
     dropBarColor=c_red
-    if dropAlphaTime>=0
+    //if dropAlphaTime>=0
+    if dropAlphaTime>-1 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
     {
-      dropAlphaTime-=1
-      if dropAlphaTime<=10
-        dropAlpha-=0.1
-      yDropSpeed+=0.25
-      yDrop+=yDropSpeed
-      dropAngle+=0.5
+      //dropAlphaTime-=1
+      dropAlphaTime-=gDeltaTime //60fps change: counts 30fps ticks
+      //if dropAlphaTime<=10
+      if dropAlphaTime<11 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+        //dropAlpha-=0.1
+        dropAlpha-=0.1*gDeltaTime //60fps change: per 30fps tick
+      //yDropSpeed+=0.25
+      yDropSpeed+=0.25*gDeltaTime //60fps change: per 30fps tick
+      //yDrop+=yDropSpeed
+      yDrop+=yDropSpeed*gDeltaTime //60fps change: per 30fps tick
+      //dropAngle+=0.5
+      dropAngle+=0.5*gDeltaTime //60fps change: per 30fps tick
     }
     else
       bShowLifeDrop=false
@@ -1925,7 +1942,8 @@ if oPlayer1.hitCombo>=3 and global.optCombo=true //hit combo counter -----------
   if oPlayer1.hitFontEffect>0
   {
     draw_set_font(fnt_ComboDisplayHit)
-    oPlayer1.hitFontEffect-=1
+    //oPlayer1.hitFontEffect-=1
+    oPlayer1.hitFontEffect-=gDeltaTime //60fps change: per 30fps tick
   }
   else
     draw_set_font(fnt_ComboDisplay)
@@ -2581,10 +2599,12 @@ if global.gamePaused=true and menuOpen=true
         triX=1
       else
         triX=0
-      triMoveTime=0
+      //triMoveTime=0
+      triMoveTime=gDeltaTime-1 //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (the same at 30fps)
     }
     else
-      triMoveTime+=1
+      //triMoveTime+=1
+      triMoveTime+=gDeltaTime //60fps change: counts 30fps ticks
     draw_triangle(subMenuSkillSetX-1-triX,subMenuSkillSetY+36,subMenuSkillSetX-2-triX,subMenuSkillSetY+42,subMenuSkillSetX-4-triX,subMenuSkillSetY+39,false)
     draw_triangle(subMenuSkillSetX-1-triX,subMenuSkillSetY+56,subMenuSkillSetX-2-triX,subMenuSkillSetY+62,subMenuSkillSetX-4-triX,subMenuSkillSetY+59,false)
     draw_triangle(subMenuSkillSetX+146+triX,subMenuSkillSetY+36,subMenuSkillSetX+145+triX,subMenuSkillSetY+42,subMenuSkillSetX+149+triX,subMenuSkillSetY+39,false)
@@ -3727,7 +3747,8 @@ if global.gamePaused=true and menuOpen=true
       draw_set_color(colorLightPink)
       draw_set_halign(fa_right)
       var ranNumber,expBonus,currDifficulty; //, sesPtHour, sesPtMinute, sesPtSec;
-      ranNumber=round(random(899999999)+100000000)
+      //ranNumber=round(random(899999999)+100000000)
+      if gDeltaDoTicks ranNumber=round(random(899999999)+100000000) //60fps change: once per 30fps tick
       expBonus=round((oPlayer1.awesomePoints/100000)*100)
       if expBonus>100 {expBonus=100}
       expBonus+=global.SkStatistician*5

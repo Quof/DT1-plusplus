@@ -4,7 +4,8 @@ lib_id=1
 action_id=603
 applies_to=self
 */
-image_angle+=oColorIndControl.rotateAmt
+//image_angle+=oColorIndControl.rotateAmt
+image_angle+=oColorIndControl.rotateAmt*gDeltaTime //60fps change: per 30fps tick
 #define Draw_0
 /*"/*'/**//* YYD ACTION
 lib_id=1

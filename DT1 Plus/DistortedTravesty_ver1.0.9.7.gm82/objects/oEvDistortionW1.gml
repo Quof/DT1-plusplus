@@ -359,7 +359,8 @@ else if global.gameProgress=65 and room=rDistortionW1_5 //Explosion start
       explosion=instance_create(deathLineX-random(32),random(160)+160,oEffect)
       explosion.sprite_index=sBomberExplosion
       explosion.image_speed=0.5
-      deathExplosionDelayFront=0
+      //deathExplosionDelayFront=0
+      deathExplosionDelayFront=gDeltaTime-1 //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
     }
     else
       //deathExplosionDelayFront+=1
@@ -371,7 +372,8 @@ else if global.gameProgress=65 and room=rDistortionW1_5 //Explosion start
       explosion=instance_create(deathLineX-16-random(240),random(160)+160,oEffect)
       explosion.sprite_index=sBomberExplosion
       explosion.image_speed=0.5
-      deathExplosionDelayBack=0
+      //deathExplosionDelayBack=0
+      deathExplosionDelayBack=gDeltaTime-1 //60fps change: counts 30fps ticks; the frame that resets it counts as a whole tick, as at 30fps (it doesn't count up), so the count starts that far back (0 at 30fps)
     }
     else
       //deathExplosionDelayBack+=1

@@ -24,11 +24,13 @@ applies_to=self
 */
 if global.gamePaused=false
 {
-  image_alpha-=0.05
+  //image_alpha-=0.05
+  image_alpha-=0.05*gDeltaTime //60fps change: per 30fps tick
   if lifeTime<=0
     instance_destroy()
   else
-    lifeTime-=1
+    //lifeTime-=1
+    lifeTime-=gDeltaTime //60fps change: counts 30fps ticks
 }
 #define Draw_0
 /*"/*'/**//* YYD ACTION

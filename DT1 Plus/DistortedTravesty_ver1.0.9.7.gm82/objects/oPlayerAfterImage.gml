@@ -26,7 +26,8 @@ action_id=603
 applies_to=self
 */
 if global.gamePaused=false
-  image_alpha-=0.1
+  //image_alpha-=0.1
+  image_alpha-=0.1*gDeltaTime //60fps change: per 30fps tick
 if image_alpha<=0
   instance_destroy()
 #define Draw_0

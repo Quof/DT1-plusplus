@@ -40,11 +40,13 @@ if global.gamePaused=false
       image_alpha=1
     }
     else
-      lifeTime-=1
+      //lifeTime-=1
+      lifeTime-=gDeltaTime //60fps change: counts 30fps ticks
   }
   else
   {
-    image_alpha-=0.1
+    //image_alpha-=0.1
+    image_alpha-=0.1*gDeltaTime //60fps change: per 30fps tick
     if image_alpha<=0
       instance_destroy()
   }

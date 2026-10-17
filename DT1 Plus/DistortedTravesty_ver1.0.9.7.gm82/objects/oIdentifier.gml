@@ -16,8 +16,10 @@ if global.gameOver=false
 {
   x=mouse_x
   y=mouse_y
-  angle2+=3.02
-  angle3-=3.03
+  //angle2+=3.02
+  angle2+=3.02*gDeltaTime //60fps change: per 30fps tick
+  //angle3-=3.03
+  angle3-=3.03*gDeltaTime //60fps change: per 30fps tick
   if room=rWorldMap
     image_alpha=1
   else

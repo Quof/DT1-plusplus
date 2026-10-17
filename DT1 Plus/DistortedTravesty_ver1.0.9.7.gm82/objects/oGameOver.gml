@@ -161,16 +161,20 @@ applies_to=self
 */
 if staticEffect>=2 //fade to black
 {
-  staticEffect+=1
-  if staticEffect=3
+  //staticEffect+=1
+  staticEffect+=gDeltaTime //60fps change: counts 30fps ticks
+  //if staticEffect=3
+  if scrCountPass(staticEffect,3) //60fps change: once, when the count reaches it
   {
     background_alpha[7]=0
     backAlpha=1
   }
-  else if staticEffect=10
+  //else if staticEffect=10
+  else if scrCountPass(staticEffect,10) //60fps change: once, when the count reaches it
   {
     backColor=c_black
-    if showOptions=0
+    //if showOptions=0
+    if scrCountPass(showOptions,0) //60fps change: once, when the count reaches it
     {
       showOptions=1
       alpha1=0.1
@@ -179,18 +183,23 @@ if staticEffect>=2 //fade to black
 }
 else //static effect
 {
-  staticEffect+=0.04
+  //staticEffect+=0.04
+  staticEffect+=0.04*gDeltaTime //60fps change: per 30fps tick
   if staticEffect>=1.4
     staticEffect=2
   background_alpha[7]=staticEffect
 }
 
-if showOptions>0 and useCommands=false //start options
+//if showOptions>0 and useCommands=false //start options
+if showOptions>=1 and useCommands=false //start options //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
 {
-  showOptions+=1
-  if showOptions=2
+  //showOptions+=1
+  showOptions+=gDeltaTime //60fps change: counts 30fps ticks
+  //if showOptions=2
+  if scrCountPass(showOptions,2) //60fps change: once, when the count reaches it
     playSound(global.snd_Continue,0,1)
-  if showOptions=20
+  //if showOptions=20
+  if scrCountPass(showOptions,20) //60fps change: once, when the count reaches it
     useCommands=true
 }
 
@@ -483,13 +492,17 @@ if showOptions>0
   draw_set_font(fnt_Continue)
   draw_set_halign(fa_left)
   if alpha1>0 and alpha1<=1
-    alpha1+=0.1
+    //alpha1+=0.1
+    alpha1+=0.1*gDeltaTime //60fps change: per 30fps tick
   if alpha1>0.6 and alpha2<=1
-    alpha2+=0.1
+    //alpha2+=0.1
+    alpha2+=0.1*gDeltaTime //60fps change: per 30fps tick
   if alpha2>0.6 and alpha3<=1
-    alpha3+=0.1
+    //alpha3+=0.1
+    alpha3+=0.1*gDeltaTime //60fps change: per 30fps tick
   if alpha3>0.6 and alpha4<=1
-    alpha4+=0.1
+    //alpha4+=0.1
+    alpha4+=0.1*gDeltaTime //60fps change: per 30fps tick
 
   if global.currentBoss!=""
     draw_text_color(view_xview[0]+210,view_yview[0]+166,"Retry Boss",cl,cl,cl,cl,alpha1)
