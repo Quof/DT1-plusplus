@@ -106,7 +106,11 @@ if global.gamePaused=false
       //moveCheck+=1
       moveCheck+=gDeltaTime //60fps change: counts 30fps ticks
       //if moveCheck=1 //set
-      if scrCountPass(moveCheck,1) //set //60fps change: once, when the count reaches it
+      //if scrCountPass(moveCheck,1) //set //60fps change: once, when the count reaches it
+      //60fps change: the walk's setup runs on its first frame, as 30fps runs it on its first step. Counted to 1 it came
+      //half a tick late at 60fps (3/4 at 120), and on the first frame the stop check below read moveStop before the
+      //setup set it: 0 from Create, so every walk stopped before it started (it never walked on its own)
+      if scrCountPass(moveCheck,gDeltaTime) //set //60fps change: see above
       {
         moveSpeed=random_range(-0.75,0.75)
         //minimum speed

@@ -212,7 +212,7 @@ if oWorldMap.choseLevel>0 and selectionMade=true
   if screenFlash<=0
   {
     //transition_steps=10
-    transition_steps=10/gDeltaTime //60fps change: transition_steps counts frames: the same time
+    transition_steps=10 //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
     transition_kind=21
     room_goto(zoneLoc1)
   }

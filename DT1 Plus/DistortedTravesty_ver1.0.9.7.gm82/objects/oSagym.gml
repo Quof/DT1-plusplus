@@ -63,6 +63,7 @@ difficultyAdjustments(global.difficulty)
 setPDefense=physicalDefense
 setSDefense=spiritDefense
 setSAttack=spiritPower
+sgAbsorbWait=0 //60fps change (added): 30fps ticks until it can absorb again (the Collision with oAttackBase event; see there)
 combatText="You have to watch this thing closely. When it has it's legs far apart, it will absorb all your attacks. When you see it lower it's arm, it is ready to fire a very fast beam. It isn't too powerful, however the power it absorbs from your attacks will be transferred into this beam. The size of this beam is proportionate to the power it absorbs as well. Not all it's energy is wasted in each shot either, it slowly uses up the absorbed energy with each shot. As long as you are careful where you are attacking while one of these things are around, you should be alright. I should also mention that it's beam draws from the water element and can go through walls."
 sideText="These are the Fortress' standard guards, which means you know that far scarier things lie within. The Darkness didn't hold back with this place did it? I'm really curious what we find in here."
 cripplePointText=">Wind Fused Full Swing#>Wind Fused Thrust Attack"
@@ -74,6 +75,7 @@ applies_to=self
 */
 if global.gamePaused=false
 {
+  if sgAbsorbWait>0 {sgAbsorbWait-=gDeltaTime} //60fps change (added): see the Collision with oAttackBase event
   makeEnemyActive()
   if bActive=true and stunnedTime=0 and dieFade=0
   {
@@ -217,7 +219,8 @@ if global.gamePaused=false
       xVel*=-1
     if isCollisionRightEdit(1)
       xVel*=-1
-    if isCollisionSolid()
+    //if isCollisionSolid()
+    if isCollisionSolid() and gDeltaDoTicks //60fps change: once per 30fps tick (it ran every frame, so a unit stuck in a wall was pushed out 2x as fast at 60fps, 4x at 120fps)
       y-=2
 
     //moveTo(xVel,yVel)
@@ -239,8 +242,13 @@ applies_to=self
 */
 if bTakingDamage=false and other.bCanDealDamage=true and bActive=true
 {
-  if (sprite_index=sSagymWalk and image_index=0) or sprite_index=sSagymFire
+  //if (sprite_index=sSagymWalk and image_index=0) or sprite_index=sSagymFire
+  //60fps change: absorbs at most once per 30fps tick. This runs on every step an attack touches it while it isn't
+  //flashing from a hit (it doesn't go by the attack's re-hit time as the damage does), so at 30fps once a tick; collision
+  //events run every frame, so it absorbed (power and shot time) 2x/4x as often at 60/120fps
+  if ((sprite_index=sSagymWalk and image_index=0) or sprite_index=sSagymFire) and sgAbsorbWait<=0
   {
+    sgAbsorbWait=1 //60fps change (added): see above (counted down in the Step)
     effect=instance_create(x,y,oEffect)
     effect.sprite_index=sEnergyRip1
     effect.image_speed=0.75

@@ -5,7 +5,7 @@ return while Gamepad Input is on. Ported from DT3's scrGamepadPoll. Every action
 of them can be held at once; the d-pad hat is split into its horizontal and vertical parts, so up+right on it counts
 as both Up and Right. Codes, actions, layouts and the gp* variables are explained in scrGamepadInit.
 */
-var i,tCount,tName,tRead;
+var i,tCount,tName,tRead,tX,tY;
 
 //---------- Pick the pad, again whenever pads are plugged in or unplugged ----------
 tCount=joystick_count()
@@ -89,12 +89,40 @@ if tRead
 
   //---------- Actions ----------
   for(i=1;i<=18;i+=1) {global.gpHeld[i]=scrGamepadCheck(global.gpBind[i])}
+  global.gpHeld[23]=scrGamepadCheck(global.gpBind[23]) //element wheel change (added): Element Wheel
+  //element wheel change (added): with Right Stick Element Swap on, the game's actions on the right stick or R3 are off
+  //(they pick the element, 24-28 below)
+  if global.optRightStickElem
+  {
+    for(i=1;i<=16;i+=1) {if scrPadRSOff(i) {global.gpHeld[i]=0}}
+    if scrPadRSOff(23) {global.gpHeld[23]=0}
+  }
   //the fixed menu buttons: L1/R1 change the pause menu's tab ([U]/[I]), Y swaps a menu's lists ([L]), BACK teleports
   //from the pause menu ([M])
   global.gpHeld[19]=scrGamepadCheck(5)
   global.gpHeld[20]=scrGamepadCheck(6)
   global.gpHeld[21]=scrGamepadCheck(4)
   global.gpHeld[22]=scrGamepadCheck(9)
+  //element wheel change (added): Right Stick Element Swap (scrElemWheel): 24-27 the right stick flicked up/right/down/
+  //left, one at a time: once it's pushed past 0.5 it's the way it's pushed furthest, and stays that way until the stick
+  //is back under 0.3 (gpDeadZone -/+ 0.1), so a flick is one direction, not two on the way. 28 R3. Not until the axis
+  //order is known (layout 1: axis 2 could be L2, resting at -1)
+  if global.gpAxRY>=0 and global.gpOrderSure
+  {
+    tX=global.gpAxis[global.gpAxRX]
+    tY=global.gpAxis[global.gpAxRY]
+    if global.gpRSDir=0
+    {
+      if max(abs(tX),abs(tY))>=global.gpDeadZone+0.1
+      {
+        if abs(tY)>=abs(tX) {if tY<0 {global.gpRSDir=1} else {global.gpRSDir=3}}
+        else {if tX>0 {global.gpRSDir=2} else {global.gpRSDir=4}}
+      }
+    }
+    else if max(abs(tX),abs(tY))<global.gpDeadZone-0.1 {global.gpRSDir=0}
+    if global.gpRSDir>0 {global.gpHeld[23+global.gpRSDir]=1}
+  }
+  global.gpHeld[28]=scrGamepadCheck(12)
   //The left stick always moves as well, like the arrow keys next to the keyboard controls
   //double press fix: once a direction counts, it keeps counting until the stick is back under 0.3 (gpDeadZone-0.1), so a
   //stick resting near 0.4 can't flicker on and off and count as pressed again and again (menus stepping twice)
@@ -109,6 +137,14 @@ if tRead
     if global.gpAxis[1]<=-(global.gpDeadZone-0.1*global.gpPrev[3]) {global.gpHeld[3]=1} //double press fix
     if global.gpAxis[1]>=global.gpDeadZone-0.1*global.gpPrev[4] {global.gpHeld[4]=1} //double press fix
   }
+}
+
+//input bleed fix (added): a button held when scrGamepadSync ran (a menu, dialogue or door used it up) doesn't count as
+//held until it's let go, as io_clear makes GM forget held keys. The player reads its presses from held going on (kJump
+//0 -> 1 is a jump), so the A that closed dialogue or picked Retry jumped as soon as the player had control again
+for(i=1;i<=global.gpActions;i+=1)
+{
+  if global.gpLock[i] {if global.gpHeld[i] {global.gpHeld[i]=0} else {global.gpLock[i]=0}}
 }
 
 //---------- Pressed this frame: held now, not on the last frame ----------

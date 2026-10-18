@@ -220,6 +220,9 @@ if player=1 //========================================
       kDashRight=(keyboard_check(ord(global.ctrlDashRight)) or scrPadHeld(14)) //gamepad change: and the gamepad's Dash Right (scrGamepadInit)
       if kDashRight {kDashRightPressed=1}
     }
+    //element wheel change (added): Element Wheel Button / Right Stick Element Swap (Controls page): they switch the element;
+    //while the Element Wheel's button is held the directions pick one instead of moving the player
+    scrElemWheel()
   }
 }
 

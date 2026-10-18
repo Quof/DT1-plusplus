@@ -57,18 +57,18 @@ if exitType=0
     if toRoom!=rWorldMap
     {
       //transition_steps=15
-      transition_steps=15/gDeltaTime //60fps change: transition_steps counts frames: the same time
+      transition_steps=15 //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
       transition_kind=5
       if variable_local_exists("newStep")
         //transition_steps=newStep
-        transition_steps=(newStep)/gDeltaTime //60fps change: transition_steps counts frames: the same time
+        transition_steps=(newStep) //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
       if variable_local_exists("newTrans")
         transition_kind=newTrans
     }
     else
     {
       //transition_steps=30
-      transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
+      transition_steps=30 //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
       transition_kind=20
     }
     room_goto(toRoom)
@@ -107,21 +107,21 @@ else if exitType=1
   if toRoom!=rWorldMap
   {
     //transition_steps=15
-    transition_steps=15/gDeltaTime //60fps change: transition_steps counts frames: the same time
+    transition_steps=15 //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
     if x<64
       transition_kind=14
     else
       transition_kind=15
     if variable_local_exists("newStep")
       //transition_steps=newStep
-      transition_steps=(newStep)/gDeltaTime //60fps change: transition_steps counts frames: the same time
+      transition_steps=(newStep) //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
     if variable_local_exists("newTrans")
       transition_kind=newTrans
   }
   else
   {
     //transition_steps=30
-    transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
+    transition_steps=30 //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
     transition_kind=20
   }
   room_goto(toRoom)

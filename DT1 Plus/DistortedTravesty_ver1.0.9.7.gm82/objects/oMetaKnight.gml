@@ -141,7 +141,13 @@ if global.gamePaused=false
       //attackDelay+=1; moveProgress+=1
       attackDelay+=gDeltaTime; moveProgress+=gDeltaTime //60fps change: counts 30fps ticks
       //if attackDelay=1
-      if scrCountPass(attackDelay,1) //60fps change: once, when the count reaches it
+      //if scrCountPass(attackDelay,1) //60fps change: once, when the count reaches it
+      //60fps change: the action's setup runs on its first frame, as 30fps runs it on its first step. Counted to 1 it came
+      //half a tick late at 60fps (3/4 at 120), after the checks below had already run on the first frame: the player
+      //close enough started the slash, then the setup put the walk/run sprite over it, the slash's animation never ended
+      //(its end needs the slash sprite), animChange kept counting, and every attack after that waited on it while he
+      //walked/ran after the player forever
+      if scrCountPass(attackDelay,gDeltaTime) //60fps change: see above
       {
         sprite_index=sMetaKnightWalk
         if random(10)>=9
@@ -186,7 +192,8 @@ if global.gamePaused=false
       //attackDelay+=1; moveProgress+=1
       attackDelay+=gDeltaTime; moveProgress+=gDeltaTime //60fps change: counts 30fps ticks
       //if attackDelay=1
-      if scrCountPass(attackDelay,1) //60fps change: once, when the count reaches it
+      //if scrCountPass(attackDelay,1) //60fps change: once, when the count reaches it
+      if scrCountPass(attackDelay,gDeltaTime) //60fps change: on the action's first frame (see the walk above)
       {
         sprite_index=sMetaKnightRun
         if random(10)>=9
@@ -248,7 +255,8 @@ if global.gamePaused=false
       //attackDelay+=1; moveProgress+=1
       attackDelay+=gDeltaTime; moveProgress+=gDeltaTime //60fps change: counts 30fps ticks
       //if attackDelay=1 and currentAttack!=40
-      if scrCountPass(attackDelay,1) and currentAttack!=40 //60fps change: once, when the count reaches it
+      //if scrCountPass(attackDelay,1) and currentAttack!=40 //60fps change: once, when the count reaches it
+      if scrCountPass(attackDelay,gDeltaTime) and currentAttack!=40 //60fps change: on the action's first frame (see the walk above); counted to 1 the fly also started half a tick late, so it rose for 14.5 ticks instead of 15
       {
         sprite_index=sMetaKnightFly
         flyUp=true

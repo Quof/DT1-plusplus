@@ -317,3 +317,12 @@ scrElemColorRefresh
 menuElemColorConfig
 menuElemColorWidget
 scrVSyncApply
+scrElemSet
+scrElemWheel
+scrElemWheelDraw
+scrCtrlRow
+scrPadRSOff
+menuTeleportConfig
+menuTeleportWidget
+scrMusicCredit
+scrTextFit

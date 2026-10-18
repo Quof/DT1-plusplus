@@ -93,6 +93,20 @@ ecView=0
 ecPos=1
 ecEditPos=1
 ecHold=0
+//quick restart change (added): Quick Restart (U + I / L1 + R1 on the Status page; see the Step). qrArmK/qrArmP: -1
+//while neither key (button) of the pair is held, else whether the first of them went down on the Status page;
+//qrBothK/qrBothP: both were held last frame
+qrArmK=-1
+qrArmP=-1
+qrBothK=0
+qrBothP=0
+//teleport prompt change (added): the teleport question (menuTeleportConfig), a box over the menu in place of the
+//Windows dialog it was. tpAsk: 1 while it's open; tpPos: 1 Yes, 2 No
+tpAsk=0
+tpPos=1
+//music credits change (added): where the music playing is from (scrMusicCredit), worked out when the menu opens and
+//shown in its bottom right (Draw), as DT3's pause menu does
+mMusicCredit=""
 #define Step_0
 /*"/*'/**//* YYD ACTION
 lib_id=1
@@ -125,6 +139,37 @@ if titleMenu=1
 //--------------------------------
 if global.gamePaused=true and menuOpen=true
 {
+  //teleport prompt change (added): while the teleport question is open (tpAsk; see the teleport below) it has the keys
+  //(menuTeleportConfig), and the rest of the menu waits, as it did while the Windows dialog was up
+  if tpAsk>0 {menuTeleportConfig(); exit}
+  //quick restart change (added): Quick Restart (from DT3) on keys that can't be changed: U + I on the keyboard, L1 + R1
+  //on a gamepad, on the pause menu's first page (Status). They change pages too, so it goes by the page the first of the
+  //two went down on (this runs before the page change below). It does what the game over's first option would: Retry
+  //Boss in a boss fight, Retry From Room Entry elsewhere, counted as a death as a game over is: oGameOver is made to
+  //take that option at once, unseen (global.qrRestart). The keys and buttons held through it are let go (io_clear,
+  //scrGamepadSync), so the restarted player doesn't take them as pressed
+  if titleMenu=0
+  {
+    var tQrU,tQrI,tQrL,tQrR,tQrGo;
+    tQrU=keyboard_check(ord("U")); tQrI=keyboard_check(ord("I"))
+    tQrL=scrPadHeld(19); tQrR=scrPadHeld(20)
+    if !tQrU and !tQrI {qrArmK=-1} else if qrArmK=-1 {qrArmK=(currentMenu=1)}
+    if !tQrL and !tQrR {qrArmP=-1} else if qrArmP=-1 {qrArmP=(currentMenu=1)}
+    tQrGo=((tQrU and tQrI and qrBothK=0 and qrArmK=1) or (tQrL and tQrR and qrBothP=0 and qrArmP=1))
+    qrBothK=(tQrU and tQrI)
+    qrBothP=(tQrL and tQrR)
+    if tQrGo and instance_exists(oPlayer1) and !instance_exists(oGameOver)
+    {
+      io_clear()
+      scrGamepadSync()
+      qrArmK=-1; qrArmP=-1; qrBothK=0; qrBothP=0
+      event_user(0) //closes the menu, as [P] does (its settings are saved)
+      global.quickGameOver=1 //no game over sound or static
+      global.qrRestart=1
+      instance_create(0,0,oGameOver)
+      exit
+    }
+  }
   //cursor movement------------------------------------------------------------
   if currentMenu=2 //Inventory----------
   {
@@ -1402,7 +1447,12 @@ if global.gamePaused=true and menuOpen=true
           else
             global.optDashWarn=false
         }
-        else if cursorPosY=5 //element colors change (added): Element Colors opens its panel (menuElemColorConfig)
+        else if cursorPosY=5 //map header change (added): Show Map Headers (oMapHeader)
+        { //map header change (added)
+          if global.optShowMapHeader=1 {global.optShowMapHeader=0} else {global.optShowMapHeader=1} //map header change (added)
+        } //map header change (added)
+        //else if cursorPosY=5 //element colors change (added): Element Colors opens its panel (menuElemColorConfig)
+        else if cursorPosY=6 //element colors change (added): Element Colors opens its panel (menuElemColorConfig) //map header change: a row down, under Show Map Headers
         { //element colors change (added)
           ecView=1 //element colors change (added)
           ecPos=1 //element colors change (added)
@@ -1651,7 +1701,8 @@ if global.gamePaused=true and menuOpen=true
         menuMax=10 //vsync change: and VSync
       else
         //menuMax=4
-        menuMax=5 //element colors change: and Element Colors
+        //menuMax=5 //element colors change: and Element Colors
+        menuMax=6 //element colors change: and Element Colors //map header change: and Show Map Headers
     }
     else if currentMenu=8 //Controls
     {
@@ -1664,7 +1715,8 @@ if global.gamePaused=true and menuOpen=true
       ctrlView=0
       gpListen=0
       subCursorPos=1
-      menuMax=4+5*global.optDPadSpells //dpad spells change: and DPad Spells (DT2 Style), with its five element rows while it's on
+      //menuMax=4+5*global.optDPadSpells //dpad spells change: and DPad Spells (DT2 Style), with its five element rows while it's on
+      menuMax=6+5*global.optDPadSpells //dpad spells change: and DPad Spells (DT2 Style), with its five element rows while it's on //element wheel change: and Element Wheel Button / Right Stick Element Swap under them
       menuCursorX=menuMainX+18
       //menuCursorY=menuMainY+42
       menuCursorY=menuMainY+28 //controls change: the three options are at the top of a smaller box (no header row)
@@ -1692,22 +1744,24 @@ if global.gamePaused=true and menuOpen=true
       if global.shroudThreat<60
       {
         playSound(global.snd_MenuConfirm,0,1)
-        var escapeLevel;
-        escapeLevel=show_question("Do you want to teleport to the World Map?")
-        if escapeLevel=true
-        {
-          global.gamePaused=false
-          global.newMapX=0
-          global.newMapY=0
-          global.worldMapX=-1000
-          global.worldMapY=-1000
-          writeToPlayerGlobals()
-          transition_kind=20
-          //transition_steps=30
-          transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
-          scrSettingsSave() //settings change (added): the menu goes with the room
-          room_goto(rWorldMap)
-        }
+        //var escapeLevel;
+        //escapeLevel=show_question("Do you want to teleport to the World Map?")
+        //if escapeLevel=true
+        //{
+        //  global.gamePaused=false
+        //  global.newMapX=0
+        //  global.newMapY=0
+        //  global.worldMapX=-1000
+        //  global.worldMapY=-1000
+        //  writeToPlayerGlobals()
+        //  transition_kind=20
+        //  transition_steps=30
+        //  room_goto(rWorldMap)
+        //}
+        //teleport prompt change: the question is a box over the menu now, not a Windows dialog (show_question). Its Yes
+        //(menuTeleportConfig) does what the above did, with this game's changes to it (60fps change, settings change)
+        tpAsk=1
+        tpPos=1
       }
       else
       {
@@ -1863,6 +1917,10 @@ if global.gameOver=false or titleMenu=1 //title options change: see above
     cursorIncY=1
     triX=0
     triMoveTime=0
+    //music credits change (added): where the music playing is from, for the bottom right (Draw); not on the title
+    //screen, as in DT3
+    mMusicCredit=""
+    if titleMenu=0 {mMusicCredit=scrMusicCredit()}
   }
   else if menuOpen=true and global.gamePaused=true
   {
@@ -1876,6 +1934,7 @@ if global.gameOver=false or titleMenu=1 //title options change: see above
     gpListen=0 //gamepad change (added): stop waiting for a gamepad button (Controls page)
     ctrlView=0 //controls change (added): and close the key/button panel (the tabs can be changed again)
     if ecView>0 {ecView=0; scrElemColorRefresh()} //element colors change (added): and the Element Colors panel (the element enemies already about take its colours)
+    tpAsk=0 //teleport prompt change (added): and the teleport question (the Pause Menu key closes it with the menu)
     scrSettingsSave() //settings change (added): Options and Controls are global (Settings.ini): what was set is kept as it closes
     with oMessageMenuPopup
       instance_destroy()
@@ -2032,6 +2091,11 @@ if global.optShowHUD=1
     draw_sprite_ext(sSpiritTrack,-1,healthDisplayX+39,healthDisplayY+20,expTrack,1,0,c_white,1)
   }
 
+  //dpad spells change (added): DPad Spells on: the D-pad cross, the rave bar and RAVE MODE READY in the top right in
+  //place of the spell/technique box (below). Drawn here, before the status effect icons, so they stay on top where a wide
+  //cross reaches them; then the status numbers' font again
+  if global.optDPadSpells {hudDPadSpellBox(); draw_set_font(fnt_HUD_Exp)}
+
   //status effects --------------------------------------------------
   draw_set_color(c_black)
   if oPlayer1.blastOffRecoveryTime>0 //Blast Off
@@ -2088,8 +2152,7 @@ if global.optShowHUD=1
     scrDrawElemSprite(2,global.p1CurrentElement,elementDisplayX+9,elementDisplayY+4,1,1,0,1) //element colors change: in the colour picked for its element (Element Colors, Options Set 3)
 
   //technique/spell display --------------------------------------------------
-  if global.optDPadSpells {hudDPadSpellBox()} //dpad spells change (added): its own box instead: the element on, and the rave/cast bar along the bottom
-  else //dpad spells change (added): DPad Spells off: as before
+  if !global.optDPadSpells //dpad spells change (added): DPad Spells off: as before (on: hudDPadSpellBox, drawn before the status effects above)
   {
   elementDisplayX=view_xview[0]+295
   elementDisplayY=view_yview[0]+4
@@ -2256,6 +2319,10 @@ if global.optShowHUD=1
     draw_text(consumeDisplayX+17,consumeDisplayY-3,global.p1Keys)
   }
 }
+
+//element wheel change (added): the Element Wheel around the player while it's showing (Controls page: Element Wheel
+//Button; scrElemWheel), over the HUD
+with oPlayer1 {scrElemWheelDraw()}
 
 //Sound frequency change
 if room!=rSoFS_Floor41 and room!=rStalagmiteRuins3
@@ -3698,15 +3765,18 @@ if global.gamePaused=true and menuOpen=true
       draw_text(subMenuOptionsX+16,subMenuOptionsY+23,"Right is Forward")
       draw_text(subMenuOptionsX+16,subMenuOptionsY+35,"Show HUD")
       draw_text(subMenuOptionsX+16,subMenuOptionsY+47,"Dash Warn")
-      draw_rectangle(subMenuOptionsX+4,subMenuOptionsY+62,subMenuOptionsX+12,subMenuOptionsY+70,true) //element colors change (added): Element Colors, with the four colours after it
-      draw_text(subMenuOptionsX+16,subMenuOptionsY+59,"Element Colors") //element colors change (added)
+      draw_rectangle(subMenuOptionsX+4,subMenuOptionsY+62,subMenuOptionsX+12,subMenuOptionsY+70,true) //map header change (added): Show Map Headers
+      draw_text(subMenuOptionsX+16,subMenuOptionsY+59,"Show Map Headers") //map header change (added)
+      //element colors change (added): Element Colors, with the four colours after it (map header change: a row down)
+      draw_rectangle(subMenuOptionsX+4,subMenuOptionsY+74,subMenuOptionsX+12,subMenuOptionsY+82,true) //element colors change (added)
+      draw_text(subMenuOptionsX+16,subMenuOptionsY+71,"Element Colors") //element colors change (added)
       var tECX,tECi; //element colors change (added)
       tECX=subMenuOptionsX+22+string_width("Element Colors") //element colors change (added)
       for(tECi=1;tECi<=4;tECi+=1) //element colors change (added)
       { //element colors change (added)
-        draw_rectangle(tECX+(tECi-1)*10,subMenuOptionsY+63,tECX+(tECi-1)*10+7,subMenuOptionsY+70,false) //element colors change (added)
+        draw_rectangle(tECX+(tECi-1)*10,subMenuOptionsY+75,tECX+(tECi-1)*10+7,subMenuOptionsY+82,false) //element colors change (added)
         draw_set_color(global.elemColor[tECi]) //element colors change (added)
-        draw_rectangle(tECX+(tECi-1)*10+1,subMenuOptionsY+64,tECX+(tECi-1)*10+6,subMenuOptionsY+69,false) //element colors change (added)
+        draw_rectangle(tECX+(tECi-1)*10+1,subMenuOptionsY+76,tECX+(tECi-1)*10+6,subMenuOptionsY+81,false) //element colors change (added)
         draw_set_color(colorDarkPurple) //element colors change (added)
       } //element colors change (added)
       draw_set_color(colorLightPink)
@@ -3718,6 +3788,8 @@ if global.gamePaused=true and menuOpen=true
         draw_rectangle(subMenuOptionsX+5,subMenuOptionsY+39,subMenuOptionsX+11,subMenuOptionsY+45,false)
       if global.optDashWarn=true
         draw_rectangle(subMenuOptionsX+5,subMenuOptionsY+51,subMenuOptionsX+11,subMenuOptionsY+57,false)
+      if global.optShowMapHeader=1 //map header change (added)
+        draw_rectangle(subMenuOptionsX+5,subMenuOptionsY+63,subMenuOptionsX+11,subMenuOptionsY+69,false) //map header change (added)
     }
     //---------- HELP INFO ----------
     subMenuInfoX=menuMainX+200
@@ -4123,11 +4195,13 @@ if global.gamePaused=true and menuOpen=true
     draw_set_alpha(0.9)
     draw_set_color(colorDarkPink)
     //draw_rectangle(subMenuControlsX,subMenuControlsY,subMenuControlsX+170,subMenuControlsY+173,false)
-    draw_rectangle(subMenuControlsX,subMenuControlsY,subMenuControlsX+170,subMenuControlsY+62+60*global.optDPadSpells,false) //controls change: as tall as its options (the key/button lists are a panel now; dpad spells change: 4 rows, or 9 with DPad Spells on)
+    //draw_rectangle(subMenuControlsX,subMenuControlsY,subMenuControlsX+170,subMenuControlsY+62+60*global.optDPadSpells,false) //controls change: as tall as its options (the key/button lists are a panel now; dpad spells change: 4 rows, or 9 with DPad Spells on)
+    draw_rectangle(subMenuControlsX,subMenuControlsY,subMenuControlsX+170,subMenuControlsY+86+60*global.optDPadSpells,false) //controls change: as tall as its options (the key/button lists are a panel now; dpad spells change: 4 rows, or 9 with DPad Spells on; element wheel change: 2 more)
     draw_set_alpha(1)
     draw_set_color(colorLightPink)
     //draw_rectangle(subMenuControlsX,subMenuControlsY,subMenuControlsX+170,subMenuControlsY+173,true)
-    draw_rectangle(subMenuControlsX,subMenuControlsY,subMenuControlsX+170,subMenuControlsY+62+60*global.optDPadSpells,true) //controls change: see above
+    //draw_rectangle(subMenuControlsX,subMenuControlsY,subMenuControlsX+170,subMenuControlsY+62+60*global.optDPadSpells,true) //controls change: see above
+    draw_rectangle(subMenuControlsX,subMenuControlsY,subMenuControlsX+170,subMenuControlsY+86+60*global.optDPadSpells,true) //controls change: see above (element wheel change: 2 more rows)
     draw_line(subMenuControlsX,subMenuControlsY+10,subMenuControlsX+170,subMenuControlsY+10)
     draw_set_halign(fa_center)
     draw_text(subMenuControlsX+85,subMenuControlsY-2,"CONTROL CONFIGURATION")
@@ -4153,10 +4227,20 @@ if global.gamePaused=true and menuOpen=true
       for(tRow=5;tRow<=9;tRow+=1)
       {
         draw_rectangle(subMenuControlsX+16,subMenuControlsY+2+tRow*12,subMenuControlsX+24,subMenuControlsY+10+tRow*12,true)
-        if tRow=9 {tText=global.dpsLabel[0]} else {tText=global.dpsLabel[tRow-4]}
+        tText=global.dpsLabel[tRow-5] //Techniques first, then fire/water/wind/earth (menuControlConfig)
         draw_text(subMenuControlsX+28,subMenuControlsY-1+tRow*12,tText)
       }
     }
+    //element wheel change (added): Element Wheel Button and Right Stick Element Swap On/Off, under DPad Spells (and its
+    //element rows while it's on)
+    tRow=5+5*global.optDPadSpells
+    draw_rectangle(subMenuControlsX+4,subMenuControlsY+2+tRow*12,subMenuControlsX+12,subMenuControlsY+10+tRow*12,true)
+    if global.optElemWheel {tText="Element Wheel Button: On"} else {tText="Element Wheel Button: Off"}
+    draw_text(subMenuControlsX+16,subMenuControlsY-1+tRow*12,tText)
+    tRow+=1
+    draw_rectangle(subMenuControlsX+4,subMenuControlsY+2+tRow*12,subMenuControlsX+12,subMenuControlsY+10+tRow*12,true)
+    if global.optRightStickElem {tText="Right Stick Element Swap: On"} else {tText="Right Stick Element Swap: Off"}
+    draw_text(subMenuControlsX+16,subMenuControlsY-1+tRow*12,tText)
     /* controls change: the two keyboard lists as they were drawn here (one list in menuControlWidget now)
     draw_text(subMenuControlsX+3,subMenuControlsY+11,"Key")
     draw_text(subMenuControlsX+35,subMenuControlsY+11,"Action")
@@ -4229,8 +4313,8 @@ if global.gamePaused=true and menuOpen=true
     */
 
     //---------- HELP INFO ----------
-    //gamepad change: what [J] does on the page, in a box as tall as its lines (the key/button panel has its own help);
-    //a GAMEPAD box below it shows the pad
+    //gamepad change: what [J] does on the page, in a box as tall as its lines (the key/button panel has its own help)
+    //(element wheel change: no GAMEPAD box below it naming the pad any more, the user's call)
     var tHelp0,tHelp1,tHelp2,tLines;
     tHelp0="[J]: Select"
     tHelp1=""
@@ -4256,6 +4340,7 @@ if global.gamePaused=true and menuOpen=true
     scrDrawHint(subMenuInfoX+3,subMenuInfoY+11,tHelp0,fa_left,1) //gamepad change: see above (pad hints change: the gamepad's button while it's in use)
     draw_text(subMenuInfoX+3,subMenuInfoY+23,tHelp1)
     draw_text(subMenuInfoX+3,subMenuInfoY+35,tHelp2)
+    /* element wheel change: no GAMEPAD box naming the pad any more (the user's call; Gamepad Input On/Off is on the page)
     //---------- GAMEPAD ---------- //gamepad change (added): the gamepad being read, and whether Gamepad Input is on
     subMenuPadY=subMenuInfoY+tLines*12+27
     draw_set_alpha(0.9)
@@ -4278,6 +4363,7 @@ if global.gamePaused=true and menuOpen=true
     draw_text(subMenuInfoX+3,subMenuPadY+11,tText)
     if global.optGamePad {tText="Input: On"} else {tText="Input: Off"}
     draw_text(subMenuInfoX+3,subMenuPadY+23,tText)
+    */
   }
   else if currentMenu=9 //System ==================================================
   {
@@ -4341,7 +4427,33 @@ if global.gamePaused=true and menuOpen=true
   menuSlotDisplay()
   //menuQuote()
   if titleMenu=0 {menuQuote()} //title options change: no map quote on the title screen
+  //music credits change (added): where the music playing is from (mMusicCredit, set as the menu opens), right-aligned
+  //in the bottom right under DT3's "Music From", below the map quote. Squeezed narrower if it would reach the boss's
+  //life bar (oBossLifeDisplay, along the bottom left)
+  if mMusicCredit!="" and global.optMusic>0 and titleMenu=0
+  {
+    var tCredLeft,tCredBoss;
+    tCredLeft=view_xview[0]+4
+    if instance_exists(oBossLifeDisplay)
+    {
+      tCredBoss=oBossLifeDisplay.bossID
+      if instance_exists(tCredBoss)
+      {
+        if tCredBoss.life>0 and tCredBoss.bShowHealthBar=true
+        {
+          draw_set_font(fnt_EnemyName)
+          tCredLeft=view_xview[0]+4+string_width(tCredBoss.eName)+2+215 //the bar's right end (its name, 209 of bar and ends), and a gap
+        }
+      }
+    }
+    draw_set_font(fnt_SubMenu)
+    draw_set_halign(fa_right)
+    scrTextFit("Music From",view_xview[0]+view_wview[0]-4,view_yview[0]+view_hview[0]-27,view_wview[0],colorLightPink,colorDarkPurple)
+    scrTextFit(mMusicCredit,view_xview[0]+view_wview[0]-4,view_yview[0]+view_hview[0]-14,max(120,view_xview[0]+view_wview[0]-4-tCredLeft),colorLightPink,colorDarkPurple)
+    draw_set_halign(fa_left)
+  }
   //if currentMenu=8 and ctrlView>0 {menuControlWidget()} //controls change (added): the Controls page's key/button panel, over the rest of the menu
   if currentMenu=5 and ecView>0 {menuElemColorWidget()} //element colors change (added): the Element Colors panel, over the rest of the menu
   if currentMenu=8 and ctrlView>0 {if ctrlView=3 {menuDPadSpellWidget()} else {menuControlWidget()}} //controls change (added): the Controls page's key/button panel, over the rest of the menu (dpad spells change: or its D-pad panel)
+  if tpAsk>0 {menuTeleportWidget()} //teleport prompt change (added): the teleport question, over everything else of the menu
 }

@@ -559,7 +559,7 @@ else if room=rCutscene1 //cutscene - Syrus and The Informant
     {
       global.gamePaused=false
       //transition_steps=30
-      transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
+      transition_steps=30 //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
       transition_kind=21
       room_goto(rMetropolisT1)
     }
@@ -846,7 +846,7 @@ else if room=rCutscene2 //cutscene - X escapes
     sceneProgress=0
     global.gamePaused=false
     //transition_steps=30
-    transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
+    transition_steps=30 //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
     transition_kind=21
     room_goto(rMetropolisStageSelect)
   }
@@ -1273,7 +1273,11 @@ else if global.gameProgress=149 and room=rFortL2_4 //Boss Fight (Copy X)
         instance_destroy()
     }
     //else if sceneDelay>=10
-    else if sceneDelay>9 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+    //else if sceneDelay>9 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+    //60fps change: from tick 11, as at 30fps (this is the else of the =10 above, which takes tick 10). >9 also took in
+    //tick 10's first frame at 60/120fps, before the =10 (the count reaching 10) made npcX and xBlast, and moved them then
+    //(a GM error: neither is set in this room before)
+    else if sceneDelay>10 //60fps change: see above
     {
       //npcX.x+=17.5
       npcX.x+=17.5*gDeltaTime //60fps change: per 30fps tick

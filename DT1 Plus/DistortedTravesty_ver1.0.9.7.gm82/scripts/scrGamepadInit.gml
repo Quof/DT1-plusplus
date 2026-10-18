@@ -19,6 +19,9 @@ Actions (global.gpBind/gpHeld/gpPressed index):
   16 Pause Menu   17 Menu Confirm   18 Menu Cancel
   and four fixed menu buttons, not in the list: 19 L1 / 20 R1 change the pause menu's tab (the keyboard's [U]/[I]),
   21 Y swaps a menu's lists ([L]), 22 BACK teleports from the pause menu ([M])
+  element wheel change (added): 23 Element Wheel (in the list while Element Wheel Button is on, Controls page), and five
+  fixed ones for Right Stick Element Swap (scrElemWheel): 24-27 the right stick flicked up/right/down/left (one at a
+  time: scrGamepadPoll), 28 R3
 
 SDL's raw joystick layout depends on the pad:
   layout 1 - Xbox pads and anything XInput (also DS4Windows, Steam's virtual pads): A B X Y L1 R1 BACK START L3 R3
@@ -52,12 +55,15 @@ global.gpR2Ready=0
 global.gpDeadZone=0.4  //how far a stick has to be pushed to count
 global.gpLastUsed=0   //pad hints change (added): 1 once a gamepad action is held, 0 again on a key press (scrGamepadPoll); the menus' hints show the pad's buttons while it's 1 (scrDrawHint)
 
-global.gpActions=22   //actions, the four fixed menu buttons included (see above)
+//global.gpActions=22   //actions, the four fixed menu buttons included (see above)
+global.gpActions=28   //actions, the four fixed menu buttons included (see above) //element wheel change: and Element Wheel, and Right Stick Element Swap's five
+global.gpRSDir=0      //element wheel change (added): the way the right stick is flicked (1 up, 2 right, 3 down, 4 left; 0 back in the middle), scrGamepadPoll
 for(i=0;i<=global.gpActions;i+=1)
 {
   global.gpHeld[i]=0     //held this frame (scrGamepadPoll)
   global.gpPressed[i]=0  //pressed this frame: held now, not on the last frame
   global.gpPrev[i]=0     //held on the last frame
+  global.gpLock[i]=0     //input bleed fix (added): held since scrGamepadSync: doesn't count as held until let go (scrGamepadPoll)
 }
 global.gpFrames=0     //frames since startup: window_has_focus() is only read once gm82core has updated it (scrGamepadPoll)
 for(i=0;i<16;i+=1)
@@ -78,4 +84,5 @@ global.gpRaw2[7]=-1; global.gpRaw2[8]=-1; global.gpRaw2[9]=4; global.gpRaw2[10]=
 scrControlRows() //controls change: one list per panel now (it was two lists for each, swapped with [L])
 
 if !variable_global_exists("optGamePad") {global.optGamePad=1} //Gamepad Input on (pause menu: Controls)
+if !variable_global_exists("optRightStickElem") {global.optRightStickElem=0} //element wheel change (added): Right Stick Element Swap off (pause menu: Controls; scrGamepadPoll reads it from the start, before oInitializeGame)
 scrGamepadDefaults()

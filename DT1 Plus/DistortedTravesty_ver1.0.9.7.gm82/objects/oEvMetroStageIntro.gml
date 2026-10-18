@@ -201,7 +201,11 @@ else if sceneProgress=6 //lightning comes down
     lightning[0].x=room_width/2;lightning[0].y=-48
   }
   //else if sceneDelay>=1
-  else if sceneDelay>0 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+  //else if sceneDelay>0 //60fps change: the same 30fps ticks (it counts in gDeltaTime steps)
+  //60fps change: from the step's 2nd 30fps tick, as at 30fps (this is the else of the setup above, which takes step 1).
+  //>0 also took in the step's first frame at 60/120fps, before the setup (the count reaching 1) made the bolts, and
+  //moved lightning[] then: step 1's bolts (destroyed in step 2) and entries never set (a GM error)
+  else if sceneDelay>1 //60fps change: see above
   {
     for(i=0;i<15;i+=1)
     {
@@ -370,7 +374,7 @@ else if sceneProgress=11
   global.newMapX=0
   global.newMapY=0
   //transition_steps=30
-  transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
+  transition_steps=30 //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
   transition_kind=21
   room_goto(toRoom)
 }

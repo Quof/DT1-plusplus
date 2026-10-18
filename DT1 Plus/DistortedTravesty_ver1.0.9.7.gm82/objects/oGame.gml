@@ -228,6 +228,13 @@ if global.gameFrameRateNext!=global.gameFrameRate and gDeltaDoTicks>0 {scrSetFra
 if global.vsyncPending {scrVSyncApply()} //vsync change (added): a VSync change waiting for a screen effect's surface to be done with (scrVSyncApply)
 room_speed=global.gameFrameRate*global.debugSpeedMul
 gDeltaTime=30/global.gameFrameRate
+//60fps change (added): a faster rate coming from 30fps time starts a fresh tick, as an F2 change does (scrSetFrameRate).
+//The title and intro rooms count as 30fps until oGame is made (rIntro's code keeps gDeltaTick at 0.999999, as 30fps
+//does below), so a game started at 60 or 120fps (Settings.ini) ran with each tick's last frame (gDeltaDoTicks) also
+//counted as the next tick's first frame. The moving solids' own logic (run on gDeltaDoTicks frames) then saw the tick's
+//move only partly made (gameStepEvent makes it from the tick's first frame): e.g. the Dusty Ruins scale platforms rose a
+//step too far (2px over where they started) and sank 4px into the floor when stood on. An F2 press put it right
+if gDeltaTime!=1 and gDeltaTick>0.9999 {gDeltaTick=0}
 
 gDeltaDoTicks = 0
 gDeltaTick += gDeltaTime

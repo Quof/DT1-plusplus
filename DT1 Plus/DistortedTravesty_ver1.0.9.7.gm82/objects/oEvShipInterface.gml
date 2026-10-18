@@ -135,7 +135,7 @@ if (keyboard_check_pressed(ord(global.ctrlJump)) or scrPadPressed(5)) //gamepad 
   if cursorPos=1
   {
     //transition_steps=5
-    transition_steps=5/gDeltaTime //60fps change: transition_steps counts frames: the same time
+    transition_steps=5 //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
     transition_kind=20
     if missionCursorPos=1
       room_goto(rWindyMountains)
@@ -150,7 +150,7 @@ if (keyboard_check_pressed(ord(global.ctrlJump)) or scrPadPressed(5)) //gamepad 
   else if cursorPos=4
   {
     //transition_steps=30
-    transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
+    transition_steps=30 //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
     transition_kind=20
     if global.location="Windy Slopes"
     {
@@ -254,7 +254,14 @@ if cursorPos=1 // ---------- START MISSION ----------
 else if cursorPos=2 // ---------- CONTROLS ----------
 {
   draw_set_font(fnt_showMessage)
-  draw_text(16,168,"- The ship can be moved with either was WASD or Arrow Keys.#   (Arrow keys are recommended due to windows 3 key limits.)##- Hold [K] to fire your lasers.##- Hold [J] to bring your ship into focused mode. This will cause#   your ship to move slower and you can see your collision point.##- Press [L] to use a bomb. Your ship is invulnerable during a#   bombs duration.##- These controls reflect your normal controls.")
+  //draw_text(16,168,"- The ship can be moved with either was WASD or Arrow Keys.#   (Arrow keys are recommended due to windows 3 key limits.)##- Hold [K] to fire your lasers.##- Hold [J] to bring your ship into focused mode. This will cause#   your ship to move slower and you can see your collision point.##- Press [L] to use a bomb. Your ship is invulnerable during a#   bombs duration.##- These controls reflect your normal controls.")
+  //shmup hints change: the keys as set (Keyboard Controls: the ship moves with Up/Left/Down/Right, fires with Attack,
+  //focuses with Jump and bombs with Use Tech: oPlayerShip); while the gamepad is what's being used, its buttons
+  //(scrDrawHint, scrHintIcon) and its left stick, without the keyboard's note
+  var tShipText;
+  if global.gpLastUsed=1 {tShipText="- The ship can be moved with [WASD] or the left stick.##- Hold [Attack] to fire your lasers.##- Hold [Jump] to bring your ship into focused mode. This will cause#   your ship to move slower and you can see your collision point.##- Press [Tech] to use a bomb. Your ship is invulnerable during a#   bombs duration.##- These controls reflect your normal controls."}
+  else {tShipText="- The ship can be moved with either was " +global.ctrlUp +global.ctrlLeft +global.ctrlDown +global.ctrlRight +" or Arrow Keys.#   (Arrow keys are recommended due to windows 3 key limits.)##- Hold [" +global.ctrlAttack +"] to fire your lasers.##- Hold [" +global.ctrlJump +"] to bring your ship into focused mode. This will cause#   your ship to move slower and you can see your collision point.##- Press [" +global.ctrlTech +"] to use a bomb. Your ship is invulnerable during a#   bombs duration.##- These controls reflect your normal controls."}
+  scrDrawHint(16,168,tShipText,fa_left,1)
 }
 else if cursorPos=3 // ---------- CHANGE DIFFICULTY ----------
 {
@@ -293,4 +300,8 @@ draw_rectangle(cursorX,cursorY,cursorX+206,cursorY+28,true)
 draw_set_font(fnt_showMessage)
 draw_set_halign(fa_center)
 draw_set_color(color_Text)
-draw_text(448,36,"----- Up & Down -----#Top cursor#________________#----- Left & Right -----#Bottom cursor#________________#----- J [Confirm] -----#Confirm selection")
+//draw_text(448,36,"----- Up & Down -----#Top cursor#________________#----- Left & Right -----#Bottom cursor#________________#----- J [Confirm] -----#Confirm selection")
+//shmup hints change: Confirm is the Jump key as set (the Step), or the gamepad's Jump button while it's in use
+var tConfirmKey;
+if global.gpLastUsed=1 {tConfirmKey="[Jump]"} else {tConfirmKey=global.ctrlJump}
+scrDrawHint(448,36,"----- Up & Down -----#Top cursor#________________#----- Left & Right -----#Bottom cursor#________________#----- " +tConfirmKey +" [Confirm] -----#Confirm selection",fa_center,1)

@@ -116,7 +116,11 @@ else if global.gameProgress=62 and room=rDistortionW1_4 //Boss Fight (Abyss Lord
     //sceneDelay+=1
     sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     //if sceneDelay=1
-    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    //if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    //60fps change: the step's setup runs on its first frame, as 30fps runs it on its first step. Counted to 1 it came
+    //half a tick late at 60fps (3/4 at 120), after the with oTempEffect below had already run on the first frame (a GM
+    //error: oTempEffect is the object this setup makes with object_add)
+    if scrCountPass(sceneDelay,gDeltaTime) //60fps change: see above
     {
       oTempEffect=object_add()
       oE1=instance_create(432,160,oTempEffect)

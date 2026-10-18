@@ -20,9 +20,10 @@ if dpsList=0 //---------- moving between the boxes ----------
   if tBack //back to the Controls page, on this element's row
   {
     playSound(global.snd_MenuCancel,0,1)
-    if dpsElem=0 {tRow=9} else {tRow=4+dpsElem}
+    tRow=5+dpsElem //its row: Techniques first, then fire/water/wind/earth (menuControlConfig)
     ctrlView=0
-    menuMax=9
+    //menuMax=9
+    menuMax=11 //element wheel change: DPad Spells' rows and the two options under them (menuControlConfig)
     cursorPosY=tRow
     menuCursorX=menuMainX+30
     menuCursorY=menuMainY+28+cursorIncY*(tRow-1)

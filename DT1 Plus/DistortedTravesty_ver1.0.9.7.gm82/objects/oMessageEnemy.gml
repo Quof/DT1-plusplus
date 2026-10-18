@@ -325,9 +325,26 @@ if combatWindowHeight>=114
 draw_set_font(fnt_EnemyScan)
 if controlWindowHeight>=39
 {
-  draw_text(controlWindowX+2,controlWindowY,"J End Analysis")
-  draw_text(controlWindowX+2,controlWindowY+13,"K Combat Data")
-  draw_text(controlWindowX+2,controlWindowY+26,"L " +string(global.mainCharacters[1]) +string(" Comments"))
+  //draw_text(controlWindowX+2,controlWindowY,"J End Analysis")
+  //draw_text(controlWindowX+2,controlWindowY+13,"K Combat Data")
+  //draw_text(controlWindowX+2,controlWindowY+26,"L " +string(global.mainCharacters[1]) +string(" Comments"))
+  //pad hints change (added): while the gamepad is what's being used (global.gpLastUsed), the keys' column (left of the
+  //line at x+10) shows the icons of the pad's buttons that do these (scrHintIcon, as the Step reads them: Menu Confirm and
+  //Menu Cancel as set in Gamepad Controls, and Y) instead of J/K/L, which are the keyboard's (fixed, like the menus' own
+  //keys). The labels stay where they were
+  var tKey,tLabel,tRow;
+  tKey[0]="J"; tLabel[0]="End Analysis"
+  tKey[1]="K"; tLabel[1]="Combat Data"
+  tKey[2]="L"; tLabel[2]=string(global.mainCharacters[1]) +string(" Comments")
+  for(tRow=0;tRow<3;tRow+=1)
+  {
+    if global.gpLastUsed=1
+    {
+      draw_sprite_ext(sKeyPressPad,scrHintIcon(tKey[tRow]),controlWindowX+5,controlWindowY+13*tRow+7,1,1,0,c_white,1)
+      draw_text(controlWindowX+2+string_width(tKey[tRow] +" "),controlWindowY+13*tRow,tLabel[tRow])
+    }
+    else {draw_text(controlWindowX+2,controlWindowY+13*tRow,tKey[tRow] +" " +tLabel[tRow])}
+  }
 }
 //cripple data
 draw_set_font(fnt_CombatData)

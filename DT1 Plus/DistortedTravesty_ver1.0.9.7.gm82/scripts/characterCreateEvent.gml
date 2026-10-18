@@ -78,6 +78,15 @@ kDashLeft=0
 kDashLeftPressed=0
 kDashRight=0
 kDashRightPressed=0
+//element wheel change (added): the Element Wheel (scrElemWheel, scrElemWheelDraw): its button held on the last frame, the
+//wheel up (from the button's press to its release), the element picked on it (-1 none), the directions held on the last
+//frame (1 up, 2 right, 4 down, 8 left), and the frame it last ran (global.gpFrames; -10: none yet, so a button held into
+//the map has to be let go first)
+ewHeld=0
+ewOn=0
+ewPick=-1
+ewDirs=0
+ewFrame=-10
 
 //user variables (you can edit these)
 player=1                   //player number (player 2 uses different keyboard keys than player 1)

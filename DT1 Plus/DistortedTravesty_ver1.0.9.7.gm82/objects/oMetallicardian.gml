@@ -255,7 +255,12 @@ if global.gamePaused=false
           if attackProgress=0 //rise to position
           {
             //if attackTime=1
-            if scrCountPass(attackTime,1) //60fps change: once, when the count reaches it
+            //if scrCountPass(attackTime,1) //60fps change: once, when the count reaches it
+            //60fps change: the rise's setup runs on its first frame, as 30fps runs it on its first step. Counted to 1 it
+            //came half a tick late at 60fps (3/4 at 120), after the end check below had already read riseUpSpeed on
+            //the first frame: never set on the first rise (a GM error), and >=0 from the last rise after that, so with
+            //y below the floor the rise ended on its first frame (it popped up to y=272 without rising)
+            if scrCountPass(attackTime,gDeltaTime) //60fps change: see above
             {
               sprite_index=sMetallicardianRise
               riseUpSpeed=-12
@@ -263,8 +268,9 @@ if global.gamePaused=false
             //y+=riseUpSpeed
             //riseUpSpeed+=0.4
             //60fps change: per 30fps tick: it moves, then speeds up at the end of each of its 30fps ticks (each time
-            //the count reaches a whole number), as at 30fps; from the frame that sets the speed (the count reaching 1)
-            if attackTime>=1
+            //the count reaches a whole number), as at 30fps; from the frame that sets the speed (the rise's first frame)
+            //if attackTime>=1
+            if attackTime>=gDeltaTime //60fps change: from the rise's first frame (its setup, above), so its first tick moves the full 12px as at 30fps
             {
               y+=riseUpSpeed*gDeltaTime
               if scrModPass(attackTime,1)

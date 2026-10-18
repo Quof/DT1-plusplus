@@ -382,6 +382,7 @@ global.optRightIsForward=1
 global.optShowHUD=1
 global.optDashWarn=0
 global.optVSync=0 //vsync change (added): VSync (Options Set 2): Auto (scrVSyncApply)
+global.optShowMapHeader=1 //map header change (added): Show Map Headers (Options Set 3; oMapHeader): on, as in DT3
 for(i=1;i<=4;i+=1) {global.elemColor[i]=global.elemColorDef[i]} //element colors change (added): Element Colors (Options Set 3): each element's own colour
 } //settings change (added)
 
@@ -496,8 +497,11 @@ global.ctrlRave="M"
 global.ctrlDashLeft="Q"
 global.ctrlDashRight="E"
 global.ctrlPause="P" //controls change (added): the Pause Menu key can be set now (Keyboard Controls)
+global.ctrlElemWheel="H" //element wheel change (added): the Element Wheel key (Keyboard Controls, while Element Wheel Button is on)
 global.optDPadSpells=0 //dpad spells change (added): DPad Spells (DT2 Style) off, and its default boxes (Controls page)
 scrDPadSpellDefaults() //dpad spells change (added)
+global.optElemWheel=0 //element wheel change (added): Element Wheel Button off (Controls page; scrElemWheel)
+global.optRightStickElem=0 //element wheel change (added): Right Stick Element Swap off (Controls page)
 global.optGamePad=1 //gamepad change (added): Gamepad Input on and the default gamepad controls, like the keys above
 scrGamepadDefaults() //gamepad change (added)
 } //settings change (added)
@@ -605,6 +609,7 @@ if (keyboard_check_pressed(ord("J")) or scrPadPressed(17)) and fade=0 //gamepad 
     {
       SS_StopSound(global.msc_TitleMenu)
       global.difficulty=fileCursorPos
+      scrGamepadSync() //input bleed fix (added): the pad's buttons held now (A is also Jump) don't count as held until let go, or the player jumps as soon as it has control
       room_goto(rIEFtutorial)
     }
   }
@@ -665,6 +670,7 @@ if f1_GameBeat>0 or f2_GameBeat>0 or f3_GameBeat>0 //Go to Boss Rush room
     global.difficulty=2
     global.p1SkillPoints=80
     SS_StopSound(global.msc_TitleMenu)
+    scrGamepadSync() //input bleed fix (added): the pad's buttons held now (A is also Jump) don't count as held until let go, or the player jumps as soon as it has control
     room_goto(rBR_Main)
   }
 }

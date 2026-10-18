@@ -18,7 +18,8 @@ applies_to=self
 /*if global.gamePaused=false
 {
   yVel+=0.3
-  if isCollisionSolid()
+  //if isCollisionSolid()
+  if isCollisionSolid() and gDeltaDoTicks //60fps change: once per 30fps tick (it ran every frame, so a unit stuck in a wall was pushed out 2x as fast at 60fps, 4x at 120fps)
     y-=2
   if y>room_height+24
     instance_destroy()

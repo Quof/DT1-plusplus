@@ -245,7 +245,11 @@ if room=rNapalmL5 and global.MMnapalmProg<6
     //sceneDelay+=1
     sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     //if sceneDelay=1
-    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    //if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    //60fps change: the step's setup runs on its first frame, as 30fps runs it on its first step. Counted to 1 it came
+    //half a tick late at 60fps (3/4 at 120), after the drop below had already moved newMiniboss on the first frame (a
+    //GM error: it's only set here). The same for Gyro Man's and Dive Man's drops below
+    if scrCountPass(sceneDelay,gDeltaTime) //60fps change: see above
     {
       newMiniboss=instance_create(912,-12,oNapalmMan)
       newMiniboss.bActive=true
@@ -482,7 +486,8 @@ if room=rGyroL5 and global.MMgyroProg<5
     //sceneDelay+=1
     sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     //if sceneDelay=1
-    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    //if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    if scrCountPass(sceneDelay,gDeltaTime) //60fps change: on the step's first frame, before the drop below moves newMiniboss (see Napalm Man's drop)
     {
       newMiniboss=instance_create(880,-12,oGyroMan)
       newMiniboss.bActive=true
@@ -727,7 +732,8 @@ if room=rDiveL4 and global.MMdiveProg<4
     //sceneDelay+=1
     sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     //if sceneDelay=1
-    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    //if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    if scrCountPass(sceneDelay,gDeltaTime) //60fps change: on the step's first frame, before the drop below moves newMiniboss (see Napalm Man's drop)
     {
       newMiniboss=instance_create(880,-12,oDiveMan)
       newMiniboss.bActive=true

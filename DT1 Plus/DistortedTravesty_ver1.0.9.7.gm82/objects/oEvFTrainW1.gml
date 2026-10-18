@@ -608,7 +608,11 @@ else if global.gameProgress=97 and room=rFrightTrain7 //Boss Fight (Quick Time D
     //sceneDelay+=1
     sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     //if sceneDelay=1
-    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    //if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    //60fps change: the step's setup runs on its first frame, as 30fps runs it on its first step. Counted to 1 it came
+    //half a tick late at 60fps (3/4 at 120), after the move below (from the first frame, as at 30fps) had already
+    //moved lightningBolt[] before the setup made them (a GM error: never set)
+    if scrCountPass(sceneDelay,gDeltaTime) //60fps change: see above
     {
       oPlayer1.sprite_index=sPlayerWalk
       var yPlace;

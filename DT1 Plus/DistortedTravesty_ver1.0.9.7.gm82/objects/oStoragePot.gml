@@ -43,7 +43,8 @@ if global.gamePaused=false
   yVel=scrGravAcc(yVel,0.3,1) //60fps change: gravity per 30fps tick, following the 30fps arc
   if isCollisionBottom(1)
     yVel=0
-  if isCollisionSolid()
+  //if isCollisionSolid()
+  if isCollisionSolid() and gDeltaDoTicks //60fps change: once per 30fps tick (it ran every frame, so a unit stuck in a wall was pushed out 2x as fast at 60fps, 4x at 120fps)
     y-=2
   if y>room_height+24
     instance_destroy()

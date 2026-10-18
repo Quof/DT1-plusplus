@@ -1026,7 +1026,13 @@ It is used to display the slot descriptions.
         itemName="DASH WARN"
         itemInfo="Audio warning when low on dash points."
       }
-      else if cursorPosY=5 //element colors change (added)
+      else if cursorPosY=5 //map header change (added): Show Map Headers
+      { //map header change (added)
+        itemName="SHOW MAP HEADERS" //map header change (added)
+        itemInfo="Show the map's header at the bottom of the screen#for a few seconds upon entering a map." //map header change (added)
+      } //map header change (added)
+      //else if cursorPosY=5 //element colors change (added)
+      else if cursorPosY=6 //element colors change (added) //map header change: a row down, under Show Map Headers
       { //element colors change (added)
         itemName="ELEMENT COLORS" //element colors change (added)
         itemInfo="Change the colors of the elements: their zones,#doors, switches, HUD, glow and attacks." //element colors change (added)

@@ -19,4 +19,8 @@ if t="D" or t="Right" {return scrPadIcon(global.gpBind[2])}
 if t="W" or t="Up" {return scrPadIcon(global.gpBind[3])}
 if t="S" or t="Down" {return scrPadIcon(global.gpBind[4])}
 if t="WASD" {return scrPadIcon(13)} //the d-pad
+//shmup hints change (added): the game's own actions, for hints written with them (the ship: oEvShipInterface)
+if t="Jump" {return scrPadIcon(global.gpBind[5])}
+if t="Attack" {return scrPadIcon(global.gpBind[6])}
+if t="Tech" {return scrPadIcon(global.gpBind[7])} //Use Tech
 return -1

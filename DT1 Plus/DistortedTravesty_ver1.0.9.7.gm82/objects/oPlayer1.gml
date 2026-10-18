@@ -93,6 +93,13 @@ if SS_IsSoundPlaying(global.msc_YouSpinMeRound)
   tempMplay=findMusic()
   playMusic(tempMplay,0)
 }
+//map header change (added): Show Map Headers (Options Set 3; from DT3): the map's header, the line the window's title
+//bar shows (room_caption), on screen for a while as the map starts (oMapHeader), for playing fullscreen. Not after a
+//retry (global.gameOver, cleared below: the game over's Retry options and Quick Restart), as in DT3. Not in the save room
+//(rDataCenter, "This is the data saving room.", the user's call)
+//if global.optShowMapHeader=1 and global.gameOver=false and room_caption!=""
+if global.optShowMapHeader=1 and global.gameOver=false and room_caption!="" and room!=rDataCenter //map header change: not in the save room
+  instance_create(0,0,oMapHeader)
 if global.gameOver=true
 {
   var tempMplay;

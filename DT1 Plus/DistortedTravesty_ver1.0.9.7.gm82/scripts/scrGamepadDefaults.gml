@@ -21,3 +21,4 @@ global.gpBind[15]=9   //Engage Rave Mode: BACK
 global.gpBind[16]=10  //Pause Menu: START
 global.gpBind[17]=1   //Menu Confirm: A (Cross)
 global.gpBind[18]=2   //Menu Cancel: B (Circle)
+global.gpBind[23]=0   //element wheel change (added): Element Wheel: none (every button is taken; it's set in the list)

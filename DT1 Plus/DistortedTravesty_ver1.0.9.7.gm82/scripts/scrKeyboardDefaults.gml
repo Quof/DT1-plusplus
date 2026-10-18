@@ -18,3 +18,4 @@ global.ctrlAbilityForward="C"
 global.ctrlDashLeft="Q"
 global.ctrlDashRight="E"
 global.ctrlPause="P"
+global.ctrlElemWheel="H" //element wheel change (added): Element Wheel (only while Element Wheel Button is on, Controls page)

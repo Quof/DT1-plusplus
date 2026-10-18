@@ -8,6 +8,11 @@ global.deathCount+=1
 global.gameOver=true
 global.gamePaused=true
 difficultyChange=false
+//quick restart change (added): made by the pause menu's Quick Restart (oHUD): it takes its first option at once (Retry
+//Boss in a boss fight, Retry From Room Entry elsewhere; the Step) and isn't drawn. Counted as a death all the same
+qrNow=0
+if variable_global_exists("qrRestart") {if global.qrRestart=1 {qrNow=1}}
+global.qrRestart=0
 if global.teleportEnabled=1
   global.teleportEnabled=0
 if global.deathCount=1
@@ -203,6 +208,7 @@ if showOptions>=1 and useCommands=false //start options //60fps change: the same
     useCommands=true
 }
 
+if qrNow=1 {useCommands=true} //quick restart change (added): see the Create event
 if difficultyChange=false
 {
   if useCommands=true
@@ -262,8 +268,10 @@ if difficultyChange=false
       }
     }
     //if keyboard_check_pressed(ord("J")) //confirm
-    if (keyboard_check_pressed(ord("J")) or scrPadPressed(17)) //confirm //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
+    if (keyboard_check_pressed(ord("J")) or scrPadPressed(17) or qrNow=1) //confirm //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit); quick restart change: or at once for a Quick Restart
     {
+      if qrNow=1 {if global.currentBoss="" {GOCursorPos=2} else {GOCursorPos=1}} //quick restart change (added): the first option, whatever was pressed this frame
+      scrGamepadSync() //input bleed fix (added): the pad's A (also Jump) doesn't count as held until let go: retrying with it held jumped as soon as the player had control
       if GOCursorPos=1 //retry boss
       {
         playSound(global.snd_MenuConfirm,0,1)
@@ -446,6 +454,7 @@ else //difficulty change selection
   //if keyboard_check_pressed(ord("J")) //confirm
   if (keyboard_check_pressed(ord("J")) or scrPadPressed(17)) //confirm //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
   {
+    scrGamepadSync() //input bleed fix (added): see the confirm above
     playSound(global.snd_MenuConfirm,0,1)
     global.difficulty=dcCursorPos
     difficultyChange=false
@@ -463,6 +472,7 @@ lib_id=1
 action_id=603
 applies_to=self
 */
+if qrNow=1 {exit} //quick restart change (added): not drawn for a Quick Restart (see the Create event)
 draw_set_alpha(backAlpha)
 draw_set_color(backColor)
 draw_rectangle(view_xview[0],view_yview[0],view_xview[0]+view_wview[0],view_yview[0]+view_hview[0],false)

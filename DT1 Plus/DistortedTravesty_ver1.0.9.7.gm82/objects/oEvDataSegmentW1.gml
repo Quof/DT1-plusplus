@@ -1930,7 +1930,11 @@ else if global.gameProgress=323 //Spike Trap
       //sceneDelay+=1
       sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     //if sceneDelay=1
-    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    //if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    //60fps change: the trap's setup runs on its first frame, as 30fps runs it on its first step. Counted to 1 it came
+    //half a tick late at 60fps (3/4 at 120), after the spike move below had already read spikeArr on the first frame
+    //(a GM error: it's only ever set here)
+    if scrCountPass(sceneDelay,gDeltaTime) //60fps change: see above
     {
       global.teleportEnabled=1
       spikeArr=-1

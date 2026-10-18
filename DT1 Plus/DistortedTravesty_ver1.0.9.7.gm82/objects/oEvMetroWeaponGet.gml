@@ -199,14 +199,14 @@ else if sceneProgress=10 //end
   if goToCutscene=1
   {
     //transition_steps=30
-    transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
+    transition_steps=30 //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
     transition_kind=21
     room_goto(rCutscene2)
   }
   else
   {
     //transition_steps=45
-    transition_steps=45/gDeltaTime //60fps change: transition_steps counts frames: the same time
+    transition_steps=45 //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
     transition_kind=15
     room_goto(rMetropolisStageSelect)
   }

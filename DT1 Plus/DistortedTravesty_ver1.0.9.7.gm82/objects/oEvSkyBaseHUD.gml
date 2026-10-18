@@ -76,33 +76,35 @@ if scrCountPass(drawTime,1) //60fps change: once, when the count reaches it
       maxLivesXplace+=11
     }
     //********** draw controls **********
+    //shmup hints change: the keys aren't drawn into the surface any more (it's made once): the Draw puts them in the
+    //circles each frame, so they follow the controls and the gamepad (see there)
     draw_set_color(c_black)
     draw_set_halign(fa_left)
     //up
-    draw_text(13,200,global.ctrlAttack)
-    draw_text(17,226,global.ctrlJump)
-    draw_text(13,256,global.ctrlTech)
+    //draw_text(13,200,global.ctrlAttack)
+    //draw_text(17,226,global.ctrlJump)
+    //draw_text(13,256,global.ctrlTech)
     draw_text(37,200,"Fire")
     draw_text(37,228,"Focus")
     draw_text(37,256,"Bomb")
     //down
-    draw_text(13,202,global.ctrlAttack)
-    draw_text(17,228,global.ctrlJump)
-    draw_text(13,258,global.ctrlTech)
+    //draw_text(13,202,global.ctrlAttack)
+    //draw_text(17,228,global.ctrlJump)
+    //draw_text(13,258,global.ctrlTech)
     draw_text(37,202,"Fire")
     draw_text(37,230,"Focus")
     draw_text(37,258,"Bomb")
     //left
-    draw_text(12,201,global.ctrlAttack)
-    draw_text(16,227,global.ctrlJump)
-    draw_text(12,257,global.ctrlTech)
+    //draw_text(12,201,global.ctrlAttack)
+    //draw_text(16,227,global.ctrlJump)
+    //draw_text(12,257,global.ctrlTech)
     draw_text(36,201,"Fire")
     draw_text(36,229,"Focus")
     draw_text(36,257,"Bomb")
     //right
-    draw_text(14,201,global.ctrlAttack)
-    draw_text(18,227,global.ctrlJump)
-    draw_text(14,257,global.ctrlTech)
+    //draw_text(14,201,global.ctrlAttack)
+    //draw_text(18,227,global.ctrlJump)
+    //draw_text(14,257,global.ctrlTech)
     draw_text(38,201,"Fire")
     draw_text(38,229,"Focus")
     draw_text(38,257,"Bomb")
@@ -112,9 +114,9 @@ if scrCountPass(drawTime,1) //60fps change: once, when the count reaches it
     draw_circle(19,238,12,true)
     draw_circle(19,266,12,true)
     draw_set_color(color_HUD_Text)
-    draw_text(13,201,global.ctrlAttack)
-    draw_text(17,227,global.ctrlJump)
-    draw_text(13,257,global.ctrlTech)
+    //draw_text(13,201,global.ctrlAttack)
+    //draw_text(17,227,global.ctrlJump)
+    //draw_text(13,257,global.ctrlTech)
     draw_text(37,201,"Fire")
     draw_text(37,229,"Focus")
     draw_text(37,257,"Bomb")
@@ -189,15 +191,47 @@ if drawTime>=9
     draw_circle(lowAdjust+19,238,12,true)
     draw_circle(lowAdjust+19,266,12,true)
     draw_set_color(color_HUD_Text)
-    draw_text(lowAdjust+13,201,global.ctrlAttack)
-    draw_text(lowAdjust+17,227,global.ctrlJump)
-    draw_text(lowAdjust+13,257,global.ctrlTech)
+    //draw_text(lowAdjust+13,201,global.ctrlAttack)
+    //draw_text(lowAdjust+17,227,global.ctrlJump)
+    //draw_text(lowAdjust+13,257,global.ctrlTech)
+    //shmup hints change: the keys are drawn below, after the HUD either way
     draw_text(lowAdjust+37,201,"Fire")
     draw_text(lowAdjust+37,229,"Focus")
     draw_text(lowAdjust+37,257,"Bomb")
     //********** draw message window **********
     draw_set_color(color_HUD_Border1)
     draw_rectangle(lowAdjust+16,291,lowAdjust+159,370,true)
+  }
+  //shmup hints change (added): the Fire / Focus / Bomb keys in their circles, each frame (they were drawn into the HUD's
+  //surface once, or with the rest of it above): the keyboard's Attack / Jump / Use Tech as set (Keyboard Controls; what
+  //oPlayerShip reads), centred in the circle, each on its label's line; while the gamepad is what's being used, its
+  //Attack / Jump / Use Tech buttons instead (sKeyPressPad, doubled to the letters' size)
+  var tKeyX;
+  if surfaceUsed=1 {tKeyX=view_shooter_x} else {tKeyX=lowAdjust} //where the HUD is (the surface's, or the drawn one's)
+  if global.gpLastUsed=1
+  {
+    draw_sprite_ext(sKeyPressPad,scrPadIcon(global.gpBind[6]),tKeyX+19,210,2,2,0,c_white,1)
+    draw_sprite_ext(sKeyPressPad,scrPadIcon(global.gpBind[5]),tKeyX+19,238,2,2,0,c_white,1)
+    draw_sprite_ext(sKeyPressPad,scrPadIcon(global.gpBind[7]),tKeyX+19,266,2,2,0,c_white,1)
+  }
+  else
+  {
+    draw_set_alpha(1)
+    draw_set_font(fnt_HUD_Shooter)
+    draw_set_halign(fa_center)
+    if surfaceUsed=1 //the surface's shadow (up, down, left, right)
+    {
+      draw_set_color(c_black)
+      draw_text(tKeyX+19,200,global.ctrlAttack); draw_text(tKeyX+19,228,global.ctrlJump); draw_text(tKeyX+19,256,global.ctrlTech)
+      draw_text(tKeyX+19,202,global.ctrlAttack); draw_text(tKeyX+19,230,global.ctrlJump); draw_text(tKeyX+19,258,global.ctrlTech)
+      draw_text(tKeyX+18,201,global.ctrlAttack); draw_text(tKeyX+18,229,global.ctrlJump); draw_text(tKeyX+18,257,global.ctrlTech)
+      draw_text(tKeyX+20,201,global.ctrlAttack); draw_text(tKeyX+20,229,global.ctrlJump); draw_text(tKeyX+20,257,global.ctrlTech)
+    }
+    draw_set_color(color_HUD_Text)
+    draw_text(tKeyX+19,201,global.ctrlAttack)
+    draw_text(tKeyX+19,229,global.ctrlJump)
+    draw_text(tKeyX+19,257,global.ctrlTech)
+    draw_set_halign(fa_left)
   }
   draw_set_alpha(1)
   draw_set_color(c_black)

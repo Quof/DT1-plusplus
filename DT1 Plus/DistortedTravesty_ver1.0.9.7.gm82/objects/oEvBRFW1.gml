@@ -297,7 +297,7 @@ else if global.gameProgress=153 //talk to X near Fortress
     global.gameProgress=154
     writeToPlayerGlobals()
     //transition_steps=30
-    transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
+    transition_steps=30 //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
     transition_kind=21
     room_goto(rBFortressIntro)
   }
@@ -1119,7 +1119,13 @@ else if global.gameProgress=179 and room=rBRFort17 //Boss Fight (Necrobane)
     //sceneDelay+=1
     sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     //if sceneDelay=1
-    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    //if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    //60fps change: the step's setup runs on its first frame, as 30fps runs it on its first step. Counted to 1 it came
+    //half a tick late at 60fps (3/4 at 120), after the fade below had already read bossFinishFadeAlpha on the first
+    //frame: still 0, so the step ended there and its setup never ran (no shake, Informant's eye or boss image). Steps
+    //28 and 31 below ended the same way, and with 28's setup skipped imageScaleY stayed 1, so 29 ended at once too
+    //(the whole transformation was skipped)
+    if scrCountPass(sceneDelay,gDeltaTime) //60fps change: see above
     {
       shakeScreen=instance_create(256,oPlayer1.y,oCutsceneShake)
       shakeScreen.shakePower=8
@@ -1147,7 +1153,8 @@ else if global.gameProgress=179 and room=rBRFort17 //Boss Fight (Necrobane)
     //sceneDelay+=1
     sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     //if sceneDelay=1
-    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    //if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    if scrCountPass(sceneDelay,gDeltaTime) //60fps change: on the step's first frame, before the fade below reads bossFinishFadeAlpha (see step 25)
     {
       bossImage=0
       imageScaleX=0
@@ -1226,7 +1233,8 @@ else if global.gameProgress=179 and room=rBRFort17 //Boss Fight (Necrobane)
     //sceneDelay+=1
     sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
     //if sceneDelay=1
-    if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    //if scrCountPass(sceneDelay,1) //60fps change: once, when the count reaches it
+    if scrCountPass(sceneDelay,gDeltaTime) //60fps change: on the step's first frame, before the fade below reads bossFinishFadeAlpha (see step 25)
     {
       bossFinishFadeAlpha=1
       imageBlend=c_white

@@ -48,13 +48,14 @@ if activate=1
   //if keyboard_check_pressed(curConfirm)
   if (keyboard_check_pressed(curConfirm) or scrPadPressed(17)) //gamepad change: and the gamepad's Menu Confirm (scrGamepadInit)
   {
+    scrGamepadSync() //input bleed fix (added): the pad's buttons held now (A is also Jump) don't count as held until let go, or the player jumps on the floor it goes to
     playSound(global.snd_MenuConfirm,0,1)
     global.recUsedAreaExit+=1
     global.newMapX=0
     global.newMapY=0
     writeToPlayerGlobals()
     //transition_steps=15
-    transition_steps=15/gDeltaTime //60fps change: transition_steps counts frames: the same time
+    transition_steps=15 //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
     transition_kind=5
     if floorChoice=1
       toRoom=rSoFS_Floor1

@@ -11,6 +11,16 @@ fadeColor=c_black
 sceneProgress=0
 sceneDelay=0
 
+//GM8.2 change (added): this room's own four tiles on the fortress layer (depth 1000000), greyed with it below. The
+//original greyed them by their GM8.1 tile ids (10197501-10197503, 10197507), but GM8.2 numbers a room's tiles as it
+//loads it, so those ids don't exist ("Tile does not exist."). They're found where they are instead, before the fortress
+//tiles are added to the same layer (those overlap some of them)
+var tRoomTile,tI;
+tRoomTile[0]=tile_layer_find(1000000,157,296) //GM8.1 10197501: (133,272) 48x48
+tRoomTile[1]=tile_layer_find(1000000,205,296) //GM8.1 10197502: (181,272) 48x48
+tRoomTile[2]=tile_layer_find(1000000,245,285) //GM8.1 10197503: (229,269) 32x32
+tRoomTile[3]=tile_layer_find(1000000,114,285) //GM8.1 10197507: (95,269) 38x32
+
 fortressLeft=tile_add(backBRFExteriorProp,0,0,136,222,176,54,1000000)
 fortressRight=tile_add(backBRFExteriorProp,0,0,136,222,176,54,1000000)
 tile_set_scale(fortressRight,-1,1)
@@ -40,10 +50,11 @@ playerImage.type=1
 tile_set_blend(fortressLeft,c_gray)
 tile_set_blend(fortressRight,c_gray)
 tile_set_blend(fortressEmblem,c_gray)
-tile_set_blend(10197501,c_gray)
-tile_set_blend(10197502,c_gray)
-tile_set_blend(10197503,c_gray)
-tile_set_blend(10197507,c_gray)
+//tile_set_blend(10197501,c_gray)
+//tile_set_blend(10197502,c_gray)
+//tile_set_blend(10197503,c_gray)
+//tile_set_blend(10197507,c_gray)
+for(tI=0;tI<4;tI+=1) {if tRoomTile[tI]>=0 {tile_set_blend(tRoomTile[tI],c_gray)}} //GM8.2 change: the room's tiles, found at the top
 
 tile_layer_shift(1000000,-384,0)
 tile_layer_shift(999998,192,0)
@@ -119,7 +130,7 @@ else if sceneProgress=4
   global.gameProgress=155
   global.gamePaused=false
   //transition_steps=30
-  transition_steps=30/gDeltaTime //60fps change: transition_steps counts frames: the same time
+  transition_steps=30 //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
   transition_kind=21
   room_goto(rBRFort1)
 }

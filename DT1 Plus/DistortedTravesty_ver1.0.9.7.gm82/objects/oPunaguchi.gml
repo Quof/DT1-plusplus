@@ -93,7 +93,8 @@ if global.gamePaused=false
       xVel=0
     if isCollisionRight(1)
       xVel=0
-    if isCollisionSolid()
+    //if isCollisionSolid()
+    if isCollisionSolid() and gDeltaDoTicks //60fps change: once per 30fps tick (it ran every frame, so a unit stuck in a wall was pushed out 2x as fast at 60fps, 4x at 120fps)
       y-=2
     //moveTo(xVel,yVel)
     moveTo(xVel*gDeltaTime,yVel*gDeltaTime) //60fps change: this frame's share of a 30fps tick

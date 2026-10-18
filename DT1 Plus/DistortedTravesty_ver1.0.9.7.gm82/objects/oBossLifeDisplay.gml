@@ -80,6 +80,11 @@ if instance_exists(bossID)
       healthTrack=(bossID.life/bossID.maxLife)*200
       draw_sprite_ext(sHealthTrack,2,bossBarX+nameLength+5,bossBarY+4,healthTrack,1,0,c_white,1)
     }
+    //cripple icon change (added): a skull badge (sBossCrippled, 15x16, in the bar's colours) over the bar's left end
+    //while the boss is crippled (statusCripple: 300 ticks plus the Strategist skill's bonus, -40% defense), gone once
+    //it wears off
+    if bossID.statusCripple>0
+      draw_sprite(sBossCrippled,0,bossBarX,bossBarY-18)
   }
 }
 else

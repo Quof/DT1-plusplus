@@ -172,7 +172,7 @@ if global.gamePaused=false
         if global.sofsMax=8
           global.sofsMax=9
         //transition_steps=15
-        transition_steps=15/gDeltaTime //60fps change: transition_steps counts frames: the same time
+        transition_steps=15 //60fps change: the original steps: GM plays a room transition at the new room's own speed (30; oGame sets room_speed only once the room runs), so steps/gDeltaTime made it 2x/4x as long at 60/120fps
         transition_kind=5
         room_goto(rSoFS_Floor99)
       }

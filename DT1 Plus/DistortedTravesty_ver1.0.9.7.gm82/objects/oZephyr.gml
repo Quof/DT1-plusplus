@@ -69,7 +69,12 @@ if global.gamePaused=false
     else
       directionMod=-5
     //xVel+=directionMod/weight
-    xVel+=directionMod/weight*gDeltaTime //60fps change: per 30fps tick
+    //xVel+=directionMod/weight*gDeltaTime //60fps change: per 30fps tick
+    //60fps change: the whole tick's push at once, on the tick's last frame, after the block's own logic (oEarthShift's
+    //Step comes before oZephyr's), as at 30fps. The platform engine (gameStepEvent) reads xVel only at the next tick's
+    //start, and zeroes anything under 0.1 there (approximatelyZero). Spread over the frames, half the push came before
+    //the block's friction took 0.05 off, so the tick started at 0.05, which was zeroed: Zephyr never moved it above 30fps
+    if gDeltaDoTicks {xVel+=directionMod/weight}
   }
   with oSpell
   {

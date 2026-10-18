@@ -12,6 +12,8 @@ controls change: Keyboard Controls / Gamepad Controls open a panel over the midd
 one list (rows: scrControlRows, drawn by menuControlWidget), instead of two lists swapped with [L]. The keyboard list
 has Pause Menu ([P], global.ctrlPause) too, and Dash Forward / Dash Back (the Dash Right / Dash Left keys) in that order.
 The original keyboard code is at the end, commented out.
+element wheel change: under DPad Spells (and its element rows while it's on) are Element Wheel Button and Right Stick
+Element Swap On/Off (scrElemWheel). While Element Wheel Button is on, both panels have an Element Wheel row (scrCtrlRow).
 */
 var i,ii,tGPCode,tGPAct,tGPOld,tRow,tVar,tOld,keyHelpInfo,keyChange;
 
@@ -29,17 +31,27 @@ if ctrlView=2 and gpListen=1
     tGPCode=scrGamepadCapture()
     if tGPCode>0
     {
-      tGPAct=global.gpRowAct[cursorPosY] //controls change: one list (it was [subCursorPos,cursorPosY])
+      //tGPAct=global.gpRowAct[cursorPosY] //controls change: one list (it was [subCursorPos,cursorPosY])
+      tGPAct=global.gpRowAct[scrCtrlRow(cursorPosY)] //controls change: one list (it was [subCursorPos,cursorPosY]) //element wheel change: the row on the line (scrCtrlRow)
       tGPOld=global.gpBind[tGPAct]
       global.gpBind[tGPAct]=tGPCode
       //an action that can't share this button with it gets its old button, unless something that one can't share a
       //button with is on that one too; then it's left without one (-)
-      for(i=1;i<=18;i+=1)
+      //element wheel change: Element Wheel (23) too; 19-22 are the fixed menu buttons, not set here
+      //for(i=1;i<=18;i+=1)
+      for(i=1;i<=23;i+=1) //element wheel change
       {
-        if i!=tGPAct and global.gpBind[i]=tGPCode and scrPadClash(i,tGPAct)
+        if i<=18 or i=23 //element wheel change (added)
         {
-          global.gpBind[i]=tGPOld
-          for(ii=1;ii<=18;ii+=1) {if ii!=i and tGPOld>0 and global.gpBind[ii]=tGPOld and scrPadClash(i,ii) {global.gpBind[i]=0}}
+          if i!=tGPAct and global.gpBind[i]=tGPCode and scrPadClash(i,tGPAct)
+          {
+            global.gpBind[i]=tGPOld
+            //for(ii=1;ii<=18;ii+=1) {if ii!=i and tGPOld>0 and global.gpBind[ii]=tGPOld and scrPadClash(i,ii) {global.gpBind[i]=0}}
+            for(ii=1;ii<=23;ii+=1) //element wheel change: see above
+            {
+              if ii<=18 or ii=23 {if ii!=i and tGPOld>0 and global.gpBind[ii]=tGPOld and scrPadClash(i,ii) {global.gpBind[i]=0}} //element wheel change
+            }
+          }
         }
       }
       gpListen=0
@@ -98,7 +110,8 @@ if ctrlView>0 and (keyboard_check_pressed(curCancel) or scrPadPressed(18))
   tRow=ctrlView //the option that opened the panel
   ctrlView=0
   subCursorPos=1
-  menuMax=4+5*global.optDPadSpells //dpad spells change: with DPad Spells and (while it's on) its element rows
+  //menuMax=4+5*global.optDPadSpells //dpad spells change: with DPad Spells and (while it's on) its element rows
+  menuMax=6+5*global.optDPadSpells //dpad spells change: with DPad Spells and (while it's on) its element rows //element wheel change: and the two options under them
   cursorPosY=tRow
   menuCursorX=menuMainX+18
   menuCursorY=menuMainY+28+cursorIncY*(tRow-1) //controls change: the options are at the top of a smaller box now
@@ -115,18 +128,24 @@ if (keyboard_check_pressed(curConfirm) or scrPadPressed(17)) //gamepad change: a
       ctrlView=cursorPosY
       subCursorPos=1
       if ctrlView=1 {menuMax=global.kbRowCount+1} else {menuMax=global.gpRowCount+1} //the actions, then Set to Default Controls
+      menuMax-=1-global.optElemWheel //element wheel change (added): Element Wheel's row is only there while it's on (scrCtrlRow)
       cursorPosY=1
     }
     else if cursorPosY=3 {global.optGamePad=!global.optGamePad} //Gamepad Input On/Off
     else if cursorPosY=4 //dpad spells change (added): DPad Spells (DT2 Style) On/Off; its element rows show under it while it's on
     {
       global.optDPadSpells=!global.optDPadSpells
-      menuMax=4+5*global.optDPadSpells
+      //menuMax=4+5*global.optDPadSpells
+      menuMax=6+5*global.optDPadSpells //element wheel change: and the two options under them
     }
-    else //dpad spells change (added): Fire / Water / Wind / Earth / Techniques: open its D-pad panel (menuDPadSpellConfig)
+    //element wheel change (added): Element Wheel Button and Right Stick Element Swap On/Off, under DPad Spells (and its
+    //element rows while it's on)
+    else if cursorPosY=5+5*global.optDPadSpells {global.optElemWheel=!global.optElemWheel}
+    else if cursorPosY=6+5*global.optDPadSpells {global.optRightStickElem=!global.optRightStickElem}
+    else //dpad spells change (added): Techniques / Fire / Water / Wind / Earth: open its D-pad panel (menuDPadSpellConfig)
     {
       ctrlView=3
-      if cursorPosY=9 {dpsElem=0} else {dpsElem=cursorPosY-4}
+      dpsElem=cursorPosY-5 //rows 5-9: 0 techniques (at the top, the user's call), 1-4 fire/water/wind/earth
       dpsBox=0
       dpsList=0
       dpsListPos=1
@@ -157,7 +176,8 @@ if (keyboard_check_pressed(curConfirm) or scrPadPressed(17)) //gamepad change: a
     if cursorPosY=menuMax {scrKeyboardDefaults()} //Set to Default Controls
     else
     {
-      tVar=global.kbRowVar[cursorPosY] //the global the row's key is kept in (scrControlRows)
+      //tVar=global.kbRowVar[cursorPosY] //the global the row's key is kept in (scrControlRows)
+      tVar=global.kbRowVar[scrCtrlRow(cursorPosY)] //the global the row's key is kept in (scrControlRows) //element wheel change: the row on the line (scrCtrlRow)
       tOld=variable_global_get(tVar)
       keyHelpInfo="Enter the key you would like to#change this action to and press Enter."
       keyChange=string_upper(get_string(keyHelpInfo,tOld))
@@ -178,7 +198,8 @@ if (keyboard_check_pressed(curConfirm) or scrPadPressed(17)) //gamepad change: a
 if ctrlView=0
 {
   menuCursorX=menuMainX+18
-  if cursorPosY>=5 {menuCursorX+=12}
+  //if cursorPosY>=5 {menuCursorX+=12}
+  if global.optDPadSpells and cursorPosY>=5 and cursorPosY<=9 {menuCursorX+=12} //element wheel change: only the element rows (the two options under them aren't indented)
   menuCursorY=menuMainY+28+cursorIncY*(cursorPosY-1)
 }
 //controls change: no lists to swap with [L] any more: each panel has every action in one list

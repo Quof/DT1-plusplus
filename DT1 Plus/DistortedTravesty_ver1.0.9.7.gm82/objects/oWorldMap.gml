@@ -407,6 +407,7 @@ if choseLevel=0
   if mapFocus!=noone and (keyboard_check_pressed(ord("J")) or keyboard_check_pressed(vk_enter) or scrPadPressed(17))
   {
     with mapFocus {event_perform(ev_mouse,ev_left_press)} //goes there, as a click does
+    scrGamepadSync() //input bleed fix (added): the pad's buttons held now (A is also Jump) don't count as held until let go, or the player jumps as soon as it has control
   }
 }
 mapMouseX=mouse_x

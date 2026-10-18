@@ -53,7 +53,13 @@ if global.gamePaused=false
 
   if scaleTime>=800
     scaleTime=0
-  sCheck=frac(scaleTime/10)
+  //sCheck=frac(scaleTime/10)
+  //60fps change: checked on the whole tick number, as at 30fps. There scaleTime is always whole, so this is at most 0.9
+  //(4.9 gives 0.9000000000000004, which GM8 counts as equal to 0.9) and the tint below never runs: the background is
+  //only tinted while the player is hit, casting or on a kill chain (the Draw). Counted in half/quarter ticks it gave
+  //0.95 every 10 ticks, so the background darkened bit by bit until the colour went negative and flickered through
+  //garbage colours
+  sCheck=frac(ceil(scaleTime)/10) //60fps change: see above
   if sCheck>0.9
   {
     //cR-=2
@@ -64,20 +70,26 @@ if global.gamePaused=false
     cB-=0.01*gDeltaTime //60fps change: per 30fps tick
   }
   if oPlayer1.attackState=oPlayer1.TECH_MENTAL_INSURRECTION
+  { //60fps change (added): braces, so the else below stays with this if. Without them it paired with the "if gDeltaDoTicks" gate: the effect never went back to 0 afterwards, and while it was on it flickered to 0 between ticks (the same below)
     //distortMentalI=random(0.5)
     if gDeltaDoTicks distortMentalI=random(0.5) //60fps change: once per 30fps tick
+  } //60fps change (added): see above
   else
     distortMentalI=0
 
   if oPlayer1.sprite_index=sPlayerDamaged
+  { //60fps change (added): braces (see above): the red-out never went back to 0 after a hit
     //distortDamage=random(70)+30
     if gDeltaDoTicks distortDamage=random(70)+30 //60fps change: once per 30fps tick
+  } //60fps change (added): see above
   else
     distortDamage=0
 
   if oPlayer1.attackState=oPlayer1.ACT_CASTING
+  { //60fps change (added): braces (see above): the green-out never went back to 0 after a cast
     //distortCasting=random(70)+30
     if gDeltaDoTicks distortCasting=random(70)+30 //60fps change: once per 30fps tick
+  } //60fps change (added): see above
   else
     distortCasting=0
 

@@ -447,8 +447,10 @@ else if global.gameProgress=126 and room=rDistortionW2_6 //Boss Fight (Demon Cur
       leftArm.image_alpha+=0.01*gDeltaTime //60fps change: per 30fps tick
     }
     else if sceneDelay>=71 and sceneDelay<=90
+    { //60fps change (added): braces, so the else-ifs below stay on the sceneDelay chain. Without them they paired with the "if gDeltaDoTicks" gate, so the white flash and the next step only ran during the smoke and the cutscene froze right after it
       //effect_create_above(ef_smoke,boss.x+random(10),boss.y+random(10),0,c_black)
       if gDeltaDoTicks effect_create_above(ef_smoke,boss.x+random(10),boss.y+random(10),0,c_black) //60fps change: once per 30fps tick
+    } //60fps change (added): see above
     //else if sceneDelay=91
     else if scrCountPass(sceneDelay,91) //60fps change: once, when the count reaches it
       drawWRec=true

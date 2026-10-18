@@ -16,6 +16,7 @@ for(i=1;i<=global.kbRowCount;i+=1)
 }
 ini_write_real("Gamepad","Input",global.optGamePad)
 for(i=1;i<=18;i+=1) {ini_write_real("Gamepad","Button" +string(i),global.gpBind[i])}
+ini_write_real("Gamepad","Button23",global.gpBind[23]) //element wheel change (added): Element Wheel (19-22 are fixed)
 ini_write_real("DPadSpells","On",global.optDPadSpells)
 for(e=0;e<=4;e+=1)
 {

@@ -50,10 +50,21 @@ if global.gamePaused=false
   makeEnemyActive()
   if bActive=true
   {
-    //60fps change (added): below, tStep (this frame's share of runAcc, its move per 30fps tick) replaces runAcc,
-    //in the moves and in the wall checks ahead of them
-    var tStep;
-    tStep=runAcc*gDeltaTime
+    //60fps change (added): below, tStep replaces runAcc (its move per 30fps tick), in the moves and in the wall checks
+    //ahead of them
+    //60fps change: it follows the walls as at 30fps: the moves and wall checks below run once per 30fps tick, on the
+    //tick's first frame, from where 30fps has it then and with the whole runAcc, and that tick's move is made over the
+    //tick's frames (after them). tStep was runAcc*gDeltaTime every frame: its checks then looked only half (a quarter)
+    //as far ahead as 30fps's, so where 30fps found the wall it didn't, turned early and left the block's outline
+    var tStep,tTick;
+    //tStep=runAcc*gDeltaTime
+    tStep=runAcc //60fps change: see above
+    tTick=(gDeltaTime==1 or abs(gDeltaTick-gDeltaTime)<0.0001) //60fps change (added): this frame starts a 30fps tick (as in gameStepEvent)
+    if tTick //60fps change (added)
+    { //60fps change (added)
+    if variable_local_exists("pfEndX") {x=pfEndX; y=pfEndY} //60fps change (added): where the last tick's move ends (the same unless it stopped partway: paused, or out of range)
+    pfStartX=x //60fps change (added)
+    pfStartY=y //60fps change (added)
     if bClockWise=false //******************** COUNTER-CLOCK-WISE ********************
     {
       if currentDir=UP
@@ -204,5 +215,13 @@ if global.gamePaused=false
         }
       }
     }
+    pfMoveX=x-pfStartX //60fps change (added): this tick's move, made over its frames below
+    pfMoveY=y-pfStartY //60fps change (added)
+    pfEndX=x //60fps change (added)
+    pfEndY=y //60fps change (added)
+    x=pfStartX //60fps change (added)
+    y=pfStartY //60fps change (added)
+    } //60fps change (added): if tTick
+    if variable_local_exists("pfMoveX") {x+=pfMoveX*gDeltaTime; y+=pfMoveY*gDeltaTime} //60fps change (added): this frame's share of the tick's move (all of it at 30fps)
   }
 }
