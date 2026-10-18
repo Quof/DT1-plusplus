@@ -316,7 +316,7 @@ scrDrawElemSprite
 scrElemColorRefresh
 menuElemColorConfig
 menuElemColorWidget
-scrVSyncApply
+
 scrElemSet
 scrElemWheel
 scrElemWheelDraw

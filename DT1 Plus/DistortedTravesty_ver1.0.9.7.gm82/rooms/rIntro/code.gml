@@ -5,7 +5,6 @@ set_application_title("Distorted Travesty")
 globalvar gDeltaTime, gDeltaDoTicks, gDeltaTick;
 if !variable_global_exists("gameFrameRate") {global.gameFrameRate=60} //30, 60 or 120 (F2 cycles it, see oGame)
 if !variable_global_exists("debugSpeedMul") {global.debugSpeedMul=1} //the debug menu's Room Speed, as a multiplier
-if !variable_global_exists("vsyncOn") {global.vsyncOn=0; global.vsyncPending=0} //vsync change (added): settings.txt starts the game with vsync off; VSync (Options Set 2) is put into effect once the settings are loaded (scrVSyncApply)
 if !instance_exists(oGame)
 {
   //until oGame is made (the first player makes it), rooms run at their own speed (30), so time counts as 30fps

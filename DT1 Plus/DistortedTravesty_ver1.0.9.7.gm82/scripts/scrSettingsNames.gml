@@ -25,12 +25,10 @@ global.setOpt[18]="optDPadDash"
 global.setOpt[19]="optRightIsForward"
 global.setOpt[20]="optShowHUD"
 global.setOpt[21]="optDashWarn"
-global.setOpt[22]="optVSync" //vsync change (added): VSync (Options Set 2; scrVSyncApply)
-global.setOpt[23]="optShowMapHeader" //map header change (added): Show Map Headers (Options Set 3; oMapHeader)
-global.setOpt[24]="optElemWheel" //element wheel change (added): Element Wheel Button (Controls page; scrElemWheel)
-global.setOpt[25]="optRightStickElem" //element wheel change (added): Right Stick Element Swap (Controls page)
+global.setOpt[22]="optShowMapHeader" //map header change (added): Show Map Headers (Options Set 3; oMapHeader)
+global.setOpt[23]="optElemWheel" //element wheel change (added): Element Wheel Button (Controls page; scrElemWheel)
+global.setOpt[24]="optRightStickElem" //element wheel change (added): Right Stick Element Swap (Controls page)
 //global.setOptCount=22
-//global.setOptCount=23 //vsync change
-//global.setOptCount=24 //vsync change, map header change
-global.setOptCount=26 //vsync change, map header change, element wheel change
+//global.setOptCount=23 //map header change
+global.setOptCount=25 //map header change, element wheel change
 scrElemColorInit() //element colors change (added): Element Colors (Options Set 3): each element's colour (kept in Settings.ini's [ElementColors]) and what draws in it

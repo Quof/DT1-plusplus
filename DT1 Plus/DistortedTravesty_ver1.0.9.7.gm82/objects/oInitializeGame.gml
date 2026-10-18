@@ -381,7 +381,6 @@ global.optDPadDash=0 //controls change: D-Pad Dash (Up/Down + Jump dashes; Optio
 global.optRightIsForward=1
 global.optShowHUD=1
 global.optDashWarn=0
-global.optVSync=0 //vsync change (added): VSync (Options Set 2): Auto (scrVSyncApply)
 global.optShowMapHeader=1 //map header change (added): Show Map Headers (Options Set 3; oMapHeader): on, as in DT3
 for(i=1;i<=4;i+=1) {global.elemColor[i]=global.elemColorDef[i]} //element colors change (added): Element Colors (Options Set 3): each element's own colour
 } //settings change (added)
@@ -506,7 +505,6 @@ global.optGamePad=1 //gamepad change (added): Gamepad Input on and the default g
 scrGamepadDefaults() //gamepad change (added)
 } //settings change (added)
 if scrSettingsLoad() {global.settingsNew=0} //settings change (added): Settings.ini's, when there is one (see the options flags)
-scrVSyncApply() //vsync change (added): VSync (Options Set 2), as the settings have it
 //settings change (added): the title's music at the Music volume, or none with it off (the options were the defaults
 //here, so it always played at full)
 if global.optMusic>0 {SS_SetSoundVol(global.msc_TitleMenu,global.optMusic*100)} else {SS_StopSound(global.msc_TitleMenu)} //settings change (added)

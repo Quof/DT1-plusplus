@@ -1410,12 +1410,6 @@ if global.gamePaused=true and menuOpen=true
           else
             global.optGameDetail=0
         }
-        else if cursorPosY=10 //vsync change (added): VSync: Auto, On, Off (scrVSyncApply)
-        { //vsync change (added)
-          global.optVSync+=1 //vsync change (added)
-          if global.optVSync>2 {global.optVSync=0} //vsync change (added)
-          scrVSyncApply() //vsync change (added)
-        } //vsync change (added)
       }
       else if subCursorPos=3
       {
@@ -1697,8 +1691,7 @@ if global.gamePaused=true and menuOpen=true
           menuMax=9
       }
       else if subCursorPos=2
-        //menuMax=9
-        menuMax=10 //vsync change: and VSync
+        menuMax=9
       else
         //menuMax=4
         //menuMax=5 //element colors change: and Element Colors
@@ -3716,8 +3709,6 @@ if global.gamePaused=true and menuOpen=true
       draw_text(subMenuOptionsX+16,subMenuOptionsY+83,"Show Enemy Health")
       draw_text(subMenuOptionsX+16,subMenuOptionsY+95,"Game Priority")
       draw_text(subMenuOptionsX+16,subMenuOptionsY+107,"Game Detail")
-      draw_rectangle(subMenuOptionsX+4,subMenuOptionsY+122,subMenuOptionsX+12,subMenuOptionsY+130,true) //vsync change (added): VSync
-      draw_text(subMenuOptionsX+16,subMenuOptionsY+119,"VSync") //vsync change (added)
       draw_set_color(colorLightPink)
       if global.optKillChainScreen=true
         draw_rectangle(subMenuOptionsX+5,subMenuOptionsY+15,subMenuOptionsX+11,subMenuOptionsY+21,false)
@@ -3747,10 +3738,6 @@ if global.gamePaused=true and menuOpen=true
       else if global.optGameDetail=1
         gDetail="Normal"
       draw_text(subMenuOptionsX+90,subMenuOptionsY+107,gDetail)
-      if global.optVSync=1 {draw_text(subMenuOptionsX+90,subMenuOptionsY+119,"On")} //vsync change (added)
-      else if global.optVSync=2 {draw_text(subMenuOptionsX+90,subMenuOptionsY+119,"Off")} //vsync change (added)
-      else if global.vsyncOn=1 {draw_text(subMenuOptionsX+90,subMenuOptionsY+119,"Auto (on)")} //vsync change (added): Auto, and what it's doing now
-      else {draw_text(subMenuOptionsX+90,subMenuOptionsY+119,"Auto (off)")} //vsync change (added)
     }
     else if subCursorPos=3 //---------- OPTIONS SET 3 ----------
     {

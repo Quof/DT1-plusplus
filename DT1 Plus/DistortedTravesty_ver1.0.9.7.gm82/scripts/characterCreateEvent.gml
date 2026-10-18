@@ -230,6 +230,7 @@ speedmod=1                 //slowdown on upward slopes (pMoveToWrapNew; kept at 
 wallStopTick=0             //the wall stop holds for the rest of this 30fps tick (characterStepEvent)
 wallStopFacing=0           //the facing the wall stop was checked with
 landTickHold=0            //rest of the 30fps tick a dash-momentum landing still counts as in the air (characterStepEvent)
+slashJumpBuffer=0         //60fps change (added): a jump pressed in the air during the jump slash, kept for a 30fps tick for the bunny hop (characterStepEvent)
 dashTickTime=0             //rest of a dash's first 30fps tick (pMoveDashForward/pMoveDashBack/pMoveAirDash, characterStepEvent)
 dashTickXAcc=0             //the dash frame's xAcc, kept for the rest of that tick
 airDashKick=0              //the air dash's upward kick, added over its first 30fps tick (pMoveAirDash)

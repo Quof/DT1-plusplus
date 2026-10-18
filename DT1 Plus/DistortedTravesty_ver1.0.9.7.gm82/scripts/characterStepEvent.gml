@@ -420,6 +420,20 @@ else
     xVelSetTick=1
   }
 } //60fps change (added)
+//60fps change (added): the jump slash's bunny hop, as at 30fps (the original game's bug, kept on purpose: the user's
+//call). At 30fps a jump pressed in the 30fps tick the jump slash lands in jumps before the slash goes off (that's checked
+//further down), so the slash, and the power it has built up, carry on. That tick is 33ms; above 30fps a frame is
+//shorter, so a jump pressed in the air during the jump slash that did nothing there also counts on landing if it came
+//less than a 30fps tick before (slashJumpBuffer, 30fps ticks, set after the jump code): the window is a 30fps tick long
+//at every frame rate, as at 30fps (60fps: the landing frame or the one before; 120fps: the landing frame or the 3 before)
+if slashJumpBuffer>0 {slashJumpBuffer-=gDeltaTime}
+if slashJumpBuffer>0.0001 and attackState=PART_JUMP_SLASH_1 and platformCharacterIs(ON_GROUND)
+{
+  kJumpPressed=1 //(this step only: the next one works it out from the key again)
+  slashJumpBuffer=0
+}
+var tCanAirDash;
+tCanAirDash=canAirDash //(after the jump code: whether this step's press air dashed)
 //player may jump
 if bTakingDamage=false and attackState!=ACT_CASTING and attackState!=ACT_CASTED
 {
@@ -514,6 +528,10 @@ if bTakingDamage=false and attackState!=ACT_CASTING and attackState!=ACT_CASTED
     }
   }
 }
+//60fps change (added): the jump slash's bunny hop (see above the jump code): a jump pressed in the air during the jump
+//slash that didn't air dash is kept for a 30fps tick, in case the slash lands in it (not at 30fps, where the press has to
+//come in the landing tick itself)
+if gDeltaTime!=1 and kJumpPressed and attackState=PART_JUMP_SLASH_1 and platformCharacterIs(IN_AIR) and !(tCanAirDash=1 and canAirDash=0) {slashJumpBuffer=1}
 
 //60fps change: the speeds below are set every frame, so they're flagged (xVelSetTick/yVelSetTick) and pMoveToWrapNew
 //uses the 30fps formula for them, (speed+acceleration)*friction, moving this frame's share of it

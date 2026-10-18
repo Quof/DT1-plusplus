@@ -998,11 +998,6 @@ It is used to display the slot descriptions.
         itemCapacity=global.optGameDetail
         itemInfo="Set this to Low if the game has trouble#displaying surfaces."
       }
-      else if cursorPosY=10 //vsync change (added)
-      { //vsync change (added)
-        itemName="VSYNC" //vsync change (added)
-        itemInfo="Wait for the screen's refresh: no tearing, even frames.#Auto: on when the frame rate fits the screen's." //vsync change (added)
-      } //vsync change (added)
     }
     else if subCursorPos=3
     {

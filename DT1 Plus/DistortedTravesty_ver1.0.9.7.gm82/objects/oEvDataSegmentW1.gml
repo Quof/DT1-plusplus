@@ -10,6 +10,7 @@ bossFinishFadeAlpha=0
 fadeColor=c_white
 sceneProgress=0
 sceneDelay=0
+choiceArtistMade=0 //60fps change (added): whether The Choice (the Step, gameProgress 322) has made The Artist yet (see there)
 
 //background scroll type
 backIndex=0
@@ -1638,10 +1639,18 @@ else if global.gameProgress=322 //The Choice
       global.gamePaused=true
       stopPlayer()
       stopAllMusic()
+      choiceArtistMade=0 //60fps change (added): see below
     }
     //else if sceneDelay=30
-    else if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
+    //else if scrCountPass(sceneDelay,30) //60fps change: once, when the count reaches it
+    //60fps change: The Artist is made the first frame the count is at 30 or past it (once), and the scene doesn't go on
+    //before that (below). The fade below steps the count a second time each tick while bossFinishFadeAlpha is used up,
+    //which it is from the scene before, so at 30fps the count goes 2, 4, ... 30 and lands on 30 with the tick's first
+    //step. Above 30fps the second step of a tick is the one that lands on 30, which ended the scene there without The
+    //Artist ever being made ("Unknown variable npcArtist" on The Artist is lying path)
+    else if sceneDelay>=30 and choiceArtistMade=0
     {
+      choiceArtistMade=1 //60fps change (added): see above
       npcArtist=instance_create(400,320,oMisc)
       npcArtist.sprite_index=sTheArtistIdle
       npcArtist.image_xscale=-1
@@ -1658,7 +1667,8 @@ else if global.gameProgress=322 //The Choice
       {
         //sceneDelay+=1
         sceneDelay+=gDeltaTime //60fps change: counts 30fps ticks
-        if sceneDelay>=30
+        //if sceneDelay>=30
+        if sceneDelay>=30 and choiceArtistMade=1 //60fps change: not before The Artist is made (see above)
         {
           sceneDelay=0
           sceneProgress+=1

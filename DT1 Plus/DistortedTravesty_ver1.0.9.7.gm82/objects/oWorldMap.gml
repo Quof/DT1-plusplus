@@ -396,6 +396,20 @@ if choseLevel=0
           }
         }
       }
+      //map up change (added): Up from Shady Caves goes to the Secured Data Segment, and Up from Donut Plains to the
+      //Integrated Electrical Factory, once they're on the map (the user's call; the rule above picks Primary Memory or
+      //the Spire, and Toad Town)
+      if tDX=0 and tDY<0
+      {
+        if variable_local_exists("lShadyCaves") and variable_local_exists("lDataSegment")
+        {
+          if mapFocus=lShadyCaves {tNew=lDataSegment}
+        }
+        if variable_local_exists("lIEF")
+        {
+          if mapFocus=lDonutPlains {tNew=lIEF}
+        }
+      }
     }
     if tNew!=noone and tNew!=mapFocus
     {

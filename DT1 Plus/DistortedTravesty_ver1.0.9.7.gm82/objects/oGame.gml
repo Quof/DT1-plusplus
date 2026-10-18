@@ -225,7 +225,6 @@ if keyboard_check_pressed(vk_f2)
 //and check for exact counts, so they have to stay on the same steps (0.25 steps switching to 0.5 halfway through a
 //0.5 step would skip the whole numbers)
 if global.gameFrameRateNext!=global.gameFrameRate and gDeltaDoTicks>0 {scrSetFrameRate(global.gameFrameRateNext)}
-if global.vsyncPending {scrVSyncApply()} //vsync change (added): a VSync change waiting for a screen effect's surface to be done with (scrVSyncApply)
 room_speed=global.gameFrameRate*global.debugSpeedMul
 gDeltaTime=30/global.gameFrameRate
 //60fps change (added): a faster rate coming from 30fps time starts a fresh tick, as an F2 change does (scrSetFrameRate).
